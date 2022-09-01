@@ -5,13 +5,31 @@ import {ACCOUNT, USER, ORGANIZATION, viewer_info} from "../support/queries-const
 import {getMutationFullName, getQueryFullName} from "../support/utils";
 import {humanizeDuration, daysSinceDate} from "../../src/app/helpers/utility";
 
-const latestCommit_vs_1 = "2022-08-26";
-const latestCommit_vs_2 = "2021-05-24";
+describe("Projects Table", () => {
+  const ctx = {};
 
-const lastUpdate_vs_1 = "2022-08-26";
-const lastUpdate_vs_2 = "2021-06-14";
+  before(() => {
+    cy.fixture(`projectstable/with_organization_instance.json`).then((response) => {
+      const organizationKey = response.data.organization.key;
+      ctx.organizationkey = organizationKey;
+    });
 
-describe("Value Streams", () => {
+    cy.fixture(`projectstable/${ORGANIZATION.organizationProjects}.json`).then((response) => {
+      var lc = new Date(response.data.organization.projects.edges[0].node.latestCommit);
+      var lu = new Date(response.data.organization.projects.edges[0].node.latestWorkItemEvent);
+
+      ctx.latestCommit_vs_1 = lc.toDateString();
+      ctx.latestUpdate_vs_1 = lu.toDateString();
+      cy.log(ctx.latestUpdate_vs_1);
+
+      lc = new Date(response.data.organization.projects.edges[1].node.latestCommit);
+      lu = new Date(response.data.organization.projects.edges[1].node.latestWorkItemEvent);
+
+      ctx.latestCommit_vs_2 = lc.toDateString();
+      ctx.latestUpdate_vs_2 = lu.toDateString();
+    });
+  });
+
   beforeEach(() => {
     cy.loginWithoutApi();
 
@@ -28,10 +46,8 @@ describe("Value Streams", () => {
     });
   });
 
-  it("should display screen", () => {
-    cy.visit(
-      "/app/dashboard/organizations/Polaris-Dev/52e0eff5-7b32-4150-a1c4-0f55d974ee2a/value-streams/Value%20Streams"
-    );
+  it("should verify all metrics when there is data for organization", () => {
+    cy.visit(`/app/dashboard/organizations/Polaris-Dev/${ctx.organizationKey}/value-streams/Value%20Streams`);
 
     cy.wait([
       `@${getQueryFullName(viewer_info)}`,
@@ -57,10 +73,10 @@ describe("Value Streams", () => {
             expect($elm.find(".specs").text()).to.contain("3.33Specs");
             expect($elm.find(".effort").text()).to.contain("7.42FTE Days");
             expect($elm.find(".latest-commit").text()).to.contain(
-              humanizeDuration(daysSinceDate(latestCommit_vs_1)) + " ago"
+              humanizeDuration(daysSinceDate(ctx.latestCommit_vs_1)) + " ago"
             );
             expect($elm.find(".last-update").text()).to.contain(
-              humanizeDuration(daysSinceDate(lastUpdate_vs_1)) + " ago"
+              humanizeDuration(daysSinceDate(ctx.latestUpdate_vs_1)) + " ago"
             );
             break;
           }
@@ -74,10 +90,10 @@ describe("Value Streams", () => {
             expect($elm.find(".specs").text()).to.contain("N/A");
             expect($elm.find(".effort").text()).to.contain("N/A");
             expect($elm.find(".latest-commit").text()).to.contain(
-              humanizeDuration(daysSinceDate(latestCommit_vs_2)) + " ago"
+              humanizeDuration(daysSinceDate(ctx.latestCommit_vs_2)) + " ago"
             );
             expect($elm.find(".last-update").text()).to.contain(
-              humanizeDuration(daysSinceDate(lastUpdate_vs_2)) + " ago"
+              humanizeDuration(daysSinceDate(ctx.latestUpdate_vs_2)) + " ago"
             );
             break;
           }

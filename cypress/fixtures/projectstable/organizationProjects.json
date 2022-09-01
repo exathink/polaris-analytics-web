@@ -5,7 +5,7 @@
         "id": "T3JnYW5pemF0aW9uOjUyZTBlZmY1LTdiMzItNDE1MC1hMWM0LTBmNTVkOTc0ZWUyYQ==",
         "projects": {
             "__typename": "ProjectsConnection",
-            "count": 6,
+            "count": 2,
             "edges": [
                 {
                     "__typename": "ProjectsEdge",
