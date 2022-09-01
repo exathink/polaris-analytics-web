@@ -11,7 +11,7 @@ export function MetricCard({
   suffix,
   info,
   trendIndicator,
-  target,
+  supportingMetric,
   detailsView,
   trendsView,
   className,
@@ -63,8 +63,7 @@ export function MetricCard({
       <div className="valueSuffix tw-col-span-4 tw-self-end">
         <div className="value tw-text-3xl tw-font-medium tw-leading-3">
           {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
-          {target && <div className="tw-text-xs tw-text-gray-300">{target}</div>}
-          {valSubTitle && <div className="tw-text-2xs tw-text-gray-300">{valSubTitle}</div>}
+          {supportingMetric && <div className="tw-text-xs tw-text-gray-300">{supportingMetric}</div>}
         </div>
       </div>
 

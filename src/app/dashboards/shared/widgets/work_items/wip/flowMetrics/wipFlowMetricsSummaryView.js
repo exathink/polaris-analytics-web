@@ -294,7 +294,7 @@ export function WorkInProgressFlowMetricsView({data, dimension, cycleTimeTarget,
       />
       <AvgCycleTime
         displayType={"card"}
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "cycletime"}}
+        displayProps={{className: "tw-p-2", supportingMetric: <span>Target {cycleTimeTarget} Days</span>, testId: "cycletime"}}
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
         target={cycleTimeTarget}
@@ -313,7 +313,7 @@ export function WorkInProgressBaseView({data, dimension}) {
       <TotalEffort 
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "total-effort"}}
+        displayProps={{className: "tw-p-2", supportingMetric: <span className="tw-invisible">random text</span>, testId: "total-effort"}}
       />
       <AvgLatency
         title={
@@ -323,7 +323,7 @@ export function WorkInProgressBaseView({data, dimension}) {
         }
         displayType="card"
         currentMeasurement={pipelineCycleMetrics}
-        displayProps={{className: "tw-p-2", targetText: <span className="tw-invisible">random text</span>, testId: "commit-latency"}}
+        displayProps={{className: "tw-p-2", supportingMetric: <span className="tw-invisible">random text</span>, testId: "commit-latency"}}
        />
     </div>
   );
@@ -347,13 +347,13 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         specsOnly={specsOnly}
         target={wipLimit}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Limit {wipLimit}</span>, testId: "wip-total"}}
+        displayProps={{className: "tw-p-2", supportingMetric: <span>Limit {wipLimit}</span>, testId: "wip-total"}}
       />
       <AvgAge 
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType="card"
-        displayProps={{className: "tw-p-2", targetText: <span>Target {cycleTimeTarget} Days</span>, testId: "wip-age"}}
+        displayProps={{className: "tw-p-2", supportingMetric: <span>Target {cycleTimeTarget} Days</span>, testId: "wip-age"}}
       />
     </div>
   );

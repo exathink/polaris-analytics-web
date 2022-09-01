@@ -60,6 +60,29 @@ export function FlowMetricsView({
         displayProps={{
           info: {title: "title"},
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
+          detailsView: {
+            title: (
+              <div className="tw-text-lg tw-text-gray-300">
+                Volume Details{" "}
+                <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
+              </div>
+            ),
+            content: (
+              <ThroughputDetailDashboard
+                dimension={dimension}
+                instanceKey={instanceKey}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendAnalysisPeriod}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                targetPercentile={targetPercentile}
+                specsOnly={specsOnly}
+                includeSubTasks={includeSubTasks}
+                displayBag={{classNameForFirstCard: "tw-w-[16rem]"}}
+              />
+            ),
+            placement: "top",
+          },
           trendsView: {
             title: "",
             content: (

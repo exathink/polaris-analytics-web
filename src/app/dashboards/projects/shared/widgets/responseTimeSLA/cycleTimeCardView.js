@@ -33,7 +33,7 @@ export function CycleTimeCardView({
               ),
               placement: "bottom",
             },
-            targetText: <span>Target {cycleTimeTarget} Days</span>
+            supportingMetric: <span>Target {cycleTimeTarget} Days</span>
           }}
           specsOnly={specsOnly}
           target={cycleTimeTarget}
