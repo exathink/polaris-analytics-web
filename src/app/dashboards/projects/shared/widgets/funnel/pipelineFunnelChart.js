@@ -53,8 +53,6 @@ export const PipelineFunnelChart = Chart({
                 days,
                 leadTimeTarget,
                 cycleTimeTarget,
-                title,
-                subTitle,
                 grouping,
                 showVolumeOrEffort = "volume",
                 displayBag={},
@@ -63,7 +61,7 @@ export const PipelineFunnelChart = Chart({
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
-    const {funnelCenter = ["38%", "50%"]} = displayBag;
+    const {funnelCenter = ["38%", "50%"], title, subTitle} = displayBag;
     return {
       chart: {
         type: "funnel",
@@ -74,7 +72,7 @@ export const PipelineFunnelChart = Chart({
         align: "center"
       },
       subtitle: {
-        text: subTitle || showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase",
+        text: subTitle || (showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase"),
         align: "center"
       },
       plotOptions: {

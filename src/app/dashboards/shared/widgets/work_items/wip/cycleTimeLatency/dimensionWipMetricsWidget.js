@@ -65,6 +65,7 @@ export function DimensionWipMetricsWidget({
     <DimensionWipMetricsView
       data={data}
       flowMetricsData={flowMetricsData}
+      specsOnly={specsOnly}
       dimension={dimension}
       instanceKey={instanceKey}
       displayBag={displayBag}

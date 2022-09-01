@@ -19,7 +19,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
   const metricMap = {
     volume: (
       <Wip
-        title={<span>Total</span>}
+        title={<span>Work In Progress: Total</span>}
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
@@ -35,6 +35,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
     ),
     avgAge: (
       <AvgAge
+        title={<span>Work In Progress: Age <sup>Avg</sup></span>}
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType={displayType}

@@ -570,11 +570,12 @@ export const FlowEfficiency = ({title, displayType, precision, displayProps, cur
   />
 }
 
-export const AvgAge = ({currentMeasurement, previousMeasurement, target, deltaThreshold, displayType, displayProps}) => (
+export const AvgAge = ({title, currentMeasurement, previousMeasurement, target, deltaThreshold, displayType, displayProps}) => (
   <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'avgCycleTime'}
+    title={title}
     displayName={'Age'}
     superScript={'Avg'}
     target={target}
