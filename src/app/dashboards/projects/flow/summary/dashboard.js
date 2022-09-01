@@ -67,7 +67,7 @@ export function NewFlowDashboard({
         <DashboardWidget
           name="quadrant-summary-pipeline"
           className="tw-col-span-4 tw-col-start-3 tw-row-start-1"
-          title={"Work In Progress"}
+          title={""}
           subtitle={""}
           render={({view}) => (
             <DimensionPipelineQuadrantSummaryWidget
