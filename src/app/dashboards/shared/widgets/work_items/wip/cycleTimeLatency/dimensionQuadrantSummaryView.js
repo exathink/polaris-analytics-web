@@ -20,13 +20,13 @@ export const DimensionQuadrantSummaryView = ({
   }, [data, dimension]);
 
   return (
-    <div className={`tw-my-auto tw-flex tw-h-auto tw-items-center`}>
+    <div className={`tw-flex tw-items-center tw-h-full`}>
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
-        className="tw-mx-auto tw-w-[98%]"
+        className="tw-mx-auto tw-w-[98%] tw-h-full"
       />
     </div>
   );
