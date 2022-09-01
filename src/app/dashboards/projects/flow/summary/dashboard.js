@@ -19,6 +19,12 @@ export function NewFlowDashboard({
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
+  React.useEffect(() => {
+    if (workItemScope==="all" && volumeOrEffort !== "volume") {
+      setVolumeOrEffort("volume")
+    }
+  }, [workItemScope, volumeOrEffort]);
+  
   const {
     responseTimeConfidenceTarget,
     flowAnalysisPeriod,
@@ -176,7 +182,11 @@ export function NewFlowDashboard({
                 includeSubTasksInClosedState: includeSubTasksFlowMetrics,
                 includeSubTasksInNonClosedState: includeSubTasksWipInspector,
               }}
-              displayBag={{funnelCenter: ["42%", "50%"], title: "Flow, All Phases"}}
+              displayBag={{
+                funnelCenter: ["42%", "50%"],
+                title: "Flow, All Phases",
+                subTitle: volumeOrEffort === "volume" ? "Expected Time to Clear" : "Cost of Unshipped Code",
+              }}
             />
           )}
           showDetail={true}
