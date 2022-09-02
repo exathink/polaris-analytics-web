@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
-import {ACCOUNT, USER, ORGANIZATION, viewer_info} from "../support/queries-constants";
+import {ORGANIZATION, viewer_info} from "../support/queries-constants";
 import {getQueryFullName, getNMonthsAgo, getNHoursAgo, getNDaysAgo, getNYearsAgo} from "../support/utils";
-import {humanizeDuration, daysSinceDate} from "../../src/app/helpers/utility";
 
 describe("Projects Table", () => {
   const ctx = {};
@@ -29,8 +28,10 @@ describe("Projects Table", () => {
     ctx.organizationKey = "f00f0779-33a7-46b9-bcff-15daa0a82628";
 
     cy.fixture(`projectstable/${ORGANIZATION.organizationProjects}.json`).then((fixture) => {
-      fixture.data.organization =
-        '{"id": "T3JnYW5pemF0aW9uOmYwMGYwNzc5LTMzYTctNDZiOS1iY2ZmLTE1ZGFhMGE4MjYyOA==","projects": {"count": 0,"edges": []}}';
+      fixture.data.organization = {
+        id: "T3JnYW5pemF0aW9uOmYwMGYwNzc5LTMzYTctNDZiOS1iY2ZmLTE1ZGFhMGE4MjYyOA==",
+        projects: {count: 0, edges: []},
+      };
       cy.interceptQueryWithResponse({operationName: ORGANIZATION.organizationProjects, body: fixture});
     });
 
