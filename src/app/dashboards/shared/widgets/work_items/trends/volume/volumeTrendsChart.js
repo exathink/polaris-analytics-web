@@ -47,6 +47,8 @@ export const VolumeTrendsChart = ({
     return [cardMetric, specMetric];
   }, [chartConfig, specsOnly]);
 
+  const {title, subTitle, annotations, yAxisUom, xAxisUom} = chartConfig;
+
   return (
     <MeasurementTrendLineChart
       measurements={flowMetricsTrends}
@@ -55,8 +57,10 @@ export const VolumeTrendsChart = ({
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
       config={{
-        title: "Throughput",
-        yAxisUom: "Cards",
+        title: title || "Throughput",
+        subTitle: subTitle,
+        yAxisUom: yAxisUom || "Cards",
+        xAxisUom: xAxisUom,
         plotBands: {
           metric: "workItemsWithCommits",
         },
@@ -65,7 +69,7 @@ export const VolumeTrendsChart = ({
           minScale: 0,
           maxScale: 1.25,
         },
-        annotations: [
+        annotations: annotations ?? [
           {
             visible: true,
             labels: [

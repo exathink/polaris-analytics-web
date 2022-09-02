@@ -63,7 +63,7 @@ export function FlowMetricsView({
           detailsView: {
             title: (
               <div className="tw-text-lg tw-text-gray-300">
-                Volume Details <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
+                Volume Details <span className="tw-text-base tw-italic">{specsOnly ? "All Cards": "Specs"}, Last {flowAnalysisPeriod} Days</span>
               </div>
             ),
             content: (

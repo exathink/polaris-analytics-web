@@ -31,6 +31,7 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
+        chartConfig={{title: "Daily Volume", subTitle: `Last ${measurementPeriod} Days`, annotations: [], yAxisUom: "Volume", xAxisUom: "Date"}}
       />
   );
 }
