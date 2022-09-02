@@ -18,7 +18,7 @@ export function FlowMetricsView({
   includeSubTasks,
   view,
 }) {
-  const {metric, displayType, displayProps, iconsShiftLeft} = displayBag;
+  const {metric, displayType, iconsShiftLeft, ...displayProps} = displayBag;
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
@@ -112,6 +112,7 @@ export function FlowMetricsView({
         dimension={dimension}
         instanceKey={instanceKey}
         displayType={displayType}
+        displayProps={displayProps}
         flowAnalysisPeriod={flowAnalysisPeriod}
         trendAnalysisPeriod={trendAnalysisPeriod}
         specsOnly={specsOnly}
