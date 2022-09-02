@@ -1,3 +1,5 @@
+import moment from "moment";
+
 // Utility to match GraphQL mutation based on the operation name
 export const hasOperationName = (req, operationName) => {
   const {body} = req;
@@ -10,8 +12,8 @@ export const aliasQuery = (req, operationName, pathToFixture) => {
     req.alias = getQueryFullName(operationName);
     if (pathToFixture) {
       req.reply({
-        fixture: pathToFixture
-      })
+        fixture: pathToFixture,
+      });
     }
   }
 };
@@ -25,8 +27,24 @@ export const aliasMutation = (req, operationName) => {
 
 export const getQueryFullName = (operationName) => {
   return `gql${operationName}Query`;
-}
+};
 
 export const getMutationFullName = (operationName) => {
   return `gql${operationName}Mutation`;
+};
+
+export function getNDaysAgo(n) {
+  return moment().subtract(n, "days").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
+
+export function getNHoursAgo(n) {
+  return moment().subtract(n, "hours").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
+
+export function getNYearsAgo(n) {
+  return moment().subtract(n, "years").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
+
+export function getNMonthsAgo(n) {
+  return moment().subtract(n, "month").utc().format("YYYY-MM-DDTHH:mm:ss");
 }
