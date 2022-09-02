@@ -1,4 +1,4 @@
-import { VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { AvgCycleTime, VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
@@ -63,8 +63,7 @@ export function FlowMetricsView({
           detailsView: {
             title: (
               <div className="tw-text-lg tw-text-gray-300">
-                Volume Details{" "}
-                <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
+                Volume Details <span className="tw-text-base tw-italic">All Cards, Last {flowAnalysisPeriod} Days</span>
               </div>
             ),
             content: (
@@ -112,7 +111,22 @@ export function FlowMetricsView({
         dimension={dimension}
         instanceKey={instanceKey}
         displayType={displayType}
-        displayProps={displayProps}
+        displayProps={{
+          trendsView: {
+            title: "",
+            content: (
+              <AvgCycleTime
+                title={<span>Volume</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: flowAnalysisPeriod}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+              />
+            ),
+            placement: "top",
+          },
+          ...displayProps,
+        }}
         flowAnalysisPeriod={flowAnalysisPeriod}
         trendAnalysisPeriod={trendAnalysisPeriod}
         specsOnly={specsOnly}
