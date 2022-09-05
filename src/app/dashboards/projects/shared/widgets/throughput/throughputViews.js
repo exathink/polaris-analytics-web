@@ -164,9 +164,10 @@ export function AgeCardView({data, dimension, displayType, flowAnalysisPeriod, d
   );
 }
 
-export function CadenceCardView({data, dimension, displayType, specsOnly}) {
+export function CadenceCardView({data, dimension, displayType, specsOnly, measurementWindow}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
+  currentTrend = {...currentTrend, measurementWindow: measurementWindow};
 
   return (
     <div className="tw-h-full tw-w-full">
