@@ -191,6 +191,21 @@ export function CadenceCardView({data, dimension, displayType, specsOnly, measur
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          trendsView: {
+            title: "",
+            content: (
+              <Cadence
+                title={<span>Cadence</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: measurementWindow}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+                specsOnly={specsOnly}
+                measurementWindow={measurementWindow}
+              />
+            ),
+            placement: "top",
+          },
         }}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}
