@@ -24,13 +24,13 @@ export const ThroughputDetailDashboard = ({
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className={classNames("tw-grid tw-grid-cols-3 tw-gap-2", className)}
+      className={classNames("tw-grid tw-grid-cols-[280px_280px_280px] tw-gap-2", className)}
     >
       <DashboardRow>
         <DashboardWidget
           w={1}
           name="volume-summary"
-          className={classNames("tw-h-32 tw-p-2")}
+          className={"tw-p-2"}
           render={({view}) => (
             <FlowMetricsTrendsWidget
               dimension="project"
@@ -58,7 +58,7 @@ export const ThroughputDetailDashboard = ({
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
-              displayBag={{displayType: "cardAdvanced", metric: "throughput"}}
+              displayBag={{displayType: "cardAdvanced", metric: "throughput", detailsView: null}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
               samplingFrequency={flowAnalysisPeriod}
