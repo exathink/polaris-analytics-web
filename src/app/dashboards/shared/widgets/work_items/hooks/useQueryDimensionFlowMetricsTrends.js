@@ -53,6 +53,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
           work_items_in_scope
           work_items_with_commits
           work_items_with_null_cycle_time
+          cadence
         ]
         specsOnly: $specsOnly
       }
