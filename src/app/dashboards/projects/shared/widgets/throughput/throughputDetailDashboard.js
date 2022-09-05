@@ -19,7 +19,7 @@ export const ThroughputDetailDashboard = ({
   includeSubTasks,
   displayBag = {},
 }) => {
-  const {classNameForFirstCard, className} = displayBag;
+  const {className} = displayBag;
   return (
     <Dashboard
       dashboard={dashboard_id}
@@ -30,12 +30,12 @@ export const ThroughputDetailDashboard = ({
         <DashboardWidget
           w={1}
           name="volume-summary"
-          className={classNames("tw-h-32 tw-p-2", classNameForFirstCard)}
+          className={classNames("tw-h-32 tw-p-2")}
           render={({view}) => (
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
-              displayBag={{displayType: "card", metric: "volume"}}
+              displayBag={{displayType: "cardAdvanced", metric: "volume"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
               samplingFrequency={flowAnalysisPeriod}
@@ -58,7 +58,7 @@ export const ThroughputDetailDashboard = ({
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
-              displayBag={{displayType: "card", metric: "throughput"}}
+              displayBag={{displayType: "cardAdvanced", metric: "throughput"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
               samplingFrequency={flowAnalysisPeriod}
@@ -81,7 +81,7 @@ export const ThroughputDetailDashboard = ({
             <CadenceCardWidget
               dimension={dimension}
               instanceKey={instanceKey}
-              displayType="card"
+              displayType="cardAdvanced"
               flowAnalysisPeriod={flowAnalysisPeriod}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}

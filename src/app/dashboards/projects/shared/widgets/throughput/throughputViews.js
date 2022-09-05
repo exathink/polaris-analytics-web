@@ -1,4 +1,4 @@
-import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
+import {AvgAge, Cadence, Throughput, Volume, VolumeWithThroughput} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
@@ -132,6 +132,21 @@ export function VolumeCardView({data, dimension, displayType, flowAnalysisPeriod
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          trendsView: {
+            title: "",
+            content: (
+              <VolumeWithThroughput
+                title={<span>Volume</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: flowAnalysisPeriod}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+                specsOnly={specsOnly}
+                measurementWindow={flowAnalysisPeriod}
+              />
+            ),
+            placement: "top",
+          },
           ...displayProps
         }}
         specsOnly={specsOnly}
