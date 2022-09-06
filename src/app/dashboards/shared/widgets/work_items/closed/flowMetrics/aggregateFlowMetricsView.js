@@ -424,6 +424,68 @@ export const ResponseTimeDetailView = (
   );
 };
 
+export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget}) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <div className="tw-grid tw-grid-flow-col tw-grid-cols-3 tw-gap-2">
+      <div className="tw-row-span-3">
+        <AvgCycleTime
+          displayType="card"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <span className={"tw-textXs tw-grey tw-italic"}>Value Added</span>
+      </div>
+      <div className="">
+        <AvgEffort
+          displayType="card"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <AvgDuration
+          displayType="card"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <span className={"tw-textXs tw-grey tw-italic"}>Non Value-Added</span>
+      </div>
+      <div className="">
+        <PullRequest
+          displayType="card"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <AvgLatency
+          displayType="card"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const ThroughputDetailView = ({
                                        cycleMetricsTrends,
                                        leadTimeTargetPercentile,
