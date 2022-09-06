@@ -114,22 +114,7 @@ export function FlowMetricsView({
         dimension={dimension}
         instanceKey={instanceKey}
         displayType={displayType}
-        displayProps={{
-          trendsView: {
-            title: "",
-            content: (
-              <AvgCycleTime
-                title={<span>Volume</span>}
-                displayType={"trendsCompareCard"}
-                displayProps={{measurementWindow: flowAnalysisPeriod}}
-                currentMeasurement={currentTrend}
-                previousMeasurement={previousTrend}
-              />
-            ),
-            placement: "top",
-          },
-          ...displayProps,
-        }}
+        displayProps={{displayProps}}
         flowAnalysisPeriod={flowAnalysisPeriod}
         trendAnalysisPeriod={trendAnalysisPeriod}
         specsOnly={specsOnly}
