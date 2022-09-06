@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import { DimensionCycleTimeHistogramWidget } from "../closed/flowMetrics/dimensionCycleTimeHistogramWidget";
 import { DimensionCycleTimeWidget } from "../closed/flowMetrics/dimensionCycleTimeWidget";
 
 const dashboard_id = "dashboards.cycle.time.breakup";
@@ -9,6 +9,7 @@ export function DimensionCycleTimeDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settingsWithDefaults},
   context,
+  specsOnly
 }) {
   const {
     leadTimeTarget,
@@ -20,22 +21,17 @@ export function DimensionCycleTimeDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const [workItemScope, setWorkItemScope] = useState("specs");
-  const [yAxisScale, setYAxisScale] = React.useState("histogram");
-
-  const limitToSpecsOnly = workItemScope === "specs";
-
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-[49.5%_49.5%] tw-grid-rows-[50%_47%] tw-gap-2 tw-h-[600px]"
+      className="tw-grid tw-grid-cols-[49.5%_49.5%] tw-grid-rows-[50%_47%] tw-gap-2 tw-h-[650px]"
     >
       <DashboardRow>
         <DashboardWidget
           name="flow-metrics"
           title={`Response Time`}
-          subtitle={`${limitToSpecsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
+          subtitle={`${specsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           className="tw-col-span-2"
           render={({view}) => (
@@ -46,7 +42,7 @@ export function DimensionCycleTimeDetailDashboard({
               initialSelection={""}
               twoRows={true}
               context={context}
-              specsOnly={limitToSpecsOnly}
+              specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
@@ -68,13 +64,10 @@ export function DimensionCycleTimeDetailDashboard({
           name="flow-metrics-delivery-details"
           className="tw-col-span-2"
           render={({view}) => (
-            <DimensionDeliveryCycleFlowMetricsWidget
+            <DimensionCycleTimeHistogramWidget
               dimension={dimension}
               instanceKey={key}
-              specsOnly={limitToSpecsOnly}
-              view={view}
-              context={context}
-              showAll={true}
+              specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}
               initialDays={flowAnalysisPeriod}
@@ -84,8 +77,6 @@ export function DimensionCycleTimeDetailDashboard({
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksFlowMetrics}
-              yAxisScale={yAxisScale}
-              setYAxisScale={setYAxisScale}
             />
           )}
           showDetail={false}

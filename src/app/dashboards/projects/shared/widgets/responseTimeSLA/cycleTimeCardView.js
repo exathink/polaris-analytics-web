@@ -39,7 +39,7 @@ export function CycleTimeCardView({
               <ProjectDashboard
                 pollInterval={1000 * 60}
                 render={({project, ...rest}) => (
-                  <DimensionCycleTimeDetailDashboard dimension={"project"} dimensionData={project} {...rest} />
+                  <DimensionCycleTimeDetailDashboard dimension={"project"} dimensionData={project} specsOnly={specsOnly} {...rest} />
                 )}
               />
             ),
