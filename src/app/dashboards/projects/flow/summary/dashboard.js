@@ -226,7 +226,7 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{metric: "volumeWithThroughput", displayType: "cardAdvanced", iconsShiftLeft: false}}
+                displayBag={{metric: "volumeWithThroughput", displayType: "cardAdvanced", iconsShiftLeft: false, trendValueClass: "tw-text-2xl"}}
               />
             );
           }}
@@ -252,7 +252,7 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 cycleTimeTarget={cycleTimeTarget}
-                displayBag={{metric: "cycleTime", displayType: "cardAdvanced"}}
+                displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
               />
             );
           }}

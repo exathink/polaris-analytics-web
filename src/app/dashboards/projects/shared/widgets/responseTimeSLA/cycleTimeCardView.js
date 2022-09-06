@@ -5,6 +5,7 @@ export function CycleTimeCardView({
     data,
     dimension,
     displayType,
+    displayProps,
     cycleTimeTarget,
     instanceKey,
     flowAnalysisPeriod,
@@ -33,7 +34,8 @@ export function CycleTimeCardView({
               ),
               placement: "bottom",
             },
-            supportingMetric: <span>Target {cycleTimeTarget} Days</span>
+            supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
+            ...displayProps
           }}
           specsOnly={specsOnly}
           target={cycleTimeTarget}

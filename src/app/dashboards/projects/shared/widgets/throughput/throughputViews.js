@@ -1,4 +1,4 @@
-import {AvgAge, Cadence, Throughput, Volume} from "../../../../shared/components/flowStatistics/flowStatistics";
+import {AvgAge, Cadence, Throughput, Volume, VolumeWithThroughput} from "../../../../shared/components/flowStatistics/flowStatistics";
 import {VolumeTrendsChart} from "../../../../shared/widgets/work_items/trends/volume/volumeTrendsChart";
 import {ThroughputDetailDashboard} from "./throughputDetailDashboard";
 import {ThroughputTrendsWidget} from "./throughputTrendsWidget";
@@ -31,6 +31,7 @@ export function ThroughputTrendsView({data, dimension, measurementPeriod, measur
         measurementPeriod={measurementPeriod}
         measurementWindow={measurementWindow}
         view={view}
+        chartConfig={{title: "Daily Volume", subTitle: `Last ${measurementPeriod} Days`, annotations: [], yAxisUom: "Volume", xAxisUom: "Date"}}
       />
   );
 }
@@ -131,6 +132,21 @@ export function VolumeCardView({data, dimension, displayType, flowAnalysisPeriod
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          trendsView: {
+            title: "",
+            content: (
+              <VolumeWithThroughput
+                title={<span>Volume</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: flowAnalysisPeriod}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+                specsOnly={specsOnly}
+                measurementWindow={flowAnalysisPeriod}
+              />
+            ),
+            placement: "top",
+          },
           ...displayProps
         }}
         specsOnly={specsOnly}
@@ -163,9 +179,10 @@ export function AgeCardView({data, dimension, displayType, flowAnalysisPeriod, d
   );
 }
 
-export function CadenceCardView({data, dimension, displayType, specsOnly}) {
+export function CadenceCardView({data, dimension, displayType, specsOnly, measurementWindow}) {
   const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
+  currentTrend = {...currentTrend, measurementWindow: measurementWindow};
 
   return (
     <div className="tw-h-full tw-w-full">
@@ -174,6 +191,21 @@ export function CadenceCardView({data, dimension, displayType, specsOnly}) {
         displayProps={{
           className: "tw-p-2",
           info: {title: "title"},
+          trendsView: {
+            title: "",
+            content: (
+              <Cadence
+                title={<span>Cadence</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: measurementWindow}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+                specsOnly={specsOnly}
+                measurementWindow={measurementWindow}
+              />
+            ),
+            placement: "top",
+          },
         }}
         specsOnly={specsOnly}
         currentMeasurement={currentTrend}

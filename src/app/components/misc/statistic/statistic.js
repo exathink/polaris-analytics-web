@@ -62,10 +62,10 @@ export const TrendIndicatorNew = ({
       // show indicator only if absDelta greater than the indicator display threshold
       absDelta > deltaThreshold && (
         <div>
-          <div className="trendIndicatorPadding tw-text-center">
+          <div className="tw-px-2 tw-text-center">
             {trendIndicatorIcon} {trendValue}
           </div>
-          <div className="comparisonWindow tw-text-center">
+          <div className="tw-text-vh tw-text-center">
             {samplingFrequency && <p className="tw-leading-3 tw-mb-0"><p className="tw-mb-0">Compared to prior</p> <p className="tw-mb-0"> {samplingFrequency} days.</p></p>}
           </div>
         </div>
