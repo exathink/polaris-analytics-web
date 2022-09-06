@@ -27,15 +27,22 @@ export function CycleTimeCardView({
             className: "tw-p-2",
             info: {title: "title"},
             subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
+            detailsView: {
+              title: (
+                <div className="tw-text-lg tw-text-gray-300">
+                  Cycle Time Details <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
+                </div>
+              ),
+              content: <div></div>,
+              placement: "top",
+            },
             trendsView: {
               title: "",
-              content: (
-                "Cycle Time Trends"
-              ),
+              content: "Cycle Time Trends",
               placement: "bottom",
             },
             supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
-            ...displayProps
+            ...displayProps,
           }}
           specsOnly={specsOnly}
           target={cycleTimeTarget}
