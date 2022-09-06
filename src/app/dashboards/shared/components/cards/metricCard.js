@@ -29,7 +29,7 @@ export function MetricCard({
   return (
     <div
       className={classNames(
-        "tw-grid tw-h-full tw-grid-cols-7 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md",
+        "tw-grid tw-h-full tw-grid-cols-7 tw-gap-y-4 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md",
         className
       )}
     >
