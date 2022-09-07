@@ -68,6 +68,7 @@ export const DimensionCycleTimeWidget = ({
         cycleTimeTarget={cycleTimeTarget}
         leadTimeTarget={leadTimeTarget}
         cycleMetricsTrends={finalCycleMetricTrends}
+        measurementWindow={measurementWindow}
       />
     );
   } else {
