@@ -1,4 +1,4 @@
-import { AvgCycleTime, VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
