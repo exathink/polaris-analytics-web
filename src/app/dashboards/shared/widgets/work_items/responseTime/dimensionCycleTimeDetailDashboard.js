@@ -24,8 +24,8 @@ export function DimensionCycleTimeDetailDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
+      className="tw-grid tw-grid-rows-[50%_50%] tw-gap-2 tw-h-[650px]"
       gridLayout={true}
-      className="tw-grid tw-grid-cols-[49.5%_49.5%] tw-grid-rows-[50%_47%] tw-gap-2 tw-h-[650px]"
     >
       <DashboardRow>
         <DashboardWidget
@@ -33,7 +33,7 @@ export function DimensionCycleTimeDetailDashboard({
           title={`Response Time`}
           subtitle={`${specsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          className="tw-col-span-2"
+          className=""
           render={({view}) => (
             <DimensionCycleTimeWidget
               dimension={dimension}
@@ -62,7 +62,7 @@ export function DimensionCycleTimeDetailDashboard({
         <DashboardWidget
           title={""}
           name="flow-metrics-delivery-details"
-          className="tw-col-span-2"
+          className=""
           render={({view}) => (
             <DimensionCycleTimeHistogramWidget
               dimension={dimension}

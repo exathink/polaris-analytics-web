@@ -323,16 +323,21 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
   }, [model, intl]);
 
   return (
-    <div className="tw-h-full tw-w-full">
-      <WorkItemsDetailHistogramChart
-        chartSubTitle={getChartSubTitle({filteredData: model, defectsOnly: false, specsOnly: specsOnly, days: days, before: before, selectedMetric: "cycleTime"})}
-        selectedMetric={"cycleTime"}
-        specsOnly={specsOnly}
-        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        stateType={"closed"}
-        series={seriesData}
-      />
-    </div>
+    <WorkItemsDetailHistogramChart
+      chartSubTitle={getChartSubTitle({
+        filteredData: model,
+        defectsOnly: false,
+        specsOnly: specsOnly,
+        days: days,
+        before: before,
+        selectedMetric: "cycleTime",
+      })}
+      selectedMetric={"cycleTime"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"closed"}
+      series={seriesData}
+    />
   );
 }
 
