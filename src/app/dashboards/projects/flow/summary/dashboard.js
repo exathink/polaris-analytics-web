@@ -135,6 +135,7 @@ export function NewFlowDashboard({
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              displayBag={{fontSize: "tw-text-xl"}}
             />
           )}
           showDetail={false}
