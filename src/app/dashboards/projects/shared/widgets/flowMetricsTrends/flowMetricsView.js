@@ -114,7 +114,7 @@ export function FlowMetricsView({
         dimension={dimension}
         instanceKey={instanceKey}
         displayType={displayType}
-        displayProps={{displayProps}}
+        displayProps={displayProps}
         flowAnalysisPeriod={flowAnalysisPeriod}
         trendAnalysisPeriod={trendAnalysisPeriod}
         specsOnly={specsOnly}
