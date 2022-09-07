@@ -438,7 +438,7 @@ export const PullRequest = ({title, displayType, displayProps, currentMeasuremen
   return <ResponseTime
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
-    valueRender={ value => humanizeDuration(value)}
+    valueRender={ value => <span className="tw-text-xl">{humanizeDuration(value)}</span>}
     uom={' '}
     metric={metric || 'pullRequestAvgAge'}
     displayName={title || 'Code Review'}
