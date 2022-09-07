@@ -305,18 +305,22 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
     )
   );
 
-  const points = model
-    .filter((cycle) => cycle.workItemType !== "epic")
-    .map((cycle) => projectDeliveryCycleFlowMetricsMeta["cycleTime"].value(cycle));
+  const seriesData = React.useMemo(() => {
+    const points = model
+      .filter((cycle) => cycle.workItemType !== "epic")
+      .map((cycle) => projectDeliveryCycleFlowMetricsMeta["cycleTime"].value(cycle));
 
-  const seriesObj = getHistogramSeries({
-    id: "cycleTime",
-    intl,
-    colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-    name: getSelectedMetricDisplayName("cycleTime", WorkItemStateTypes.closed),
-    points,
-    color: getSelectedMetricColor("cycleTime", WorkItemStateTypes.closed),
-  });
+    const seriesObj = getHistogramSeries({
+      id: "cycleTime",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      name: getSelectedMetricDisplayName("cycleTime", WorkItemStateTypes.closed),
+      points,
+      color: getSelectedMetricColor("cycleTime", WorkItemStateTypes.closed),
+    });
+
+    return [seriesObj];
+  }, [model, intl]);
 
   return (
     <div className="tw-h-full tw-w-full">
@@ -326,7 +330,7 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
         specsOnly={specsOnly}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         stateType={"closed"}
-        series={[seriesObj]}
+        series={seriesData}
       />
     </div>
   );
