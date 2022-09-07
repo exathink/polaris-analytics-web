@@ -194,6 +194,8 @@ export function NewFlowDashboard({
                 funnelCenter: ["42%", "50%"],
                 title: "Flow, All Phases",
                 subTitle: volumeOrEffort === "volume" ? "Expected Time to Clear" : "Cost of Unshipped Code",
+                series: {dataLabels: {fontSize: "14px"}},
+                legend: {title: {fontSize: "14px"}, fontSize: "14px"}
               }}
             />
           )}

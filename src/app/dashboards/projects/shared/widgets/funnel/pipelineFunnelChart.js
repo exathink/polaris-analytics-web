@@ -84,6 +84,9 @@ export const PipelineFunnelChart = Chart({
               const label = this.point.stateType === WorkItemStateTypes.closed ? `${this.point.name} Last ${days} days` : `${this.point.name}`;
               return `<b>${label}</b> (${this.point.count})`;
             },
+            style: {
+              fontSize: displayBag?.series?.dataLabels?.fontSize
+            },
             softConnector: true,
             color: "black",
           }, {
@@ -105,6 +108,9 @@ export const PipelineFunnelChart = Chart({
                   ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
               );
             },
+            style: {
+              fontSize: displayBag?.series?.dataLabels?.fontSize
+            },
             color: "white"
           }],
           center: funnelCenter,
@@ -116,13 +122,19 @@ export const PipelineFunnelChart = Chart({
       legend: {
         title: {
           text: "Phases",
-          fontStyle: "italic"
+          style: {
+            fontStyle: "italic",
+            fontSize: displayBag?.legend?.title?.fontSize,
+          }
         },
         align: "left",
         layout: "vertical",
         verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: true
+        enabled: true,
+        itemStyle: {
+          fontSize: displayBag?.legend?.fontSize
+        }
       },
       series: [{
         name: grouping === "specs" ? "Specs" : "Cards",
