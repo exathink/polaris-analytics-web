@@ -435,6 +435,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
         <AvgCycleTime
           displayType="cardAdvanced"
           displayProps={{
+            valueClass: "tw-text-2xl",
             trendsView: {
               title: "",
               content: (
@@ -461,6 +462,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
         <AvgEffort
           displayType="cardAdvanced"
           displayProps={{
+            valueClass: "tw-text-2xl",
             trendsView: {
               title: "",
               content: (
@@ -483,6 +485,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
         <AvgDuration
           displayType="cardAdvanced"
           displayProps={{
+            valueClass: "tw-text-2xl",
             trendsView: {
               title: "",
               content: (
@@ -517,6 +520,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
         <AvgLatency
           displayType="cardAdvanced"
           displayProps={{
+            valueClass: "tw-text-2xl",
             trendsView: {
               title: "",
               content: (

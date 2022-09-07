@@ -67,7 +67,7 @@ export const FlowStatistic = ({
       );
     }
     case "cardAdvanced": {
-      const {info, className, detailsView, trendsView, subTitle, iconsShiftLeft, supportingMetric, trendValueClass} = displayProps;
+      const {info, className, detailsView, trendsView, subTitle, iconsShiftLeft, supportingMetric, trendValueClass, valueClass} = displayProps;
       return (
         <MetricCard
           title={title}
@@ -88,7 +88,7 @@ export const FlowStatistic = ({
           supportingMetric={supportingMetric}
           detailsView={detailsView}
           trendsView={trendsView}
-          displayBag={{trendValueClass, iconsShiftLeft}}
+          displayBag={{trendValueClass, iconsShiftLeft, valueClass}}
         />
       );
     }
