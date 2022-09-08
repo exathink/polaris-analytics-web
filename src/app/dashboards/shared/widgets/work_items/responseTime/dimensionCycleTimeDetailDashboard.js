@@ -24,7 +24,7 @@ export function DimensionCycleTimeDetailDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-rows-[50%_50%] tw-gap-2 tw-h-[650px]"
+      className="tw-grid tw-gap-2 tw-h-[650px]"
       gridLayout={true}
     >
       <DashboardRow>
