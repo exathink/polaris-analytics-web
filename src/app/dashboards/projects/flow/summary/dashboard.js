@@ -45,15 +45,15 @@ export function NewFlowDashboard({
       className="tw-grid tw-grid-cols-8 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-row-start-1 tw-col-start-4 tw-text-xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-center">
-          Flow, {specsOnly ? "Specs": "All Cards"}
+      <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Flow Analysis, {specsOnly ? "Specs": "All Cards"}
         </div>
-        <div className="tw-text-sm tw-flex tw-justify-center">
+        <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
         </div>
       </div>
-      <div className="tw-col-start-6 tw-row-start-1">
+      <div className="tw-col-start-8 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
