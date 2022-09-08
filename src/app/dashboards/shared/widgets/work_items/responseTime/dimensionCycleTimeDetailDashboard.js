@@ -29,7 +29,7 @@ export function DimensionCycleTimeDetailDashboard({
     >
       <DashboardRow>
         <DashboardWidget
-          name="flow-metrics"
+          name="cycle-time-metrics"
           title={`Response Time`}
           subtitle={`${specsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -61,7 +61,7 @@ export function DimensionCycleTimeDetailDashboard({
       <DashboardRow>
         <DashboardWidget
           title={""}
-          name="flow-metrics-delivery-details"
+          name="cycle-time-histogram-details"
           className=""
           render={({view}) => (
             <DimensionCycleTimeHistogramWidget
