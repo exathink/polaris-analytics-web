@@ -8,12 +8,12 @@ import { useIntl } from "react-intl";
 
 export {Statistic} from "antd";
 
-function getDelta(firstValue, secondValue) {
-  return ((firstValue - secondValue) / (1.0 * firstValue)) * 100;
+function getDelta(currentValue, previousValue) {
+  return ((currentValue - previousValue) / (1.0 * previousValue)) * 100;
 }
 
-export function getTrendIndicatorUtils({firstValue, secondValue, good, intl}) {
-  const delta = getDelta(firstValue, secondValue);
+export function getTrendIndicatorUtils({currentValue, previousValue, good, intl}) {
+  const delta = getDelta(currentValue, previousValue);
   const style = good ? (good(delta) ? "good" : "bad") : "neutral";
   const trendIndicatorIcon =
     delta > 0 ? (
@@ -34,10 +34,10 @@ export function getTrendIndicatorUtils({firstValue, secondValue, good, intl}) {
 // Display the trend indicator only if abs value of the delta is greater than this threshold.
 export const TrendIndicatorDisplayThreshold = 2;
 
-export const TrendIndicator = ({firstValue, secondValue, good, deltaThreshold = TrendIndicatorDisplayThreshold}) => {
+export const TrendIndicator = ({currentValue, previousValue, good, deltaThreshold = TrendIndicatorDisplayThreshold}) => {
   const intl = useIntl();
-  if (firstValue && secondValue) {
-    const {trendIndicatorIcon, absDelta} = getTrendIndicatorUtils({firstValue, secondValue, good, intl});
+  if (currentValue && previousValue) {
+    const {trendIndicatorIcon, absDelta} = getTrendIndicatorUtils({currentValue, previousValue, good, intl});
     return absDelta > deltaThreshold && trendIndicatorIcon;
   } else {
     return null;
@@ -48,24 +48,24 @@ TrendIndicator.isPositive = (delta) => delta > 0;
 TrendIndicator.isNegative = (delta) => delta < 0;
 
 export const TrendIndicatorNew = ({
-  firstValue,
-  secondValue,
+  currentValue,
+  previousValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
   samplingFrequency,
 }) => {
   const intl = useIntl();
-  if (firstValue && secondValue) {
-    const {trendIndicatorIcon, trendValue, absDelta} = getTrendIndicatorUtils({firstValue, secondValue, good, intl});
+  if (currentValue && previousValue) {
+    const {trendIndicatorIcon, trendValue, absDelta} = getTrendIndicatorUtils({currentValue, previousValue, good, intl});
 
     return (
       // show indicator only if absDelta greater than the indicator display threshold
       absDelta > deltaThreshold && (
         <div>
-          <div className="trendIndicatorPadding tw-text-center">
+          <div className="tw-text-center">
             {trendIndicatorIcon} {trendValue}
           </div>
-          <div className="comparisonWindow tw-text-center">
+          <div className="tw-text-vh tw-text-center">
             {samplingFrequency && <p className="tw-leading-3 tw-mb-0"><p className="tw-mb-0">Compared to prior</p> <p className="tw-mb-0"> {samplingFrequency} days.</p></p>}
           </div>
         </div>
@@ -77,15 +77,15 @@ export const TrendIndicatorNew = ({
 };
 
 export function TrendWithTooltip({
-  firstValue,
-  secondValue,
+  currentValue,
+  previousValue,
   good,
   deltaThreshold = TrendIndicatorDisplayThreshold,
   samplingFrequency,
 }) {
   const intl = useIntl();
-  if (firstValue && secondValue) {
-    const {trendIndicatorIcon, trendValue, absDelta} = getTrendIndicatorUtils({firstValue, secondValue, good, intl});
+  if (currentValue && previousValue) {
+    const {trendIndicatorIcon, trendValue, absDelta} = getTrendIndicatorUtils({currentValue, previousValue, good, intl});
 
     return (
       absDelta > deltaThreshold && (

@@ -14,11 +14,24 @@ import {SelectDropdown, useSelect} from "../../../../components/select/selectDro
 import {WorkItemStateTypes} from "../../../../config";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
-import {injectIntl} from "react-intl";
+import {injectIntl, useIntl} from "react-intl";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
+import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
+function getChartSubTitle({filteredData, defectsOnly, specsOnly, days, before, selectedMetric}) {
+  const candidateCycles = filteredData.filter((cycle) => cycle.workItemType !== "epic");
+  const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
+  const subTitle = defectsOnly
+    ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
+    : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+  // When showing cycle time we also report total with no cycle time if they exist.
+  return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
+    ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
+    : subTitle;
+}
 
 const DeliveryCyclesFlowMetricsView = ({
   instanceKey,
@@ -178,17 +191,6 @@ const DeliveryCyclesFlowMetricsView = ({
     return [seriesObj];
   }, [filteredData, selectedMetric.key, intl]);
 
-  function getChartSubTitle() {
-    const candidateCycles = filteredData.filter((cycle) => cycle.workItemType !== "epic");
-    const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
-    const subTitle = defectsOnly
-      ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
-      : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
-    // When showing cycle time we also report total with no cycle time if they exist.
-    return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
-      ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
-      : subTitle;
-  }
   return (
     <div className="tw-h-full">
       {chartOrTable===undefined && <div className="tw-flex tw-h-[60px] tw-items-center">
@@ -246,7 +248,7 @@ const DeliveryCyclesFlowMetricsView = ({
         tabSelection={chartOrTable==="table" ? "table" : yAxisScale}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         // chart props
-        chartSubTitle={getChartSubTitle()}
+        chartSubTitle={getChartSubTitle({filteredData, defectsOnly, specsOnly, days, before, selectedMetric})}
         chartSelectedMetric={selectedMetric.key}
         specsOnly={specsOnly}
         series={seriesData}
@@ -276,5 +278,67 @@ const DeliveryCyclesFlowMetricsView = ({
     </div>
   );
 };
+
+export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, days, before}) {
+  const intl = useIntl();
+  const model = data[dimension].workItemDeliveryCycles.edges.map((edge) =>
+    pick(
+      edge.node,
+      "id",
+      "name",
+      "key",
+      "displayId",
+      "workItemKey",
+      "workItemType",
+      "state",
+      "stateType",
+      "startDate",
+      "endDate",
+      "leadTime",
+      "cycleTime",
+      "latency",
+      "duration",
+      "effort",
+      "authorCount",
+      "teamNodeRefs",
+      "epicName"
+    )
+  );
+
+  const seriesData = React.useMemo(() => {
+    const points = model
+      .filter((cycle) => cycle.workItemType !== "epic")
+      .map((cycle) => projectDeliveryCycleFlowMetricsMeta["cycleTime"].value(cycle));
+
+    const seriesObj = getHistogramSeries({
+      id: "cycleTime",
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      name: getSelectedMetricDisplayName("cycleTime", WorkItemStateTypes.closed),
+      points,
+      color: getSelectedMetricColor("cycleTime", WorkItemStateTypes.closed),
+    });
+
+    return [seriesObj];
+  }, [model, intl]);
+
+  return (
+    <WorkItemsDetailHistogramChart
+      chartSubTitle={getChartSubTitle({
+        filteredData: model,
+        defectsOnly: false,
+        specsOnly: specsOnly,
+        days: days,
+        before: before,
+        selectedMetric: "cycleTime",
+      })}
+      selectedMetric={"cycleTime"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"closed"}
+      series={seriesData}
+    />
+  );
+}
 
 export const DimensionDeliveryCyclesFlowMetricsView = injectIntl(DeliveryCyclesFlowMetricsView);

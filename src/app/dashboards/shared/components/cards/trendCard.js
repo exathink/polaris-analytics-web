@@ -3,7 +3,7 @@ import styles from "./trendCard.module.css";
 import {InfoCard} from "../../../../components/misc/info";
 import classNames from "classnames";
 
-export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, size="large", info, showHighlighted = false, onClick, target, className, testId}) {
+export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, size="large", info, showHighlighted = false, onClick, supportingMetric, className, testId}) {
   const selectedTrendCardClasses = classNames({[styles.selectedTrendCard]: showHighlighted}, styles.trendCardWrapper, className, onClick ? "tw-cursor-pointer": "");
   const metricValueClasses = classNames(styles[`${size}MetricValue`])
   return (
@@ -14,7 +14,7 @@ export function TrendCard({metricTitle, metricValue, suffix, trendIndicator, siz
       </div>
       <div className={metricValueClasses}>
         {metricValue} <span className={styles.unitOfMesurement}>{suffix}</span>
-        {target && <div className="tw-text-xs tw-font-medium tw-text-gray-300" data-testid="target">{target}</div>}
+        {supportingMetric && <div className="tw-text-xs tw-font-medium tw-text-gray-300" data-testid="target">{supportingMetric}</div>}
       </div>
       <div className={styles.indicator}>{trendIndicator}</div>
     </div>

@@ -55,8 +55,10 @@ export const VolumeTrendsChart = ({
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
       config={{
-        title: "Throughput",
-        yAxisUom: "Cards",
+        title: chartConfig?.title || "Throughput",
+        subTitle: chartConfig?.subTitle,
+        yAxisUom: chartConfig?.yAxisUom || "Cards",
+        xAxisUom: chartConfig?.xAxisUom,
         plotBands: {
           metric: "workItemsWithCommits",
         },
@@ -65,7 +67,7 @@ export const VolumeTrendsChart = ({
           minScale: 0,
           maxScale: 1.25,
         },
-        annotations: [
+        annotations: chartConfig?.annotations ?? [
           {
             visible: true,
             labels: [

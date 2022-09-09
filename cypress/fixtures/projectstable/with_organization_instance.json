@@ -1,0 +1,24 @@
+{
+  "data": {
+
+      "organization": {
+          "__typename": "Organization",
+          "id": "T3JnYW5pemF0aW9uOjUyZTBlZmY1LTdiMzItNDE1MC1hMWM0LTBmNTVkOTc0ZWUyYQ==",
+          "name": "Polaris-Dev",
+          "key": "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+          "earliestCommit": "2016-05-13T20:08:14",
+          "latestCommit": "2022-08-26T14:56:12",
+          "commitCount": 12955,
+          "projectCount": 6,
+          "repositoryCount": 38,
+          "workItemsSourceCount": 11,
+          "earliestWorkItemEvent": "2018-08-17T21:47:12",
+          "latestWorkItemEvent": "2022-08-26T14:30:11.888000",
+          "teams": {
+              "__typename": "TeamsConnection",
+              "count": 2
+          }
+      }
+    }    
+
+}

@@ -15,7 +15,8 @@
 .metricTitle {
   color: rgba(107, 114, 128, 1);
   letter-spacing: 0.025em;
-  font-size: 1rem;
+  font-size: theme("fontSize.lg");
+  line-height: theme("lineHeight.7");
   grid-area: metricTitle;
 }
 

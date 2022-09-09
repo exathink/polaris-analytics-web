@@ -19,14 +19,14 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
   const metricMap = {
     volume: (
       <Wip
-        title={<span>Total</span>}
+        title={<span>Work In Progress: Total</span>}
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
         displayType={displayType}
         displayProps={{
           className: "tw-p-2",
-          targetText: <span>Limit {wipLimit}</span>,
+          supportingMetric: <span>Limit {wipLimit}</span>,
           trendsView: {title: "Total", content: <span>Volume Trends</span>},
           info: {title: "Info", content: "content"},
           ...displayProps,
@@ -35,12 +35,13 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
     ),
     avgAge: (
       <AvgAge
+        title={<span>Work In Progress: Age <sup>Avg</sup></span>}
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType={displayType}
         displayProps={{
           className: "tw-p-2",
-          targetText: <span>Target {cycleTimeTarget} Days</span>,
+          supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
           trendsView: {title: "Age", content: <span>Trends</span>},
           info: {title: "Info", content: "content"},
           ...displayProps,

@@ -93,6 +93,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "name",
       key: "name",
       width: "8%",
+      className: "value-stream",
       ...nameSearchState,
     },
     {
@@ -100,6 +101,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "subProjectCount",
       key: "subProjectCount",
       width: "8%",
+      className: "work-streams",
       sorter: (a, b) => SORTER.number_compare(a.subProjectCount, b.subProjectCount),
       ...subProjectRenderState,
     },
@@ -108,6 +110,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "repositoryCount",
       key: "repositoryCount",
       width: "6%",
+      className: "repository-count",
       sorter: (a, b) => SORTER.number_compare(a.repositoryCount, b.repositoryCount),
       render: renderMetric,
     },
@@ -116,6 +119,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "contributorCount",
       key: "contributorCount",
       width: "5%",
+      className: "contributor-count",
       sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
       render: renderMetric,
     },
@@ -131,6 +135,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "leadTime",
           key: "leadTime",
           width: "6%",
+          className: "lead-time",
           sorter: (a, b) => SORTER.number_compare(a.leadTime, b.leadTime),
           render: (text, record) => {
             return (
@@ -147,6 +152,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "cycleTime",
           key: "cycleTime",
           width: "6%",
+          className: "cycle-time",
           sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
           render: (text, record) => {
             return (
@@ -176,6 +182,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "specs",
           key: "specs",
           width: "5%",
+          className: "specs",
           sorter: (a, b) => SORTER.number_compare(a.specs, b.specs),
           render: (text, record) => {
             return (
@@ -203,6 +210,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "effortOut",
           key: "effortOut",
           width: "6%",
+          className: "effort",
           sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
           render: (text, record) => {
             return (
@@ -226,6 +234,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "latestCommit",
           key: "latestCommit",
           width: "6%",
+          className: "latest-commit",
           sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
           render: (latestCommit) => <span className="tw-textSm">{fromNow(latestCommit)}</span>,
         },
@@ -234,6 +243,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "latestWorkItemEvent",
           key: "latestWorkItemEvent",
           width: "6%",
+          className: "last-update",
           sorter: (a, b) => SORTER.date_compare(b.latestWorkItemEvent, a.latestWorkItemEvent),
           render: (latestWorkItemEvent) => <span className="tw-textSm">{fromNow(latestWorkItemEvent)}</span>,
         },
@@ -244,6 +254,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
       key: "actions",
       width: "5%",
       align: "right",
+      className: "select-button",
       render: (name, record) => (
         <ButtonBar>
           <ProjectLink projectName={record.name} projectKey={record.key}>

@@ -27,6 +27,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
     tooltipType,
     view,
     context,
+    displayBag
   }
 ) => {
 
@@ -82,6 +83,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
+        displayBag={displayBag}
       />
     );
   }

@@ -424,6 +424,125 @@ export const ResponseTimeDetailView = (
   );
 };
 
+export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measurementWindow}) => {
+  const [current, previous] = cycleMetricsTrends;
+  if (current == null || previous == null) {
+    return null;
+  }
+  return (
+    <div className="tw-grid tw-grid-flow-col tw-grid-cols-3 tw-gap-2">
+      <div className="tw-row-span-3">
+        <AvgCycleTime
+          displayType="cardAdvanced"
+          displayProps={{
+            valueClass: "tw-text-2xl",
+            trendsView: {
+              title: "",
+              content: (
+                <AvgCycleTime
+                  title={<span>Cycle Time</span>}
+                  displayType={"trendsCompareCard"}
+                  displayProps={{measurementWindow: measurementWindow}}
+                  currentMeasurement={current}
+                  previousMeasurement={previous}
+                />
+              ),
+              placement: "top",
+            },
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <span className={"tw-textXs tw-grey tw-italic"}>Value Added</span>
+      </div>
+      <div className="">
+        <AvgDuration
+          displayType="cardAdvanced"
+          displayProps={{
+            valueClass: "tw-text-2xl",
+            trendsView: {
+              title: "",
+              content: (
+                <AvgDuration
+                  displayType={"trendsCompareCard"}
+                  displayProps={{measurementWindow: measurementWindow}}
+                  currentMeasurement={current}
+                  previousMeasurement={previous}
+                />
+              ),
+              placement: "top",
+            },
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <AvgEffort
+          displayType="cardAdvanced"
+          displayProps={{
+            valueClass: "tw-text-2xl",
+            trendsView: {
+              title: "",
+              content: (
+                <AvgEffort
+                  displayType={"trendsCompareCard"}
+                  displayProps={{measurementWindow: measurementWindow}}
+                  currentMeasurement={current}
+                  previousMeasurement={previous}
+                />
+              ),
+              placement: "top",
+            },
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <span className={"tw-textXs tw-grey tw-italic"}>Non Value-Added</span>
+      </div>
+      <div className="">
+        <AvgLatency
+          displayType="cardAdvanced"
+          displayProps={{
+            valueClass: "tw-text-2xl",
+            trendsView: {
+              title: "",
+              content: (
+                <AvgLatency
+                  displayType={"trendsCompareCard"}
+                  displayProps={{measurementWindow: measurementWindow}}
+                  currentMeasurement={current}
+                  previousMeasurement={previous}
+                />
+              ),
+              placement: "top",
+            },
+          }}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+      <div className="">
+        <PullRequest
+          displayType="cardAdvanced"
+          displayProps={{}}
+          currentMeasurement={current}
+          previousMeasurement={previous}
+          target={cycleTimeTarget}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const ThroughputDetailView = ({
                                        cycleMetricsTrends,
                                        leadTimeTargetPercentile,
