@@ -39,8 +39,6 @@ export function DimensionCycleTimeDetailDashboard({
       <DashboardRow>
         <DashboardWidget
           name="cycle-time-metrics"
-          title={`Response Time`}
-          subtitle={`${specsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           className="tw-h-full"
           render={({view}) => (
