@@ -32,7 +32,7 @@ export function CycleTimeCardView({
             detailsView: {
             title: (
               <div className="tw-text-lg tw-text-gray-300">
-                Cycle Time Details <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
+                Cycle Time Details, {specsOnly? "Specs" : "All Cards"}, <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
               </div>
             ),
             content: (
