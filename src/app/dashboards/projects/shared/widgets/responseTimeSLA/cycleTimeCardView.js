@@ -1,4 +1,6 @@
 import { AvgCycleTime } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { DimensionCycleTimeDetailDashboard } from "../../../../shared/widgets/work_items/responseTime/dimensionCycleTimeDetailDashboard";
+import { ProjectDashboard } from "../../../projectDashboard";
 
 
 export function CycleTimeCardView({
@@ -27,15 +29,37 @@ export function CycleTimeCardView({
             className: "tw-p-2",
             info: {title: "title"},
             subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
+            detailsView: {
+            title: (
+              <div className="tw-text-lg tw-text-gray-300">
+                Cycle Time Details, {specsOnly? "Specs" : "All Cards"}, <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
+              </div>
+            ),
+            content: (
+              <ProjectDashboard
+                pollInterval={1000 * 60}
+                render={({project, ...rest}) => (
+                  <DimensionCycleTimeDetailDashboard dimension={"project"} dimensionData={project} specsOnly={specsOnly} {...rest} />
+                )}
+              />
+            ),
+            placement: "top",
+          },
             trendsView: {
-              title: "",
-              content: (
-                "Cycle Time Trends"
-              ),
-              placement: "bottom",
-            },
+            title: "",
+            content: (
+              <AvgCycleTime
+                title={<span>Volume</span>}
+                displayType={"trendsCompareCard"}
+                displayProps={{measurementWindow: flowAnalysisPeriod}}
+                currentMeasurement={currentTrend}
+                previousMeasurement={previousTrend}
+              />
+            ),
+            placement: "top",
+          },
             supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
-            ...displayProps
+            ...displayProps,
           }}
           specsOnly={specsOnly}
           target={cycleTimeTarget}

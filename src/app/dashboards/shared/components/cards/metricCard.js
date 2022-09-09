@@ -18,7 +18,7 @@ export function MetricCard({
   displayBag={}
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
-  const {iconsShiftLeft=false, trendValueClass=""} = displayBag;
+  const {iconsShiftLeft=false, trendValueClass="", valueClass} = displayBag;
 
   const trendIndicatorElement = (
     <div className={classNames("trendIndicator tw-self-end tw-justify-self-end", trendValueClass, trendValueClass ? "tw-col-span-3" : "tw-col-span-2", trendsView ? "tw-cursor-pointer": "")}>
@@ -29,12 +29,12 @@ export function MetricCard({
   return (
     <div
       className={classNames(
-        "tw-grid tw-h-full tw-grid-cols-7 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md",
+        "tw-grid tw-h-full tw-grid-cols-7 tw-gap-y-4 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md",
         className
       )}
     >
       <div className="title tw-col-span-5">
-        <div className="tw-text-base tw-tracking-wide tw-text-gray-300">{title}</div>
+        <div className="tw-text-lg tw-tracking-wide tw-text-gray-300">{title}</div>
         <div className="tw-text-xs tw-tracking-tight">{subTitle}</div>
       </div>
       <div
@@ -61,7 +61,7 @@ export function MetricCard({
       </div>
 
       <div className={classNames("valueSuffix tw-self-end", trendValueClass ? "tw-col-span-4" : "tw-col-span-5")}>
-        <div className="value tw-text-4xl tw-font-medium tw-leading-3">
+        <div className={classNames("value tw-font-medium tw-leading-3", valueClass??"tw-text-4xl")}>
           {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
           {supportingMetric && <div className="tw-text-xs tw-text-gray-300">{supportingMetric}</div>}
         </div>

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
@@ -9,6 +10,7 @@ export const DimensionQuadrantSummaryView = ({
   groupByState,
   cycleTimeTarget,
   latencyTarget,
+  displayBag,
   specsOnly,
   tooltipType,
   view,
@@ -26,7 +28,7 @@ export const DimensionQuadrantSummaryView = ({
         stateTypes={stateTypes}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
-        className="tw-mx-auto tw-w-[98%] tw-h-full"
+        className={classNames("tw-mx-auto tw-w-[98%] tw-h-full", displayBag?.fontSize)}
       />
     </div>
   );

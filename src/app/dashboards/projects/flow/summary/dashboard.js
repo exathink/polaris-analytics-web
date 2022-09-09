@@ -45,15 +45,23 @@ export function NewFlowDashboard({
       className="tw-grid tw-grid-cols-8 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-row-start-1 tw-col-start-4 tw-text-xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-center">
-          Flow, {specsOnly ? "Specs": "All Cards"}
+      <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Flow Analysis, {specsOnly ? "Specs": "All Cards"}
         </div>
-        <div className="tw-text-sm tw-flex tw-justify-center">
+        <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
         </div>
       </div>
-      <div className="tw-col-start-6 tw-row-start-1">
+      <div className="tw-row-start-1 tw-col-start-3 tw-col-span-4 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Cycle Time Target
+        </div>
+        <div className="tw-text-base tw-flex tw-justify-start">
+          {cycleTimeTarget} Days
+        </div>
+      </div>
+      <div className="tw-col-start-8 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
@@ -135,6 +143,7 @@ export function NewFlowDashboard({
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              displayBag={{fontSize: "tw-text-xl"}}
             />
           )}
           showDetail={false}
@@ -194,6 +203,8 @@ export function NewFlowDashboard({
                 funnelCenter: ["42%", "50%"],
                 title: "Flow, All Phases",
                 subTitle: volumeOrEffort === "volume" ? "Expected Time to Clear" : "Cost of Unshipped Code",
+                series: {dataLabels: {fontSize: "14px"}},
+                legend: {title: {fontSize: "14px"}, fontSize: "14px"}
               }}
             />
           )}
