@@ -48,7 +48,7 @@ export const DimensionPullRequestsDetailDashboard = ({
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_20%_38%_33%] tw-gap-x-2 tw-gap-y-2"
     >
       <DashboardRow
-        title={`Pull Request Trends`}
+        title={`Pull Request Flow Analysis`}
         subTitle={``}
         className="tw-col-span-6 tw-grid tw-grid-cols-[30%_70%]"
         controls={getTrendsControlBarControls(

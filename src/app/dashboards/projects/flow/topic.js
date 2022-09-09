@@ -1,7 +1,9 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
 import Summary from "./summary/topic";
-import Second from "./second/topic";
+import ResponseTime from "./responseTime/topic";
+import Throughput from "./throughput/topic";
+import PullRequests from "./pull_requests/topic"
 
 const topic = {
   ...Topics.flow,
@@ -14,9 +16,21 @@ const topic = {
     },
     {
       requiredFeatures: ['ui.new-card-design'],
-      match: "second",
+      match: "responseTime",
       subnav: true,
-      topic: Second,
+      topic: ResponseTime,
+    },
+    {
+      requiredFeatures: ['ui.new-card-design'],
+      match: "throughput",
+      subnav: true,
+      topic: Throughput,
+    },
+    {
+      requiredFeatures: ['ui.new-card-design'],
+      match: "pullRequests",
+      subnav: true,
+      topic: PullRequests,
     },
     {
       requiredFeatures: ['ui.new-card-design'],

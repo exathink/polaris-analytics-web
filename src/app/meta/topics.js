@@ -44,7 +44,7 @@ export const Topics = {
   },
   responseTime: {
     name: 'responseTime',
-    display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time"/>),
+    display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time Analysis"/>),
     icon: 'ion-arrow-return-left'
   },
   throughput: {
