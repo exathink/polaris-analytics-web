@@ -1,0 +1,8 @@
+{
+    "data": {
+      "updateProjectExcludedRepositories": {
+        "success": false,
+        "errorMessage": "Could not find repository with key 957f69a2-7691-401c-9214-ee0966ea767a in this project"
+      }
+    }
+  }
