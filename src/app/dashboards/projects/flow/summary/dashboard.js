@@ -53,6 +53,14 @@ export function NewFlowDashboard({
           Last {flowAnalysisPeriod} Days
         </div>
       </div>
+      <div className="tw-row-start-1 tw-col-start-3 tw-col-span-4 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Cycle Time Target
+        </div>
+        <div className="tw-text-base tw-flex tw-justify-start">
+          {cycleTimeTarget} Days
+        </div>
+      </div>
       <div className="tw-col-start-8 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
