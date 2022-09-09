@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import { DimensionCycleTimeHistogramWidget } from "../closed/flowMetrics/dimensionCycleTimeHistogramWidget";
@@ -5,12 +6,20 @@ import { DimensionCycleTimeWidget } from "../closed/flowMetrics/dimensionCycleTi
 
 const dashboard_id = "dashboards.cycle.time.breakup";
 
+let globalCount = 0;
+
 export function DimensionCycleTimeDetailDashboard({
   dimension,
   dimensionData: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settingsWithDefaults},
   context,
   specsOnly
 }) {
+
+  // only when this counter is 1, we add grid-rows-[50%_50%] class, after this we remove it
+  React.useEffect(() => {
+    globalCount+=1;
+  })
+
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -24,7 +33,7 @@ export function DimensionCycleTimeDetailDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-gap-2 tw-h-[650px]"
+      className={classNames("tw-grid tw-gap-2 tw-h-[650px]", globalCount===1 ? "tw-grid-rows-[50%_50%]" : "")}
       gridLayout={true}
     >
       <DashboardRow>
@@ -33,7 +42,7 @@ export function DimensionCycleTimeDetailDashboard({
           title={`Response Time`}
           subtitle={`${specsOnly ? "Specs" : "All Cards"}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          className=""
+          className="tw-h-full"
           render={({view}) => (
             <DimensionCycleTimeWidget
               dimension={dimension}
@@ -62,7 +71,7 @@ export function DimensionCycleTimeDetailDashboard({
         <DashboardWidget
           title={""}
           name="cycle-time-histogram-details"
-          className=""
+          className="tw-h-full"
           render={({view}) => (
             <DimensionCycleTimeHistogramWidget
               dimension={dimension}
