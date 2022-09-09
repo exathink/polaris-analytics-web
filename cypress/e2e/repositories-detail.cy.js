@@ -44,6 +44,9 @@ describe("Repositories Detail", () => {
       `@${getQueryFullName(VALUE_STREAM.with_project_instance)}`,
       `@${getQueryFullName(REPOSITORY.dimensionRepositories)}`,
     ]);
+
+    cy.getBySel("repositories-detail").find(".ant-table-header").find("tr").should("have.length", 2);
+    cy.getBySel("repositories-detail").find(".ant-table-row").should("not.exist");
   });
 
   it("should verify all metrics when there is data for project", () => {
