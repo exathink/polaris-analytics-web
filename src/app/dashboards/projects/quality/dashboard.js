@@ -73,9 +73,7 @@ function TrendsDashboard({
         />
       </DashboardRow>
       <DashboardRow
-        h={"33%"}
-        title={"All Cards"}
-
+        h={"45%"}
       >
         <DashboardWidget
           w={1 / 2}
