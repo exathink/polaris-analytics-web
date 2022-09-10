@@ -32,5 +32,5 @@ export const CadenceCardWidget = ({
     return null;
   }
 
-  return <CadenceCardView data={data} dimension={dimension} displayType={displayType} specsOnly={specsOnly} />;
+  return <CadenceCardView data={data} dimension={dimension} displayType={displayType} specsOnly={specsOnly} measurementWindow={flowAnalysisPeriod} />;
 };

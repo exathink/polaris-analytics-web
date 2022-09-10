@@ -53,8 +53,6 @@ export const PipelineFunnelChart = Chart({
                 days,
                 leadTimeTarget,
                 cycleTimeTarget,
-                title,
-                subTitle,
                 grouping,
                 showVolumeOrEffort = "volume",
                 displayBag={},
@@ -63,7 +61,7 @@ export const PipelineFunnelChart = Chart({
 
     const selectedSummary = workItemStateTypeCounts;
     const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
-    const {funnelCenter = ["38%", "50%"]} = displayBag;
+    const {funnelCenter = ["38%", "50%"], title, subTitle} = displayBag;
     return {
       chart: {
         type: "funnel",
@@ -74,7 +72,7 @@ export const PipelineFunnelChart = Chart({
         align: "center"
       },
       subtitle: {
-        text: subTitle || showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase",
+        text: subTitle || (showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase"),
         align: "center"
       },
       plotOptions: {
@@ -85,6 +83,9 @@ export const PipelineFunnelChart = Chart({
             formatter: function() {
               const label = this.point.stateType === WorkItemStateTypes.closed ? `${this.point.name} Last ${days} days` : `${this.point.name}`;
               return `<b>${label}</b> (${this.point.count})`;
+            },
+            style: {
+              fontSize: displayBag?.series?.dataLabels?.fontSize
             },
             softConnector: true,
             color: "black",
@@ -107,6 +108,9 @@ export const PipelineFunnelChart = Chart({
                   ` ${i18nNumber(intl, totalEffortByStateType[this.point.stateType], 1)}  FTE Days`
               );
             },
+            style: {
+              fontSize: displayBag?.series?.dataLabels?.fontSize
+            },
             color: "white"
           }],
           center: funnelCenter,
@@ -118,13 +122,19 @@ export const PipelineFunnelChart = Chart({
       legend: {
         title: {
           text: "Phases",
-          fontStyle: "italic"
+          style: {
+            fontStyle: "italic",
+            fontSize: displayBag?.legend?.title?.fontSize,
+          }
         },
         align: "left",
         layout: "vertical",
         verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: true
+        enabled: true,
+        itemStyle: {
+          fontSize: displayBag?.legend?.fontSize
+        }
       },
       series: [{
         name: grouping === "specs" ? "Specs" : "Cards",

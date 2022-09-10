@@ -60,6 +60,7 @@ export const WorkItemsDetailHistogramChart = Chart({
         type: "column",
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
+        animation: false,
         panKey: "shift",
         zoomType: "xy",
       },

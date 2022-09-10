@@ -74,17 +74,8 @@
   color: rgba(255, 0, 0, 0.7);
 }
 
-.comparisonWindow {
-  font-size: 1vh;
-}
-
 .trendIcon {
   cursor: pointer;
-}
-
-.trendIndicatorPadding {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .statisticTitle {
