@@ -49,13 +49,18 @@ export const Topics = {
   },
   throughput: {
     name: 'throughput',
-    display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput"/>),
+    display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput Analysis"/>),
     icon: 'ion-arrow-right-a'
   },
   value: {
     name: 'value',
     display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
     icon: 'ion-social-usd'
+  },
+  valueMix: {
+    name: 'valueMix',
+    display: () => (<FormattedMessage id='topics.valueMix' defaultMessage="Value Mix Analysis"/>),
+    icon: 'ion-android-options'
   },
   alignment: {
     name: 'alignment',
