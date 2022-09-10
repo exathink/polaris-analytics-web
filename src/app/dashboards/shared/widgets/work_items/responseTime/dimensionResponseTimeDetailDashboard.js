@@ -28,12 +28,12 @@ export function DimensionResponseTimeDetailDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     responseTimeConfidenceTarget,
-    wipAnalysisPeriod,
+    flowAnalysisPeriod,
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
   const [workItemScope, setWorkItemScope] = useState("specs");
-  const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const [daysRange, setDaysRange] = React.useState(flowAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("avgCycleTime");
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [selectedFilter, setFilter] = React.useState(null);
@@ -63,7 +63,7 @@ export function DimensionResponseTimeDetailDashboard({
       >
         <DashboardWidget
           name="flow-metrics"
-          title={`Response Time`}
+
           subtitle={`${limitToSpecsOnly ? 'Specs' : 'All Cards'}, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
           className="tw-col-span-2"

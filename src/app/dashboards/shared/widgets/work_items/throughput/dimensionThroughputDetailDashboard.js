@@ -21,12 +21,12 @@ export function DimensionThroughputDetailDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     responseTimeConfidenceTarget,
-    wipAnalysisPeriod,
+    flowAnalysisPeriod,
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
   const [workItemScope, setWorkItemScope] = useState("specs");
-  const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const [daysRange, setDaysRange] = React.useState(flowAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
