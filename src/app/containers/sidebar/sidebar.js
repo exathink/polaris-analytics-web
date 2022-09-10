@@ -107,7 +107,8 @@ class Sidebar extends Component {
     const visibleRoutes = topicRoutes.filter(
       route =>
         (route.allowedRoles == null || viewerContext.hasSystemRoles(route.allowedRoles)) &&
-        (route.requiredFeatures == null || route.requiredFeatures.every(viewerContext.isFeatureFlagActive))
+        (route.requiredFeatures == null || route.requiredFeatures.every(viewerContext.isFeatureFlagActive)) &&
+        (route.disallowedFeatures == null || route.disallowedFeatures.every(feature => !viewerContext.isFeatureFlagActive(feature)))
     )
     const activeTopicRoutes = [
       ...visibleRoutes.filter(route => !route.topic.optional),
