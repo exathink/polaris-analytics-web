@@ -40,7 +40,7 @@ function TrendsDashboard({
           ),
         ]}>
         <DashboardWidget
-          w={1 / 3}
+          w={1 / 2}
           name="defect-rate"
           render={({view}) => (
             <DefectArrivalCloseRateWidget
@@ -51,24 +51,10 @@ function TrendsDashboard({
               view={view}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
-          w={1 / 3}
-          name="backlog-trends-widget"
-          render={({view}) => (
-            <DefectBacklogTrendsWidget
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              view={view}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 3}
+          w={1 / 2}
           name="defect-response-time"
           render={({view}) => (
             <DimensionDefectResponseTimeWidget
@@ -83,7 +69,7 @@ function TrendsDashboard({
               view={view}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
       <DashboardRow
@@ -92,30 +78,21 @@ function TrendsDashboard({
 
       >
         <DashboardWidget
-          w={1 / 3}
-          name="throughput"
+          w={1 / 2}
+          name="backlog-trends-widget"
           render={({view}) => (
-            <DimensionVolumeTrendsWidget
-              dimension={"project"}
+            <DefectBacklogTrendsWidget
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
               samplingFrequency={7}
-              targetPercentile={0.7}
-              context={context}
               view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
-          w={1 / 3}
+          w={1 / 2}
           name="flow-mix"
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
@@ -136,30 +113,7 @@ function TrendsDashboard({
           )}
           showDetail={true}
         />
-        <DashboardWidget
-          w={1 / 3}
-          name="cycle-time"
-          render={({view}) => (
-            <DimensionResponseTimeTrendsWidget
-              dimension={"project"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime"]}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
+
       </DashboardRow>
     </Dashboard>
   );
