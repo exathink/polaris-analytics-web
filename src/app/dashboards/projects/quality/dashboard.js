@@ -34,7 +34,7 @@ function TrendsDashboard({
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
         h="45%"
-        title={`Defect Analysis`}
+        title={`Quality Analysis`}
         subTitle={`Last ${daysRange} Days`}
         controls={[
           () => (
