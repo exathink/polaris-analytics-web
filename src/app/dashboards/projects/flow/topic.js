@@ -1,6 +1,7 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
 import Summary from "./summary/topic";
+import Wip from "./wip/topic";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic"
@@ -13,6 +14,12 @@ const topic = {
       match: "summary",
       subnav: true,
       topic: Summary,
+    },
+    {
+      requiredFeatures: ['ui.new-card-design'],
+      match: "wip",
+      subnav: true,
+      topic: Wip,
     },
     {
       requiredFeatures: ['ui.new-card-design'],
