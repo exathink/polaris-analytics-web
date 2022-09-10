@@ -32,7 +32,11 @@ function TrendsDashboard({
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
-      <DashboardRow h="45%" title={`Defects`} controls={[
+      <DashboardRow
+        h="45%"
+        title={`Defect Analysis`}
+        subTitle={`Last ${daysRange} Days`}
+        controls={[
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={ONE_YEAR} />
