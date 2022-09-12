@@ -44,18 +44,23 @@ export const Topics = {
   },
   responseTime: {
     name: 'responseTime',
-    display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time"/>),
+    display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time Analysis"/>),
     icon: 'ion-arrow-return-left'
   },
   throughput: {
     name: 'throughput',
-    display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput"/>),
+    display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput Analysis"/>),
     icon: 'ion-arrow-right-a'
   },
   value: {
     name: 'value',
     display: () => (<FormattedMessage id='topics.value' defaultMessage="Value"/>),
     icon: 'ion-social-usd'
+  },
+  valueMix: {
+    name: 'valueMix',
+    display: () => (<FormattedMessage id='topics.valueMix' defaultMessage="Value Mix Analysis"/>),
+    icon: 'ion-android-options'
   },
   alignment: {
     name: 'alignment',

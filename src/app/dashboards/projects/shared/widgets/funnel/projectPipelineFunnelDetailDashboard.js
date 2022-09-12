@@ -113,11 +113,11 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               view={view}
               showAnnotations={true}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime"]}
+              defaultSeries={["all"]}
               includeSubTasks={includeSubTasks}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           w={1 / 3}
@@ -163,7 +163,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               />
 
             )}
-            showDetail={false}
+            showDetail={true}
           />
         }
         {
@@ -189,7 +189,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                 includeSubTasks={includeSubTasks}
               />
             )}
-            showDetail={false}
+            showDetail={true}
           />
         }
       </DashboardRow>

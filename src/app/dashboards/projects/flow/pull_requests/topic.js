@@ -3,7 +3,7 @@ import {Topics} from "../../../../meta/topics";
 
 
 const topic =  {
-  ...Topics.second,
+  ...Topics.pull_requests,
   routes: [
     {
       match: '',

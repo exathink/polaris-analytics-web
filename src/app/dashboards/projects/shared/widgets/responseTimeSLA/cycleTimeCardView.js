@@ -58,7 +58,7 @@ export function CycleTimeCardView({
             ),
             placement: "top",
           },
-            supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
+            supportingMetric: <span>Limit {cycleTimeTarget} Days</span>,
             ...displayProps,
           }}
           specsOnly={specsOnly}

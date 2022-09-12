@@ -21,12 +21,12 @@ export function DimensionThroughputDetailDashboard({
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
     responseTimeConfidenceTarget,
-    wipAnalysisPeriod,
+    flowAnalysisPeriod,
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
   const [workItemScope, setWorkItemScope] = useState("specs");
-  const [daysRange, setDaysRange] = React.useState(wipAnalysisPeriod);
+  const [daysRange, setDaysRange] = React.useState(flowAnalysisPeriod);
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
@@ -150,8 +150,8 @@ export function DimensionThroughputDetailDashboard({
               // Using this scheme here, since a weekly non-overlapping rollup is the
               // the most sensible way to show the effort out. It also matches what we see
               // in the detail dashboard when we first launch it.
-              measurementWindow={daysRange}
-              samplingFrequency={daysRange}
+              measurementWindow={1}
+              samplingFrequency={1}
               showContributorDetail={false}
               showEffort={true}
               chartConfig={{totalEffortDisplayType: "column"}}

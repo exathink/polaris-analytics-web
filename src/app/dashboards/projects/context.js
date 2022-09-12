@@ -14,7 +14,7 @@ import Trends from "./trends/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
 import {Contexts} from "../../meta/contexts";
-
+import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 
@@ -48,6 +48,7 @@ const context : Context = {
             topic: Flow
           },
           {
+            disallowedFeatures: [UI_NEW_CARD_DESIGN],
             match: 'wip',
             topic: Wip
           },
