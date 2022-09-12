@@ -154,7 +154,7 @@ describe("Repositories Detail", () => {
         cy.get(".latestCommit").should("contain", "4 months ago");
       });
 
-    /* Active Status */
+    /* Inactive Status and checking if excluded*/
 
     cy.getBySel("repositories-detail")
       .contains("polaris-repos-intake-db")
