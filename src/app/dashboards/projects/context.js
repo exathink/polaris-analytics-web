@@ -13,7 +13,6 @@ import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
-import Value from "./value/topic";
 import {Contexts} from "../../meta/contexts";
 import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
@@ -48,11 +47,7 @@ const context : Context = {
             match: 'flow',
             topic: Flow
           },
-          {
-            requiredFeatures: [UI_NEW_CARD_DESIGN],
-            match: 'value',
-            topic: Value
-          },
+
           {
             disallowedFeatures: [UI_NEW_CARD_DESIGN],
             match: 'wip',
