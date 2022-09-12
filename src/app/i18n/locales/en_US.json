@@ -42,6 +42,7 @@
   "contexts.library.display": "{quantity, plural, one {Content Library} other {Content Library}}",
   "contexts.oss": "Open Source",
   "topics.flow": "Flow Analysis",
+  "topics.flowTrends": "Flow Trends",
   "topics.newflow": "New Flow",
   "topics.wip": "Wip Inspector",
   "topics.productVideos": "Product Videos",

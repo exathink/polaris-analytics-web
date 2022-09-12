@@ -5,7 +5,7 @@ import Wip from "./wip/topic";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
-
+import Trends from "./trends/topic";
 
 const topic = {
   ...Topics.flow,
@@ -34,13 +34,18 @@ const topic = {
       subnav: true,
       topic: ResponseTime,
     },
-    {
+   {
       requiredFeatures: ['ui.new-card-design'],
       match: "throughput",
       subnav: true,
       topic: Throughput,
     },
-
+    {
+      requiredFeatures: ['ui.new-card-design'],
+      match: "flow-trends",
+      subnav: true,
+      topic: Trends,
+    },
     {
       requiredFeatures: ['ui.new-card-design'],
       match: '',
