@@ -111,11 +111,11 @@ function TrendsDashboard({
       </DashboardRow>
       <DashboardRow
         h="38%"
-        title={`Delivery Efficiency`}
+        title={`Flow`}
 
       >
         <DashboardWidget
-          w={1 / 3}
+          w={1 / 2}
           name="cycle-time"
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
@@ -141,7 +141,7 @@ function TrendsDashboard({
           showDetail={true}
         />
         <DashboardWidget
-          w={1 / 3}
+          w={1 / 2}
           name="throughput"
           render={({view}) => (
             <DimensionVolumeTrendsWidget
@@ -158,30 +158,6 @@ function TrendsDashboard({
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-
-        <DashboardWidget
-          w={1 / 3}
-          name="capacity"
-          render={({view}) => (
-            <DimensionWorkBalanceTrendsWidget
-              dimension={"project"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              target={0.9}
-              showEffort={true}
-              showContributorDetail={false}
-              chartConfig={{totalEffortDisplayType: "column"}}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}

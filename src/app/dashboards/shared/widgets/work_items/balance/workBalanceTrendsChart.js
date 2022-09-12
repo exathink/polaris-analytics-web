@@ -122,7 +122,7 @@ const WorkBalanceTrendsWithContributorDetailChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `${showContributorDetail ? "Active Days by Contributor " : "<span>Engineering Capacity</span>"}`,
+        text: `${showContributorDetail ? "Active Days by Contributor " : "<span>Total Effort</span>"}`,
         useHTML: true
       },
       subtitle: {

@@ -43,13 +43,13 @@ export const DimensionFlowMixTrendsDetailDashboard = (
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
-  ] = useTrendsControlBarState(45, 30, 7);
+  ] = useTrendsControlBarState(days || 45, measurementWindow || 30, samplingFrequency || 7);
 
   return (
     <Dashboard id={dashboard_id}>
       <DashboardRow
         h={"50%"}
-        title={`Value Mix Trends`}
+        title={`Value Mix Analysis`}
         controls={[
           ...getTrendsControlBarControls([
             [daysRange, setDaysRange],
@@ -61,7 +61,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               <Flex align={"center"}>
                 <Box pr={2} w={"100%"}>
                   <WorkItemScopeSelector
-                    display={["Capacity", "Volume"]}
+                    display={["Effort", "Volume"]}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />

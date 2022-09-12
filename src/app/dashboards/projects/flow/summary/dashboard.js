@@ -55,7 +55,7 @@ export function NewFlowDashboard({
       </div>
       <div className="tw-row-start-1 tw-col-start-3 tw-col-span-4 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Cycle Time Target
+          Cycle Time Limit
         </div>
         <div className="tw-text-base tw-flex tw-justify-start">
           {cycleTimeTarget} Days
