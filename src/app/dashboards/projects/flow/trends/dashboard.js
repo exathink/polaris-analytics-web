@@ -23,7 +23,7 @@ function TrendsDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const [workItemScope, setWorkItemScope] = React.useState("all");
+  const [workItemScope, setWorkItemScope] = React.useState("specs");
   const specsOnly = workItemScope === "specs";
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
@@ -31,7 +31,7 @@ function TrendsDashboard({
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
         h="93%"
-        title={`Flow Trends, ${specsOnly ? "Specs" : "All Cards"}`}
+        title={`Flow Trends`}
         subTitle={`Last ${daysRange} Days`}
 
       >
@@ -55,7 +55,7 @@ function TrendsDashboard({
               view={view}
               showAnnotations={true}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime", 'effort']}
+              defaultSeries={["all"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
