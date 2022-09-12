@@ -25,10 +25,10 @@
                                     "__typename": "TraceabilityImpl",
                                     "measurementDate": "2022-09-02",
                                     "measurementWindow": 30,
-                                    "traceability": 0.75,
-                                    "specCount": 3,
+                                    "traceability": 0.95,
+                                    "specCount": 19,
                                     "nospecCount": 1,
-                                    "totalCommits": 4
+                                    "totalCommits": 20
                                 },
                                 {
                                     "__typename": "TraceabilityImpl",

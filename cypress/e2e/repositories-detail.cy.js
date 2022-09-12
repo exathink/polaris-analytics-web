@@ -72,7 +72,7 @@ describe("Repositories Detail", () => {
     cy.getBySel("repositories-detail").find(".ant-table-header").find("tr").should("have.length", 2);
     cy.getBySel("repositories-detail").find(".ant-table-row").should("have.length", 5);
 
-    /* Active, values and down and up arrow tests */
+    /* Active, values, bad color, down and up arrow tests */
 
     cy.getBySel("repositories-detail")
       .contains("polaris-analytics-web")
@@ -88,7 +88,7 @@ describe("Repositories Detail", () => {
         });
 
         cy.get(".traceability").within(() => {
-          cy.getBySel("metricValue").should("contain", "35.00 %");
+          cy.getBySel("metricValue").should("contain", "35.00 %").and("have.css", "color", "rgba(255, 0, 0, 0.7)");
           cy.getBySel("trend-uparrow").should("exist");
         });
         cy.get(".latestCommit").should("contain", "12 days ago");
@@ -109,7 +109,20 @@ describe("Repositories Detail", () => {
 
     cy.get(".ant-tooltip-inner").get(".goodIndicator").should("contain", "456.1");
 
-    /* Quiescent, N/A and no arrows test */
+    /* Test "good" color */
+
+    cy.getBySel("repositories-detail")
+      .contains("polaris-work-tracking")
+      .parent("td")
+      .parent("tr")
+      .within(() => {
+        cy.get(".traceability").within(() => {
+          cy.getBySel("metricValue").should("contain", "95.00 %").and("have.css", "color", "rgba(0, 128, 0, 0.7)");
+          cy.get(".trendIcon").should("not.exist");
+        });
+      });
+
+    /* Quiescent, N/A, colors and no arrows test */
 
     cy.getBySel("repositories-detail")
       .contains("polaris-build")
@@ -124,7 +137,7 @@ describe("Repositories Detail", () => {
         });
 
         cy.get(".traceability").within(() => {
-          cy.getBySel("metricValue").should("contain", "N/A");
+          cy.getBySel("metricValue").should("contain", "N/A").and("have.css", "color", "rgba(255, 0, 0, 0.7)");
           cy.get(".trendIcon").should("not.exist");
         });
         cy.get(".latestCommit").should("contain", "a month ago");
