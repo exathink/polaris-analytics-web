@@ -1,11 +1,10 @@
-import React from 'react';
-import {Topics} from "../../../meta/topics";
+import React from "react";
+import { Topics } from "../../../meta/topics";
 import Summary from "./summary/topic";
 import Wip from "./wip/topic";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
-import Trends from "./trends/topic";
 import ValueMix from "./valueMix/topic";
 
 const topic = {
@@ -46,12 +45,6 @@ const topic = {
       match: "valueMix",
       subnav: true,
       topic: ValueMix,
-    },
-    {
-      requiredFeatures: ['ui.new-card-design'],
-      match: "flow-trends",
-      subnav: true,
-      topic: Trends,
     },
     {
       requiredFeatures: ['ui.new-card-design'],
