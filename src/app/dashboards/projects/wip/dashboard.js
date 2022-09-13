@@ -51,12 +51,20 @@ function WipDashboard({
     <Dashboard
       dashboard={`${dashboard_id}`}
       dashboardVideoConfig={WipDashboard.videoConfig}
-      className="tw-grid tw-grid-cols-6 tw-grid-rows-[5%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-start-1 tw-row-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
           Wip Analysis, {specsOnly ? "Specs": "All Cards"}
+        </div>
+      </div>
+      <div className="tw-col-start-3 tw-row-start-1 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Cycle Time Limit
+        </div>
+        <div className="tw-text-base tw-flex tw-justify-start">
+          {cycleTimeTarget} Days
         </div>
       </div>
       <div className="tw-col-start-6 tw-row-start-1 tw-mt-1">
