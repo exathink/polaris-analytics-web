@@ -46,10 +46,15 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   ] = useTrendsControlBarState(days || 45, measurementWindow || 30, samplingFrequency || 7);
 
   return (
-    <Dashboard id={dashboard_id}>
+    <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_41%_8%_41%] tw-p-2">
+      <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? "Specs" : "All Cards"}</div>
+        <div className="tw-flex tw-justify-start tw-text-sm">Last {daysRange} Days</div>
+      </div>
+
       <DashboardRow
         h={"50%"}
-        title={`Value Mix Analysis`}
+        className="tw-col-start-2 tw-col-span-2 tw-row-start-1 tw-text-base"
         controls={[
           ...getTrendsControlBarControls([
             [daysRange, setDaysRange],
@@ -74,6 +79,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
         <DashboardWidget
           w={1}
           name={"flow-mix"}
+          className="tw-row-start-2 tw-col-span-3"
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={dimension}
@@ -98,6 +104,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
       <DashboardRow
         h={"50%"}
         title="Card Details"
+        className="tw-row-start-3 tw-col-start-3"
         controls={[
           () =>
             before != null && (
@@ -118,6 +125,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
         <DashboardWidget
           w={1}
           name={"card-details-mix"}
+          className="tw-col-start-1 tw-row-start-4 tw-col-span-3"
           render={({view}) => (
             <CardDetailsWidget
               dimension={dimension}
