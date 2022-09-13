@@ -15,6 +15,7 @@ import {Alert, Switch} from "antd";
 import {useExcludeRepos} from "./useExcludedRepositories";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
+export  {TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 function customNameRender(text, record, searchText) {
   return (
     text && (
@@ -196,7 +197,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
   return columns;
 }
 
-export function RepositoriesTable({tableData, days, loading}) {
+export function RepositoriesTable({tableData, days, height, loading}) {
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
   const columns = [...useRepositoriesTableColumns({statusTypes, days}), getActionCol()];
 
@@ -205,7 +206,7 @@ export function RepositoriesTable({tableData, days, loading}) {
       columns={columns}
       dataSource={tableData}
       loading={loading}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
+      height={height || TABLE_HEIGHTS.FORTY_FIVE}
       rowKey={(record) => record.key}
     />
   );
@@ -316,7 +317,7 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
   );
 }
 
-export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, view}) => {
+export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, height, view}) => {
   const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days});
 
   if (error) return null;
@@ -327,5 +328,5 @@ export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, view
   if (view === "detail") {
     return <RepositoriesDetailDashboard dimension={dimension} instanceKey={instanceKey} view={view} />;
   }
-  return <RepositoriesTable tableData={tableData} days={days} loading={loading} />;
+  return <RepositoriesTable tableData={tableData} height={height} days={days} loading={loading} />;
 };
