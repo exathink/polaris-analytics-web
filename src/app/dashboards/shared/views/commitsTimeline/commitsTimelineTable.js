@@ -131,8 +131,8 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
       showPageSizeOptions={false}
       showPageJump={false}
       defaultPageSize={1}
-      previousText={">"}
-      nextText={"<"}
+      previousText={"<"}
+      nextText={">"}
       getPaginationProps={
         () => ({
           pageText: 'Commit'
