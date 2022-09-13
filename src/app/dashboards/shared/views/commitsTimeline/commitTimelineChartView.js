@@ -169,6 +169,7 @@ class _CommitsTimelineChartView extends React.Component {
     this.setState({
       model: model,
       selectedCategories: selected,
+      selectedCommits: null,
     });
     if (onSelectionChange) {
       onSelectionChange(model.commits);
