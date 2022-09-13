@@ -1,7 +1,6 @@
 import React from "react";
 
-import { Dashboard, DashboardRow, DashboardWidget } from "../../../../framework/viz/dashboard";
-import { Contexts } from "../../../../meta/contexts";
+import { Dashboard, DashboardRow } from "../../../../framework/viz/dashboard";
 import { ProjectDashboard } from "../../projectDashboard";
 import {
   ProjectTraceabilityTrendsDetailDashboard
@@ -33,6 +32,8 @@ export const dashboard = () => (
                 samplingFrequency={7}
                 context={context}
                 target={0.9}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
               />
             </DashboardRow>
           </Dashboard>
