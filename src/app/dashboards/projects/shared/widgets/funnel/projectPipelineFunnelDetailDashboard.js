@@ -28,7 +28,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                                                        includeSubTasks
                                                      }) => {
   const [daysRange, setDaysRange] = React.useState(days);
-  const [workItemScope, setWorkItemScope] = useState("specs");
+  const [workItemScope, setWorkItemScope] = useState("all");
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
   const specsOnly = workItemScope === "specs";
@@ -36,16 +36,12 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"47%"}
+        h={"40%"}
         title={``}
         subTitle={``}
         controls={
           [
-            () => (
-              <div style={{ minWidth: "500px" }}>
-                <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={SIX_MONTHS} />
-              </div>
-            ),
+
             () => (
               <div style={{ marginLeft: "20px", minWidth: "300px" }}>
                 <Flex align={"center"}>
@@ -70,7 +66,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                           },
                           {
                             key: "effort",
-                            display: "Capacity"
+                            display: "Cost"
                           }
                         ]
                         : [
@@ -94,30 +90,11 @@ export const ProjectPipelineFunnelDetailDashboard = ({
       >
         <DashboardWidget
           w={1 / 3}
-          name="cycle-time"
+          name="project-pipeline-funnel-detailed"
           render={({ view }) => (
-            <DimensionResponseTimeTrendsWidget
-              dimension={"project"}
-              title={"Response Time"}
-              instanceKey={instanceKey}
-              measurementWindow={daysRange}
-              days={daysRange}
-              samplingFrequency={7}
-              specsOnly={specsOnly}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              showAnnotations={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["all"]}
-              includeSubTasks={includeSubTasks}
-            />
+            null
           )}
-          showDetail={true}
+          showDetail={false}
         />
         <DashboardWidget
           w={1 / 3}
@@ -139,61 +116,16 @@ export const ProjectPipelineFunnelDetailDashboard = ({
           )}
           showDetail={false}
         />
-        {
-          volumeOrEffort === "effort" &&
-          <DashboardWidget
-            w={1 / 3}
-            name="capacity"
-            render={({ view }) => (
-              <DimensionWorkBalanceTrendsWidget
-                dimension={"project"}
-                instanceKey={instanceKey}
-                measurementWindow={daysRange}
-                days={daysRange}
-                samplingFrequency={7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                latestCommit={latestCommit}
-                target={0.9}
-                showEffort={true}
-                showContributorDetail={false}
-                chartConfig={{ totalEffortDisplayType: "column" }}
-                includeSubTasks={includeSubTasks}
-              />
-
-            )}
-            showDetail={true}
-          />
-        }
-        {
-          volumeOrEffort === "volume" &&
-          <DashboardWidget
-            w={1 / 3}
-            name="throughput"
-            render={({ view }) => (
-              <DimensionVolumeTrendsWidget
-                dimension={"project"}
-                instanceKey={instanceKey}
-                measurementWindow={30}
-                days={daysRange}
-                samplingFrequency={7}
-                targetPercentile={0.7}
-                context={context}
-                view={view}
-                latestWorkItemEvent={latestWorkItemEvent}
-                leadTimeTarget={leadTimeTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-                includeSubTasks={includeSubTasks}
-              />
-            )}
-            showDetail={true}
-          />
-        }
+         <DashboardWidget
+          w={1 / 3}
+          name="project-pipeline-funnel-detailed"
+          render={({ view }) => (
+            null
+          )}
+          showDetail={false}
+        />
       </DashboardRow>
-      <DashboardRow h={"48%"}>
+      <DashboardRow h={"55%"}>
         <DashboardWidget
           w={1}
           name="project-pipeline-queues"
@@ -216,6 +148,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               includeSubTasks={includeSubTasks}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
+              defaultToHistogram={false}
             />
           )}
           showDetail={true}

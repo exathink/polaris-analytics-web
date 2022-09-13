@@ -1,6 +1,5 @@
 import React from "react";
-import {ProjectDashboard} from "../../projectDashboard";
-import { DashboardWidget , Dashboard, DashboardRow} from "../../../../framework/viz/dashboard";
+import { ProjectDashboard } from "../../projectDashboard";
 import {
   DimensionFlowMixTrendsDetailDashboard
 } from "../../../shared/widgets/work_items/trends/flowMix/flowMixTrendsDetailDashboard";

@@ -15,6 +15,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   days,
   activeOnly,
   funnelView,
+  defaultToHistogram = true,
   closedWithinDays,
   targetPercentile,
   stateMappingIndex,
@@ -62,6 +63,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
       workItemScope={workItemScope}
       setWorkItemScope={setWorkItemScope}
       workItemScopeVisible={!parentWorkItemScope}
+      defaultToHistogram={defaultToHistogram}
     />
   );
 };

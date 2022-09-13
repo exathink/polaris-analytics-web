@@ -7,6 +7,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analyzer"/>),
     icon: 'ion-ios-infinite-outline'
   },
+  flowTrends: {
+    name: 'flowTrends',
+    display: () => (<FormattedMessage id='topics.flowTrends' defaultMessage="Flow Trends"/>),
+    icon: 'ion-arrow-graph-up-right'
+  },
   newflow: {
     name: 'newflow',
     display: () => (<FormattedMessage id='topics.newflow' defaultMessage="New Flow"/>),
