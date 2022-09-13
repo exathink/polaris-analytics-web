@@ -37,6 +37,11 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.trends' defaultMessage="360° Trends"/>),
     icon: 'ion-eye'
   },
+  traceability: {
+    name: 'traceability',
+    display: () => (<FormattedMessage id='topics.traceability' defaultMessage="Shadow Work"/>),
+    icon: 'ion-contrast'
+  },
   quality: {
     name: 'quality',
     display: () => (<FormattedMessage id='topics.quality' defaultMessage="Quality"/>),
