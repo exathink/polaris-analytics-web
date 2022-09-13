@@ -32,9 +32,9 @@ export function DimensionThroughputDetailDashboard({
   const limitToSpecsOnly = workItemScope === 'specs';
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`} className={styles.throughputDashboard} gridLayout={true}>
+    <Dashboard dashboard={`${dashboard_id}`} className="tw-bg-ghostwhite tw-grid tw-grid-cols-[44%_55%] tw-grid-rows-[7%_auto_auto_auto_5%_50%] tw-gap-2 tw-p-2" gridLayout={true}>
       <DashboardRow
-        className={styles.rangeSlider}
+        className="tw-col-start-1 tw-row-start-1"
         controls={[
           () => (
             <div style={{marginRight: "20px"}}>
@@ -52,7 +52,7 @@ export function DimensionThroughputDetailDashboard({
           name="flow-metrics"
           title={`Throughput`}
           subtitle={`Specs, Last ${daysRange} Days`}
-          className={styles.throughputMetrics}
+          className="tw-col-start-1 tw-row-start-2 tw-row-span-3"
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={dimension}
@@ -83,7 +83,7 @@ export function DimensionThroughputDetailDashboard({
         <DashboardWidget
           name="Cadence"
           title={"Cadence"}
-          className={styles.cadence}
+          className="tw-col-start-2 tw-row-start-3 tw-row-span-2"
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={dimension}
@@ -108,10 +108,10 @@ export function DimensionThroughputDetailDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow className={styles.chartsToggleRow}>
+      <DashboardRow className="tw-col-start-1 tw-row-start-5 tw-col-span-2">
         <DashboardWidget
           name="volume-trends"
-          className={cn((selectedMetric === "workItemsWithCommits" || selectedMetric === "workItemsInScope") ? "" : "tw-impHidden", styles.throughputDetail)}
+          className={cn((selectedMetric === "workItemsWithCommits" || selectedMetric === "workItemsInScope") ? "" : "tw-impHidden", "tw-col-start-1 tw-row-start-6 tw-col-span-2")}
           render={({view}) => (
             <VolumeTrendsTableWidget
               dimension={dimension}
@@ -134,7 +134,7 @@ export function DimensionThroughputDetailDashboard({
           name="workbalance-trends"
           className={cn(
             selectedMetric === "totalEffort" || context.targetUrl.includes("workbalance-trends") ? "" : "tw-impHidden",
-            styles.throughputDetail
+            "tw-col-start-1 tw-row-start-6 tw-col-span-2"
           )}
           render={({view}) => (
             <DimensionWorkBalanceTrendsWidget
