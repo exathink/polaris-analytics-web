@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
 import {WorkItemStateTypes} from "../../shared/config";
-import styles from "./dashboard.module.css";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
@@ -52,18 +51,31 @@ function WipDashboard({
     <Dashboard
       dashboard={`${dashboard_id}`}
       dashboardVideoConfig={WipDashboard.videoConfig}
-      className={styles.wipDashboard}
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
-      <div className={styles.scopeSelector}>
+      <div className="tw-col-start-1 tw-row-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Wip Analysis, {specsOnly ? "Specs": "All Cards"}
+        </div>
+      </div>
+      <div className="tw-col-start-3 tw-row-start-1 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">
+          Cycle Time Limit
+        </div>
+        <div className="tw-text-base tw-flex tw-justify-start">
+          {cycleTimeTarget} Days
+        </div>
+      </div>
+      <div className="tw-text-base tw-col-start-6 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
-      <DashboardRow h="12%">
+      <DashboardRow>
         <DashboardWidget
           name="pipeline"
-          className={styles.pipeline}
+          className="tw-col-start-1 tw-col-span-2"
           title={""}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
@@ -90,7 +102,7 @@ function WipDashboard({
 
         <DashboardWidget
           name="summary-wip"
-          className={styles.summaryWip}
+          className="tw-col-start-3 tw-col-span-2"
           title={""}
           render={({view}) => (
             <DimensionWipSummaryWidget
@@ -115,7 +127,7 @@ function WipDashboard({
 
         <DashboardWidget
           name="base-wip"
-          className={styles.baseWip}
+          className="tw-col-start-5 tw-col-span-2"
           title={""}
           render={({view}) => (
             <DimensionWipWidget
@@ -135,10 +147,10 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
       </DashboardRow>
-      <DashboardRow h="36%" title={" "}>
+      <DashboardRow title={" "}>
         <DashboardWidget
           name="engineering"
-          className={styles.engineering}
+          className="tw-col-start-1 tw-col-span-3 tw-row-start-3"
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={"project"}
@@ -165,7 +177,7 @@ function WipDashboard({
 
         <DashboardWidget
           name="delivery"
-          className={styles.delivery}
+          className="tw-col-start-4 tw-col-span-3 tw-row-start-3"
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
               dimension={"project"}
