@@ -23,7 +23,7 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={"40%"}
-        title={"Traceability Trends Details"}
+        title={`${excludeMerges ? 'Non-Merge' : 'Overall'} Traceability Trends`}
         controls={[
           () => (
             <div style={{padding: "10px"}}>
@@ -49,9 +49,9 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
             ({view}) =>
               <ProjectTraceabilityTrendsWidget
                 instanceKey={instanceKey}
-                measurementWindow={30}
-                days={45}
-                samplingFrequency={7}
+                measurementWindow={measurementWindow}
+                days={days}
+                samplingFrequency={samplingFrequency}
                 context={context}
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestCommit={latestCommit}
@@ -65,7 +65,7 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
         <DashboardWidget
           w={1}
           name="commits"
-          title={"Untraceable Commits: Last 30 days"}
+          title={`Untraceable Commits: Last  ${days} days`}
           render={
             ({view}) =>
               <DimensionCommitsNavigatorWidget
@@ -73,12 +73,12 @@ export const ProjectTraceabilityTrendsDetailDashboard = (
                 instanceKey={instanceKey}
                 context={context}
                 view={view}
-                days={measurementWindow}
+                days={days}
                 nospecsOnly={true}
                 excludeMerges={excludeMerges}
                 latestWorkItemEvent={latestWorkItemEvent}
-                groupBy={'author'}
-                groupings={['author', 'repository', 'branch']}
+                groupBy={'branch'}
+                groupings={['branch', 'repository', 'author']}
                 showHeader
                 showTable
               />
