@@ -62,6 +62,7 @@ const context : Context = {
             topic: Repositories
           },
           {
+            disallowedFeatures: [UI_NEW_CARD_DESIGN],
             match: 'pull-requests',
             topic: PullRequests
           },
