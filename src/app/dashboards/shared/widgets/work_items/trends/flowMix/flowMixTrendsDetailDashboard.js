@@ -49,7 +49,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
     <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_41%_8%_41%] tw-p-2">
       <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? "Specs" : "All Cards"}</div>
-        <div className="tw-flex tw-justify-start tw-text-sm">Last {daysRange} Days</div>
+        <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
       </div>
 
       <DashboardRow
