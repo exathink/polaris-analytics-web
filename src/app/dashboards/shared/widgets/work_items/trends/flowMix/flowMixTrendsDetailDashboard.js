@@ -135,6 +135,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               days={measurementWindowRange}
               specsOnly={specsOnly}
               before={before}
+              initialDays={daysRange}
               includeSubTasks={includeSubTasks}
               latestWorkItemEvent={latestWorkItemEvent}
               view={view}
