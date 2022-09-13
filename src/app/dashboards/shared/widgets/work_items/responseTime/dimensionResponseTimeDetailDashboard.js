@@ -44,29 +44,25 @@ export function DimensionResponseTimeDetailDashboard({
     <Dashboard
       dashboard={`${dashboard_id}`}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-[49.5%,49.5%] tw-grid-rows-[6%,auto,45%] tw-gap-2 lg:tw-grid-rows-[6%,43%,45%]"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[8%,auto,45%] tw-gap-2 tw-p-2 lg:tw-grid-rows-[6%,43%,45%]"
     >
-      <DashboardRow
-        className="tw-col-span-2 tw-flex tw-justify-center"
-        controls={[
-          () => (
-            <div style={{marginRight: "20px"}}>
-              <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-            </div>
-          ),
-          () => (
-            <div style={{minWidth: "500px"}}>
-              <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
-            </div>
-          )
-        ]}
-      >
+      <div className="tw-col-start-1 tw-col-span-2 tw-row-start-1 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Variability Analysis, {limitToSpecsOnly ? "Specs" : "All Cards"}</div>
+        <div className="tw-flex tw-justify-start tw-text-sm">Last {flowAnalysisPeriod} Days</div>
+      </div>
+      <div className="tw-col-start-3 tw-col-span-2 tw-text-base">
+        <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
+      </div>
+      <div className="tw-col-start-5 tw-text-base tw-flex tw-justify-end tw-mr-4">
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+      </div>
+
+      <DashboardRow>
         <DashboardWidget
           name="flow-metrics"
-
-          subtitle={`${limitToSpecsOnly ? 'Specs' : 'All Cards'}, Last ${daysRange} days`}
+          subtitle={`${limitToSpecsOnly ? "Specs" : "All Cards"}, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
-          className="tw-col-span-2"
+          className="tw-col-span-5"
           render={({view}) => (
             <DimensionFlowMetricsWidget
               dimension={dimension}
@@ -101,7 +97,7 @@ export function DimensionResponseTimeDetailDashboard({
           <DashboardWidget
             title={""}
             name="flow-metrics-delivery-details"
-            className="tw-col-span-2"
+            className="tw-col-span-5"
             render={({view}) => (
               <DimensionDeliveryCycleFlowMetricsWidget
                 dimension={dimension}
@@ -129,7 +125,7 @@ export function DimensionResponseTimeDetailDashboard({
         {metricMapping[selectedMetric] === metricMapping.pullRequestAvgAge && (
           <DashboardWidget
             name="pr-metrics-reviewtime-closed"
-            className="tw-col-span-2"
+            className="tw-col-span-5"
             render={({view}) => (
               <DimensionPullRequestsWidget
                 dimension={dimension}
