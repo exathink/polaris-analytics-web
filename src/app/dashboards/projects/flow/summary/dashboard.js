@@ -208,7 +208,7 @@ export function NewFlowDashboard({
               }}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
       </DashboardRow>
       <DashboardRow>
