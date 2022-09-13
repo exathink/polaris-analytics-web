@@ -1,5 +1,4 @@
-import React from 'react';
-import {Topics} from "../../../meta/topics";
+import { Topics } from "../../../meta/topics";
 import ValueMix from "../flow/valueMix/topic";
 
 const topic = {

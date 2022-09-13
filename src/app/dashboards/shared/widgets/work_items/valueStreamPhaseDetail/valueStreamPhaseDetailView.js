@@ -28,6 +28,7 @@ const PhaseDetailView = ({
   workItemScope,
   setWorkItemScope,
   workItemScopeVisible = true,
+  defaultToHistogram = true,
   view,
   context,
   intl,
@@ -128,7 +129,7 @@ const PhaseDetailView = ({
     ) || stateTypes[0]
   );
 
-  const defaultSelectedGrouping = "responseTime";
+  const defaultSelectedGrouping = defaultToHistogram ? "responseTime" : "table";
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const candidateWorkItems = React.useMemo(() => {
