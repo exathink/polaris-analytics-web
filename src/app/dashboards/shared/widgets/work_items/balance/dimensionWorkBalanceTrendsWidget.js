@@ -135,6 +135,7 @@ export const DimensionWorkBalanceTrendsWidget = (
               initialValue={tabSelection}
               onGroupingChanged={setTab}
               className="tw-ml-auto tw-mr-10"
+              layout="col"
             />
           </div>
           <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full"}>{workBalance}</div>
