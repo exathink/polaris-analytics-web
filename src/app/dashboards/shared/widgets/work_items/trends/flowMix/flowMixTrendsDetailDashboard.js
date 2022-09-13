@@ -101,10 +101,12 @@ export const DimensionFlowMixTrendsDetailDashboard = (
           )}
         />
       </DashboardRow>
+      <div className="tw-row-start-3 tw-col-start-1 tw-text-lg tw-text-gray-300 tw-flex tw-items-end tw-ml-2">
+         Card Details
+      </div>
       <DashboardRow
         h={"50%"}
-        title="Card Details"
-        className="tw-row-start-3 tw-col-start-3"
+        className="tw-row-start-3 tw-col-start-3 tw-flex tw-justify-center"
         controls={[
           () =>
             before != null && (
