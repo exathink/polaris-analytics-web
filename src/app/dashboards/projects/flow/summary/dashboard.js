@@ -61,7 +61,7 @@ export function NewFlowDashboard({
           {cycleTimeTarget} Days
         </div>
       </div>
-      <div className="tw-col-start-8 tw-row-start-1">
+      <div className="tw-text-base tw-col-start-8 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>

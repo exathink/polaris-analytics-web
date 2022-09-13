@@ -67,7 +67,7 @@ function WipDashboard({
           {cycleTimeTarget} Days
         </div>
       </div>
-      <div className="tw-col-start-6 tw-row-start-1 tw-mt-1">
+      <div className="tw-text-base tw-col-start-6 tw-row-start-1">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
