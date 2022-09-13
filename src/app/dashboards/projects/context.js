@@ -47,6 +47,7 @@ const context : Context = {
             match: 'flow',
             topic: Flow
           },
+
           {
             disallowedFeatures: [UI_NEW_CARD_DESIGN],
             match: 'wip',
@@ -61,6 +62,7 @@ const context : Context = {
             topic: Repositories
           },
           {
+            disallowedFeatures: [UI_NEW_CARD_DESIGN],
             match: 'pull-requests',
             topic: PullRequests
           },

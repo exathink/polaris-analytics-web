@@ -134,9 +134,9 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           render={({view}) => (
             <ProjectTraceabilityTrendsWidget
               instanceKey={key}
+              days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
-              days={7}
-              samplingFrequency={7}
+              samplingFrequency={flowAnalysisPeriod}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}

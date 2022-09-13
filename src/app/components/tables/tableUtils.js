@@ -10,6 +10,9 @@ const DEFAULTS = {
 export const TABLE_HEIGHTS = {
   FORTY_FIVE: "45vh",
   SIXTY: "60vh",
+  SEVENTY: "70vh",
+  SEVENTY_FIVE: "75vh",
+  EIGHTY: "80vh",
   NINETY: "90vh"
 }
 
