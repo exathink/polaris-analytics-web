@@ -44,23 +44,22 @@ export function DimensionResponseTimeDetailDashboard({
     <Dashboard
       dashboard={`${dashboard_id}`}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-5 tw-grid-rows-[8%,auto,45%] tw-gap-2 tw-p-2 lg:tw-grid-rows-[6%,43%,45%]"
+      className="tw-grid tw-grid-cols-5 tw-grid-rows-[10%,auto,45%] tw-gap-2 tw-p-2 lg:tw-grid-rows-[6%,43%,45%]"
     >
       <div className="tw-col-start-1 tw-col-span-2 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Variability Analysis, {limitToSpecsOnly ? "Specs" : "All Cards"}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Last {flowAnalysisPeriod} Days</div>
       </div>
-      <div className="tw-col-start-3 tw-col-span-2 tw-text-base">
+      <div className="tw-col-start-3 tw-col-span-2 tw-row-start-1 tw-text-base">
         <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={THREE_MONTHS} />
       </div>
-      <div className="tw-col-start-5 tw-text-base tw-flex tw-justify-end tw-mr-4">
+      <div className="tw-col-start-5 tw-row-start-1 tw-text-base tw-flex tw-justify-end tw-mr-4">
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
 
       <DashboardRow>
         <DashboardWidget
           name="flow-metrics"
-          subtitle={`${limitToSpecsOnly ? "Specs" : "All Cards"}, Last ${daysRange} days`}
           hideTitlesInDetailView={true}
           className="tw-col-span-5"
           render={({view}) => (
