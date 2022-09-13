@@ -45,12 +45,18 @@ export const DimensionPullRequestsDetailDashboard = ({
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_20%_38%_33%] tw-gap-x-2 tw-gap-y-2"
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[10%_20%_36%_33%] tw-gap-2 tw-p-2"
     >
+      <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Code Review Flow Analysis</div>
+        <div className="tw-flex tw-justify-start tw-text-sm">
+          Open and Closed Pull Requests, Last {measurementWindow} Days
+        </div>
+      </div>
       <DashboardRow
-        title={`Pull Request Flow Analysis`}
+        title={``}
         subTitle={``}
-        className="tw-col-span-6 tw-grid tw-grid-cols-[30%_70%]"
+        className="tw-col-span-3 tw-col-start-3"
         controls={getTrendsControlBarControls(
           [
             [daysRange, setDaysRange],
@@ -186,9 +192,15 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestCommit={latestCommit}
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
-              before={cardSelection === "closed" && before===undefined ? toMoment(getTodayDate()) : before}
+              before={cardSelection === "closed" && before === undefined ? toMoment(getTodayDate()) : before}
               setBefore={setBefore}
-              closedWithinDays={cardSelection === "closed" && before===undefined ? daysRange : before ? measurementWindowRange : undefined}
+              closedWithinDays={
+                cardSelection === "closed" && before === undefined
+                  ? daysRange
+                  : before
+                  ? measurementWindowRange
+                  : undefined
+              }
               display="table"
               selectedFilter={selectedFilter}
               setFilter={setFilter}
