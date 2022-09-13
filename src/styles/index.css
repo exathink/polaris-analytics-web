@@ -29,11 +29,3 @@
   }
   /* ! END_TAILWIND_CUSTOM_COMPONENTS */
 }
-
-@layer utilities {
-  /* ! TAILWIND_CUSTOM_UTILITIES */
-  .tw-impHidden {
-    display: none !important;
-  }
-  /* ! END_TAILWIND_CUSTOM_UTILITIES */
-}

@@ -31,6 +31,7 @@ module.exports = {
       black: colors.black,
       white: colors.white,
       chart: "#f2f3f6",
+      ghostwhite: "ghostwhite",
       gray: {
         100: colors.gray["100"],
         200: colors.gray["300"],
