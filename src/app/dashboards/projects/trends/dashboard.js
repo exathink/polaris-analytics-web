@@ -6,7 +6,6 @@ import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_ite
 
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
 import { DimensionFlowMixTrendsWidget } from "../../shared/widgets/work_items/trends/flowMix";
-import { DimensionWorkBalanceTrendsWidget } from "../../shared/widgets/work_items/balance";
 import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import styles from "../valueBook/dashboard.module.css";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
