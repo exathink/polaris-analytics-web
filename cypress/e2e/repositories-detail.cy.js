@@ -7,6 +7,11 @@ describe("Repositories Detail", () => {
   const ctx = {};
 
   before(() => {
+    cy.fixture(`repositories-detail/${VALUE_STREAM.with_project_instance}_norepositories.json`).then((response) => {
+      const projectKey = response.data.project.key;
+      ctx.projectnorepositoriesKey = projectKey;
+    });
+
     cy.fixture(`repositories-detail/${VALUE_STREAM.with_project_instance}.json`).then((response) => {
       const projectKey = response.data.project.key;
       ctx.projectKey = projectKey;
@@ -15,6 +20,7 @@ describe("Repositories Detail", () => {
     cy.fixture(`repositories-detail/${REPOSITORY.exclude_repos}_failure.json`).then((response) => {
       const errorMessage = response.data.updateProjectExcludedRepositories.errorMessage;
       ctx.errorMessage = errorMessage;
+      cy.log(ctx.errorMessage);
     });
   });
 
@@ -35,9 +41,7 @@ describe("Repositories Detail", () => {
       fixturePath: `repositories-detail/projectRepositories_withnorepositories.json`,
     });
 
-    cy.visit(
-      `/app/dashboard/value-streams/Polaris/37542450-41eb-4ab6-a767-8a046f9eb1bf/repositories/repositories-detail`
-    );
+    cy.visit(`/app/dashboard/value-streams/Polaris/${ctx.projectnorepositoriesKey}/repositories/repositories-detail`);
 
     cy.wait([
       `@${getQueryFullName(viewer_info)}`,
@@ -247,6 +251,8 @@ describe("Repositories Detail", () => {
     cy.contains("Save").click();
 
     cy.wait(`@${getQueryFullName(REPOSITORY.exclude_repos)}`);
+
+    cy.log(ctx.errorMessage);
 
     cy.contains(ctx.errorMessage, {matchCase: false}).should("exist");
   });
