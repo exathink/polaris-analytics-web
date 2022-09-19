@@ -1,0 +1,190 @@
+{
+    "data": {
+        "project": {
+            "__typename": "Project",
+            "id": "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+            "repositories": {
+                "__typename": "RepositoriesConnection",
+                "count": 2,
+                "edges": [
+                    {
+                        "__typename": "RepositoriesEdge",
+                        "node": {
+                            "__typename": "Repository",
+                            "id": "UmVwb3NpdG9yeTo5NTY1ODRiMC0wOTY0LTQzYjktYjY0ZS01NjFiMzNhYmQwZGY=",
+                            "name": "polaris-work-tracking",
+                            "key": "956584b0-0964-43b9-b64e-561b33abd0df",
+                            "description": null,
+                            "earliestCommit": "2018-11-12T16:26:26",
+                            "latestCommit": "2022-08-15T23:07:47",
+                            "commitCount": 556,
+                            "contributorCount": 1,
+                            "excluded": false,
+                            "traceabilityTrends": [
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-09-02",
+                                    "measurementWindow": 30,
+                                    "traceability": 0.95,
+                                    "specCount": 19,
+                                    "nospecCount": 1,
+                                    "totalCommits": 20
+                                },
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-08-03",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "__typename": "RepositoriesEdge",
+                        "node": {
+                            "__typename": "Repository",
+                            "id": "UmVwb3NpdG9yeTpkMGY5NWM1NS1mY2JlLTQ0ZGUtYmY1Zi1kNTZmNjY5ZDYzOTg=",
+                            "name": "polaris-build",
+                            "key": "d0f95c55-fcbe-44de-bf5f-d56f669d6398",
+                            "description": null,
+                            "earliestCommit": "2017-07-14T18:16:29",
+                            "latestCommit": "2022-08-01T22:50:26",
+                            "commitCount": 454,
+                            "contributorCount": null,
+                            "excluded": false,
+                            "traceabilityTrends": [
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-09-06",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                },
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-08-07",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 2,
+                                    "totalCommits": 2
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "__typename": "RepositoriesEdge",
+                        "node": {
+                            "__typename": "Repository",
+                            "id": "UmVwb3NpdG9yeTphNGNiOTBhMS1kY2Y1LTQ3NjgtYjE0MC0yOTVjOTdiZTllZTA=",
+                            "name": "polaris-analytics-web",
+                            "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+                            "description": null,
+                            "earliestCommit": "2018-02-21T16:15:42",
+                            "latestCommit": "2022-08-26T14:56:12",
+                            "commitCount": 5199,
+                            "contributorCount": 3,
+                            "excluded": false,
+                            "traceabilityTrends": [
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-09-02",
+                                    "measurementWindow": 30,
+                                    "traceability": 0.35,
+                                    "specCount": 35,
+                                    "nospecCount": 65,
+                                    "totalCommits": 100
+                                },
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-08-03",
+                                    "measurementWindow": 30,
+                                    "traceability": 0.06293706293706294,
+                                    "specCount": 9,
+                                    "nospecCount": 134,
+                                    "totalCommits": 143
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "__typename": "RepositoriesEdge",
+                        "node": {
+                            "__typename": "Repository",
+                            "id": "UmVwb3NpdG9yeTo0YWFiNGQxOS1hYmQ5LTQyYWItYWU4Ny1hMDk4MTBkOTc2ZTg=",
+                            "name": "polaris-integrations",
+                            "key": "4aab4d19-abd9-42ab-ae87-a09810d976e8",
+                            "description": null,
+                            "earliestCommit": "2019-04-24T20:29:37",
+                            "latestCommit": "2022-05-02T11:21:42",
+                            "commitCount": 150,
+                            "contributorCount": null,
+                            "excluded": false,
+                            "traceabilityTrends": [
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-09-06",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                },
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-08-07",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "__typename": "RepositoriesEdge",
+                        "node": {
+                            "__typename": "Repository",
+                            "id": "UmVwb3NpdG9yeTpiODdhMWI1Ny1iZmZlLTRmNzYtOThkZC04ZjRhYWExZTY2M2M=",
+                            "name": "polaris-repos-intake-db",
+                            "key": "b87a1b57-bffe-4f76-98dd-8f4aaa1e663c",
+                            "description": null,
+                            "earliestCommit": "2016-05-13T20:08:14",
+                            "latestCommit": "2022-02-27T18:06:38",
+                            "commitCount": 440,
+                            "contributorCount": null,
+                            "excluded": true,
+                            "traceabilityTrends": [
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-09-06",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                },
+                                {
+                                    "__typename": "TraceabilityImpl",
+                                    "measurementDate": "2022-08-07",
+                                    "measurementWindow": 30,
+                                    "traceability": 0,
+                                    "specCount": 0,
+                                    "nospecCount": 0,
+                                    "totalCommits": 0
+                                }
+                            ]
+                        }
+                    }
+
+                ]
+            }
+        }
+    }
+}

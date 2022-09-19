@@ -84,6 +84,7 @@ function getToggleCol(draftRecordsState, tableData) {
     key: "exclude_switch",
     width: "5%",
     align: "center",
+    className: "include",
     render: (text, record) => (
       <Switch
         checked={!excludeRecords.find((x) => x.key === record.key)?.excluded}
@@ -107,6 +108,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           dataIndex: "name",
           key: "name",
           width: "8%",
+          className: "name",
           ...nameSearchState,
         },
       ],
@@ -119,6 +121,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           dataIndex: "latestCommit",
           key: "activityProfile",
           width: "5%",
+          className: "status",
           filters: statusTypes.map((b) => ({text: b, value: b})),
           onFilter: (value, record) => getActivityLevelFromDate(record.latestCommit).display_name.indexOf(value) === 0,
           render: (latestCommit) => getActivityLevelFromDate(latestCommit).display_name,
@@ -138,6 +141,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           key: "contributorCount",
           width: "8%",
           render: renderMetric,
+          className: "contributorCount",
           sorter: (a, b) => SORTER.number_compare(a.contributorCount, b.contributorCount),
         },
         {
@@ -145,6 +149,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           dataIndex: "traceabilityTrends",
           key: "totalCommits",
           width: "10%",
+          className: "commits",
           sorter: (a, b) => {
             return SORTER.number_compare(
               b.traceabilityTrends?.[0]?.totalCommits,
@@ -166,6 +171,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           dataIndex: "traceabilityTrends",
           key: "traceabilityTrends",
           width: "10%",
+          className: "traceability",
           sorter: (a, b) => {
             return SORTER.number_compare(
               b.traceabilityTrends?.[0]?.traceability,
@@ -187,6 +193,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
           dataIndex: "latestCommit",
           key: "latestCommit",
           width: "8%",
+          className: "latestCommit",
           sorter: (a, b) => SORTER.date_compare(b.latestCommit, a.latestCommit),
           render: (latestCommit) => fromNow(latestCommit),
         },
