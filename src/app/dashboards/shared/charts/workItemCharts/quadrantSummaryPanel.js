@@ -74,7 +74,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   const wipEffortDisplay = total > 0 ?  `${i18nNumber(intl,quadrantEffort, 0 ) } FTE Days (${i18nNumber(intl,(quadrantEffort/totalEffort)*100, 0 ) } %)` : '';
 
   const tooltipContent = (
-    <div>
+    <div className="tw-p-2 tw-grid tw-gap-2 tw-text-gray-300">
       <div>
         {
         val > 0 &&
@@ -97,7 +97,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
     </div>
   )
   const tooltipTitle = (
-    <div>
+    <div className="tw-p-2 tw-text-gray-300">
       <div>
         {`${val} ${name}`}
       </div>
