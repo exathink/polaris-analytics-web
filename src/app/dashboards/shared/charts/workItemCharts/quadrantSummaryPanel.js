@@ -66,38 +66,32 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : <span className="tw-text-base">N/A</span>;
 
   const averageAge = totalAge/val;
-  const averageAgeDisplay = val > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)} days`: '';
+  const averageAgeDisplay = val > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)}`: '';
 
   const averageLatency = totalLatency/val;
-  const averageLatencyDisplay = val > 0 ? `${i18nNumber(intl, averageLatency,averageAge < 10 ? 1 :0)} days`: '';
+  const averageLatencyDisplay = val > 0 ? `${i18nNumber(intl, averageLatency,averageAge < 10 ? 1 :0)}`: '';
 
-  const wipEffortDisplay = total > 0 ?  `${i18nNumber(intl,quadrantEffort, 0 ) } FTE Days (${i18nNumber(intl,(quadrantEffort/totalEffort)*100, 0 ) } %)` : '';
+  const wipEffortDisplay = total > 0 ?  `${i18nNumber(intl,quadrantEffort, 0 ) } ` : '';
 
-  const tooltipContent = (
+  const pairRender = (label, value, uom) => (
+    <div className="tw-flex tw-items-baseline tw-space-x-2">
+      <div className="tw-text-xl tw-tracking-wide">{label}</div>
+      <div className="tw-flex tw-items-baseline tw-space-x-2">
+        <div className="tw-text-2xl tw-font-medium tw-leading-3 tw-text-black">{value}</div>
+        <div className="tw-text-sm tw-font-normal">{uom}</div>
+      </div>
+    </div>
+  );
+
+  const tooltipContent = val > 0 && (
     <div className="tw-p-2 tw-grid tw-gap-2 tw-text-gray-300">
-      <div>
-        {
-        val > 0 &&
-          <span><b>Avg. Age:</b> {averageAgeDisplay}</span>
-        }
-      </div>
-      <div>
-        {
-        val > 0 &&
-          <span><b>Avg. Idle Time:</b> {averageLatencyDisplay}</span>
-        }
-      </div>
-      <div>
-        {
-          val > 0 &&
-          <span><b>Effort:</b> {wipEffortDisplay}</span>
-        }
-      </div>
-
+      {pairRender(`Avg. Age:`, averageAgeDisplay, `Days`)}
+      {pairRender(`Avg. Idle Time:`, averageLatencyDisplay, `Days`)}
+      {pairRender(`Effort:`, wipEffortDisplay, `FTE Days (${i18nNumber(intl,(quadrantEffort/totalEffort)*100, 0 ) }%)`)}
     </div>
   )
   const tooltipTitle = (
-    <div className="tw-p-2 tw-text-gray-300">
+    <div className="tw-p-2 tw-text-gray-300 tw-text-xl tw-tracking-wide">
       <div>
         {`${val} ${name}`}
       </div>
