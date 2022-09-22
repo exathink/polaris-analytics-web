@@ -270,7 +270,7 @@ export const WorkItemsDetailTable =
         columns={columns}
         dataSource={dataSource}
         testId="work-items-detail-table"
-        height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
+        height={view === "primary" ? TABLE_HEIGHTS.THIRTY : TABLE_HEIGHTS.SEVENTY}
         rowKey={(record) => record.rowKey}
         onChange={handleChange}
         loading={loading}
@@ -295,7 +295,7 @@ export const WorkItemsDetailTable =
                 </Text>
               </Table.Summary.Cell>}
 
-              <Table.Summary.Cell index={2} colSpan="3" align="left"></Table.Summary.Cell>
+              <Table.Summary.Cell index={2} colSpan="6" align="left"></Table.Summary.Cell>
             </Table.Summary.Row>
           </Table.Summary>
         );
