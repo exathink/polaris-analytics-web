@@ -219,6 +219,8 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
+const summaryStatsColumns = ["cycleTimeOrLatency", "leadTimeOrAge", "effort"];
+
 export const WorkItemsDetailTable = 
   ({
     view,
@@ -276,7 +278,8 @@ export const WorkItemsDetailTable =
         loading={loading}
         summary={(pageData) => {
         
-        const avgData = appliedSorter && ["cycleTimeOrLatency", "leadTimeOrAge", "effort"].includes(appliedSorter) ? average(pageData, (item) => +(item[appliedSorter])) : undefined;
+        // calculate avg for summary stats columns
+        const avgData = appliedSorter && summaryStatsColumns.includes(appliedSorter) ? average(pageData, (item) => +(item[appliedSorter])) : undefined;
 
         return (
           <Table.Summary fixed="bottom">
@@ -288,7 +291,7 @@ export const WorkItemsDetailTable =
                 </Text>
               </Table.Summary.Cell>
 
-              {avgData && avgData !== 0 && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
+              {avgData !== 0 && avgData && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
                 Avg. {appliedName}
                 <Text strong className="tw-ml-4">
                   {i18nNumber(intl, avgData, 2)}
