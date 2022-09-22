@@ -4,10 +4,10 @@
   grid-template-areas:
     "leadTime . . ."
     "leadTime cycleTime text1 text2"
-    "leadTime cycleTime effort pullRequest"
-    "leadTime cycleTime effort pullRequest"
     "leadTime cycleTime implement deliver"
-    "leadTime cycleTime implement deliver";
+    "leadTime cycleTime implement deliver"
+    "leadTime cycleTime effort pullRequest"
+    "leadTime cycleTime effort pullRequest";
   gap: 0.5rem;
 }
 

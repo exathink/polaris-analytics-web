@@ -31,3 +31,8 @@ export const USER = {
   inviteUser: "inviteUser",
   update_user: "update_user",
 };
+
+export const REPOSITORY = {
+  dimensionRepositories: "dimensionRepositories",
+  exclude_repos: "exclude_repos",
+};

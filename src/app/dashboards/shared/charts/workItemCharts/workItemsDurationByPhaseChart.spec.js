@@ -219,7 +219,7 @@ describe("WorkItemsDurationsByPhaseChart", () => {
         );
       });
 
-      test("it sets correct name for each point ", () => {
+      test("it sets correct name for each point", () => {
         expectSetsAreEqual(
           series[0].data.map((point) => point.name),
           [workItemFixture.displayId]

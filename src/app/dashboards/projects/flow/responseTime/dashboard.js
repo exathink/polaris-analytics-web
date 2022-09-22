@@ -1,7 +1,5 @@
 import React from "react";
 import {ProjectDashboard} from "../../projectDashboard";
-import { DashboardWidget , Dashboard, DashboardRow} from "../../../../framework/viz/dashboard";
-import { DimensionCommitHistoryWidget } from "../../../shared/widgets/accountHierarchy";
 import {
   DimensionResponseTimeDetailDashboard
 } from "../../../shared/widgets/work_items/responseTime/dimensionResponseTimeDetailDashboard";

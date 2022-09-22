@@ -1,0 +1,35 @@
+{
+  "data": {
+    "project": {
+      "id": "UHJvamVjdDozNzU0MjQ1MC00MWViLTRhYjYtYTc2Ny04YTA0NmY5ZWIxYmY=",
+      "name": "Test project 7",
+      "key": "37542450-41eb-4ab6-a767-8a046f9eb1bf",
+      "workStreamCount": 1,
+      "mappedWorkStreamCount": 1,
+      "earliestCommit": null,
+      "latestCommit": null,
+      "commitCount": null,
+      "latestWorkItemEvent": "2021-06-09T21:19:38.843000",
+      "latestPullRequestEvent": null,
+      "organizationKey": "52e0eff5-7b32-4150-a1c4-0f55d974ee2a",
+      "settings": {
+        "flowMetricsSettings": {
+          "cycleTimeTarget": null,
+          "leadTimeTarget": null,
+          "responseTimeConfidenceTarget": null,
+          "leadTimeConfidenceTarget": null,
+          "cycleTimeConfidenceTarget": null,
+          "includeSubTasks": false
+        },
+        "analysisPeriods": {
+          "wipAnalysisPeriod": null,
+          "flowAnalysisPeriod": null,
+          "trendsAnalysisPeriod": null
+        },
+        "wipInspectorSettings": {
+          "includeSubTasks": true
+        }
+      }
+    }
+  }
+}

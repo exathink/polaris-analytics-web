@@ -68,7 +68,7 @@ export function MetricCard({
       </div>
 
       {trendsView ? (
-        <Popover placement={trendsView.placement} title={trendsView.title} content={trendsView.content} trigger="click">
+        <Popover placement={trendsView.placement} title={trendsView.title} content={trendsView.content} trigger="hover">
           {trendIndicatorElement}
         </Popover>
       ) : (
