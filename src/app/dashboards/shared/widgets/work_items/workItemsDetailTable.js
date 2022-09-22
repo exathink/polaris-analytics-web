@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {average, getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -13,6 +13,8 @@ import {
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+import { Table } from "antd";
+import Text from "antd/lib/typography/Text";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -232,6 +234,10 @@ export const WorkItemsDetailTable =
     loading
   }) => {
     const intl = useIntl();
+
+    const [appliedSorter, setAppliedSorter] = React.useState();
+    const [appliedName, setAppliedName] = React.useState();
+
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -253,6 +259,12 @@ export const WorkItemsDetailTable =
       supportsFilterOnCard
     });
 
+    function handleChange(p, f, s, e) {
+      setAppliedSorter(s?.column?.dataIndex)
+      setAppliedName(s?.column?.title)
+      onChange?.(p,f,s,e);
+    }
+
     return (
       <StripeTable
         columns={columns}
@@ -260,8 +272,34 @@ export const WorkItemsDetailTable =
         testId="work-items-detail-table"
         height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
         rowKey={(record) => record.rowKey}
-        onChange={onChange}
+        onChange={handleChange}
         loading={loading}
+        summary={(pageData) => {
+        
+        const avgData = appliedSorter && ["cycleTimeOrLatency", "leadTimeOrAge", "effort"].includes(appliedSorter) ? average(pageData, (item) => +(item[appliedSorter])) : undefined;
+
+        return (
+          <Table.Summary fixed="bottom">
+            <Table.Summary.Row className="tw-bg-gray-100">
+              <Table.Summary.Cell index={0} align="left" className="tw-font-medium tw-uppercase">
+                Records
+                <Text strong className="tw-ml-4">
+                  {pageData?.length}
+                </Text>
+              </Table.Summary.Cell>
+
+              {avgData && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
+                Avg. {appliedName}
+                <Text strong className="tw-ml-4">
+                  {i18nNumber(intl, avgData, 2)}
+                </Text>
+              </Table.Summary.Cell>}
+
+              <Table.Summary.Cell index={2} colSpan="3" align="left"></Table.Summary.Cell>
+            </Table.Summary.Row>
+          </Table.Summary>
+        );
+      }}
       />
     );
   };
