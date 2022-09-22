@@ -5,10 +5,6 @@ import { ProjectPipelineFunnelWidget } from "./projectPipelineFunnelWidget";
 import { DimensionValueStreamPhaseDetailWidget } from "../../../../shared/widgets/work_items/valueStreamPhaseDetail";
 import { Box, Flex } from "reflexbox";
 import { WorkItemScopeSelector } from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import { DimensionVolumeTrendsWidget } from "../../../../shared/widgets/work_items/trends/volume";
-import { DimensionWorkBalanceTrendsWidget } from "../../../../shared/widgets/work_items/balance";
-import { DaysRangeSlider, SIX_MONTHS } from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
-import { DimensionResponseTimeTrendsWidget } from "../../../../shared/widgets/work_items/trends/responseTime";
 import { GroupingSelector } from "../../../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.project.pipeline.detail";

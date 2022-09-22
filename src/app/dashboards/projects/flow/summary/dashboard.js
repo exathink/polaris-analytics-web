@@ -250,6 +250,7 @@ export function NewFlowDashboard({
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
+                key={specsOnly}
                 dimension="project"
                 instanceKey={key}
                 days={flowAnalysisPeriod}

@@ -16,7 +16,7 @@
     "d64": "^1.0.0",
     "formik": "^1.5.4",
     "graphql": "15.5.0",
-    "highcharts": "^7.2.1",
+    "highcharts": "9.3.3",
     "highcharts-custom-events": "^3.0.6",
     "history": "^4.6.3",
     "lodash.flowright": "^3.5.0",

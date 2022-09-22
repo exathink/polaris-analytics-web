@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
-import styles from "./dashboard.module.css";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionWorkBalanceTrendsWidget} from "../balance";
 import cn from "classnames";

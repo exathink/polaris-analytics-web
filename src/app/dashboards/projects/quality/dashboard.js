@@ -1,10 +1,8 @@
 import React from "react";
 import {ProjectDashboard} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import {DimensionVolumeTrendsWidget} from "../../shared/widgets/work_items/trends/volume";
 import {
   DimensionDefectResponseTimeWidget,
-  DimensionResponseTimeTrendsWidget,
 } from "../../shared/widgets/work_items/trends/responseTime";
 
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
