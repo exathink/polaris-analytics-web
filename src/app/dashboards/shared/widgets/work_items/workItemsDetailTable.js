@@ -14,7 +14,7 @@ import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shar
 import {formatDateTime} from "../../../../i18n";
 import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 import { Table } from "antd";
-import Text from "antd/lib/typography/Text";
+import {LabelValue} from "../../../../helpers/components";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -281,22 +281,19 @@ export const WorkItemsDetailTable =
         // calculate avg for summary stats columns
         const avgData = appliedSorter && summaryStatsColumns.includes(appliedSorter) ? average(pageData, (item) => +(item[appliedSorter])) : undefined;
 
+        
         return (
           <Table.Summary fixed="bottom">
             <Table.Summary.Row className="tw-bg-gray-100">
-              <Table.Summary.Cell index={0} align="left" className="tw-font-medium tw-uppercase">
-                Records
-                <Text strong className="tw-ml-4">
-                  {pageData?.length}
-                </Text>
+              <Table.Summary.Cell index={0} align="left">
+                <LabelValue label="Records" value={pageData?.length} />
               </Table.Summary.Cell>
 
-              {avgData !== 0 && avgData && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
-                Avg. {appliedName}
-                <Text strong className="tw-ml-4">
-                  {i18nNumber(intl, avgData, 2)}
-                </Text>
-              </Table.Summary.Cell>}
+              {avgData !== 0 && avgData && (
+                <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
+                  <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} />
+                </Table.Summary.Cell>
+              )}
 
               <Table.Summary.Cell index={2} colSpan="6" align="left"></Table.Summary.Cell>
             </Table.Summary.Row>
