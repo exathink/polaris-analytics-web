@@ -288,7 +288,7 @@ export const WorkItemsDetailTable =
                 </Text>
               </Table.Summary.Cell>
 
-              {avgData && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
+              {avgData && avgData !== 0 && <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
                 Avg. {appliedName}
                 <Text strong className="tw-ml-4">
                   {i18nNumber(intl, avgData, 2)}
