@@ -2,6 +2,7 @@ import React from "react";
 import {Table} from "antd";
 import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
+import {LabelValue} from "../../helpers/components";
 
 const DEFAULTS = {
   PAGE_SIZE: 7,
@@ -16,22 +17,46 @@ export const TABLE_HEIGHTS = {
   EIGHTY: "80vh",
   NINETY: "90vh"
 }
+function getColLength(columns) {
+  let res = 0;
+  columns.forEach(col => {
+    if (col.children) {
+      res += col.children.length;
+    } else {
+      res += 1;
+    }
+  })
+  return res;
+}
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div className="tw-p-1 tw-bg-white">
+    <div className="tw-bg-white tw-p-1">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
         pagination={false}
         columns={columns}
         dataSource={dataSource}
-        scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
+        scroll={{y: height ?? TABLE_HEIGHTS.THIRTY}}
         showSorterTooltip={false}
         loading={loading}
         data-testid={testId}
         className={styles.tableStyle}
         onChange={onChange}
+        summary={(pageData) => {
+          return (
+            <Table.Summary fixed="bottom">
+              <Table.Summary.Row className="tw-bg-gray-100">
+                {tableProps?.renderTableSummary?.(pageData) ?? (
+                  <Table.Summary.Cell index={0} colSpan={getColLength(columns)} align="left">
+                    <LabelValue label="Records" value={pageData.length} />
+                  </Table.Summary.Cell>
+                )}
+              </Table.Summary.Row>
+            </Table.Summary>
+          );
+        }}
         {...tableProps}
       />
     </div>
