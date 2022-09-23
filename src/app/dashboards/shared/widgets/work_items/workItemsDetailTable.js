@@ -276,30 +276,28 @@ export const WorkItemsDetailTable =
         rowKey={(record) => record.rowKey}
         onChange={handleChange}
         loading={loading}
-        summary={(pageData) => {
-        
-        // calculate avg for summary stats columns
-        const avgData = appliedSorter && summaryStatsColumns.includes(appliedSorter) ? average(pageData, (item) => +(item[appliedSorter])) : undefined;
-
-        
-        return (
-          <Table.Summary fixed="bottom">
-            <Table.Summary.Row className="tw-bg-gray-100">
+        renderTableSummary={(pageData) => {
+          // calculate avg for summary stats columns
+          const avgData =
+            appliedSorter && summaryStatsColumns.includes(appliedSorter)
+              ? average(pageData, (item) => +item[appliedSorter])
+              : undefined;
+          return (
+            <>
               <Table.Summary.Cell index={0} align="left">
-                <LabelValue label="Records" value={pageData?.length} />
+                <LabelValue label="Cards" value={pageData?.length} />
               </Table.Summary.Cell>
 
               {avgData !== 0 && avgData && (
-                <Table.Summary.Cell index={1} align="left" className="tw-font-medium tw-uppercase">
+                <Table.Summary.Cell index={1} align="left">
                   <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} />
                 </Table.Summary.Cell>
               )}
 
               <Table.Summary.Cell index={2} colSpan="6" align="left"></Table.Summary.Cell>
-            </Table.Summary.Row>
-          </Table.Summary>
-        );
-      }}
+            </>
+          );
+        }}
       />
     );
   };
