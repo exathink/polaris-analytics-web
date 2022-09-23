@@ -219,7 +219,11 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
-const summaryStatsColumns = ["cycleTimeOrLatency", "leadTimeOrAge", "effort"];
+const summaryStatsColumns = {
+  cycleTimeOrLatency: "Days",
+  leadTimeOrAge: "Days",
+  effort: "FTE Days"
+}
 
 export const WorkItemsDetailTable = 
   ({
@@ -279,7 +283,7 @@ export const WorkItemsDetailTable =
         renderTableSummary={(pageData) => {
           // calculate avg for summary stats columns
           const avgData =
-            appliedSorter && summaryStatsColumns.includes(appliedSorter)
+            appliedSorter && summaryStatsColumns[appliedSorter]
               ? average(pageData, (item) => +item[appliedSorter])
               : undefined;
           return (
@@ -290,7 +294,7 @@ export const WorkItemsDetailTable =
 
               {avgData !== 0 && avgData && (
                 <Table.Summary.Cell index={1} align="left">
-                  <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} />
+                  <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} uom={summaryStatsColumns[appliedSorter]} />
                 </Table.Summary.Cell>
               )}
 
