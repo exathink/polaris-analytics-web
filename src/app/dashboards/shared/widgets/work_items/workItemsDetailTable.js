@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {average, getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -13,6 +13,8 @@ import {
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
+import { Table } from "antd";
+import {LabelValue} from "../../../../helpers/components";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -217,6 +219,12 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
+const summaryStatsColumns = {
+  cycleTimeOrLatency: "Days",
+  leadTimeOrAge: "Days",
+  effort: "FTE Days"
+}
+
 export const WorkItemsDetailTable = 
   ({
     view,
@@ -232,6 +240,10 @@ export const WorkItemsDetailTable =
     loading
   }) => {
     const intl = useIntl();
+
+    const [appliedSorter, setAppliedSorter] = React.useState();
+    const [appliedName, setAppliedName] = React.useState();
+
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -253,15 +265,43 @@ export const WorkItemsDetailTable =
       supportsFilterOnCard
     });
 
+    function handleChange(p, f, s, e) {
+      setAppliedSorter(s?.column?.dataIndex)
+      setAppliedName(s?.column?.title)
+      onChange?.(p,f,s,e);
+    }
+
     return (
       <StripeTable
         columns={columns}
         dataSource={dataSource}
         testId="work-items-detail-table"
-        height={view === "primary" ? TABLE_HEIGHTS.FORTY_FIVE : TABLE_HEIGHTS.NINETY}
+        height={view === "primary" ? TABLE_HEIGHTS.THIRTY : TABLE_HEIGHTS.SEVENTY}
         rowKey={(record) => record.rowKey}
-        onChange={onChange}
+        onChange={handleChange}
         loading={loading}
+        renderTableSummary={(pageData) => {
+          // calculate avg for summary stats columns
+          const avgData =
+            appliedSorter && summaryStatsColumns[appliedSorter]
+              ? average(pageData, (item) => +item[appliedSorter])
+              : undefined;
+          return (
+            <>
+              <Table.Summary.Cell index={0} align="left">
+                <LabelValue label="Cards" value={pageData?.length} />
+              </Table.Summary.Cell>
+
+              {avgData !== 0 && avgData && (
+                <Table.Summary.Cell index={1} align="left">
+                  <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} uom={summaryStatsColumns[appliedSorter]} />
+                </Table.Summary.Cell>
+              )}
+
+              <Table.Summary.Cell index={2} colSpan="6" align="left"></Table.Summary.Cell>
+            </>
+          );
+        }}
       />
     );
   };
