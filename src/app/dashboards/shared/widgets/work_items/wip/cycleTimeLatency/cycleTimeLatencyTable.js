@@ -12,6 +12,8 @@ import {
   customColumnRender
 } from "../../../../../projects/shared/helper/renderers";
 import {useBlurClass} from "../../../../../../helpers/utility";
+import {Table} from "antd";
+import {LabelValue} from "../../../../../../helpers/components";
 
 const QuadrantSort = {
   ok: 0,
@@ -272,7 +274,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
 }
 
 export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget}) => {
+  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -299,7 +301,18 @@ export const CycleTimeLatencyTable = injectIntl(
         testId="cycle-time-latency-table"
         height={TABLE_HEIGHTS.TWENTY_FIVE}
         onChange={handleChange}
-        rowKey={record => record.key}
+        rowKey={(record) => record.key}
+        renderTableSummary={(pageData) => {
+          return (
+            <>
+              <Table.Summary.Cell index={0} align="left">
+                <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+              </Table.Summary.Cell>
+
+              <Table.Summary.Cell index={1} colSpan="7" align="left"></Table.Summary.Cell>
+            </>
+          );
+        }}
       />
     );
   }
