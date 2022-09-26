@@ -55,6 +55,9 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
                     <LabelValue label="Records" value={pageData.length} />
                   </Table.Summary.Cell>
                 )}
+
+                {/* This dummy cell is to fill remaining space of summary stats row */}
+                <Table.Summary.Cell index={100} colSpan="50" align="left"></Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
           );
