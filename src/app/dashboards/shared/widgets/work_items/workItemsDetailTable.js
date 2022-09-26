@@ -237,7 +237,8 @@ export const WorkItemsDetailTable =
     selectedMetric,
     supportsFilterOnCard,
     onChange,
-    loading
+    loading,
+    specsOnly
   }) => {
     const intl = useIntl();
 
@@ -289,7 +290,7 @@ export const WorkItemsDetailTable =
           return (
             <>
               <Table.Summary.Cell index={0} align="left">
-                <LabelValue label="Cards" value={pageData?.length} />
+                <LabelValue label={specsOnly ? "Specs": "Cards"} value={pageData?.length} />
               </Table.Summary.Cell>
 
               {avgData !== 0 && avgData && (
