@@ -298,8 +298,6 @@ export const WorkItemsDetailTable =
                   <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} uom={summaryStatsColumns[appliedSorter]} />
                 </Table.Summary.Cell>
               )}
-
-              <Table.Summary.Cell index={2} colSpan="6" align="left"></Table.Summary.Cell>
             </>
           );
         }}

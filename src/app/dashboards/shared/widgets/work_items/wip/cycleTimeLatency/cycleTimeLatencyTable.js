@@ -308,8 +308,6 @@ export const CycleTimeLatencyTable = injectIntl(
               <Table.Summary.Cell index={0} align="left">
                 <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
               </Table.Summary.Cell>
-
-              <Table.Summary.Cell index={1} colSpan="7" align="left"></Table.Summary.Cell>
             </>
           );
         }}

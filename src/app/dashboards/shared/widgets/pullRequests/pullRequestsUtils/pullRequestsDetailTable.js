@@ -264,8 +264,6 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
               <Table.Summary.Cell index={0} align="left">
                 <LabelValue label="Pull Requests" value={pageData?.length} />
               </Table.Summary.Cell>
-
-              <Table.Summary.Cell index={1} colSpan="4" align="left"></Table.Summary.Cell>
             </>
           );
         }}
