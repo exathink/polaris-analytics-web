@@ -1,4 +1,4 @@
-import {Tag, Tooltip} from "antd";
+import {Table, Tag, Tooltip} from "antd";
 import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
@@ -9,6 +9,7 @@ import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
 import {ClosedPrIcon, MergedPrIcon, OpenPrIcon} from "../../../../../components/misc/customIcons";
+import {LabelValue} from "../../../../../helpers/components";
 
 const PrComponentsMap = {
   merged: <MergedPrIcon />,
@@ -257,6 +258,17 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
       testId="pull-requests-detail-table"
       height={TABLE_HEIGHTS.FIFTEEN}
       rowKey={(record) => record.rowKey}
+      renderTableSummary={(pageData) => {
+          return (
+            <>
+              <Table.Summary.Cell index={0} align="left">
+                <LabelValue label="Pull Requests" value={pageData?.length} />
+              </Table.Summary.Cell>
+
+              <Table.Summary.Cell index={1} colSpan="4" align="left"></Table.Summary.Cell>
+            </>
+          );
+        }}
     />
   );
 }
