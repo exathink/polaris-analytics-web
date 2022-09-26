@@ -255,7 +255,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
       columns={columns}
       dataSource={dataSource}
       testId="pull-requests-detail-table"
-      height={TABLE_HEIGHTS.FORTY_FIVE}
+      height={TABLE_HEIGHTS.FIFTEEN}
       rowKey={(record) => record.rowKey}
     />
   );
