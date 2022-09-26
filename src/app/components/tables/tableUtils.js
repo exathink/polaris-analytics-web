@@ -19,17 +19,6 @@ export const TABLE_HEIGHTS = {
   EIGHTY: "80vh",
   NINETY: "90vh"
 }
-function getColLength(columns) {
-  let res = 0;
-  columns.forEach(col => {
-    if (col.children) {
-      res += col.children.length;
-    } else {
-      res += 1;
-    }
-  })
-  return res;
-}
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
@@ -51,7 +40,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
             <Table.Summary fixed="bottom">
               <Table.Summary.Row className="tw-bg-gray-100">
                 {tableProps?.renderTableSummary?.(pageData) ?? (
-                  <Table.Summary.Cell index={0} colSpan={getColLength(columns)} align="left">
+                  <Table.Summary.Cell index={0} align="left">
                     <LabelValue label="Records" value={pageData.length} />
                   </Table.Summary.Cell>
                 )}
