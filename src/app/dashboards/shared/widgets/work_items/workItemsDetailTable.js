@@ -277,7 +277,7 @@ export const WorkItemsDetailTable =
           }
           return acc;
       }, [])
-      debugger;
+
       setAppliedFilters(nonNullKeys)
       setAppliedSorter(s?.column?.dataIndex)
       setAppliedName(s?.column?.title)
