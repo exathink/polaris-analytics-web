@@ -221,7 +221,9 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
+  cycleTime: "Days",
   leadTimeOrAge: "Days",
+  leadTime: "Days",
   effort: "FTE Days"
 }
 
@@ -242,6 +244,7 @@ export const WorkItemsDetailTable =
   }) => {
     const intl = useIntl();
 
+    const [appliedFilters, setAppliedFilters] = React.useState([]);
     const [appliedSorter, setAppliedSorter] = React.useState();
     const [appliedName, setAppliedName] = React.useState();
 
@@ -267,6 +270,15 @@ export const WorkItemsDetailTable =
     });
 
     function handleChange(p, f, s, e) {
+      const nonNullKeys = Object.entries(f).reduce((acc, item) => {
+          const [key, value] = item;
+          if (value !== null) {
+            acc = [...acc, key]
+          }
+          return acc;
+      }, [])
+      debugger;
+      setAppliedFilters(nonNullKeys)
       setAppliedSorter(s?.column?.dataIndex)
       setAppliedName(s?.column?.title)
       onChange?.(p,f,s,e);
@@ -287,18 +299,37 @@ export const WorkItemsDetailTable =
             appliedSorter && summaryStatsColumns[appliedSorter]
               ? average(pageData, (item) => +item[appliedSorter])
               : undefined;
-          return (
-            <>
-              <Table.Summary.Cell index={0} align="left">
-                <LabelValue label={specsOnly ? "Specs": "Cards"} value={pageData?.length} />
-              </Table.Summary.Cell>
+          
+          const avgFiltersData = appliedFilters.map(appliedFilter => {
+            return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])}
+          })
 
-              {avgData !== 0 && avgData && (
-                <Table.Summary.Cell index={1} align="left">
-                  <LabelValue label={`Avg. ${appliedName}`} value={i18nNumber(intl, avgData, 2)} uom={summaryStatsColumns[appliedSorter]} />
-                </Table.Summary.Cell>
-              )}
-            </>
+          return (
+            <Table.Summary.Cell index={0} align="left" colSpan="10">
+              <div className="tw-flex tw-space-x-6">
+                <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+                {avgFiltersData
+                  .filter((x) => summaryStatsColumns[x.appliedFilter])
+                  .map((x, i) => {
+                    return (
+                      <LabelValue
+                        key={x.appliedFilter}
+                        label={`Avg. ${getSelectedMetricDisplayName(x.appliedFilter, stateType)}`}
+                        value={i18nNumber(intl, x.average, 2)}
+                        uom={summaryStatsColumns[x.appliedFilter]}
+                      />
+                    );
+                  })}
+                {avgData !== 0 && avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false &&(
+                  <LabelValue
+                    key={getMetricsMetaKey(appliedSorter, stateType)}
+                    label={`Avg. ${appliedName}`}
+                    value={i18nNumber(intl, avgData, 2)}
+                    uom={summaryStatsColumns[appliedSorter]}
+                  />
+                )}
+              </div>
+            </Table.Summary.Cell>
           );
         }}
       />
