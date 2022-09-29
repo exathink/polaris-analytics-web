@@ -261,9 +261,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
       renderTableSummary={(pageData) => {
           return (
             <>
-              <Table.Summary.Cell index={0} align="left">
-                <LabelValue label="Pull Requests" value={pageData?.length} />
-              </Table.Summary.Cell>
+              <LabelValue label="Pull Requests" value={pageData?.length} />
             </>
           );
         }}

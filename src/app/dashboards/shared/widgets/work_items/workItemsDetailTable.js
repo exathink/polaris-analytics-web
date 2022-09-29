@@ -305,22 +305,23 @@ export const WorkItemsDetailTable =
           })
 
           return (
-            <Table.Summary.Cell index={0} align="left" colSpan="10">
-              <div className="tw-flex tw-space-x-6">
-                <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
-                {avgFiltersData
-                  .filter((x) => summaryStatsColumns[x.appliedFilter])
-                  .map((x, i) => {
-                    return (
-                      <LabelValue
-                        key={x.appliedFilter}
-                        label={`Avg. ${getSelectedMetricDisplayName(x.appliedFilter, stateType)}`}
-                        value={i18nNumber(intl, x.average, 2)}
-                        uom={summaryStatsColumns[x.appliedFilter]}
-                      />
-                    );
-                  })}
-                {avgData !== 0 && avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false &&(
+            <>
+              <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+              {avgFiltersData
+                .filter((x) => summaryStatsColumns[x.appliedFilter])
+                .map((x, i) => {
+                  return (
+                    <LabelValue
+                      key={x.appliedFilter}
+                      label={`Avg. ${getSelectedMetricDisplayName(x.appliedFilter, stateType)}`}
+                      value={i18nNumber(intl, x.average, 2)}
+                      uom={summaryStatsColumns[x.appliedFilter]}
+                    />
+                  );
+                })}
+              {avgData !== 0 &&
+                avgData &&
+                appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType)) === false && (
                   <LabelValue
                     key={getMetricsMetaKey(appliedSorter, stateType)}
                     label={`Avg. ${appliedName}`}
@@ -328,8 +329,7 @@ export const WorkItemsDetailTable =
                     uom={summaryStatsColumns[appliedSorter]}
                   />
                 )}
-              </div>
-            </Table.Summary.Cell>
+            </>
           );
         }}
       />
