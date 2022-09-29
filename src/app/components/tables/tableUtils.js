@@ -39,11 +39,13 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
           return (
             <Table.Summary fixed="bottom">
               <Table.Summary.Row className="tw-bg-gray-100">
-                {tableProps?.renderTableSummary?.(pageData) ?? (
-                  <Table.Summary.Cell index={0} align="left">
-                    <LabelValue label="Records" value={pageData.length} />
-                  </Table.Summary.Cell>
-                )}
+                <Table.Summary.Cell index={0} align="left" colSpan="20">
+                  <div className="tw-flex tw-space-x-6">
+                    {tableProps?.renderTableSummary?.(pageData) ?? (
+                      <LabelValue label="Records" value={pageData.length} />
+                    )}
+                  </div>
+                </Table.Summary.Cell>
 
                 {/* This dummy cell is to fill remaining space of summary stats row */}
                 <Table.Summary.Cell index={100} colSpan="50" align="left"></Table.Summary.Cell>
