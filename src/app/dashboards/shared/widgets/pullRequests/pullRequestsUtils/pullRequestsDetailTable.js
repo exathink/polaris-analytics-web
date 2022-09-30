@@ -247,6 +247,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
 
   const [appliedSorter, setAppliedSorter] = React.useState();
   const [appliedName, setAppliedName] = React.useState();
+  const [appliedFilters, setAppliedFilters] = React.useState([]);
 
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
@@ -262,6 +263,16 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
   });
 
   const handleChange = (p, f, s, e) => {
+    const nonNullKeys = Object.entries(f).reduce((acc, item) => {
+      const [key, value] = item;
+      if (value !== null) {
+        acc = [...acc, key];
+      }
+      return acc;
+    }, []);
+
+    setAppliedFilters(nonNullKeys);
+
     setAppliedSorter(s?.column?.dataIndex);
     setAppliedName(s?.column?.title);
   };
@@ -280,9 +291,27 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
             ? average(pageData, (item) => item[appliedSorter])
             : undefined;
 
+        const avgFiltersData = appliedFilters
+          .filter((x) => summaryStatsColumns[x])
+          .map((appliedFilter) => {
+            return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])};
+          });
+          
           return (
             <>
               <LabelValue label="Pull Requests" value={pageData?.length} />
+              {avgFiltersData
+                .filter((x) => summaryStatsColumns[x.appliedFilter])
+                .map((x, i) => {
+                  return (
+                    <LabelValue
+                      key={x.appliedFilter}
+                      label={`Avg. ${x.appliedFilter === "age" ? PRStateTypeMap[prStateType] : x.appliedFilter}`}
+                      value={i18nNumber(intl, x.average, 2)}
+                      uom={summaryStatsColumns[x.appliedFilter]}
+                    />
+                  );
+                })}
               {avgData !== 0 && avgData != null && (
                 <LabelValue
                   key={prStateType}
