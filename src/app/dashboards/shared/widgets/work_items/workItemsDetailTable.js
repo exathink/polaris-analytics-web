@@ -72,7 +72,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 
   const filterState = {
       filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
       onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
       render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
   }
@@ -95,7 +95,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     title: projectDeliveryCycleFlowMetricsMeta["effort"].display,
     dataIndex: "effort",
     key: "effort",
-    ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+    ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
     filters: filters.categories.map((b) => ({text: b, value: b})),
     onFilter: (value, record) => testMetric(value, record, "effort"),
     width: "5%",
@@ -107,7 +107,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       title: projectDeliveryCycleFlowMetricsMeta["duration"].display,
       dataIndex: "duration",
       key: "duration",
-      ...(selectedMetric === "duration" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      ...(selectedMetric === "duration" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "duration"),
       width: "5%",
@@ -121,7 +121,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       title: getSelectedMetricDisplayName("latency", stateType),
       dataIndex: latencyKey,
       key: latencyKey,
-      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []} : {}),
+      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, latencyKey),
       width: "5%",
@@ -191,7 +191,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       dataIndex: "leadTimeOrAge",
       key: "leadTime",
       ...(selectedMetric === "leadTimeOrAge"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
@@ -204,7 +204,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       dataIndex: "cycleTimeOrLatency",
       key: "cycleTime",
       ...(selectedMetric === "cycleTimeOrLatency"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : []}
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
