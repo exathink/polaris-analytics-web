@@ -3,7 +3,7 @@ import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {average, fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
+import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
@@ -11,6 +11,7 @@ import {WorkItemStateTypeColor} from "../../../config";
 import {ClosedPrIcon, MergedPrIcon, OpenPrIcon} from "../../../../../components/misc/customIcons";
 import {LabelValue} from "../../../../../helpers/components";
 import React from "react";
+import {useSummaryStats} from "../../../hooks/useSummaryStats";
 
 const summaryStatsColumns = {
   age: "Days",
@@ -219,7 +220,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       key: "age",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.age, b.age),
-      defaultFilteredValue: selectedFilter != null ? [selectedFilter] : [],
+      defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null,
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "age"),
       render: (text) => <span className="tw-textXs">{humanizeDuration(i18nNumber(intl, Number(text), 2))}</span>,
@@ -244,10 +245,7 @@ function getTransformedData(tableData, intl) {
 
 export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
-
-  const [appliedSorter, setAppliedSorter] = React.useState();
-  const [appliedName, setAppliedName] = React.useState();
-  const [appliedFilters, setAppliedFilters] = React.useState([]);
+  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} = useSummaryStats(summaryStatsColumns);
 
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
@@ -262,21 +260,6 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     prStateType
   });
 
-  const handleChange = (p, f, s, e) => {
-    const nonNullKeys = Object.entries(f).reduce((acc, item) => {
-      const [key, value] = item;
-      if (value !== null) {
-        acc = [...acc, key];
-      }
-      return acc;
-    }, []);
-
-    setAppliedFilters(nonNullKeys);
-
-    setAppliedSorter(s?.column?.dataIndex);
-    setAppliedName(s?.column?.title);
-  };
-
   return (
     <StripeTable
       columns={columns}
@@ -286,17 +269,9 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
       onChange={handleChange}
       rowKey={(record) => record.rowKey}
       renderTableSummary={(pageData) => {
-        const avgData =
-          appliedSorter && summaryStatsColumns[appliedSorter]
-            ? average(pageData, (item) => item[appliedSorter])
-            : undefined;
+        const avgData = getAvgSortersData(pageData);
+        const avgFiltersData = getAvgFiltersData(pageData);
 
-        const avgFiltersData = appliedFilters
-          .filter((x) => summaryStatsColumns[x])
-          .map((appliedFilter) => {
-            return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])};
-          });
-          
           return (
             <>
               <LabelValue label="Pull Requests" value={pageData?.length} />
@@ -312,12 +287,12 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
                     />
                   );
                 })}
-              {avgData !== 0 && avgData != null && (
+              {avgData !== 0 && avgData != null && appliedFilters.includes(appliedSorter) === false && (
                 <LabelValue
-                  key={prStateType}
+                  key={appliedSorter}
                   label={`Avg. ${appliedName}`}
                   value={i18nNumber(intl, avgData, 2)}
-                  uom={"Days"}
+                  uom={summaryStatsColumns[appliedSorter]}
                 />
               )}
             </>

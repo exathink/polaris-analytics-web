@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
-import {average, getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
+import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -13,8 +13,8 @@ import {
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
-import { Table } from "antd";
 import {LabelValue} from "../../../../helpers/components";
+import {useSummaryStats} from "../../hooks/useSummaryStats";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -244,9 +244,8 @@ export const WorkItemsDetailTable =
   }) => {
     const intl = useIntl();
 
-    const [appliedFilters, setAppliedFilters] = React.useState([]);
-    const [appliedSorter, setAppliedSorter] = React.useState();
-    const [appliedName, setAppliedName] = React.useState();
+    const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+      useSummaryStats(summaryStatsColumns);
 
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -269,21 +268,6 @@ export const WorkItemsDetailTable =
       supportsFilterOnCard
     });
 
-    function handleChange(p, f, s, e) {
-      const nonNullKeys = Object.entries(f).reduce((acc, item) => {
-          const [key, value] = item;
-          if (value !== null) {
-            acc = [...acc, key]
-          }
-          return acc;
-      }, [])
-
-      setAppliedFilters(nonNullKeys)
-      setAppliedSorter(s?.column?.dataIndex)
-      setAppliedName(s?.column?.title)
-      onChange?.(p,f,s,e);
-    }
-
     return (
       <StripeTable
         columns={columns}
@@ -294,15 +278,8 @@ export const WorkItemsDetailTable =
         onChange={handleChange}
         loading={loading}
         renderTableSummary={(pageData) => {
-          // calculate avg for summary stats columns
-          const avgData =
-            appliedSorter && summaryStatsColumns[appliedSorter]
-              ? average(pageData, (item) => +item[appliedSorter])
-              : undefined;
-          
-          const avgFiltersData = appliedFilters.filter((x) => summaryStatsColumns[x]).map(appliedFilter => {
-            return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])}
-          })
+          const avgData = getAvgSortersData(pageData);
+          const avgFiltersData = getAvgFiltersData(pageData);
 
           return (
             <>
