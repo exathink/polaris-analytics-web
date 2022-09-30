@@ -11,7 +11,7 @@ import {
   comboColumnTitleRender,
   customColumnRender
 } from "../../../../../projects/shared/helper/renderers";
-import {average, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
+import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
 import {LabelValue} from "../../../../../../helpers/components";
 import { getMetricsMetaKey } from "../../../../helpers/metricsMeta";
 
@@ -22,7 +22,8 @@ const summaryStatsColumns = {
   leadTimeOrAge: "Days",
   Age: "Days",
   leadTime: "Days",
-  effort: "FTE Days"
+  effort: "FTE Days",
+  latestCommitDisplay: "Days"
 }
 
 const QuadrantSort = {
@@ -307,7 +308,7 @@ export const CycleTimeLatencyTable = injectIntl(
       callBacks.setAppliedFilters(f);
 
       setAppliedSorter(s?.column?.dataIndex);
-      setAppliedName(s?.column?.title);
+      setAppliedName(s?.column?.dataIndex==="latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
     };
 
     return (
@@ -320,10 +321,17 @@ export const CycleTimeLatencyTable = injectIntl(
         rowKey={(record) => record.key}
         renderTableSummary={(pageData) => {
                     // calculate avg for summary stats columns
-         const avgData =
+        
+        let avgData;
+         if(appliedSorter === "latestCommitDisplay") {
+          avgData = averageOfDurations(pageData.map(item => item.latestCommit))
+         } else {
+          avgData =
            appliedSorter && summaryStatsColumns[appliedSorter]
              ? average(pageData, (item) => +item[appliedSorter])
              : undefined;
+         }
+
 
           return (
             <>
