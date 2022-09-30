@@ -1,15 +1,20 @@
-import {Table, Tag, Tooltip} from "antd";
+import {Tag, Tooltip} from "antd";
 import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
-import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
+import {average, fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
 import {ClosedPrIcon, MergedPrIcon, OpenPrIcon} from "../../../../../components/misc/customIcons";
 import {LabelValue} from "../../../../../helpers/components";
+import React from "react";
+
+const summaryStatsColumns = {
+  age: "Days",
+}
 
 const PrComponentsMap = {
   merged: <MergedPrIcon />,
@@ -239,6 +244,10 @@ function getTransformedData(tableData, intl) {
 
 export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
+
+  const [appliedSorter, setAppliedSorter] = React.useState();
+  const [appliedName, setAppliedName] = React.useState();
+
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
   const categories = getHistogramCategories(colWidthBoundaries, "days");
@@ -251,17 +260,37 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     setWorkItemKey,
     prStateType
   });
+
+  const handleChange = (p, f, s, e) => {
+    setAppliedSorter(s?.column?.dataIndex);
+    setAppliedName(s?.column?.title);
+  };
+
   return (
     <StripeTable
       columns={columns}
       dataSource={dataSource}
       testId="pull-requests-detail-table"
       height={TABLE_HEIGHTS.FIFTEEN}
+      onChange={handleChange}
       rowKey={(record) => record.rowKey}
       renderTableSummary={(pageData) => {
+        const avgData =
+          appliedSorter && summaryStatsColumns[appliedSorter]
+            ? average(pageData, (item) => item[appliedSorter])
+            : undefined;
+
           return (
             <>
               <LabelValue label="Pull Requests" value={pageData?.length} />
+              {avgData !== 0 && avgData != null && (
+                <LabelValue
+                  key={prStateType}
+                  label={`Avg. ${appliedName}`}
+                  value={i18nNumber(intl, avgData, 2)}
+                  uom={"Days"}
+                />
+              )}
             </>
           );
         }}
