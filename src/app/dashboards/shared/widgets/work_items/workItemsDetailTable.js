@@ -300,7 +300,7 @@ export const WorkItemsDetailTable =
               ? average(pageData, (item) => +item[appliedSorter])
               : undefined;
           
-          const avgFiltersData = appliedFilters.map(appliedFilter => {
+          const avgFiltersData = appliedFilters.filter((x) => summaryStatsColumns[x]).map(appliedFilter => {
             return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])}
           })
 
