@@ -316,7 +316,7 @@ export const CycleTimeLatencyTable = injectIntl(
         columns={columns}
         dataSource={dataSource}
         testId="cycle-time-latency-table"
-        height={TABLE_HEIGHTS.TWENTY_FIVE}
+        // height={TABLE_HEIGHTS.TWENTY_FIVE}
         onChange={handleChange}
         rowKey={(record) => record.key}
         renderTableSummary={(pageData) => {

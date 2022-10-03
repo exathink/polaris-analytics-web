@@ -273,7 +273,7 @@ export const WorkItemsDetailTable =
         columns={columns}
         dataSource={dataSource}
         testId="work-items-detail-table"
-        height={view === "primary" ? TABLE_HEIGHTS.TWENTY_FIVE : TABLE_HEIGHTS.SEVENTY}
+        // height={view === "primary" ? TABLE_HEIGHTS.TWENTY_FIVE : TABLE_HEIGHTS.SEVENTY}
         rowKey={(record) => record.rowKey}
         onChange={handleChange}
         loading={loading}
