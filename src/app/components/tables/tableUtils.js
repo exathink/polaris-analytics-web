@@ -22,14 +22,14 @@ export const TABLE_HEIGHTS = {
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div className="tw-bg-white tw-p-1">
+    <div className="tw-bg-white tw-p-1 tw-h-full tw-w-full">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
         pagination={false}
         columns={columns}
         dataSource={dataSource}
-        scroll={{y: height ?? TABLE_HEIGHTS.THIRTY}}
+        scroll={{y: "100%"}}
         showSorterTooltip={false}
         loading={loading}
         data-testid={testId}
