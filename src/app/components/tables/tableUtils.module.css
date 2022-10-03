@@ -29,12 +29,15 @@
   flex: auto;
   overflow: hidden;
   height: 100%;
+  background-color: transparent;
 }
 
 .tableStyle :global(.ant-table-container) {
   max-height: 100%;
   display: flex;
   flex-flow: column nowrap;
+  background-color: white;
+  padding: theme("spacing.1");
 }
 
 .tableStyle :global(.ant-table-header) {

@@ -22,7 +22,7 @@ export const TABLE_HEIGHTS = {
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div className="tw-bg-white tw-p-1 tw-h-full tw-w-full">
+    <div className="tw-p-1 tw-h-full tw-w-full">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
