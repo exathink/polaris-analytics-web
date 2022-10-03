@@ -23,7 +23,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                                                        cycleTimeTarget,
                                                        includeSubTasks
                                                      }) => {
-  const [daysRange, setDaysRange] = React.useState(days);
+  const [daysRange] = React.useState(days);
   const [workItemScope, setWorkItemScope] = useState("all");
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 

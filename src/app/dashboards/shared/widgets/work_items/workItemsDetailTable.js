@@ -3,7 +3,7 @@ import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
@@ -273,7 +273,6 @@ export const WorkItemsDetailTable =
         columns={columns}
         dataSource={dataSource}
         testId="work-items-detail-table"
-        // height={view === "primary" ? TABLE_HEIGHTS.TWENTY_FIVE : TABLE_HEIGHTS.SEVENTY}
         rowKey={(record) => record.rowKey}
         onChange={handleChange}
         loading={loading}

@@ -2,7 +2,7 @@ import {Tag, Tooltip} from "antd";
 import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
@@ -265,7 +265,6 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
       columns={columns}
       dataSource={dataSource}
       testId="pull-requests-detail-table"
-      // height={TABLE_HEIGHTS.FIFTEEN}
       onChange={handleChange}
       rowKey={(record) => record.rowKey}
       renderTableSummary={(pageData) => {
