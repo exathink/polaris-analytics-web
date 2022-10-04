@@ -103,7 +103,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   return (
     <Popover content={tooltipContent} title={tooltipTitle} trigger={"hover"}>
       <div
-        className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center tw-rounded-md tw-p-1", className)}
+        className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center tw-rounded-md tw-p-1 2xl:tw-space-y-1", className)}
         style={{backgroundColor: color}}
         onClick={onQuadrantClick}
         data-testid={testId}
