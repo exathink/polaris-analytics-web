@@ -9,3 +9,7 @@ export function LabelValue({label, value, uom, className, labelClassName, valueC
     </div>
   );
 }
+
+export function Label({label, className}) {
+  return <div className={classNames("tw-text-lg tw-tracking-wide tw-text-gray-300", className)}>{label}</div>;
+}
