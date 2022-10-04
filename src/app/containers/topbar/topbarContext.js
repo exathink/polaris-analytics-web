@@ -27,7 +27,7 @@ export default withNavigationContext(({context}) => {
   }
 
   return (
-    <div className="topBarContext">
+    <div className="topBarContext" data-testid="topBarContext">
       <i className={context.icon()} style={contextStyle}/>
       {
         element

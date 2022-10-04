@@ -264,7 +264,7 @@ class _CommitsTimelineChartView extends React.Component {
           </ComponentCarousel>
         </div>
         <div className="tw-relative tw-h-[82%]">
-          <div className="tw-absolute tw-inset-0">
+          <div className="tw-absolute tw-inset-0" data-testid="commits_timeline_rollup">
             <CommitsTimelineRollupBarChart
               /* We cannot use the model on state here because this should include all the categories
                *  even when some a selected*/

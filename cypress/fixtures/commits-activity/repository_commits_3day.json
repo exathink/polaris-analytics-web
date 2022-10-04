@@ -1,0 +1,393 @@
+{
+  "data": {
+    "repository": {
+      "id": "UmVwb3NpdG9yeTphNGNiOTBhMS1kY2Y1LTQ3NjgtYjE0MC0yOTVjOTdiZTllZTA=",
+      "commits": {
+        "count": 10,
+        "edges": [
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo2YTRkY2ZiNWMzMjY1Mjc2ODczOTI3NmYzNTg5ZDVkZTczZjUwOGZk",
+              "name": "6a4dcfb5",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:6a4dcfb5c32652768739276f3589d5de73f508fd",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-26T14:56:12",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-26T14:56:12",
+              "commitMessage": "Merge branch 'PP-159-1' into 'master'\n\n[PP-159-1] E2E test for invite user\n\nSee merge request polaris-apps/polaris-analytics-web!393",
+              "branch": "master",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 2,
+              "stats": {
+                "files": 7,
+                "lines": 276,
+                "insertions": 276,
+                "deletions": 0
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "story",
+                  "name": "Edit User UI",
+                  "key": "17bf77d0-82ad-41bb-84dd-c313bcea7d75",
+                  "displayId": "PP-159",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10281",
+                  "stateType": "closed",
+                  "state": "DEPLOYED TO PROD"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo1YzJkNzcyYWViZTE1NzUzYzhjODM1ODg0ZGQxY2UyZTgxZjBiZGFl",
+              "name": "5c2d772a",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:5c2d772aebe15753c8c835884dd1ce2e81f0bdae",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-26T14:24:50",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-26T14:24:50",
+              "commitMessage": "refactor grid layout styling to fix layout issue\n",
+              "branch": "PP-232",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 14,
+                "insertions": 7,
+                "deletions": 7
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "story",
+                  "name": "Reorganize cards ",
+                  "key": "41380f91-e510-42c1-a60c-d0ed1598b9a3",
+                  "displayId": "PP-232",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10355",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo0MGRmYmU2ZmRiYTM3YzExMWYyYTA0M2Y3YTA4ZDMyODkwYTc1Yjg3",
+              "name": "40dfbe6f",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:40dfbe6fdba37c111f2a043f7a08d32890a75b87",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-26T05:09:37",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-26T05:09:37",
+              "commitMessage": "center align throughput and cycletime cards\n",
+              "branch": "PP-232",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 6,
+                "insertions": 3,
+                "deletions": 3
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "story",
+                  "name": "Reorganize cards ",
+                  "key": "41380f91-e510-42c1-a60c-d0ed1598b9a3",
+                  "displayId": "PP-232",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10355",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDplZTBiZTNmOWE0NGQ1MzgzNDMzNmVhZGJlMmRhM2MwNWEwMWViMWIx",
+              "name": "ee0be3f9",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:ee0be3f9a44d53834336eadbe2da3c05a01eb1b1",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-26T05:06:25",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-26T05:06:25",
+              "commitMessage": "reverse the order of cards\n",
+              "branch": "PP-232",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 17,
+                "insertions": 9,
+                "deletions": 8
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "story",
+                  "name": "Reorganize cards ",
+                  "key": "41380f91-e510-42c1-a60c-d0ed1598b9a3",
+                  "displayId": "PP-232",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10355",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDoyOGExNzgxM2FkZDE5ZjZkNTRlYmU2MjNiMjU0YWM4NmMwYjE3OWZh",
+              "name": "28a17813",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:28a17813add19f6d54ebe623b254ac86c0b179fa",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-26T04:39:05",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-26T04:39:05",
+              "commitMessage": "remove classNameForDetailIcon\n",
+              "branch": "PP-232",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 1,
+                "insertions": 0,
+                "deletions": 1
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "story",
+                  "name": "Reorganize cards ",
+                  "key": "41380f91-e510-42c1-a60c-d0ed1598b9a3",
+                  "displayId": "PP-232",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10355",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDpmYjQwNDg1ZTU3YmJmZjQ4NzI3ZTliMDI3YTMxMjUzOGMyMzk5MzRi",
+              "name": "fb40485e",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:fb40485e57bbff48727e9b027a312538c239934b",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-25T14:18:06",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-25T14:18:06",
+              "commitMessage": "soften the blur class for table view\n",
+              "branch": "PP-231",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 2,
+                "insertions": 1,
+                "deletions": 1
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "task",
+                  "name": "Prototype CSS and query intercept options for demo mode dashboards",
+                  "key": "f7f43dc8-0a65-4425-833d-77a358a1a885",
+                  "displayId": "PP-231",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10354",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo5MmFmZWZjMjlmMDRlNjJmMGYxMGQwN2EzOTJiYTQwYjFhOTYwOGIy",
+              "name": "92afefc2",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:92afefc29f04e62f0f10d07a392ba40b1a9608b2",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-25T14:14:27",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-25T14:14:27",
+              "commitMessage": "fix issue with topBarContext\n",
+              "branch": "PP-231",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 22,
+                "insertions": 21,
+                "deletions": 1
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "task",
+                  "name": "Prototype CSS and query intercept options for demo mode dashboards",
+                  "key": "f7f43dc8-0a65-4425-833d-77a358a1a885",
+                  "displayId": "PP-231",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10354",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo0YzEwYTg4NmU3YjJkMmM1N2E0YTAwNjg0YjM1Zjc5YzE1YjBmZjk2",
+              "name": "4c10a886",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:4c10a886e7b2d2c57a4a00684b35f79c15b0ff96",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-25T12:09:25",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-25T12:09:25",
+              "commitMessage": "override blur class for table card title\n",
+              "branch": "PP-231",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 2,
+                "lines": 10,
+                "insertions": 5,
+                "deletions": 5
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "task",
+                  "name": "Prototype CSS and query intercept options for demo mode dashboards",
+                  "key": "f7f43dc8-0a65-4425-833d-77a358a1a885",
+                  "displayId": "PP-231",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10354",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDowYjU4Y2ZmYzRlZWMyNDFkZjNlMDIxNTFmYTIxNTY5ZjBjYzZkNGJi",
+              "name": "0b58cffc",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:0b58cffc4eec241df3e02151fa21569f0cc6d4bb",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-24T14:40:48",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-24T14:40:48",
+              "commitMessage": "remove useBlurClass\n",
+              "branch": "PP-231",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 4,
+                "insertions": 1,
+                "deletions": 3
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "task",
+                  "name": "Prototype CSS and query intercept options for demo mode dashboards",
+                  "key": "f7f43dc8-0a65-4425-833d-77a358a1a885",
+                  "displayId": "PP-231",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10354",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          },
+          {
+            "node": {
+              "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDplZjRjMGVmNjgyZmFlMzg5M2I4OWRlMmVkOWIwYzNlZTg2NDllNTM5",
+              "name": "ef4c0ef6",
+              "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0:ef4c0ef682fae3893b89de2ed9b0c3ee8649e539",
+              "author": "Aman Mavai",
+              "authorDate": "2022-08-24T14:39:37",
+              "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+              "committer": "Aman Mavai",
+              "commitDate": "2022-08-24T14:39:37",
+              "commitMessage": "refactor useBlurClass\n",
+              "branch": "PP-231",
+              "repository": "polaris-analytics-web",
+              "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+              "numParents": 1,
+              "stats": {
+                "files": 1,
+                "lines": 6,
+                "insertions": 3,
+                "deletions": 3
+              },
+              "workItemsSummaries": [
+                {
+                  "workItemType": "task",
+                  "name": "Prototype CSS and query intercept options for demo mode dashboards",
+                  "key": "f7f43dc8-0a65-4425-833d-77a358a1a885",
+                  "displayId": "PP-231",
+                  "url": "https://exathinkdev.atlassian.net/rest/api/latest/issue/10354",
+                  "stateType": "wip",
+                  "state": "CODE REVIEW"
+                }
+              ],
+              "authorTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "authorTeamName": "App Team",
+              "committerTeamKey": "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+              "committerTeamName": "App Team"
+            }
+          }
+
+        ]
+      }
+    }
+  }
+}

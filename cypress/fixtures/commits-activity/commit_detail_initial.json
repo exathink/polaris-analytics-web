@@ -1,0 +1,37 @@
+{
+  "data": {
+    "commit": {
+      "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo2YTRkY2ZiNWMzMjY1Mjc2ODczOTI3NmYzNTg5ZDVkZTczZjUwOGZk",
+      "name": "6a4dcfb5",
+      "commitHash": "6a4dcfb5c32652768739276f3589d5de73f508fd",
+      "repository": "polaris-analytics-web",
+      "integrationType": "gitlab",
+      "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+      "repositoryUrl": "https://gitlab.com/polaris-apps/polaris-analytics-web.git",
+      "author": "Aman Mavai",
+      "authorDate": "2022-08-26T14:56:12",
+      "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+      "committer": "Aman Mavai",
+      "committerKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+      "commitDate": "2022-08-26T14:56:12",
+      "commitMessage": "Merge branch 'PP-159-1' into 'master'\n\n[PP-159-1] E2E test for invite user\n\nSee merge request polaris-apps/polaris-analytics-web!393",
+      "branch": "master",
+      "stats": {
+        "files": 7,
+        "lines": 276,
+        "insertions": 276,
+        "deletions": 0
+      },
+      "fileTypesSummary": [
+        {
+          "fileType": "js",
+          "count": 2
+        },
+        {
+          "fileType": "json",
+          "count": 5
+        }
+      ]
+    }
+  }
+}

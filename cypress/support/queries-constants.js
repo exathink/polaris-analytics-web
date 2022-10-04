@@ -33,6 +33,12 @@ export const USER = {
 };
 
 export const REPOSITORY = {
+  with_repository_instance: "with_repository_instance",
   dimensionRepositories: "dimensionRepositories",
+  dimensionCommits: "repository_commits",
   exclude_repos: "exclude_repos",
+};
+
+export const COMMITS = {
+  commit_detail: "commit_detail",
 };
