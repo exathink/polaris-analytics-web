@@ -224,7 +224,9 @@ const summaryStatsColumns = {
   cycleTime: "Days",
   leadTimeOrAge: "Days",
   leadTime: "Days",
-  effort: "FTE Days"
+  effort: "FTE Days",
+  delivery: "Days",
+  duration: "Days"
 }
 
 export const WorkItemsDetailTable = 
