@@ -1,5 +1,5 @@
 import {useSearch} from "../../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 
 const DEFAULT_TEAM = "Unassigned";
 
@@ -67,7 +67,6 @@ export function SelectTeamMembersTable({tableData, columns, loading, testId, row
       columns={columns}
       loading={loading}
       testId={testId}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
       rowSelection={rowSelection}
       rowKey={record => record.key}
     />

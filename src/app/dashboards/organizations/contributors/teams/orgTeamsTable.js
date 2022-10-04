@@ -1,6 +1,6 @@
 import React from "react";
 import {useSearch} from "../../../../components/tables/hooks";
-import { SORTER, StripeTable, TABLE_HEIGHTS } from "../../../../components/tables/tableUtils";
+import { SORTER, StripeTable } from "../../../../components/tables/tableUtils";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {CreateNewTeamWidget} from "./createNewTeam";
@@ -271,7 +271,6 @@ export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, or
     <StripeTable
       columns={columns}
       dataSource={transformedData}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
       locale={locale}
       rowKey={(record) => record.key}
     />

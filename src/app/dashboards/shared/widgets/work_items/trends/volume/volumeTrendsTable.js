@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../../i18n";
 
 export function useVolumeTrendsTableColumns() {
@@ -50,7 +50,6 @@ export const VolumeTrendsTable = injectIntl(({tableData, intl}) => {
     <StripeTable
       columns={columns}
       dataSource={transformedData}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
       rowKey={(record) => record.key}
     />
   );
