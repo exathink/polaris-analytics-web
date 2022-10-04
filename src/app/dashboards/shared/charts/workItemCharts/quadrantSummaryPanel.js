@@ -108,7 +108,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
         onClick={onQuadrantClick}
         data-testid={testId}
       >
-        <div>{name}</div>
+        <div className="2xl:tw-text-2xl">{name}</div>
         <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>{percentageCountDisplay}</div>
         <div
           className={classNames(
