@@ -2,9 +2,56 @@
   background-color: #ffffff;
 }
 
+.tableStyle {
+  width: 100%;
+  height: 100%;
+}
+
+.tableStyle :global(.ant-table-summary) {
+  overflow: initial !important;
+}
+
+.tableStyle :global(.ant-table-wrapper) {
+  height: 100%;
+}
+
+.tableStyle :global(.ant-spin-nested-loading) {
+  height: 100%;
+}
+
+.tableStyle :global(.ant-spin-container) {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.tableStyle :global(.ant-table) {
+  flex: auto;
+  overflow: hidden;
+  height: 100%;
+  background-color: transparent;
+}
+
+.tableStyle :global(.ant-table-container) {
+  max-height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: white;
+  padding: theme("spacing.1");
+}
+
+.tableStyle :global(.ant-table-header) {
+  flex: none;
+}
+
+.tableStyle :global(.ant-table-body) {
+  flex: auto;
+  overflow: scroll;
+}
+
 .tableStyle :global(table) {
-  font-size: 0.875rem/* 14px */;
-  line-height: 1.25rem/* 20px */;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
   color: rgb(75 85 99 / 1);
 }
 
@@ -54,12 +101,12 @@
 
 /* thead color */
 .tableStyle :global(.ant-table) :global(table) :global(thead) :global(th) {
-    background-color: #e5e7eb;
-    text-transform: uppercase;
-    font-size: 0.75rem/* 12px */;
-    line-height: 1rem/* 16px */;
+  background-color: #e5e7eb;
+  text-transform: uppercase;
+  font-size: 0.75rem /* 12px */;
+  line-height: 1rem /* 16px */;
 }
 
 .tableStyle :global(.ant-table) :global(table) :global(tbody:before) {
- border-collapse: collapse;
+  border-collapse: collapse;
 }

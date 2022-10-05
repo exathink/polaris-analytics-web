@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React from "react";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import {PlainCard} from "../../../../components/cards/plainCard";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
@@ -22,7 +23,7 @@ export const DimensionQuadrantSummaryView = ({
   }, [data, dimension]);
 
   return (
-    <div className={`tw-flex tw-items-center tw-h-full`}>
+    <PlainCard title="Flow Efficiency" info={{title: "Flow Efficiency"}}>
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
@@ -30,6 +31,6 @@ export const DimensionQuadrantSummaryView = ({
         latencyTarget={latencyTarget}
         className={classNames("tw-mx-auto tw-w-[98%] tw-h-full", displayBag?.fontSize)}
       />
-    </div>
+    </PlainCard>
   );
 };

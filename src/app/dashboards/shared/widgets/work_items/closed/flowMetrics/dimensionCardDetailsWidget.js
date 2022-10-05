@@ -42,6 +42,7 @@ export function CardDetailsWidget({
       data={data}
       dimension={dimension}
       view={view}
+      specsOnly={specsOnly}
       context={context}
       supportsFilterOnCard={supportsFilterOnCard}
       workItemTypeFilter={workItemTypeFilter}

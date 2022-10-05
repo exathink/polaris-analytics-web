@@ -55,6 +55,7 @@ export function WorkItemsDetailHistogramTable({
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
             colWidthBoundaries={colWidthBoundaries}
+            specsOnly={specsOnly}
           />
         </div>
       )}

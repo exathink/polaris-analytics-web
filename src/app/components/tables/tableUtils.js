@@ -9,6 +9,8 @@ const DEFAULTS = {
 };
 
 export const TABLE_HEIGHTS = {
+  FIFTEEN: "15vh",
+  TWENTY_FIVE: "25vh",
   THIRTY: "30vh",
   FORTY_FIVE: "45vh",
   SIXTY: "60vh",
@@ -17,28 +19,17 @@ export const TABLE_HEIGHTS = {
   EIGHTY: "80vh",
   NINETY: "90vh"
 }
-function getColLength(columns) {
-  let res = 0;
-  columns.forEach(col => {
-    if (col.children) {
-      res += col.children.length;
-    } else {
-      res += 1;
-    }
-  })
-  return res;
-}
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div className="tw-bg-white tw-p-1">
+    <div className="tw-p-1 tw-h-full tw-w-full">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
         pagination={false}
         columns={columns}
         dataSource={dataSource}
-        scroll={{y: height ?? TABLE_HEIGHTS.THIRTY}}
+        scroll={{y: "100%"}}
         showSorterTooltip={false}
         loading={loading}
         data-testid={testId}
@@ -48,11 +39,16 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
           return (
             <Table.Summary fixed="bottom">
               <Table.Summary.Row className="tw-bg-gray-100">
-                {tableProps?.renderTableSummary?.(pageData) ?? (
-                  <Table.Summary.Cell index={0} colSpan={getColLength(columns)} align="left">
-                    <LabelValue label="Records" value={pageData.length} />
-                  </Table.Summary.Cell>
-                )}
+                <Table.Summary.Cell index={0} align="left" colSpan="20">
+                  <div className="tw-flex tw-space-x-6">
+                    {tableProps?.renderTableSummary?.(pageData) ?? (
+                      <LabelValue label="Records" value={pageData.length} />
+                    )}
+                  </div>
+                </Table.Summary.Cell>
+
+                {/* This dummy cell is to fill remaining space of summary stats row */}
+                <Table.Summary.Cell index={100} colSpan="50" align="left"></Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
           );

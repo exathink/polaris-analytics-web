@@ -196,6 +196,26 @@ export function fromNow(serverCommitDate) {
   return serverCommitDate ? moment.duration(toMoment(serverCommitDate).diff(moment.utc())).humanize(true) : 'None'
 }
 
+export function fromNowInMS(serverCommitDate) {
+  return serverCommitDate
+    ? moment.duration(toMoment(serverCommitDate).diff(moment.utc()), "milliseconds").asMilliseconds()
+    : 0;
+}
+
+export function averageOfDurations(arr) {
+  const total = arr.reduce((acc, item) => {
+    acc = acc + fromNowInMS(item);
+    return acc;
+  }, 0)
+
+  if (arr.length > 0) {
+    const totalDays = Math.abs(moment.duration(total).asDays());
+    return totalDays / arr.length;
+  } else {
+    return 0;
+  }
+}
+
 export function humanizeDuration(days) {
   return moment.duration(days, "days").humanize();
 }

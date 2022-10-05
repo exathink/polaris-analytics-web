@@ -3,7 +3,7 @@ import React from "react";
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../../framework/viz/dashboard";
 import { Contexts } from "../../../../meta/contexts";
 import { ProjectDashboard } from "../../projectDashboard";
-import { RepositoriesTableWidget, TABLE_HEIGHTS } from "../../../shared/components/repositoriesTable/repositoriesTable";
+import { RepositoriesTableWidget } from "../../../shared/components/repositoriesTable/repositoriesTable";
 
 const dashboard_id = 'dashboards.activity.organization.instance';
 
@@ -24,7 +24,6 @@ export const dashboard = () => (
                     <RepositoriesTableWidget
                       dimension="project"
                       instanceKey={project.key}
-                      height={TABLE_HEIGHTS.SEVENTY_FIVE}
                       view={view}
                     />
                 }

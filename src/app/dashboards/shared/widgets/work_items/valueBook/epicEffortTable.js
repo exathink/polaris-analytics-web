@@ -4,7 +4,7 @@ import {buildIndex, diff_in_dates, fromNow, truncateString} from "../../../../..
 import {formatAsDate} from "../../../../../i18n/utils";
 import {actionTypes} from "./valueBookDetailViewReducer";
 import {injectIntl} from "react-intl";
-import {StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {StripeTable} from "../../../../../components/tables/tableUtils";
 import {comboColumnTitleRender, workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
 import styles from "../../../../projects/shared/helper/renderers.module.css";
 import {Highlighter} from "../../../../../components/misc/highlighter";
@@ -398,7 +398,6 @@ export const EpicEffortTable = injectIntl(({tableData, columns, loading, intl, r
       columns={columns}
       dataSource={dataSource}
       loading={loading}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
       data-testid="implementation-cost-table"
       expandable={{
         defaultExpandedRowKeys: dataSource.length === 1 ? [dataSource[0]?.key] : [],
