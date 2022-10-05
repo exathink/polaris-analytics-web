@@ -539,7 +539,7 @@ describe("Commit Activity", () => {
 
     cy.interceptQueryWithResponse({operationName: REPOSITORY.with_repository_instance, body: with_repository_instance});
     cy.interceptQueryWithResponse({operationName: REPOSITORY.dimensionCommits, body: rcOneDay});
-    cy.interceptQueryWithResponse({operationName: COMMITS.commit_detail, body: cdinitial});
+    cy.interceptQueryWithResponse({operationName: COMMITS.commit_detail, body: cdinitial, times: 1});
 
     cy.visit(
       `/app/dashboard/repositories/${with_repository_instance.data.repository.name}/${with_repository_instance.data.repository.key}/activity/commits`
@@ -692,7 +692,7 @@ describe("Commit Activity", () => {
     var rcThreeDay = this.repcommit3day;
 
     cy.interceptQueryWithResponse({operationName: REPOSITORY.with_repository_instance, body: with_repository_instance});
-    cy.interceptQueryWithResponse({operationName: REPOSITORY.dimensionCommits, body: rcOneDay});
+    cy.interceptQueryWithResponse({operationName: REPOSITORY.dimensionCommits, body: rcOneDay, times: 1});
     cy.interceptQueryWithResponse({operationName: COMMITS.commit_detail, body: cdinitial});
 
     cy.visit(
@@ -707,9 +707,12 @@ describe("Commit Activity", () => {
     ]);
 
     cy.interceptQueryWithResponse({operationName: REPOSITORY.dimensionCommits, body: rcThreeDay});
+
     cy.get(".ant-slider-mark-text").contains("3").click();
 
     cy.wait(`@${getQueryFullName(REPOSITORY.dimensionCommits)}`);
+
+    cy.wait(1000);
 
     //Title and Subtitle Bar
     var textToCompare = new RegExp(rcThreeDay.data.repository.commits.count + "\\s*Commits");
