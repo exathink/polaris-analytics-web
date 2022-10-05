@@ -2,13 +2,20 @@ import {Tag, Tooltip} from "antd";
 import {useIntl} from "react-intl";
 import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearchMultiCol} from "../../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} from "../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
 import {WorkItemStateTypeColor} from "../../../config";
 import {ClosedPrIcon, MergedPrIcon, OpenPrIcon} from "../../../../../components/misc/customIcons";
+import {LabelValue} from "../../../../../helpers/components";
+import React from "react";
+import {useSummaryStats} from "../../../hooks/useSummaryStats";
+
+const summaryStatsColumns = {
+  age: "Days",
+}
 
 const PrComponentsMap = {
   merged: <MergedPrIcon />,
@@ -213,7 +220,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       key: "age",
       width: "5%",
       sorter: (a, b) => SORTER.number_compare(a.age, b.age),
-      defaultFilteredValue: selectedFilter != null ? [selectedFilter] : [],
+      defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null,
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "age"),
       render: (text) => <span className="tw-textXs">{humanizeDuration(i18nNumber(intl, Number(text), 2))}</span>,
@@ -238,6 +245,8 @@ function getTransformedData(tableData, intl) {
 
 export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
+  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} = useSummaryStats(summaryStatsColumns);
+
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
   const categories = getHistogramCategories(colWidthBoundaries, "days");
@@ -250,13 +259,44 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
     setWorkItemKey,
     prStateType
   });
+
   return (
     <StripeTable
       columns={columns}
       dataSource={dataSource}
       testId="pull-requests-detail-table"
-      height={TABLE_HEIGHTS.FORTY_FIVE}
+      onChange={handleChange}
       rowKey={(record) => record.rowKey}
+      renderTableSummary={(pageData) => {
+        const avgData = getAvgSortersData(pageData);
+        const avgFiltersData = getAvgFiltersData(pageData);
+
+          return (
+            <>
+              <LabelValue label="Pull Requests" value={pageData?.length} />
+              {avgFiltersData
+                .filter((x) => summaryStatsColumns[x.appliedFilter])
+                .map((x, i) => {
+                  return (
+                    <LabelValue
+                      key={x.appliedFilter}
+                      label={`Avg. ${x.appliedFilter === "age" ? PRStateTypeMap[prStateType] : x.appliedFilter}`}
+                      value={i18nNumber(intl, x.average, 2)}
+                      uom={summaryStatsColumns[x.appliedFilter]}
+                    />
+                  );
+                })}
+              {avgData !== 0 && avgData != null && appliedFilters.includes(appliedSorter) === false && (
+                <LabelValue
+                  key={appliedSorter}
+                  label={`Avg. ${appliedName}`}
+                  value={i18nNumber(intl, avgData, 2)}
+                  uom={summaryStatsColumns[appliedSorter]}
+                />
+              )}
+            </>
+          );
+        }}
     />
   );
 }

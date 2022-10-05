@@ -5,7 +5,7 @@ import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {useQueryOrganizationProjects} from "./useQueryOrganizationProjects";
 import {useSearch} from "../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
@@ -308,7 +308,6 @@ export const ProjectsTable = injectIntl(({tableData, loading, intl, specsOnly}) 
       columns={columns}
       dataSource={transformedData}
       loading={loading}
-      height={TABLE_HEIGHTS.FOURTY_FIVE}
       rowKey={(record) => record.key}
       testId="project-table"
     />

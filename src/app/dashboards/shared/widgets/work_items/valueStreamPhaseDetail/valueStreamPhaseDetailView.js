@@ -218,7 +218,7 @@ const PhaseDetailView = ({
     const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
       <VizRow h={1}>
-        <VizItem w={1}>
+        <VizItem w={1} style={{height: "93%"}}>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"leftControls"}>
               <div className="selectWorkItemSource">{selectDropdown()}</div>

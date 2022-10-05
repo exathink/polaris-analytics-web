@@ -290,6 +290,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           latencyTarget={latencyTarget}
           callBacks={callBacks}
           appliedFilters={appliedFilters}
+          specsOnly={specsOnly}
         />
       </div>
       <div className={styles.cardInspectorPanel}>

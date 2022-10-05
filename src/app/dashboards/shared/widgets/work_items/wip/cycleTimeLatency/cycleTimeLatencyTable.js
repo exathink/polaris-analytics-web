@@ -11,7 +11,20 @@ import {
   comboColumnTitleRender,
   customColumnRender
 } from "../../../../../projects/shared/helper/renderers";
-import {useBlurClass} from "../../../../../../helpers/utility";
+import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
+import {LabelValue} from "../../../../../../helpers/components";
+import { getMetricsMetaKey } from "../../../../helpers/metricsMeta";
+
+const summaryStatsColumns = {
+  cycleTimeOrLatency: "Days",
+  latency: "Days",
+  cycleTime: "Days",
+  leadTimeOrAge: "Days",
+  Age: "Days",
+  leadTime: "Days",
+  effort: "FTE Days",
+  latestCommitDisplay: "Days"
+}
 
 const QuadrantSort = {
   ok: 0,
@@ -272,7 +285,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
 }
 
 export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget}) => {
+  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
+    const [appliedSorter, setAppliedSorter] = React.useState();
+    const [appliedName, setAppliedName] = React.useState();
+
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -288,8 +304,11 @@ export const CycleTimeLatencyTable = injectIntl(
       callBacks,
     });
 
-    const handleChange = (pagination, filters, sorter) => {
-      callBacks.setAppliedFilters(filters);
+    const handleChange = (p, f, s, e) => {
+      callBacks.setAppliedFilters(f);
+
+      setAppliedSorter(s?.column?.dataIndex);
+      setAppliedName(s?.column?.dataIndex==="latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
     };
 
     return (
@@ -297,9 +316,36 @@ export const CycleTimeLatencyTable = injectIntl(
         columns={columns}
         dataSource={dataSource}
         testId="cycle-time-latency-table"
-        height="40vh"
         onChange={handleChange}
-        rowKey={record => record.key}
+        rowKey={(record) => record.key}
+        renderTableSummary={(pageData) => {
+                    // calculate avg for summary stats columns
+        
+        let avgData;
+         if(appliedSorter === "latestCommitDisplay") {
+          avgData = averageOfDurations(pageData.map(item => item.latestCommit))
+         } else {
+          avgData =
+           appliedSorter && summaryStatsColumns[appliedSorter]
+             ? average(pageData, (item) => +item[appliedSorter])
+             : undefined;
+         }
+
+
+          return (
+            <>
+              <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+              {avgData !== 0 && avgData && (
+                <LabelValue
+                  key={getMetricsMetaKey(appliedSorter, "stateType")}
+                  label={`Avg. ${appliedName}`}
+                  value={i18nNumber(intl, avgData, 2)}
+                  uom={summaryStatsColumns[appliedSorter]}
+                />
+              )}
+            </>
+          );
+        }}
       />
     );
   }

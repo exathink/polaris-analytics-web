@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 import {i18nNumber} from "../../../../../helpers/utility";
 import {formatDateTime} from "../../../../../i18n";
 
@@ -43,7 +43,6 @@ export const WorkBalanceTrendsTable = injectIntl(({tableData, intl}) => {
     <StripeTable
       columns={columns}
       dataSource={transformedData}
-      height={TABLE_HEIGHTS.FORTY_FIVE}
       rowKey={(record) => record.key}
     />
   );

@@ -49,6 +49,7 @@ const DeliveryCyclesFlowMetricsView = ({
   chartOrTable,
   yAxisScale: parentYAxisScale,
   setYAxisScale: parentSetYAxisScale,
+  view
 }) => {
   const model = React.useMemo(
     () =>
@@ -262,6 +263,7 @@ const DeliveryCyclesFlowMetricsView = ({
         }}
         clearFilters={resetFilterAndMetric}
         // table props
+        view={view}
         selectedFilter={selectedFilter}
         tableData={filteredData}
         tableSelectedMetric={selectedMetric.key}

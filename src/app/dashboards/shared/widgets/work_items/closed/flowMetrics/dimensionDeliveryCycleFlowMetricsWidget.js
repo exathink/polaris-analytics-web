@@ -63,6 +63,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       setYAxisScale={setYAxisScale}
       hideControls={hideControls}
       chartOrTable={chartOrTable}
+      view={view}
     />
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import {useQueryRepositories} from "./useQueryRepositories";
 import {useSearch} from "../../../../components/tables/hooks";
-import {SORTER, StripeTable, TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
+import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
 import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {fromNow} from "../../../../helpers/utility";
@@ -15,7 +15,6 @@ import {Alert, Switch} from "antd";
 import {useExcludeRepos} from "./useExcludedRepositories";
 import {logGraphQlError} from "../../../../components/graphql/utils";
 
-export  {TABLE_HEIGHTS} from "../../../../components/tables/tableUtils";
 function customNameRender(text, record, searchText) {
   return (
     text && (
@@ -204,7 +203,7 @@ export function useRepositoriesTableColumns({statusTypes, days}) {
   return columns;
 }
 
-export function RepositoriesTable({tableData, days, height, loading}) {
+export function RepositoriesTable({tableData, days, loading}) {
   const statusTypes = [...new Set(tableData.map((x) => getActivityLevelFromDate(x.latestCommit).display_name))];
   const columns = [...useRepositoriesTableColumns({statusTypes, days}), getActionCol()];
 
@@ -213,7 +212,6 @@ export function RepositoriesTable({tableData, days, height, loading}) {
       columns={columns}
       dataSource={tableData}
       loading={loading}
-      height={height || TABLE_HEIGHTS.FORTY_FIVE}
       rowKey={(record) => record.key}
     />
   );
@@ -317,14 +315,13 @@ export function RepositoriesEditTable({dimension, instanceKey, tableData, days, 
         columns={columns}
         dataSource={tableData}
         loading={loading}
-        height={TABLE_HEIGHTS.FORTY_FIVE}
         rowKey={(record) => record.key}
       />
     </div>
   );
 }
 
-export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, height, view}) => {
+export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, view}) => {
   const {loading, error, data} = useQueryRepositories({dimension, instanceKey, days});
 
   if (error) return null;
@@ -335,5 +332,5 @@ export const RepositoriesTableWidget = ({dimension, instanceKey, days = 30, heig
   if (view === "detail") {
     return <RepositoriesDetailDashboard dimension={dimension} instanceKey={instanceKey} view={view} />;
   }
-  return <RepositoriesTable tableData={tableData} height={height} days={days} loading={loading} />;
+  return <RepositoriesTable tableData={tableData} days={days} loading={loading} />;
 };
