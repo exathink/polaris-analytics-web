@@ -52,7 +52,7 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
-  const [selectedIssueType, setSelectedIssueType] = React.useState("All");
+  const [selectedIssueType, setSelectedIssueType] = React.useState("all");
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
