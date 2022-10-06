@@ -105,6 +105,25 @@ const PhaseDetailView = ({
     );
   }
 
+  const uniqueIssueTypes = ["Story", "Task", "Bug", "Sub Task"]
+  function handleIssueTypeChange(index) {
+    setSelectedTeam(uniqueIssueTypes[index]);
+  }
+  function selectIssueTypeDropdown() {
+    return (
+      <div data-testid="issue-type-dropdown" className={"control"}>
+        <div className="controlLabel">IssueType</div>
+        <Select defaultValue={0} onChange={handleIssueTypeChange} className={""}>
+          {uniqueIssueTypes.map((teamName, index) => (
+            <Option key={teamName} value={index}>
+              {teamName}
+            </Option>
+          ))}
+        </Select>
+      </div>
+    );
+  }
+
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
     () =>
@@ -223,6 +242,7 @@ const PhaseDetailView = ({
             <div className={"leftControls"}>
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
+              <div className="tw-ml-4">{selectIssueTypeDropdown()}</div>
             </div>
             <div className={"middleControls"}>
               <GroupingSelector
