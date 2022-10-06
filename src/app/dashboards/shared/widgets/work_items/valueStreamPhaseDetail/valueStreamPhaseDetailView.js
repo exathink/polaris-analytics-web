@@ -121,7 +121,7 @@ const PhaseDetailView = ({
     return (
       <div data-testid="issue-type-dropdown" className={"control"}>
         <div className="controlLabel">IssueType</div>
-        <Select defaultValue={0} onChange={handleIssueTypeChange} className={""}>
+        <Select defaultValue={0} onChange={handleIssueTypeChange} className={"tw-w-32"}>
           {uniqueIssueTypes.map((issueType, index) => (
             <Option key={issueType.key} value={index}>
               {issueType.name}
