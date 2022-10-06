@@ -51,6 +51,8 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
+  const [selectedIssueType, setSelectedIssueType] = React.useState("All");
+
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
 
@@ -105,18 +107,24 @@ const PhaseDetailView = ({
     );
   }
 
-  const uniqueIssueTypes = ["Story", "Task", "Bug", "Sub Task"]
+  const uniqueIssueTypes = [
+    {key: "all", name: "All"},
+    {key: "story", name: "Story"},
+    {key: "task", name: "Task"},
+    {key: "bug", name: "Bug"},
+    {key: "subtask", name: "Sub Task"},
+  ];
   function handleIssueTypeChange(index) {
-    setSelectedTeam(uniqueIssueTypes[index]);
+    setSelectedIssueType(uniqueIssueTypes[index].key);
   }
   function selectIssueTypeDropdown() {
     return (
       <div data-testid="issue-type-dropdown" className={"control"}>
         <div className="controlLabel">IssueType</div>
         <Select defaultValue={0} onChange={handleIssueTypeChange} className={""}>
-          {uniqueIssueTypes.map((teamName, index) => (
-            <Option key={teamName} value={index}>
-              {teamName}
+          {uniqueIssueTypes.map((issueType, index) => (
+            <Option key={issueType.key} value={index}>
+              {issueType.name}
             </Option>
           ))}
         </Select>
@@ -154,6 +162,12 @@ const PhaseDetailView = ({
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
       return workItemsByStateType[selectedStateType].filter((w) => {
+        if (selectedIssueType === "all") {
+          return true;
+        } else {
+          return w.workItemType === selectedIssueType;
+        }
+      }).filter((w) => {
         if (selectedTeam === "All") {
           return true;
         } else {
@@ -164,7 +178,7 @@ const PhaseDetailView = ({
     } else {
       return [];
     }
-  }, [selectedStateType, workItemsByStateType, selectedTeam]);
+  }, [selectedStateType, workItemsByStateType, selectedTeam, selectedIssueType]);
 
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
