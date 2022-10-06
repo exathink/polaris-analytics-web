@@ -16,6 +16,7 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
+import {workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -124,7 +125,7 @@ const PhaseDetailView = ({
         <Select defaultValue={0} onChange={handleIssueTypeChange} className={"tw-w-32"}>
           {uniqueIssueTypes.map((issueType, index) => (
             <Option key={issueType.key} value={index}>
-              {issueType.name}
+            {workItemTypeImageMap[issueType.key]} {issueType.name}
             </Option>
           ))}
         </Select>
