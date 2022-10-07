@@ -222,7 +222,9 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
   cycleTime: "Days",
+  latency: "Days",
   leadTimeOrAge: "Days",
+  age: "Days",
   leadTime: "Days",
   effort: "FTE Days",
   delivery: "Days",
@@ -246,8 +248,8 @@ export const WorkItemsDetailTable =
   }) => {
     const intl = useIntl();
 
-    const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
-      useSummaryStats(summaryStatsColumns);
+    const {appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+      useSummaryStats({summaryStatsColumns, extraFilter: selectedMetric, stateType});
 
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -281,17 +283,11 @@ export const WorkItemsDetailTable =
         renderTableSummary={(pageData) => {
           const avgData = getAvgSortersData(pageData);
           const avgFiltersData = getAvgFiltersData(pageData);
-
-          const controlledFilter = {appliedFilter: selectedMetric, average: average(pageData, (item) => +item[selectedMetric])}        
-          const _selectedMetric = getMetricsMetaKey(selectedMetric, stateType)
-          const allFilters = avgFiltersData.find((x) => x.appliedFilter === _selectedMetric)
-            ? avgFiltersData
-            : [...avgFiltersData, controlledFilter];
-
+          
           return (
             <>
               <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
-              {allFilters
+              {avgFiltersData
                 .filter((x) => summaryStatsColumns[x.appliedFilter])
                 .map((x, i) => {
                   return (
@@ -304,8 +300,7 @@ export const WorkItemsDetailTable =
                   );
                 })}
               {avgData !== 0 &&
-                avgData &&
-                appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType)) === false && (
+                avgData && (
                   <LabelValue
                     key={getMetricsMetaKey(appliedSorter, stateType)}
                     label={`Avg. ${appliedName}`}
