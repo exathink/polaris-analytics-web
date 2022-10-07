@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
-import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
+import {average, getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -282,10 +282,16 @@ export const WorkItemsDetailTable =
           const avgData = getAvgSortersData(pageData);
           const avgFiltersData = getAvgFiltersData(pageData);
 
+          const controlledFilter = {appliedFilter: selectedMetric, average: average(pageData, (item) => +item[selectedMetric])}        
+          const _selectedMetric = getMetricsMetaKey(selectedMetric, stateType)
+          const allFilters = avgFiltersData.find((x) => x.appliedFilter === _selectedMetric)
+            ? avgFiltersData
+            : [...avgFiltersData, controlledFilter];
+
           return (
             <>
               <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
-              {avgFiltersData
+              {allFilters
                 .filter((x) => summaryStatsColumns[x.appliedFilter])
                 .map((x, i) => {
                   return (
