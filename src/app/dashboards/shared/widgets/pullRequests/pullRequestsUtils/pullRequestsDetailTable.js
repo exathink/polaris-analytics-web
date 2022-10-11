@@ -245,7 +245,7 @@ function getTransformedData(tableData, intl) {
 
 export function PullRequestsDetailTable({tableData, colWidthBoundaries, selectedFilter, setShowPanel, setWorkItemKey, prStateType}) {
   const intl = useIntl();
-  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} = useSummaryStats({summaryStatsColumns});
+  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} = useSummaryStats({summaryStatsColumns, extraFilter: selectedFilter ? "age": undefined});
 
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
