@@ -11,7 +11,7 @@ export const uniqueIssueTypes = [
   {key: "subtask", name: "Sub Task", icon: workItemTypeImageMap.subtask},
 ];
 
-export function SelectIssueTypeDropdown({valueIndex, handleIssueTypeChange}) {
+export function SelectIssueTypeDropdown({valueIndex, handleIssueTypeChange, className}) {
   return (
     <SelectDropdown
       title={"Issue Type"}
@@ -20,6 +20,7 @@ export function SelectIssueTypeDropdown({valueIndex, handleIssueTypeChange}) {
       value={valueIndex}
       handleChange={handleIssueTypeChange}
       layout="col"
+      className={className}
     />
   );
 }
