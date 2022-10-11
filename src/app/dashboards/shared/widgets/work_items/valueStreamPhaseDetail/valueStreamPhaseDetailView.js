@@ -17,6 +17,7 @@ import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
+import {SelectDropdown, useSelect} from "../../../components/select/selectDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -52,7 +53,6 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
-  const [selectedIssueType, setSelectedIssueType] = React.useState("all");
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
@@ -110,26 +110,26 @@ const PhaseDetailView = ({
 
   const uniqueIssueTypes = [
     {key: "all", name: "All"},
-    {key: "story", name: "Story"},
-    {key: "task", name: "Task"},
-    {key: "bug", name: "Bug"},
-    {key: "subtask", name: "Sub Task"},
+    {key: "story", name: "Story", icon: workItemTypeImageMap.story},
+    {key: "task", name: "Task", icon: workItemTypeImageMap.task},
+    {key: "bug", name: "Bug", icon: workItemTypeImageMap.bug},
+    {key: "subtask", name: "Sub Task", icon: workItemTypeImageMap.subtask},
   ];
-  function handleIssueTypeChange(index) {
-    setSelectedIssueType(uniqueIssueTypes[index].key);
-  }
+  const _defaultIssueType = {key: "all", name: "All"};
+  const {selectedVal: {key: selectedIssueType}, valueIndex, handleChange: handleIssueTypeChange} = useSelect({
+    uniqueItems: uniqueIssueTypes,
+    defaultVal: _defaultIssueType,
+  });
   function selectIssueTypeDropdown() {
     return (
-      <div data-testid="issue-type-dropdown" className={"control"}>
-        <div className="controlLabel">IssueType</div>
-        <Select defaultValue={0} onChange={handleIssueTypeChange} className={"tw-w-32"}>
-          {uniqueIssueTypes.map((issueType, index) => (
-            <Option key={issueType.key} value={index}>
-            {workItemTypeImageMap[issueType.key]} {issueType.name}
-            </Option>
-          ))}
-        </Select>
-      </div>
+      <SelectDropdown
+        title={"Issue Type"}
+        uniqueItems={uniqueIssueTypes}
+        testId="issue-type-dropdown"
+        value={valueIndex}
+        handleChange={handleIssueTypeChange}
+        layout="col"
+      />
     );
   }
 
