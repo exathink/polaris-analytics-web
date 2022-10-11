@@ -4,7 +4,7 @@ import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
-import {average, getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
+import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
@@ -248,8 +248,8 @@ export const WorkItemsDetailTable =
   }) => {
     const intl = useIntl();
 
-    const {appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
-      useSummaryStats({summaryStatsColumns, extraFilter: selectedMetric, stateType});
+    const {appliedFilters ,appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+      useSummaryStats({summaryStatsColumns, extraFilter: getMetricsMetaKey(selectedMetric, stateType)});
 
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -300,7 +300,7 @@ export const WorkItemsDetailTable =
                   );
                 })}
               {avgData !== 0 &&
-                avgData && (
+                avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false && (
                   <LabelValue
                     key={getMetricsMetaKey(appliedSorter, stateType)}
                     label={`Avg. ${appliedName}`}
