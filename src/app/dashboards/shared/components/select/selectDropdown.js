@@ -11,8 +11,8 @@ export function useSelect({uniqueItems, defaultVal}) {
   function handleChange(index) {
     setSelectedVal(uniqueItems[index]);
   }
-
-  return {selectedVal, setSelectedVal, handleChange};
+  const valueIndex = uniqueItems.map((x) => x.key).indexOf(selectedVal.key);
+  return {selectedVal, valueIndex, setSelectedVal, handleChange};
 }
 /**
  *
@@ -41,7 +41,7 @@ export function SelectDropdown({
       <Select defaultValue={0} value={value} onChange={handleChange} style={{width: width}}>
         {uniqueItems.map((item, index) => (
           <Option key={item.key} value={index}>
-            {item.name}
+            {item.icon} {item.name}
           </Option>
         ))}
       </Select>
