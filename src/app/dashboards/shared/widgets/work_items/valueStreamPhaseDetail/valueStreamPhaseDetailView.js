@@ -16,8 +16,7 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
-import {workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
-import {SelectDropdown, useSelect} from "../../../components/select/selectDropdown";
+import {useSelect} from "../../../components/select/selectDropdown";
 import {
   defaultIssueType,
   SelectIssueTypeDropdown,
