@@ -18,6 +18,11 @@ import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
 import {SelectDropdown, useSelect} from "../../../components/select/selectDropdown";
+import {
+  defaultIssueType,
+  SelectIssueTypeDropdown,
+  uniqueIssueTypes,
+} from "../../../components/select/selectIssueTypeDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -108,30 +113,10 @@ const PhaseDetailView = ({
     );
   }
 
-  const uniqueIssueTypes = [
-    {key: "all", name: "All"},
-    {key: "story", name: "Story", icon: workItemTypeImageMap.story},
-    {key: "task", name: "Task", icon: workItemTypeImageMap.task},
-    {key: "bug", name: "Bug", icon: workItemTypeImageMap.bug},
-    {key: "subtask", name: "Sub Task", icon: workItemTypeImageMap.subtask},
-  ];
-  const _defaultIssueType = {key: "all", name: "All"};
-  const {selectedVal: {key: selectedIssueType}, valueIndex, handleChange: handleIssueTypeChange} = useSelect({
+  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
     uniqueItems: uniqueIssueTypes,
-    defaultVal: _defaultIssueType,
+    defaultVal: defaultIssueType,
   });
-  function selectIssueTypeDropdown() {
-    return (
-      <SelectDropdown
-        title={"Issue Type"}
-        uniqueItems={uniqueIssueTypes}
-        testId="issue-type-dropdown"
-        value={valueIndex}
-        handleChange={handleIssueTypeChange}
-        layout="col"
-      />
-    );
-  }
 
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
@@ -257,7 +242,9 @@ const PhaseDetailView = ({
             <div className={"leftControls"}>
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
-              <div className="tw-ml-4">{selectIssueTypeDropdown()}</div>
+              <div className="tw-ml-4">
+                <SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} />
+              </div>
             </div>
             <div className={"middleControls"}>
               <GroupingSelector
