@@ -255,7 +255,7 @@ const DeliveryCyclesFlowMetricsView = ({
           </div>
         )}
       </div>}
-
+      {chartOrTable==="table" && (<SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} className="tw-ml-4 tw-absolute tw-top-[-0.5rem] tw-left-0" />)}
       <WorkItemsDetailHistogramTable
         // common props
         key={resetComponentStateKey}
