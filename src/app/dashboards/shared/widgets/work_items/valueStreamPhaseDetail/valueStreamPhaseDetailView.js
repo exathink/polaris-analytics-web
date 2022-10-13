@@ -16,7 +16,12 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
-import {workItemTypeImageMap} from "../../../../projects/shared/helper/renderers";
+import {useSelect} from "../../../components/select/selectDropdown";
+import {
+  defaultIssueType,
+  SelectIssueTypeDropdown,
+  uniqueIssueTypes,
+} from "../../../components/select/selectIssueTypeDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -52,7 +57,6 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
-  const [selectedIssueType, setSelectedIssueType] = React.useState("all");
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
@@ -108,30 +112,10 @@ const PhaseDetailView = ({
     );
   }
 
-  const uniqueIssueTypes = [
-    {key: "all", name: "All"},
-    {key: "story", name: "Story"},
-    {key: "task", name: "Task"},
-    {key: "bug", name: "Bug"},
-    {key: "subtask", name: "Sub Task"},
-  ];
-  function handleIssueTypeChange(index) {
-    setSelectedIssueType(uniqueIssueTypes[index].key);
-  }
-  function selectIssueTypeDropdown() {
-    return (
-      <div data-testid="issue-type-dropdown" className={"control"}>
-        <div className="controlLabel">IssueType</div>
-        <Select defaultValue={0} onChange={handleIssueTypeChange} className={"tw-w-32"}>
-          {uniqueIssueTypes.map((issueType, index) => (
-            <Option key={issueType.key} value={index}>
-            {workItemTypeImageMap[issueType.key]} {issueType.name}
-            </Option>
-          ))}
-        </Select>
-      </div>
-    );
-  }
+  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
+    uniqueItems: uniqueIssueTypes,
+    defaultVal: defaultIssueType,
+  });
 
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
@@ -257,7 +241,9 @@ const PhaseDetailView = ({
             <div className={"leftControls"}>
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
-              <div className="tw-ml-4">{selectIssueTypeDropdown()}</div>
+              <div className="tw-ml-4">
+                <SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} />
+              </div>
             </div>
             <div className={"middleControls"}>
               <GroupingSelector

@@ -18,6 +18,7 @@ import {injectIntl, useIntl} from "react-intl";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -162,6 +163,11 @@ const DeliveryCyclesFlowMetricsView = ({
     defaultVal: _defaultTeam,
   });
 
+  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
+    uniqueItems: uniqueIssueTypes,
+    defaultVal: defaultIssueType,
+  });
+
   const filteredData = React.useMemo(
     () =>
       model.filter((w) => {
@@ -171,8 +177,15 @@ const DeliveryCyclesFlowMetricsView = ({
           const _teams = w.teamNodeRefs.map((t) => t.teamName);
           return _teams.includes(selectedTeam.name);
         }
+      })
+      .filter((w) => {
+        if (selectedIssueType === "all") {
+          return true;
+        } else {
+          return w.workItemType === selectedIssueType;
+        }
       }),
-    [model, selectedTeam, _defaultTeam.key]
+    [model, selectedTeam, _defaultTeam.key, selectedIssueType]
   );
 
   const seriesData = React.useMemo(() => {
@@ -209,6 +222,7 @@ const DeliveryCyclesFlowMetricsView = ({
           </div>
         )}
 
+        {yAxisScale==="table" && (<SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} className="tw-ml-4" />)}
         {!defectsOnly && !hideControls && (
           <div className="tw-ml-auto tw-flex tw-items-center">
             {selectedFilter != null && (
@@ -241,7 +255,7 @@ const DeliveryCyclesFlowMetricsView = ({
           </div>
         )}
       </div>}
-
+      {chartOrTable==="table" && (<SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} className="tw-ml-4 tw-absolute tw-top-[-0.5rem] tw-left-0" />)}
       <WorkItemsDetailHistogramTable
         // common props
         key={resetComponentStateKey}

@@ -46,7 +46,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   ] = useTrendsControlBarState(days || 45, measurementWindow || 30, samplingFrequency || 7);
 
   return (
-    <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_41%_8%_41%] tw-p-2">
+    <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_40%_10%_40%] tw-p-2">
       <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? "Specs" : "All Cards"}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
@@ -101,9 +101,6 @@ export const DimensionFlowMixTrendsDetailDashboard = (
           )}
         />
       </DashboardRow>
-      <div className="tw-row-start-3 tw-col-start-1 tw-text-lg tw-text-gray-300 tw-flex tw-items-end tw-ml-2">
-         Card Details
-      </div>
       <DashboardRow
         h={"50%"}
         className="tw-row-start-3 tw-col-start-3 tw-flex tw-justify-center"
