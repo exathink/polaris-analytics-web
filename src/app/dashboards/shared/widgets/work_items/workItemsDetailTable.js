@@ -222,7 +222,9 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
   cycleTime: "Days",
+  latency: "Days",
   leadTimeOrAge: "Days",
+  age: "Days",
   leadTime: "Days",
   effort: "FTE Days",
   delivery: "Days",
@@ -246,8 +248,8 @@ export const WorkItemsDetailTable =
   }) => {
     const intl = useIntl();
 
-    const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
-      useSummaryStats(summaryStatsColumns);
+    const {appliedFilters ,appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+      useSummaryStats({summaryStatsColumns, extraFilter: getMetricsMetaKey(selectedMetric, stateType)});
 
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -281,7 +283,7 @@ export const WorkItemsDetailTable =
         renderTableSummary={(pageData) => {
           const avgData = getAvgSortersData(pageData);
           const avgFiltersData = getAvgFiltersData(pageData);
-
+          
           return (
             <>
               <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
@@ -298,8 +300,7 @@ export const WorkItemsDetailTable =
                   );
                 })}
               {avgData !== 0 &&
-                avgData &&
-                appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType)) === false && (
+                avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false && (
                   <LabelValue
                     key={getMetricsMetaKey(appliedSorter, stateType)}
                     label={`Avg. ${appliedName}`}

@@ -1,7 +1,7 @@
 import React from "react";
 import {average} from "../../../helpers/utility";
 
-export function useSummaryStats(summaryStatsColumns) {
+export function useSummaryStats({summaryStatsColumns, extraFilter}) {
   const [appliedFilters, setAppliedFilters] = React.useState([]);
   const [appliedSorter, setAppliedSorter] = React.useState();
   const [appliedName, setAppliedName] = React.useState();
@@ -20,15 +20,26 @@ export function useSummaryStats(summaryStatsColumns) {
     setAppliedName(s?.column?.title);
   }
 
-  const getAvgFiltersData = (pageData) =>
-    appliedFilters
+  let allFilters = appliedFilters;
+  if (extraFilter) {
+    if (!appliedFilters.includes(extraFilter)) {
+      allFilters = [...appliedFilters, extraFilter];
+    }
+  }
+
+  const getAvgFiltersData = (pageData) => {
+    return allFilters
       .filter((x) => summaryStatsColumns[x])
       .map((appliedFilter) => {
         return {appliedFilter, average: average(pageData, (item) => +item[appliedFilter])};
       });
-      
-  const getAvgSortersData = (pageData) =>
-    appliedSorter && summaryStatsColumns[appliedSorter] ? average(pageData, (item) => +item[appliedSorter]) : undefined;
+  };
 
-  return {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData};
+  const getAvgSortersData = (pageData) => {
+    return allFilters.includes(appliedSorter)===false && appliedSorter && summaryStatsColumns[appliedSorter]
+      ? average(pageData, (item) => +item[appliedSorter])
+      : undefined;
+  };
+
+  return {appliedFilters: allFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData};
 }
