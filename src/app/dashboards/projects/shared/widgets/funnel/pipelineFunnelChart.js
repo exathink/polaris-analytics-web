@@ -1,4 +1,4 @@
-import { Chart, tooltipHtml } from "../../../../../framework/viz/charts";
+import { Chart } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
@@ -10,6 +10,7 @@ import {
   WorkItemStateTypeDisplayName
 } from "../../../../shared/config";
 import { Highcharts } from "../../../../../framework/viz/charts/chartWrapper";
+import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 
 require("highcharts/modules/funnel")(Highcharts);
 
@@ -168,7 +169,7 @@ export const PipelineFunnelChart = Chart({
             ["Recommended Target Wip", ` ${i18nNumber(intl, cycleTimeTarget * getCloseRate(workItemStateTypeCounts, days), 0)}`]
 
           ];
-          return tooltipHtml({
+          return tooltipHtml_v2({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
                 [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? "Specs" : "Cards"}`],
