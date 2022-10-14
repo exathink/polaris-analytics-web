@@ -156,6 +156,7 @@ export const PipelineFunnelChart = Chart({
       }],
       tooltip: {
         useHTML: true,
+        outside: true,
         followPointer: false,
         hideDelay: 0,
         formatter: function() {
