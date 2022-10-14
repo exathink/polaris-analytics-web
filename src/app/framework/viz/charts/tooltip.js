@@ -9,6 +9,25 @@ const tooltipContent = (content) => {
 
 export const tooltipHtml = ({header, body}) => (`<div style="padding: 7px; background-color: rgba(255, 255, 255, 0.9);"><b>${header}</b><br/><br/><table>` + tooltipContent(body) + '</table></div>');
 
+
+const tooltipContent_v2 = (content) => {
+  return content.reduce(
+    (tooltip, entry) => tooltip +
+      `<div class="pair tw-flex tw-items-baseline tw-space-x-2">
+         <div class="label tw-text-base tw-tracking-wide">${entry[0]}</div>` +
+      (entry[1] ? `<div class="value tw-text-xl tw-text-black">${entry[1]}</div></div>`: '</div>'),
+    ''
+  )
+};
+
+export const tooltipHtml_v2 = ({header, body}) => (`
+<div class="tw-bg-white/90 tw-p-2 tw-text-gray-300">
+  <div class="tw-text-xl tw-tracking-wide tw-border-0 tw-border-b tw-border-b-gray-200 tw-border-solid tw-pb-2">${header}</div>
+  <div class="body tw-pt-2">
+    ${tooltipContent_v2(body)}
+  </div>
+</div>`);
+
 /** Functions to extract previous and next points from within a formatter callback */
 
 export function previousPoint(formatterThis) {
