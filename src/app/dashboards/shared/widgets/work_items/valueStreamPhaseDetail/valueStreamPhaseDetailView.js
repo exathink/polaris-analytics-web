@@ -16,6 +16,12 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
+import {useSelect} from "../../../components/select/selectDropdown";
+import {
+  defaultIssueType,
+  SelectIssueTypeDropdown,
+  uniqueIssueTypes,
+} from "../../../components/select/selectIssueTypeDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -51,6 +57,7 @@ const PhaseDetailView = ({
 
   const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
   const [selectedTeam, setSelectedTeam] = React.useState("All");
+
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
 
@@ -105,6 +112,11 @@ const PhaseDetailView = ({
     );
   }
 
+  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
+    uniqueItems: uniqueIssueTypes,
+    defaultVal: defaultIssueType,
+  });
+
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
     () =>
@@ -135,6 +147,12 @@ const PhaseDetailView = ({
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
       return workItemsByStateType[selectedStateType].filter((w) => {
+        if (selectedIssueType === "all") {
+          return true;
+        } else {
+          return w.workItemType === selectedIssueType;
+        }
+      }).filter((w) => {
         if (selectedTeam === "All") {
           return true;
         } else {
@@ -145,7 +163,7 @@ const PhaseDetailView = ({
     } else {
       return [];
     }
-  }, [selectedStateType, workItemsByStateType, selectedTeam]);
+  }, [selectedStateType, workItemsByStateType, selectedTeam, selectedIssueType]);
 
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
@@ -223,6 +241,9 @@ const PhaseDetailView = ({
             <div className={"leftControls"}>
               <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
+              <div className="tw-ml-4">
+                <SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} />
+              </div>
             </div>
             <div className={"middleControls"}>
               <GroupingSelector
