@@ -11,13 +11,17 @@ export const tooltipHtml = ({header, body}) => (`<div style="padding: 7px; backg
 
 
 const tooltipContent_v2 = (content) => {
-  return content.reduce(
-    (tooltip, entry) => tooltip +
+  return content.reduce((tooltip, [entry1, entry2]) => {
+    if (entry1===undefined && entry2===undefined) {
+      return tooltip + `<div class="tw-border-0 tw-border-b tw-border-b-gray-200 tw-border-solid" />`
+    }
+    return (
+      tooltip +
       `<div class="pair tw-flex tw-items-baseline tw-space-x-2">
-         <div class="label tw-text-base tw-tracking-wide">${entry[0]}</div>` +
-      (entry[1] ? `<div class="value tw-text-xl tw-text-black">${entry[1]}</div></div>`: '</div>'),
-    ''
-  )
+         <div class="label tw-text-base tw-tracking-wide">${entry1}</div>` +
+      (entry2 ? `<div class="value tw-text-xl tw-text-black">${entry2}</div></div>` : "</div>")
+    );
+  }, "");
 };
 
 export const tooltipHtml_v2 = ({header, body}) => (`
