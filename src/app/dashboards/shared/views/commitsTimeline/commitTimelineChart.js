@@ -1,4 +1,4 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts/index";
+import {Chart} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {
   Colors,
@@ -12,6 +12,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {queueTime} from "../../helpers/commitUtils";
 import {formatDateTime} from "../../../../i18n";
 import styles from "./commitTimelineChart.module.css";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 
 function getDaysSubtitle(days, prefix = 'Last') {
   return days > 1 ? `${prefix} ${days} Days`
@@ -245,7 +246,7 @@ export const CommitsTimelineChart = Chart({
           formatter: function () {
             const workItemHeader = `${getWorkItemSummaryText(this.point.commit)} <br/>`;
 
-            return tooltipHtml(shortTooltip ? {
+            return tooltipHtml_v2(shortTooltip ? {
               header: `${workItemHeader} Author: ${this.point.commit.author}`,
               body: [
                 ['Commit Message: ', `${elide(this.point.commit.commitMessage, 60)}`],
@@ -263,10 +264,10 @@ export const CommitsTimelineChart = Chart({
                 [`Committed: `, `${formatDateTime(intl, moment(this.x))}`],
                 [`Repository: `, `${this.point.commit.repository}`],
                 [`Branch: `, `${this.point.commit.branch || ''}`],
-                [`------`, ``],
+                [],
                 ['Commit: ', `${this.point.commit.name}`],
                 [`Committer: `, `${this.point.commit.committer}`],
-                [`------`, ``],
+                [],
                 [`Files: `, `${this.point.commit.stats.files}`],
                 [`Lines: `, `${this.point.commit.stats.lines}`],
                 [`Queue Time: `, `${queueTime(this.point.commit)}`],
