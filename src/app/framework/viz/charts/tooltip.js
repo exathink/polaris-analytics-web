@@ -19,15 +19,15 @@ const tooltipContent_v2 = (content) => {
     return (
       tooltip +
       `<div class="pair tw-flex tw-items-baseline tw-space-x-2">
-         <div class="label tw-text-base tw-tracking-wide">${entry1}</div>` +
-      (entry2 ? `<div class="value tw-text-xl tw-text-black">${entry2}</div></div>` : "</div>")
+         <div class="label tw-text-sm tw-tracking-wide">${entry1}</div>` +
+      (entry2 ? `<div class="value tw-text-base tw-text-black">${entry2}</div></div>` : "</div>")
     );
   }, "");
 };
 
 export const tooltipHtml_v2 = ({header, body}) => (`
 <div class="tw-bg-white/90 tw-p-2 tw-text-gray-300">
-  <div class="tw-text-xl tw-tracking-wide tw-border-0 tw-border-b tw-border-b-gray-200 tw-border-solid tw-pb-2">${header}</div>
+  <div class="tw-text-lg tw-tracking-wide tw-border-0 tw-border-b tw-border-b-gray-200 tw-border-solid tw-pb-2">${header}</div>
   <div class="body tw-pt-2">
     ${tooltipContent_v2(body)}
   </div>
