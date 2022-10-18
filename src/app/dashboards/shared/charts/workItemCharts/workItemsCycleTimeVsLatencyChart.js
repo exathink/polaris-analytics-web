@@ -1,4 +1,4 @@
-import { Chart, tooltipHtml } from "../../../../framework/viz/charts";
+import { Chart } from "../../../../framework/viz/charts";
 import { buildIndex, pick, elide, localNow } from "../../../../helpers/utility";
 import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
@@ -13,6 +13,7 @@ import {
   WorkItemTypeScatterRadius
 } from "../../config";
 import { getQuadrant, getQuadrantColor, getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 
 
 
@@ -225,6 +226,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
       tooltip: {
         useHTML: true,
         hideDelay: 50,
+        outside: true,
         formatter: function() {
           const {
             displayId,
@@ -249,28 +251,28 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
             tooltipType === "small"
               ? []
               : [
-                [`-----------------`, ``],
+                [],
                 [`Current State:`, `${state.toLowerCase()}`],
                 [`Entered:`, `${timeInStateDisplay}`],
 
                 stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
 
                 [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-                workItemStateDetails.commitCount != null ? [`-----------------`, ``] : [``, ``],
+                workItemStateDetails.commitCount != null ? [] : [``, ``],
                 duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
                 effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""]
               ];
 
           const _displayId = blurClass ? "**********" : displayId;
           const _name = blurClass ? "**********" : name;
-          return tooltipHtml({
+          return tooltipHtml_v2({
             header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${
               elide(_name, 30)
             }`,
             body: [
               [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
               [`Current State:`, `${state.toLowerCase()}`],
-              [`-----------------`, ``],
+              [],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],
               [`Idle Time`, `${intl.formatNumber(latency)} days`],
               effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
