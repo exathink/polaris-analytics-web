@@ -50,7 +50,7 @@ export function MetricCard({
               title={detailsView.title}
               content={detailsView.content}
               trigger="click"
-              destroyTooltipOnHide
+              // destroyTooltipOnHide
             >
               <PlusCircleFilled style={{fontSize: "2.5vh", color: color}} />
             </Popover>
