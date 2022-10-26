@@ -48,48 +48,14 @@ const PhaseDetailView = ({
     () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
     [workItems]
   );
-  const uniqWorkItemsSourcesWithDefault = [
-    {workItemsSourceKey: "all", workItemsSourceName: "All"},
-    ...uniqWorkItemsSources,
-  ];
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
-
-  const [selectedSourceKey, setSelectedSourceKey] = React.useState("all");
+  
   const [selectedTeam, setSelectedTeam] = React.useState("All");
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
 
-  const filteredWorkItemsBySource = React.useMemo(
-    () =>
-      selectedSourceKey === "all" ? workItems : workItems.filter((wi) => wi.workItemsSourceKey === selectedSourceKey),
-    [workItems, selectedSourceKey]
-  );
-
-  function handleChange(index) {
-    setSelectedSourceKey(uniqWorkItemsSourcesWithDefault[index].workItemsSourceKey);
-  }
-
-  function selectDropdown() {
-    return (
-      <div data-testid="pipeline-state-details-view-dropdown" className={"control"}>
-        <div className="controlLabel">Workstream</div>
-        <Select
-          defaultValue={0}
-          onChange={handleChange}
-          getPopupContainer={(node) => node.parentNode}
-          className={"workStreamSelector"}
-        >
-          {uniqWorkItemsSourcesWithDefault.map(({workItemsSourceKey, workItemsSourceName}, index) => (
-            <Option key={workItemsSourceKey} value={index}>
-              {workItemsSourceName}
-            </Option>
-          ))}
-        </Select>
-      </div>
-    );
-  }
 
   const uniqueTeams = ["All", ...new Set(workItems.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
@@ -120,7 +86,7 @@ const PhaseDetailView = ({
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
     () =>
-      filteredWorkItemsBySource.reduce((workItemsByStateType, workItem) => {
+      workItems.reduce((workItemsByStateType, workItem) => {
         if (workItemsByStateType[workItem.stateType] != null) {
           workItemsByStateType[workItem.stateType].push(workItem);
         } else {
@@ -128,7 +94,7 @@ const PhaseDetailView = ({
         }
         return workItemsByStateType;
       }, {}),
-    [filteredWorkItemsBySource]
+    [workItems]
   );
   const stateTypes = Object.keys(workItemsByStateType).sort(
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
@@ -239,7 +205,6 @@ const PhaseDetailView = ({
         <VizItem w={1} style={{height: "93%"}}>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"leftControls"}>
-              <div className="selectWorkItemSource">{selectDropdown()}</div>
               <div className="selectTeam">{selectTeamDropdown()}</div>
               <div className="tw-ml-4">
                 <SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} />
