@@ -19,6 +19,7 @@ import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
+import { defaultTeam as _defaultTeam, SelectTeamDropdown} from "../../../../components/select/selectTeamDropdown";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -150,7 +151,6 @@ const DeliveryCyclesFlowMetricsView = ({
     );
   }
 
-  const _defaultTeam = {key: "all", name: "All"};
   const uniqueTeams = [
     _defaultTeam,
     ...getUniqItems(
@@ -158,7 +158,7 @@ const DeliveryCyclesFlowMetricsView = ({
       (x) => x.teamKey
     ).map((x) => ({key: x.teamKey, name: x.teamName})),
   ];
-  const {selectedVal: selectedTeam, handleChange: handleTeamChange} = useSelect({
+  const {selectedVal: selectedTeam, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
     uniqueItems: uniqueTeams,
     defaultVal: _defaultTeam,
   });
@@ -185,7 +185,7 @@ const DeliveryCyclesFlowMetricsView = ({
           return w.workItemType === selectedIssueType;
         }
       }),
-    [model, selectedTeam, _defaultTeam.key, selectedIssueType]
+    [model, selectedTeam, selectedIssueType]
   );
 
   const seriesData = React.useMemo(() => {
@@ -207,60 +207,82 @@ const DeliveryCyclesFlowMetricsView = ({
 
   return (
     <div className="tw-h-full">
-      {chartOrTable===undefined && <div className="tw-flex tw-h-[60px] tw-items-center">
-        {yAxisScale !== "table" && (
-          <div className="tw-flex tw-items-center tw-justify-center">
-            <SelectDropdown
-              title={"Team"}
-              value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
-              uniqueItems={uniqueTeams}
-              handleChange={handleTeamChange}
-              testId="flowmetrics-team-dropdown"
-              className={styles.teamDropdown}
-            />
-            {selectMetricDropdown()}
-          </div>
-        )}
+      {chartOrTable === undefined && (
+        <div className="tw-flex tw-h-[60px] tw-items-center">
+          {yAxisScale !== "table" && (
+            <div className="tw-flex tw-items-center tw-justify-center">
+              <SelectDropdown
+                title={"Team"}
+                value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
+                uniqueItems={uniqueTeams}
+                handleChange={handleTeamChange}
+                testId="flowmetrics-team-dropdown"
+                className={styles.teamDropdown}
+              />
+              {selectMetricDropdown()}
+            </div>
+          )}
 
-        {yAxisScale==="table" && (<SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} className="tw-ml-4" />)}
-        {!defectsOnly && !hideControls && (
-          <div className="tw-ml-auto tw-flex tw-items-center">
-            {selectedFilter != null && (
-              <div className="tw-mr-8">
-                <ClearFilters
-                  selectedFilter={selectedFilter}
-                  selectedMetric={selectedMetric.key}
-                  stateType={WorkItemStateTypes.closed}
-                  handleClearClick={handleClearClick}
-                />
-              </div>
-            )}
-            <GroupingSelector
-              label={"View"}
-              value={yAxisScale}
-              groupings={[
-                {
-                  key: "histogram",
-                  display: "Histogram",
-                },
-                {
-                  key: "table",
-                  display: "Card Detail",
-                },
-              ]}
-              initialValue={yAxisScale}
-              onGroupingChanged={setYAxisScale}
-              layout="col"
+          {yAxisScale === "table" && (
+            <SelectIssueTypeDropdown
+              valueIndex={issueTypeValueIndex}
+              handleIssueTypeChange={handleIssueTypeChange}
+              className="tw-ml-4"
             />
-          </div>
-        )}
-      </div>}
-      {chartOrTable==="table" && (<SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} className="tw-ml-4 tw-absolute tw-top-[-0.5rem] tw-left-0" />)}
+          )}
+          {!defectsOnly && !hideControls && (
+            <div className="tw-ml-auto tw-flex tw-items-center">
+              {selectedFilter != null && (
+                <div className="tw-mr-8">
+                  <ClearFilters
+                    selectedFilter={selectedFilter}
+                    selectedMetric={selectedMetric.key}
+                    stateType={WorkItemStateTypes.closed}
+                    handleClearClick={handleClearClick}
+                  />
+                </div>
+              )}
+              <GroupingSelector
+                label={"View"}
+                value={yAxisScale}
+                groupings={[
+                  {
+                    key: "histogram",
+                    display: "Histogram",
+                  },
+                  {
+                    key: "table",
+                    display: "Card Detail",
+                  },
+                ]}
+                initialValue={yAxisScale}
+                onGroupingChanged={setYAxisScale}
+                layout="col"
+              />
+            </div>
+          )}
+        </div>
+      )}
+      {chartOrTable === "table" && (
+        <div className="tw-flex tw-absolute tw-top-[-0.5rem] tw-left-0 tw-ml-4">
+         <SelectTeamDropdown
+            uniqueTeams={uniqueTeams}
+            valueIndex={teamValueIndex}
+            handleTeamChange={handleTeamChange}
+            className=""
+          />
+          <SelectIssueTypeDropdown
+            valueIndex={issueTypeValueIndex}
+            handleIssueTypeChange={handleIssueTypeChange}
+            className="tw-ml-2"
+          />
+        </div>
+      )}
       <WorkItemsDetailHistogramTable
         // common props
         key={resetComponentStateKey}
         stateType={WorkItemStateTypes.closed}
-        tabSelection={chartOrTable==="table" ? "table" : yAxisScale}
+        tabSelection={chartOrTable === "table" ? "table" : yAxisScale}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         // chart props
         chartSubTitle={getChartSubTitle({filteredData, defectsOnly, specsOnly, days, before, selectedMetric})}
