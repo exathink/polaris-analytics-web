@@ -1,14 +1,14 @@
 import React from "react";
 import {pick} from "../../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import { SelectDropdown, useSelect } from "../../../../components/select/selectDropdown";
+import { useSelect } from "../../../../components/select/selectDropdown";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
+import { defaultTeam, SelectTeamDropdown, getAllUniqueTeams } from "../../../../components/select/selectTeamDropdown";
 
 import {WorkItemStateTypes} from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-const defaultTeam = {key: "all", name: "All"};
 const getData = (data, dimension) => {
   const edgeNodes = data?.[dimension]?.workItemDeliveryCycles?.edges ?? [];
   return edgeNodes.map((edge) =>
@@ -45,7 +45,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
     key: t,
     name: t,
   }));
-  const uniqueTeams = [defaultTeam, ...teams];
+  const uniqueTeams = getAllUniqueTeams(teams);
   const {selectedVal: {key: selectedTeam}, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
     uniqueItems: uniqueTeams,
     defaultVal: defaultTeam,
@@ -74,15 +74,12 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
   return (
     <div className="tw-relative tw-h-full  tw-w-full">
       <div className="tw-absolute tw-top-[-3.5rem] tw-left-0 tw-mx-4 tw-flex tw-items-end tw-justify-between">
-        <SelectDropdown
-          title={"Team"}
-          uniqueItems={uniqueTeams}
-          testId="team-dropdown"
-          value={teamValueIndex}
-          handleChange={handleTeamChange}
-          layout="col"
+        <SelectTeamDropdown
+          uniqueTeams={uniqueTeams}
+          valueIndex={teamValueIndex}
+          handleTeamChange={handleTeamChange}
           className="tw-ml-2"
-        />
+         />
         <SelectIssueTypeDropdown
           valueIndex={issueTypeValueIndex}
           handleIssueTypeChange={handleIssueTypeChange}
