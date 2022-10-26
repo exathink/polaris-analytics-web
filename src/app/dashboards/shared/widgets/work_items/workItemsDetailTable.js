@@ -153,13 +153,13 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
 
   const columns = [
     {
-      title: "Team",
-      dataIndex: "teams",
-      key: "teams",
-      filters: filters.teams.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
+      title: "Workstream",
+      dataIndex: "workItemsSourceName",
+      key: "workItemsSourceName",
+      filters: filters.workItemStreams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
       width: "4%",
-      ...renderTeamsCol,
+      render: (text, record) => text 
     },
     {
       title: "CARD",
@@ -255,6 +255,7 @@ export const WorkItemsDetailTable =
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
     const states = [...new Set(tableData.map((x) => x.state))];
+    const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
     const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
     const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "FTE Days" : "days");
@@ -264,7 +265,7 @@ export const WorkItemsDetailTable =
     const dataSource = getTransformedData(tableData, intl);
     const columns = useWorkItemsDetailTableColumns({
       stateType,
-      filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData},
+      filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
       callBacks: {setShowPanel, setWorkItemKey},
       intl,
       selectedFilter,
