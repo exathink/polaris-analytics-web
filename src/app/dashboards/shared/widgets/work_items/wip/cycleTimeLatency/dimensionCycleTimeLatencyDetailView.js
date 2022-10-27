@@ -8,7 +8,7 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
-import {EVENT_TYPES} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -20,6 +20,7 @@ import {
   uniqueIssueTypes,
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
+import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -178,6 +179,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultIssueType,
   });
 
+  const uniqueTeams = getAllUniqueTeams(
+    getUniqItems(
+      initWorkItems.flatMap((x) => x.teamNodeRefs),
+      (x) => x.teamKey
+    ).map((x) => ({key: x.teamKey, name: x.teamName}))
+  );
+  const {selectedVal: {key: selectedTeam}, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
+    uniqueItems: uniqueTeams,
+    defaultVal: defaultTeam,
+  });
+
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={classNames(styles.title, "tw-text-2xl")}>{getTitle(stageName)}</div>
@@ -282,6 +294,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
         </div>
       </div>
       <div className={styles.issueTypeDropdown}>
+        <SelectTeamDropdown
+          uniqueTeams={uniqueTeams}
+          valueIndex={teamValueIndex}
+          handleTeamChange={handleTeamChange}
+          className=""
+         />
         <SelectIssueTypeDropdown
           valueIndex={issueTypeValueIndex}
           handleIssueTypeChange={handleIssueTypeChange}
@@ -309,6 +327,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 return true;
               } else {
                 return w.workItemType === selectedIssueType;
+              }
+            })
+            .filter((w) => {
+              if (selectedTeam === "all") {
+                return true;
+              } else {
+                const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+                return _teams.includes(selectedTeam);
               }
             })}
           cycleTimeTarget={cycleTimeTarget}
