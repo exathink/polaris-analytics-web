@@ -187,6 +187,16 @@ const DeliveryCyclesFlowMetricsView = ({
       }),
     [model, selectedTeam, selectedIssueType]
   );
+  const teamDropdownElement = (
+    <SelectDropdown
+      title={"Team"}
+      value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
+      uniqueItems={uniqueTeams}
+      handleChange={handleTeamChange}
+      testId="flowmetrics-team-dropdown"
+      className={styles.teamDropdown}
+    />
+  );
 
   const seriesData = React.useMemo(() => {
     const points = filteredData
@@ -211,24 +221,20 @@ const DeliveryCyclesFlowMetricsView = ({
         <div className="tw-flex tw-h-[60px] tw-items-center">
           {yAxisScale !== "table" && (
             <div className="tw-flex tw-items-center tw-justify-center">
-              <SelectDropdown
-                title={"Team"}
-                value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
-                uniqueItems={uniqueTeams}
-                handleChange={handleTeamChange}
-                testId="flowmetrics-team-dropdown"
-                className={styles.teamDropdown}
-              />
+              {teamDropdownElement}
               {selectMetricDropdown()}
             </div>
           )}
 
           {yAxisScale === "table" && (
+            <>
+            {teamDropdownElement}
             <SelectIssueTypeDropdown
               valueIndex={issueTypeValueIndex}
               handleIssueTypeChange={handleIssueTypeChange}
               className="tw-ml-4"
             />
+            </>     
           )}
           {!defectsOnly && !hideControls && (
             <div className="tw-ml-auto tw-flex tw-items-center">
