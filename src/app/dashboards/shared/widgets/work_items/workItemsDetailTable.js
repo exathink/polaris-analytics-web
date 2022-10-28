@@ -158,7 +158,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       key: "workItemsSourceName",
       filters: filters.workItemStreams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
-      width: "4%",
+      width: "6%",
       render: (text, record) => text 
     },
     {
