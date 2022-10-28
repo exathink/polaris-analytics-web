@@ -79,12 +79,14 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
           uniqueTeams={uniqueTeams}
           valueIndex={teamValueIndex}
           handleTeamChange={handleTeamChange}
-          className="tw-ml-2"
+          wrapperClassName="tw-ml-2"
+          className="tw-w-36"
          />
         <SelectIssueTypeDropdown
           valueIndex={issueTypeValueIndex}
           handleIssueTypeChange={handleIssueTypeChange}
-          className="tw-ml-2"
+          wrapperClassName="tw-ml-2"
+          className="tw-w-36"
         />
       </div>
       <div className="tw-h-full">

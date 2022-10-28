@@ -145,8 +145,8 @@ const DeliveryCyclesFlowMetricsView = ({
             handleMetricChange(index);
           }}
           testId="groupings-select"
-          width={170}
-          className={styles.metricDropdown}
+          className="tw-w-[170px]"
+          wrapperClassName={styles.metricDropdown}
         />
       )
     );
@@ -195,7 +195,8 @@ const DeliveryCyclesFlowMetricsView = ({
       uniqueItems={uniqueTeams}
       handleChange={handleTeamChange}
       testId="flowmetrics-team-dropdown"
-      className={styles.teamDropdown}
+      className="tw-w-36"
+      wrapperClassName={yAxisScale === "table" ? "tw-ml-4": "tw-mb-[5px]"}
     />
   );
 
@@ -228,14 +229,15 @@ const DeliveryCyclesFlowMetricsView = ({
           )}
 
           {yAxisScale === "table" && (
-            <>
+            <div className="tw-flex tw-items-center">
             {teamDropdownElement}
             <SelectIssueTypeDropdown
               valueIndex={issueTypeValueIndex}
               handleIssueTypeChange={handleIssueTypeChange}
-              className="tw-ml-4"
+              wrapperClassName="tw-ml-4"
+              className="tw-w-36"
             />
-            </>     
+            </div>     
           )}
           {!defectsOnly && !hideControls && (
             <div className="tw-ml-auto tw-flex tw-items-center">
@@ -276,12 +278,13 @@ const DeliveryCyclesFlowMetricsView = ({
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}
             handleTeamChange={handleTeamChange}
-            className=""
+            className="tw-w-36"
           />
           <SelectIssueTypeDropdown
             valueIndex={issueTypeValueIndex}
             handleIssueTypeChange={handleIssueTypeChange}
-            className="tw-ml-2"
+            wrapperClassName="tw-ml-2"
+            className="tw-w-36"
           />
         </div>
       )}

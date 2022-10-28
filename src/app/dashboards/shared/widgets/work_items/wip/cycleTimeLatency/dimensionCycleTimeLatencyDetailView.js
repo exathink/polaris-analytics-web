@@ -298,12 +298,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
           uniqueTeams={uniqueTeams}
           valueIndex={teamValueIndex}
           handleTeamChange={handleTeamChange}
-          className=""
+          className="tw-w-36"
          />
         <SelectIssueTypeDropdown
           valueIndex={issueTypeValueIndex}
           handleIssueTypeChange={handleIssueTypeChange}
-          className="tw-ml-2"
+          wrapperClassName="tw-ml-2"
+          className="tw-w-36"
         />
       </div>
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
