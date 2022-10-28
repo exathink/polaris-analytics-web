@@ -75,7 +75,8 @@ const DeliveryCyclesFlowMetricsView = ({
           "effort",
           "authorCount",
           "teamNodeRefs",
-          "epicName"
+          "epicName",
+          "workItemsSourceName"
         )
       ),
     [data, dimension]

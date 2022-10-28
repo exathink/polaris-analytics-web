@@ -31,7 +31,8 @@ const getData = (data, dimension) => {
       "effort",
       "authorCount",
       "teamNodeRefs",
-      "epicName"
+      "epicName",
+      "workItemsSourceName"
     )
   );
 };
