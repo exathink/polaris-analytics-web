@@ -210,7 +210,6 @@ const PhaseDetailView = ({
                 <SelectIssueTypeDropdown
                   valueIndex={issueTypeValueIndex}
                   handleIssueTypeChange={handleIssueTypeChange}
-                  wrapperClassName="tw-ml-2"
                   className="tw-w-24 lg:tw-w-36"
                 />
               </div>
