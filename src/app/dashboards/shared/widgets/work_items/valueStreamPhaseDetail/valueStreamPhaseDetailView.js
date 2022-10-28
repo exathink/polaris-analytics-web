@@ -67,7 +67,7 @@ const PhaseDetailView = ({
     return (
       <div data-testid="pipeline-state-details-team-dropdown" className={"control"}>
         <div className="controlLabel">Team</div>
-        <Select defaultValue={0} onChange={handleTeamChange} className={"teamSelector"}>
+        <Select defaultValue={0} onChange={handleTeamChange} className="tw-w-24 lg:tw-w-36">
           {uniqueTeams.map((teamName, index) => (
             <Option key={teamName} value={index}>
               {teamName}
@@ -207,7 +207,12 @@ const PhaseDetailView = ({
             <div className={"leftControls"}>
               <div className="selectTeam">{selectTeamDropdown()}</div>
               <div className="tw-ml-4">
-                <SelectIssueTypeDropdown valueIndex={issueTypeValueIndex} handleIssueTypeChange={handleIssueTypeChange} />
+                <SelectIssueTypeDropdown
+                  valueIndex={issueTypeValueIndex}
+                  handleIssueTypeChange={handleIssueTypeChange}
+                  wrapperClassName="tw-ml-2"
+                  className="tw-w-24 lg:tw-w-36"
+                />
               </div>
             </div>
             <div className={"middleControls"}>
