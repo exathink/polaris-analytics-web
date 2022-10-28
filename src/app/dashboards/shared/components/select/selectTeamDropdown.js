@@ -4,7 +4,7 @@ export const defaultTeam = {key: "all", name: "All"};
 
 export const getAllUniqueTeams = (initialTeams) => [defaultTeam, ...initialTeams];
 
-export function SelectTeamDropdown({uniqueTeams, valueIndex, handleTeamChange, className}) {
+export function SelectTeamDropdown({uniqueTeams, valueIndex, handleTeamChange, className, wrapperClassName}) {
   return (
     <SelectDropdown
       title={"Team"}
@@ -14,6 +14,7 @@ export function SelectTeamDropdown({uniqueTeams, valueIndex, handleTeamChange, c
       handleChange={handleTeamChange}
       layout="col"
       className={className}
+      wrapperClassName={wrapperClassName}
     />
   );
 }
