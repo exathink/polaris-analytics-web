@@ -19,7 +19,8 @@
 .issueTypeDropdown {
   grid-area: issueTypeDropdown;
   align-self: flex-end;
-  margin-left: theme("spacing.2")
+  margin-left: theme("spacing.2");
+  display: flex;
 }
 
 .engineering {
