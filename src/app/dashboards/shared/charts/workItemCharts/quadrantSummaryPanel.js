@@ -116,7 +116,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
             val === 0 ? "tw-invisible" : ""
           )}
         >
-          {val > 0 ? `Avg. Age ${averageAgeDisplay}` : "random text"}
+          {val > 0 ? `Avg. Age ${averageAgeDisplay} Days` : "random text"}
         </div>
       </div>
     </Popover>
