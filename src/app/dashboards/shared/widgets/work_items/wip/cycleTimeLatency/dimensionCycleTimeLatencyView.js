@@ -18,6 +18,7 @@ export const DimensionCycleTimeLatencyView = ({
   tooltipType,
   view,
   context,
+  displayBag={}
 }) => {
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
@@ -59,8 +60,8 @@ export const DimensionCycleTimeLatencyView = ({
             cycleTimeTarget={cycleTimeTarget}
             latencyTarget={latencyTarget}
             className="tw-w-[98%] tw-mx-auto"
-            size="small"
-            valueFontClass="tw-text-base"
+            size={displayBag?.summaryPanelSize}
+            valueFontClass={displayBag?.summaryPanelValueFontSize}
           />
         </div>
         <CardInspectorWithDrawer
