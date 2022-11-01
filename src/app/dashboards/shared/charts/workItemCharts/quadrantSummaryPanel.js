@@ -59,7 +59,7 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
   }, {});
 }
 
-function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId}) {
+function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId, size}) {
   const intl = useIntl();
 
   const percentageCount = (val/total)*100;
@@ -103,12 +103,12 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   return (
     <Popover content={tooltipContent} title={tooltipTitle} trigger={"hover"}>
       <div
-        className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center tw-rounded-md tw-p-1 2xl:tw-space-y-1", className)}
+        className={classNames("tw-flex tw-cursor-pointer tw-flex-col tw-items-center tw-justify-center tw-rounded-md", className, {"2xl:tw-space-y-1  tw-p-1":size!=="small"})}
         style={{backgroundColor: color}}
         onClick={onQuadrantClick}
         data-testid={testId}
       >
-        <div className="2xl:tw-text-2xl">{name}</div>
+        <div className={classNames({"tw-text-xs": size==="small"}, {"2xl:tw-text-2xl": size!=="small"})}>{name}</div>
         <div className={classNames("tw-text-black tw-text-opacity-80", fontClass)}>{percentageCountDisplay}</div>
         <div
           className={classNames(
@@ -132,6 +132,7 @@ export function QuadrantSummaryPanel({
   onQuadrantClick,
   selectedQuadrant,
   valueFontClass = "tw-text-2xl",
+  size
 }) {
   const intl = useIntl();
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
@@ -195,6 +196,7 @@ export function QuadrantSummaryPanel({
         total={workItems.length}
         totalEffort={totalEffort}
         onQuadrantClick={() => onQuadrantClick(q.quadKey)}
+        size={size}
       />
     );
   });
