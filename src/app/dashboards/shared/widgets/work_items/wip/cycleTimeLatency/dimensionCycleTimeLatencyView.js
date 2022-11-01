@@ -59,6 +59,8 @@ export const DimensionCycleTimeLatencyView = ({
             cycleTimeTarget={cycleTimeTarget}
             latencyTarget={latencyTarget}
             className="tw-w-[98%] tw-mx-auto"
+            size="small"
+            valueFontClass="tw-text-base"
           />
         </div>
         <CardInspectorWithDrawer
