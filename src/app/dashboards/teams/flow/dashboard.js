@@ -163,6 +163,7 @@ function WipDashboard({
               latestCommit={latestCommit}
               targetPercentile={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksWipInspector}
+              displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
             />
           )}
           showDetail={true}
@@ -214,6 +215,7 @@ function WipDashboard({
               latestCommit={latestCommit}
               targetPercentile={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksWipInspector}
+              displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
             />
           )}
           showDetail={true}

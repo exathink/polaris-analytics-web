@@ -27,6 +27,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
     tooltipType,
     view,
     context,
+    displayBag
   }
 ) => {
 
@@ -82,6 +83,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
+        displayBag={displayBag}
       />
     );
   }
