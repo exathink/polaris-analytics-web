@@ -193,8 +193,8 @@ export const VolumeTrendsDetailDashboard = ({
       {displayProps.tabSelection === undefined && (
         <DashboardRow
           h="45%"
-          title={`Card Details`}
-          controls={[getClearFilter]}
+          title={``}
+          controls={[() => <div className="tw-h-12"></div>, getClearFilter]}
         >
           <DashboardWidget
             w={1}

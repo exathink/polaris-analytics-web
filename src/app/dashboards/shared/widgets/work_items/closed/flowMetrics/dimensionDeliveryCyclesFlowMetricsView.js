@@ -20,6 +20,7 @@ import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
 import { defaultTeam as _defaultTeam, SelectTeamDropdown} from "../../../../components/select/selectTeamDropdown";
+import classNames from "classnames";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -51,7 +52,8 @@ const DeliveryCyclesFlowMetricsView = ({
   chartOrTable,
   yAxisScale: parentYAxisScale,
   setYAxisScale: parentSetYAxisScale,
-  view
+  view,
+  displayBag={}
 }) => {
   const model = React.useMemo(
     () =>
@@ -273,7 +275,7 @@ const DeliveryCyclesFlowMetricsView = ({
         </div>
       )}
       {chartOrTable === "table" && (
-        <div className="tw-flex tw-absolute tw-top-[-0.5rem] tw-left-0 tw-ml-4">
+        <div className={classNames("tw-flex tw-absolute tw-left-0 tw-ml-4", displayBag?.filtersClass??"tw-top-[-3.5rem]")}>
          <SelectTeamDropdown
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}

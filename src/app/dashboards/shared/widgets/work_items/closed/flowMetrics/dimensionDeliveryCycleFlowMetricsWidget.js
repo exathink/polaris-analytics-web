@@ -27,6 +27,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   setYAxisScale,
   includeSubTasks,
   chartOrTable,
+  displayBag
 }) => {
   let _days = before === undefined ? initialDays : days;
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
@@ -64,6 +65,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
       hideControls={hideControls}
       chartOrTable={chartOrTable}
       view={view}
+      displayBag={displayBag}
     />
   );
 };
