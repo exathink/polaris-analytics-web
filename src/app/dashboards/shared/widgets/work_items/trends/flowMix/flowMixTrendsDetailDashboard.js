@@ -9,7 +9,7 @@ import {
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
-import {FlowTypeWorkItemType, WorkItemStateTypes, FlowTypeDisplayName} from "../../../../config";
+import {FlowTypeWorkItemType, WorkItemStateTypes, FlowTypeDisplayName, AppTerms} from "../../../../config";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
@@ -48,7 +48,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   return (
     <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_40%_10%_40%] tw-p-2">
       <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? "Specs" : "All Cards"}</div>
+        <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? AppTerms.specs.display : AppTerms.cards.display}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
       </div>
 

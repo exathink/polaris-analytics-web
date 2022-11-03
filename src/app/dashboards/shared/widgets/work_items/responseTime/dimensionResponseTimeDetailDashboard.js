@@ -4,6 +4,7 @@ import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysR
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
+import { AppTerms } from "../../../config";
 import { DimensionPullRequestsWidget } from "../../pullRequests/openPullRequests";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
@@ -47,7 +48,7 @@ export function DimensionResponseTimeDetailDashboard({
       className="tw-grid tw-grid-cols-5 tw-grid-rows-[10%,auto,45%] tw-gap-2 tw-p-2 lg:tw-grid-rows-[6%,43%,45%]"
     >
       <div className="tw-col-start-1 tw-col-span-2 tw-row-start-1 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Variability Analysis, {limitToSpecsOnly ? "Specs" : "All Cards"}</div>
+        <div className="tw-flex tw-justify-start">Variability Analysis, {limitToSpecsOnly ? AppTerms.specs.display : AppTerms.cards.display}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Last {flowAnalysisPeriod} Days</div>
       </div>
       <div className="tw-col-start-3 tw-col-span-2 tw-row-start-1 tw-text-base">
