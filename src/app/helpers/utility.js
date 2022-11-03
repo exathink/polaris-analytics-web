@@ -5,6 +5,7 @@ import flowright from "lodash.flowright";
 import chunk from "lodash/chunk";
 import {useViewerContext} from "../framework/viewer/viewerContext";
 import {DEMO_MODE} from "../../config/featureFlags";
+import { AppTerms } from "../dashboards/shared/config";
 
 export function removeItemAtIndex(arr, index) {
   return [...arr.slice(0, index), ...arr.slice(index + 1)];
@@ -489,9 +490,9 @@ export function sum_field(array, field, initial=0) {
 
 export function getItemSuffix({specsOnly, itemsCount}) {
   if (specsOnly) {
-    return itemsCount === 1 ? "Spec" : "Specs";
+    return itemsCount === 1 ? AppTerms.spec.display : AppTerms.specs.display;
   } else {
-    return itemsCount === 1 ? "Card" : "Cards";
+    return itemsCount === 1 ? AppTerms.card.display : AppTerms.cards.display;
   }
 }
 
