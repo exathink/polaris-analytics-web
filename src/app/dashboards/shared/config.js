@@ -236,6 +236,12 @@ export const AppTerms = {
   cards: {
     display: "Work Items",
   },
+  spec: {
+    display: "Dev Item",
+  },
+  card: {
+    display: "Work Item",
+  },
   latency: {
     display: "Latency",
   },
