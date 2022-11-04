@@ -120,7 +120,7 @@ describe("ProjectPipelineImplementationCostView", () => {
       expect(specsElem).toHaveLength(1);
 
       const cardsRegex = new RegExp(AppTerms.cards.display, "i")
-      expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
+      expect(await screen.findAllByText(cardsRegex)).toHaveLength(2);
     });
   });
 });
