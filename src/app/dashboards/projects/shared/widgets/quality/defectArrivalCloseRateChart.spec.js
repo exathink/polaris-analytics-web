@@ -1,7 +1,7 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual, getNDaysAgo} from "../../../../../../test/test-utils";
-import {Colors} from "../../../../shared/config";
+import {AppTerms, Colors} from "../../../../shared/config";
 import {DefectArrivalCloseRateChart} from "./defectArrivalCloseRateChart";
 import {epoch} from "../../../../../helpers/utility";
 
@@ -60,7 +60,7 @@ const fixedChartConfig = {
   },
   legend: {
     title: {
-      text: `Specs`,
+      text: AppTerms.specs.display,
       style: {
         fontStyle: "italic",
       },

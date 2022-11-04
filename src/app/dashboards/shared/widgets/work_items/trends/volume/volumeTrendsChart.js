@@ -1,7 +1,7 @@
 import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
-import {ResponseTimeMetricsColor} from "../../../../config";
+import {AppTerms, ResponseTimeMetricsColor} from "../../../../config";
 
 export const VolumeTrendsChart = ({
   flowMetricsTrends,
@@ -26,14 +26,14 @@ export const VolumeTrendsChart = ({
 
     const specMetric = {
       key: "workItemsWithCommits",
-      displayName: "Specs",
+      displayName: AppTerms.specs.display,
       visible: specs.visible,
       type: specs.type || "spline",
       color: ResponseTimeMetricsColor.specs,
     };
     const cardMetric = {
       key: "workItemsInScope",
-      displayName: "Cards",
+      displayName: AppTerms.cards.display,
       visible: cards.visible,
       type: cards.type || "column",
     };
@@ -88,7 +88,7 @@ export const VolumeTrendsChart = ({
                 seriesKey: "workItemsWithCommits",
                 index: 0,
                 getText: (measurements, seriesKey, index, intl) =>
-                  `${i18nNumber(intl, measurements[index][seriesKey], 1)} Specs`,
+                  `${i18nNumber(intl, measurements[index][seriesKey], 1)} ${AppTerms.specs.display}`,
                 backgroundColor: ResponseTimeMetricsColor.specs,
                 borderColor: ResponseTimeMetricsColor.specs,
                 align: "center",
@@ -104,15 +104,15 @@ export const VolumeTrendsChart = ({
             body:
               seriesKey === "workItemsWithCommits"
                 ? [
-                    ["Specs Closed: ", `${i18nNumber(intl, measurement.workItemsWithCommits)} specs`],
+                    [`${AppTerms.specs.display} Closed: `, `${i18nNumber(intl, measurement.workItemsWithCommits)} ${String(AppTerms.specs.display).toLowerCase()}`],
                     ["Earliest Closed: ", `${i18nDate(intl, measurement.earliestClosedDate)}`],
                     ["Latest Closed: ", `${i18nDate(intl, measurement.latestClosedDate)}`],
                   ]
                 : [
-                    ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} cards`],
-                    ["Specs Closed: ", `${i18nNumber(intl, measurement.workItemsWithCommits)} specs`],
+                    ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${String(AppTerms.cards.display).toLowerCase()}`],
+                    [`${AppTerms.specs.display} Closed: `, `${i18nNumber(intl, measurement.workItemsWithCommits)} ${String(AppTerms.specs.display).toLowerCase()}`],
                     [
-                      "Spec Ratio: ",
+                      `${AppTerms.spec.display} Ratio: `,
                       `${i18nNumber(
                         intl,
                         measurement.workItemsInScope !== 0 ? (measurement.workItemsWithCommits / measurement.workItemsInScope) * 100.0 : 0

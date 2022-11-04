@@ -5,6 +5,7 @@ import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
 import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
+import { AppTerms } from "../../../config";
 
 beforeAll(() => {
   jest.spyOn(settings, "settingsReducer");
@@ -149,15 +150,16 @@ describe("ProjectResponseTimeSLASettingsView", () => {
 
       test("it renders appropriate message on the chart", async () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...emptyPropsFixture} />, projectUpdateSettingsMocks);
-
-        await screen.findByText(/0 cards closed/i);
+        const cardsRegex = new RegExp(`0 ${AppTerms.cards.display} closed`, "i")
+        await screen.findByText(cardsRegex);
       });
     });
 
     describe("when there are workItems", () => {
       test("it renders appropriate message on the chart", async () => {
         renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
-        expect(await screen.findByText(/3 cards closed/i)).toBeInTheDocument();
+        const cardsRegex = new RegExp(`3 ${AppTerms.cards.display} closed`, "i")
+        expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
       });
 
       // TODO: need to see how to test this, tried few things which are not working.

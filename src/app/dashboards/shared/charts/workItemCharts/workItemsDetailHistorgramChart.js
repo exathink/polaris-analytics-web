@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
+import {AppTerms, Colors, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
 import {
   getDefaultMetricKey,
   getSelectedMetricDisplayName,
@@ -20,22 +20,22 @@ function getChartTitle(metric, stateType) {
 }
 
 function getNewSubtitle(count, specsOnly, stateType) {
-  const item = specsOnly ? "spec" : "card";
+  const item = specsOnly ? AppTerms.spec.display : AppTerms.card.display;
   return`${count} ${item}${count > 1 ? "s" : ""} in ${WorkItemStateTypeDisplayName[stateType]}`;
 }
 
 function getWorkItemTitle(stateType, specsOnly) {
   if (isClosed(stateType)) {
     if (specsOnly) {
-      return `Specs Closed`;
+      return `${AppTerms.specs.display} Closed`;
     } else {
-      return `Cards Closed`;
+      return `${AppTerms.cards.display} Closed`;
     }
   } else {
     if (specsOnly) {
-      return `Specs`;
+      return `${AppTerms.specs.display}`;
     } else {
-      return `All Cards`;
+      return AppTerms.cards.display;
     }
   }
 }

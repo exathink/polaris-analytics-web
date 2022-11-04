@@ -10,6 +10,7 @@ import { WorkItemScopeSelector } from "../../shared/components/workItemScopeSele
 import { DimensionWipFlowMetricsWidget } from "../../shared/widgets/work_items/wip";
 import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSlider/daysRangeSlider";
 import { DimensionThroughputWidget } from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
+import { AppTerms } from "../../shared/config";
 
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
@@ -50,7 +51,7 @@ function ValueDashboard({
           name="flow-metrics"
           title={"Throughput"}
           className={styles.throughput}
-          subtitle={`${specsOnly ? 'Specs' : 'All Cards'}, Last ${flowAnalysisPeriod} days`}
+          subtitle={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionThroughputWidget
@@ -105,7 +106,7 @@ function ValueDashboard({
           name="pipeline"
           className={styles.workInProgress}
           title={"Work In Progress"}
-          subtitle={`${specsOnly ? 'Specs' : 'All Cards'}`}
+          subtitle={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`}
 
           render={({view}) => (
             <DimensionWipFlowMetricsWidget

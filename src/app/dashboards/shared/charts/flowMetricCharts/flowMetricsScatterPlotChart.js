@@ -2,6 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {getMinMaxDatesFromRange, getWeekendPlotBands, percentileToText, pick, toMoment} from "../../../../helpers/utility";
 import {
+  AppTerms,
   Colors,
   Symbols,
   WorkItemColorMap,
@@ -170,7 +171,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         text: (function () {
           const subTitle = defectsOnly
             ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
-            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+            : ` ${candidateCycles.length} ${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} closed: ${getTimePeriod(days, before)}`;
           // When showing cycle time we also report total with no cycle time if they exist.
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`

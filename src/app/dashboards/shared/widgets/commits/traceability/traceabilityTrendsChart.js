@@ -1,5 +1,6 @@
 import React from 'react';
 import {i18nDate, i18nNumber} from "../../../../../helpers/utility";
+import { AppTerms } from '../../../config';
 import {MeasurementTrendLineChart} from "../../../views/measurementTrend/measurementTrendLineChart";
 
 export const TraceabilityTrendsChart = ({
@@ -41,8 +42,8 @@ export const TraceabilityTrendsChart = ({
                 ['Traceability: ', `${i18nNumber(intl, measurement.traceability * 100)} %`],
 
                 [`------`, ``],
-                ['Commits with Specs: ', `${i18nNumber(intl, measurement.specCount)}`],
-                ['Commits without Specs: ', `${i18nNumber(intl, measurement.nospecCount)}`],
+                [`Commits with ${AppTerms.specs.display}: `, `${i18nNumber(intl, measurement.specCount)}`],
+                [`Commits without ${AppTerms.specs.display}: `, `${i18nNumber(intl, measurement.nospecCount)}`],
                 ['Total Commits: ', `${i18nNumber(intl, measurement.totalCommits)}`],
 
               ]

@@ -2,6 +2,7 @@ import React from "react";
 import {screen} from "@testing-library/react";
 import {DimensionWipEffortView} from "./dimensionWipEffortView";
 import {renderWithProviders} from "../../../../../../framework/viz/charts/chart-test-utils";
+import {AppTerms} from "../../../../config";
 
 describe("ProjectPipelineImplementationCostView", () => {
   let viewPropsFixture = {
@@ -63,7 +64,8 @@ describe("ProjectPipelineImplementationCostView", () => {
       //asserting on the title first, IMP: this assertion makes sure chart is rendered, as chart is rendered async
       await screen.findAllByText(/effort/i);
 
-      const specsElem = await screen.findAllByText(/specs/i);
+      const specsRegex = new RegExp(AppTerms.specs.display, "i");
+      const specsElem = await screen.findAllByText(specsRegex);
       expect(specsElem).toHaveLength(1);
     });
 
@@ -76,8 +78,8 @@ describe("ProjectPipelineImplementationCostView", () => {
       renderWithProviders(<DimensionWipEffortView {...propsFixture} view="primary"/>);
       // asserting on the title of the chart first
       await screen.findAllByText(/effort/i);
-
-      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
+      const cardsRegex = new RegExp(AppTerms.cards.display, "i");
+      expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
   });
 
@@ -98,7 +100,8 @@ describe("ProjectPipelineImplementationCostView", () => {
       await screen.findAllByText(/effort/i);
 
       // both workitem scope and legend text as Specs
-      const specsElem = await screen.findAllByText(/specs/i);
+      const specsRegex = new RegExp(AppTerms.specs.display, "i")
+      const specsElem = await screen.findAllByText(specsRegex);
       expect(specsElem).toHaveLength(2);
     });
 
@@ -112,10 +115,12 @@ describe("ProjectPipelineImplementationCostView", () => {
       // asserting on the title of the chart first
       await screen.findAllByText(/effort/i);
 
-      const specsElem = await screen.findAllByText(/specs/i);
+      const specsRegex = new RegExp(AppTerms.specs.display, "i")
+      const specsElem = await screen.findAllByText(specsRegex);
       expect(specsElem).toHaveLength(1);
 
-      expect(await screen.findByText(/cards/i)).toBeInTheDocument();
+      const cardsRegex = new RegExp(AppTerms.cards.display, "i")
+      expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
   });
 });

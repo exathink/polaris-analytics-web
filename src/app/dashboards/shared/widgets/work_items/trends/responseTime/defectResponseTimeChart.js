@@ -1,7 +1,7 @@
 import React from "react";
 import {i18nDate, i18nNumber} from "../../../../../../helpers/utility";
 import {MeasurementTrendLineChart} from "../../../../views/measurementTrend/measurementTrendLineChart";
-import {ResponseTimeMetricsColor} from "../../../../config";
+import {AppTerms, ResponseTimeMetricsColor} from "../../../../config";
 
 export const DefectResponseTimeChart = ({
   flowMetricsTrends,
@@ -22,7 +22,7 @@ export const DefectResponseTimeChart = ({
       config={{
         title: "Defect Response Time",
         yAxisUom: "Days",
-        legendText: "Specs",
+        legendText: AppTerms.specs.display,
         plotBands: {
           metric: "avgCycleTime",
         },

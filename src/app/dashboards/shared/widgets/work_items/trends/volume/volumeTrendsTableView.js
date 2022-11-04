@@ -3,7 +3,7 @@ import {useIntl} from "react-intl";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {WorkItemStateTypes} from "../../../../config";
+import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {VolumeTrendsChart} from "./volumeTrendsChart";
 
 export function VolumeTrendsTableView({
@@ -30,7 +30,7 @@ export function VolumeTrendsTableView({
             <div className="tw-mr-2">
               <ClearFilters
                 selectedFilter={`${measurementWindow} days ending ${i18nDate(intl, getServerDate(before))}`}
-                selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
+                selectedMetric={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} Closed`}
                 stateType={WorkItemStateTypes.closed}
                 handleClearClick={() => {
                   setBefore?.(undefined);

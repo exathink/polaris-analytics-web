@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor} from "../../config";
+import {Colors, WorkItemStateTypes, WorkItemStateTypeDisplayName, ResponseTimeMetricsColor, AppTerms} from "../../config";
 import {getHistogramCategories, getHistogramSeries} from "../../../projects/shared/helper/utils";
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
@@ -20,7 +20,7 @@ function getChartTitle(stateType, seriesName=null) {
 }
 
 function getChartSubTitle(stateType, specsOnly) {
-  return `${specsOnly ? 'Specs' : 'All cards'} in ${WorkItemStateTypeDisplayName[stateType]}`
+  return `${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} in ${WorkItemStateTypeDisplayName[stateType]}`
 }
 export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),
@@ -95,7 +95,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: specsOnly ? `Specs` : `Cards`,
+          text: specsOnly ? AppTerms.specs.display : AppTerms.cards.display,
         },
       },
       tooltip: {
@@ -106,7 +106,7 @@ export const WorkItemsDurationsHistogramChart = Chart({
           return tooltipHtml({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
-              [specsOnly ? `Specs: ` : `Cards: `, `${this.point.y}`],
+              [specsOnly ? `${AppTerms.specs.display}: ` : `${AppTerms.cards.display}: `, `${this.point.y}`],
               [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
