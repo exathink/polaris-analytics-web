@@ -104,6 +104,7 @@ export const DimensionWorkBalanceTrendsWidget = (
           initialMetric={"leadTime"}
           includeSubTasks={includeSubTasks}
           chartOrTable={"table"}
+          displayBag={{filtersClass: "tw-top-[-0.5rem]"}}
         />
       );
       return (

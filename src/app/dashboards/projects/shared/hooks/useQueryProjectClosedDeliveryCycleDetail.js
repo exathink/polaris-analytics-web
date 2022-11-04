@@ -19,7 +19,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
         
-        interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost, TeamNodeRefs, EpicNodeRef]
+        interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost, TeamNodeRefs, EpicNodeRef, WorkItemsSourceRef]
       ) {
         edges {
           node {
@@ -51,6 +51,10 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             effort
             duration
             authorCount
+            
+            workItemsSourceName
+            workItemsSourceKey
+            workTrackingIntegrationType
           }
         }
       }

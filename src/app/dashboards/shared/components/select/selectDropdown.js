@@ -2,8 +2,6 @@ import {Select} from "antd";
 import React from "react";
 import classNames from "classnames";
 
-const DEFAULT_WIDTH = 150;
-
 const {Option} = Select;
 
 export function useSelect({uniqueItems, defaultVal}) {
@@ -23,8 +21,8 @@ export function SelectDropdown({
   uniqueItems,
   testId,
   handleChange,
-  width = DEFAULT_WIDTH,
-  className,
+  wrapperClassName,
+  className="tw-w-36",
   value,
   layout = "col",
 }) {
@@ -34,11 +32,11 @@ export function SelectDropdown({
       className={classNames(
         "tw-flex",
         layout === "col" ? "tw-flex-col" : "tw-flex-row tw-items-center tw-space-x-4",
-        className
+        wrapperClassName
       )}
     >
       {title && <div>{title}</div>}
-      <Select defaultValue={0} value={value} onChange={handleChange} style={{width: width}}>
+      <Select defaultValue={0} value={value} onChange={handleChange} className={className}>
         {uniqueItems.map((item, index) => (
           <Option key={item.key} value={index}>
             {item.icon} {item.name}
