@@ -4,6 +4,7 @@ import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/e
 import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
+  AppTerms,
   Colors,
   Symbols,
   WorkItemStateTypeColor,
@@ -99,7 +100,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
 function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
   const count = workItems.length;
 
-  const countDisplay = `${count} ${count === 1 ? specsOnly ? "Spec" : "Card" : specsOnly ? "Specs" : "Cards"}`;
+  const countDisplay = `${count} ${count === 1 ? specsOnly ? AppTerms.spec.display : AppTerms.card.display : specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`;
   if (selectedQuadrant) {
     if (stageName) {
       return `${countDisplay} ${QuadrantNames[selectedQuadrant]} in ${stageName}`
