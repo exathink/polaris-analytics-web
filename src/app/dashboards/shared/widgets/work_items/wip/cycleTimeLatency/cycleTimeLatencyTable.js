@@ -248,7 +248,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...metricRenderState,
     },
     {
-      title: "Idle Time",
+      title: "Latency",
       dataIndex: "latency",
       key: "latency",
       width: "5%",

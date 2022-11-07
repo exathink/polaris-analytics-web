@@ -165,7 +165,7 @@ export const ValueBoardSummaryView = ({
           <AvgDuration currentMeasurement={current} target={cycleTimeTarget} />
         </VizItem>
         <VizItem w={1 / 3}>
-          <AvgLatency title={"Idle Time"} currentMeasurement={current} target={cycleTimeTarget} />
+          <AvgLatency title={"Latency"} currentMeasurement={current} target={cycleTimeTarget} />
         </VizItem>
       </VizRow>
     </div>
