@@ -242,7 +242,4 @@ export const AppTerms = {
   card: {
     display: "Work Item",
   },
-  latency: {
-    display: "Latency",
-  },
 };
