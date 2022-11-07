@@ -22,7 +22,7 @@ export const WorkItemScopeSelector = (
         },
         {
           key: 'all',
-          display: display ? display[1] : AppTerms.cards.display
+          display: display ? display[1] : 'All'
         },
       ]
     }
