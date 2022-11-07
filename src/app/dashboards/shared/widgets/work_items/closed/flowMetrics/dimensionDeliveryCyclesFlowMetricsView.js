@@ -11,7 +11,7 @@ import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {getUniqItems, pick} from "../../../../../../helpers/utility";
 import styles from "./flowMetrics.module.css";
 import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
-import {WorkItemStateTypes} from "../../../../config";
+import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl, useIntl} from "react-intl";
@@ -28,7 +28,7 @@ function getChartSubTitle({filteredData, defectsOnly, specsOnly, days, before, s
   const workItemsWithNullCycleTime = candidateCycles.filter((x) => !Boolean(x.cycleTime)).length;
   const subTitle = defectsOnly
     ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
-    : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+    : ` ${candidateCycles.length} ${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} closed: ${getTimePeriod(days, before)}`;
   // When showing cycle time we also report total with no cycle time if they exist.
   return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
     ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`

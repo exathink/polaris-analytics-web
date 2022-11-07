@@ -9,6 +9,7 @@ import {
 } from "../../../components/flowStatistics/flowStatistics";
 import {VizItem, VizRow} from "../../../containers/layout";
 import fontStyles from "../../../../../framework/styles/fonts.module.css";
+import { AppTerms } from "../../../config";
 
 export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeTarget, display, specsOnly, days}) => {
   const [current, previous] = cycleMetricsTrends;
@@ -60,7 +61,7 @@ export const ResponseTimeView = ({cycleMetricsTrends, cycleTimeTarget, leadTimeT
       );
     }
     case "pullRequestsFlowMetricsSummary": {
-      const itemsLabel = specsOnly ? "Specs": "Cards";
+      const itemsLabel = specsOnly ? AppTerms.specs.display : AppTerms.cards.display;
       // as we dont want to show compared to text.
       const currentTrend = {...current, samplingFrequency: undefined, measurementWindow: undefined}
 
