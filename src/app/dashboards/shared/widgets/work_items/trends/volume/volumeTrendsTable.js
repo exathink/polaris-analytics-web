@@ -2,6 +2,7 @@ import React from "react";
 import {injectIntl} from "react-intl";
 import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
 import {formatDateTime} from "../../../../../../i18n";
+import { AppTerms } from "../../../../config";
 
 export function useVolumeTrendsTableColumns() {
   const columns = [
@@ -13,7 +14,7 @@ export function useVolumeTrendsTableColumns() {
       render: (text) => <span className="tw-textXs">{text}</span>,
     },
     {
-      title: "Cards Closed",
+      title: `${AppTerms.cards.display} Closed`,
       dataIndex: "workItemsInScope",
       key: "cards",
       width: "5%",
@@ -21,7 +22,7 @@ export function useVolumeTrendsTableColumns() {
       render: (text) => <span className="tw-textXs">{text}</span>,
     },
     {
-      title: "Specs Closed",
+      title: `${AppTerms.specs.display} Closed`,
       dataIndex: "workItemsWithCommits",
       key: "specs",
       width: "5%",

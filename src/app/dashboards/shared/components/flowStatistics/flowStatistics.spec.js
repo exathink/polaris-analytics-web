@@ -1,6 +1,7 @@
 import {screen, within} from "@testing-library/react";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, AvgLeadTime, EffortOUT, Volume} from "./flowStatistics";
 import {renderWithProviders} from "../../../../framework/viz/charts/chart-test-utils";
+import { AppTerms } from "../../config";
 
 export function renderAndAssertMetricComponent(Component, metricVal, uom) {
   renderWithProviders(Component);
@@ -224,7 +225,7 @@ describe("Metrics", () => {
               contributorCount={2}
             />,
             "5.00",
-            "Specs"
+            AppTerms.specs.display
           );
         });
 
@@ -242,7 +243,7 @@ describe("Metrics", () => {
           renderAndAssertMetricComponent(
             <Volume displayType="card" {...propsFixture} specsOnly={true} normalized={true} contributorCount={2} />,
             "5.00",
-            "Specs"
+            AppTerms.specs.display
           );
         });
 

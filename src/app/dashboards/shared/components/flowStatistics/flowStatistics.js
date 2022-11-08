@@ -13,7 +13,7 @@ import { fromNow, percentileToText, humanizeDuration, getItemSuffix, getPeriodSt
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
-import { TrendColors } from "../../config";
+import { AppTerms, TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
 import {MetricCard} from "../cards/metricCard";
 import {TrendsDetail} from "../../../projects/shared/components/TrendsDetail";
@@ -183,7 +183,7 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
     previousMeasurement={previousMeasurement}
     metric={metric}
     valueRender={value => normalized && contributorCount > 0 ? currentMeasurement[metric]/contributorCount : value}
-    uom={specsOnly ? 'Specs' : 'Cards'}
+    uom={specsOnly ? AppTerms.specs.display: AppTerms.cards.display}
     precision={normalized ? 2 : 0}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -197,14 +197,14 @@ export const Volume = ({title, displayType, displayProps, normalized,  contribut
 export const VolumeWithThroughput = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, deltaThreshold, specsOnly, measurementWindow}) => {
   const metric = specsOnly ? 'workItemsWithCommits' : 'workItemsInScope';
 
-  const supportingMetric = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? "Specs/Day": "Cards/Day"}</span>;
+  const supportingMetric = <span>Avg. Throughput: {(currentMeasurement[metric]/measurementWindow)?.toFixed(1)} {specsOnly ? `${AppTerms.specs.display}/Day` : `${AppTerms.cards.display}/Day`}</span>;
   return <FlowStatistic
     title={title || <span>Volume</span>}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={metric}
     valueRender={value => value}
-    uom={specsOnly ? 'Specs' : 'Cards'}
+    uom={specsOnly ? AppTerms.specs.display: AppTerms.cards.display}
     precision={0}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -226,7 +226,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
         return value/measurementWindow
       }
     }
-    uom={specsOnly ? 'Specs/Day' : 'Cards/Day'}
+    uom={specsOnly ? `${AppTerms.specs.display}/Day` : `${AppTerms.cards.display}/Day`}
     precision={2}
     good={TrendIndicator.isPositive}
     deltaThreshold={deltaThreshold}
@@ -506,7 +506,7 @@ export const PercentileLatency = ({title, currentMeasurement, previousMeasuremen
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'percentileLatency'}
-    displayName={title || 'Idle Time'}
+    displayName={title || 'Latency'}
     superScript={percentileToText(targetPercentile)}
     target={target}
     deltaThreshold={deltaThreshold}
@@ -518,7 +518,7 @@ export const MaxLatency = ({title, currentMeasurement, previousMeasurement, show
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'maxLatency'}
-    displayName={title || 'Idle Time'}
+    displayName={title || 'Latency'}
     superScript={'Max'}
     target={target}
     deltaThreshold={deltaThreshold}

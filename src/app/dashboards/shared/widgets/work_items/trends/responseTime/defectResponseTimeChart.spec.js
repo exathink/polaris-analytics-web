@@ -1,7 +1,7 @@
 import React from "react";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../../../framework/viz/charts/chart-test-utils";
 import {expectSetsAreEqual, formatNumber, getNDaysAgo} from "../../../../../../../test/test-utils";
-import {Colors} from "../../../../config";
+import {AppTerms, Colors} from "../../../../config";
 import {DefectResponseTimeChart} from "./defectResponseTimeChart";
 import {epoch} from "../../../../../../helpers/utility";
 
@@ -143,7 +143,7 @@ const fixedChartConfig = {
   },
   legend: {
     title: {
-      text: `Specs`,
+      text: AppTerms.specs.display,
       style: {
         fontStyle: "italic",
       },

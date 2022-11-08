@@ -5,6 +5,7 @@ import {getNDaysAgo} from "../../../../../../test/test-utils"
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettingsWidget";
 import {GraphQLError} from "graphql";
 import {queryDimensionClosedDeliveryCycleDetail} from "../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
+import { AppTerms } from "../../../config";
 
 beforeAll(() => {
   jest.spyOn(console, "log").mockImplementation(() => {})
@@ -194,7 +195,8 @@ describe("ProjectFlowMetricsSettingWidget", () => {
 
     test("renders appropriate message on the chart title when there are no workItems", async () => {
       renderWithProviders(<ProjectResponseTimeSLASettingsWidget {...propsFixture} />, emptyMocksFixture);
-      await screen.findByText(/0 cards closed/i);
+      const cardsRegex = new RegExp(`0 ${AppTerms.cards.display} closed`, "i")
+      await screen.findByText(cardsRegex);
     });
   });
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useSearchMultiCol } from "../../../../../../components/tables/hooks";
 import { injectIntl } from "react-intl";
 import { SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
-import { WorkItemStateTypeDisplayName } from "../../../../config";
+import { AppTerms, WorkItemStateTypeDisplayName } from "../../../../config";
 import { getQuadrant, QuadrantColors, QuadrantNames, Quadrants } from "./cycleTimeLatencyUtils";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { joinTeams } from "../../../../helpers/teamUtils";
@@ -248,7 +248,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       ...metricRenderState,
     },
     {
-      title: "Idle Time",
+      title: "Latency",
       dataIndex: "latency",
       key: "latency",
       width: "5%",
@@ -334,7 +334,7 @@ export const CycleTimeLatencyTable = injectIntl(
 
           return (
             <>
-              <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={pageData?.length} />
               {avgData !== 0 && avgData && (
                 <LabelValue
                   key={getMetricsMetaKey(appliedSorter, "stateType")}

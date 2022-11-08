@@ -7,7 +7,8 @@ import {
   Colors,
   WorkItemStateTypeColor,
   WorkItemStateTypes,
-  WorkItemStateTypeDisplayName
+  WorkItemStateTypeDisplayName,
+  AppTerms
 } from "../../../../shared/config";
 import { Highcharts } from "../../../../../framework/viz/charts/chartWrapper";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
@@ -69,7 +70,7 @@ export const PipelineFunnelChart = Chart({
         backgroundColor: Colors.Chart.backgroundColor
       },
       title: {
-        text: title || `Flow, ${grouping === 'specs' ? "Specs" : "All Cards"}`,
+        text: title || `Flow, ${grouping === 'specs' ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`,
         align: "center"
       },
       subtitle: {
@@ -138,7 +139,7 @@ export const PipelineFunnelChart = Chart({
         }
       },
       series: [{
-        name: grouping === "specs" ? "Specs" : "Cards",
+        name: grouping === "specs" ? AppTerms.specs.display : AppTerms.cards.display,
         data: Object.keys(WorkItemStateTypeDisplayName).filter(
           stateType => selectedSummary[stateType] != null
         ).map(
@@ -173,7 +174,7 @@ export const PipelineFunnelChart = Chart({
           return tooltipHtml_v2({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
-                [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? "Specs" : "Cards"}`],
+                [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? AppTerms.specs.display : AppTerms.cards.display}`],
 
                 [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
 

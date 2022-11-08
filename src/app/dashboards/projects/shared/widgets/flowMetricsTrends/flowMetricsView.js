@@ -1,4 +1,5 @@
 import { VolumeWithThroughput } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { AppTerms } from "../../../../shared/config";
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
@@ -65,7 +66,7 @@ export function FlowMetricsView({
               <div className="tw-text-lg tw-text-gray-300">
                 Volume Details{" "}
                 <span className="tw-text-base tw-italic">
-                  {specsOnly ? "Specs" : "All Cards"}, Last {flowAnalysisPeriod} Days
+                  {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last {flowAnalysisPeriod} Days
                 </span>
               </div>
             ),

@@ -227,3 +227,19 @@ export const TrendColors = {
   good: "rgba(0, 128, 0, 0.7)",
   bad: "rgba(255, 0, 0, 0.7)",
 }
+
+
+export const AppTerms = {
+  specs: {
+    display: "Dev Items",
+  },
+  cards: {
+    display: "Work Items",
+  },
+  spec: {
+    display: "Dev Item",
+  },
+  card: {
+    display: "Work Item",
+  },
+};

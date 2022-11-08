@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
-import {Colors, ResponseTimeMetricsColor, WorkItemStateTypes} from "../../config";
+import {AppTerms, Colors, ResponseTimeMetricsColor, WorkItemStateTypes} from "../../config";
 import {getTimePeriod, getHistogramSeries, getHistogramCategories} from "../../../projects/shared/helper/utils";
 import { getSelectedMetricDisplayName } from "../../helpers/metricsMeta";
 
@@ -35,7 +35,7 @@ export const DeliveryCyclesHistogramChart = Chart({
         text: (function () {
           const subTitle = defectsOnly
             ? `${candidateCycles.length} Defects closed: ${getTimePeriod(days, before)}`
-            : ` ${candidateCycles.length} ${specsOnly ? "Specs" : "Cards"} closed: ${getTimePeriod(days, before)}`;
+            : ` ${candidateCycles.length} ${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} closed: ${getTimePeriod(days, before)}`;
           // When showing cycle time we also report total with no cycle time if they exist.
           return selectedMetric === "cycleTime" && workItemsWithNullCycleTime > 0
             ? `${subTitle} (${workItemsWithNullCycleTime} with no cycle time)`
@@ -53,7 +53,7 @@ export const DeliveryCyclesHistogramChart = Chart({
       yAxis: {
         softMin: 0,
         title: {
-          text: `Specs Closed`,
+          text: `${AppTerms.specs.display} Closed`,
         },
       },
       tooltip: {
@@ -66,7 +66,7 @@ export const DeliveryCyclesHistogramChart = Chart({
           return tooltipHtml({
             header: `${metricsMeta[selectedMetric].display}: ${this.point.category}<br/>${getTimePeriod(days, before)} `,
             body: [
-              [`Specs Closed: `, `${this.point.y}`],
+              [`${AppTerms.specs.display} Closed: `, `${this.point.y}`],
               [
                 `Average ${metricsMeta[selectedMetric].display}: `,
                 `${i18nNumber(intl, this.point.total / this.point.y, 2)} days`,

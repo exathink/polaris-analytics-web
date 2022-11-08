@@ -7,7 +7,7 @@ import {fromNow, humanizeDuration, i18nNumber, TOOLTIP_COLOR, truncateString} fr
 import {allPairs, getHistogramCategories} from "../../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../../i18n";
 import {getPullRequestStateTypeIcon} from "../../../../projects/shared/helper/renderers";
-import {WorkItemStateTypeColor} from "../../../config";
+import {AppTerms, WorkItemStateTypeColor} from "../../../config";
 import {ClosedPrIcon, MergedPrIcon, OpenPrIcon} from "../../../../../components/misc/customIcons";
 import {LabelValue} from "../../../../../helpers/components";
 import React from "react";
@@ -185,7 +185,7 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       ...prInfoSearchState,
     },
     {
-      title: "Spec",
+      title: AppTerms.spec.display,
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",

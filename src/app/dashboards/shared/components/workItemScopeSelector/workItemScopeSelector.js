@@ -1,5 +1,6 @@
 import {GroupingSelector} from "../groupingSelector/groupingSelector";
 import React from "react";
+import { AppTerms } from "../../config";
 
 export const WorkItemScopeSelector = (
   {
@@ -17,7 +18,7 @@ export const WorkItemScopeSelector = (
 
         {
           key: 'specs',
-          display: display ? display[0] : 'Specs'
+          display: display ? display[0] : AppTerms.specs.display
         },
         {
           key: 'all',

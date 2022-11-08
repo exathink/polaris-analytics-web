@@ -1,7 +1,7 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
-import {WorkItemStateTypeDisplayName} from "../../config";
+import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {SORTER, StripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
@@ -287,7 +287,7 @@ export const WorkItemsDetailTable =
           
           return (
             <>
-              <LabelValue label={specsOnly ? "Specs" : "Cards"} value={pageData?.length} />
+              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={pageData?.length} />
               {avgFiltersData
                 .filter((x) => summaryStatsColumns[x.appliedFilter])
                 .map((x, i) => {

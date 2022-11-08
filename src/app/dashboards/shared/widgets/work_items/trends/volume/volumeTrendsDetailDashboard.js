@@ -8,7 +8,7 @@ import {
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
-import {WorkItemStateTypes} from "../../../../config";
+import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {useIntl} from "react-intl";
@@ -17,8 +17,8 @@ const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
 function getSeriesName(seriesName) {
   const objMap = {
-    workItemsInScope: "Cards",
-    workItemsWithCommits: "Specs",
+    workItemsInScope: AppTerms.cards.display,
+    workItemsWithCommits: AppTerms.specs.display
   };
 
   return objMap[seriesName] != null ? objMap[seriesName] : seriesName;
@@ -63,7 +63,7 @@ export const VolumeTrendsDetailDashboard = ({
     [frequencyRange, setFrequencyRange],
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
-  const specsOnly = selectedPointSeries === "Specs";
+  const specsOnly = selectedPointSeries === AppTerms.specs.display;
   const renderDeliveryCycleFlowMetricsWidget = ({view}) => (
     <DimensionDeliveryCycleFlowMetricsWidget
       dimension={dimension}
@@ -98,7 +98,7 @@ export const VolumeTrendsDetailDashboard = ({
       <div className="tw-mr-8">
         <ClearFilters
           selectedFilter={ `${preFilterText} ${i18nDate(intl, getServerDate(before))}`}
-          selectedMetric={`${specsOnly ? "Specs" : "Cards"} Closed`}
+          selectedMetric={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} Closed`}
           stateType={WorkItemStateTypes.closed}
           handleClearClick={handleClearClick}
         />

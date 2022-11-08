@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -152,7 +152,7 @@ const PhaseDetailView = ({
 
   function getChartSubTitle() {
     const specsOnly = workItemScope === "specs";
-    return `${specsOnly ? "Specs" : "All cards"} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
+    return `${specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
   }
 
   const seriesData = React.useMemo(() => {

@@ -1,4 +1,5 @@
 import { AvgCycleTime } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { AppTerms } from "../../../../shared/config";
 import { DimensionCycleTimeDetailDashboard } from "../../../../shared/widgets/work_items/responseTime/dimensionCycleTimeDetailDashboard";
 import { ProjectDashboard } from "../../../projectDashboard";
 
@@ -32,7 +33,7 @@ export function CycleTimeCardView({
             detailsView: {
             title: (
               <div className="tw-text-lg tw-text-gray-300">
-                Cycle Time Details, {specsOnly? "Specs" : "All Cards"}, <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
+                Cycle Time Details, {specsOnly? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
               </div>
             ),
             content: (
