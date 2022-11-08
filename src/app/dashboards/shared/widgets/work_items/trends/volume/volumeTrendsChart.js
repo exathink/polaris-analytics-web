@@ -74,7 +74,7 @@ export const VolumeTrendsChart = ({
               {
                 point: {x: 0, y: 0},
                 getText: (measurements, seriesKey, index, intl) =>
-                  `Spec Ratio: ${i18nNumber(
+                  `${AppTerms.spec.display} Ratio: ${i18nNumber(
                     intl,
                     measurements[0].workItemsInScope !== 0 ? (measurements[0].workItemsWithCommits / measurements[0].workItemsInScope) * 100.0 : 0
                   )} %`,

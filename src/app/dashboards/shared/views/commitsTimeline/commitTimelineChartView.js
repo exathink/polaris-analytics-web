@@ -6,7 +6,7 @@ import {CommitsTimelineRollupBarChart} from './commitsTimelineRollupBarchart'
 import {GroupingSelector} from "../../components/groupingSelector/groupingSelector";
 import {DaysRangeSlider} from "../../components/daysRangeSlider/daysRangeSlider";
 import {VizRow} from "../../containers/layout";
-import {Untracked} from "../../config";
+import {AppTerms, Untracked} from "../../config";
 import {HumanizedDateView} from "../../components/humanizedDateView/humanizedDateView";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 import { ComponentCarousel } from "../../components/componentCarousel/componentCarousel";
@@ -14,7 +14,7 @@ import {Traceability } from "../../components/flowStatistics/flowStatistics";
 
 const commitTimelineGroupings = {
   repository: "Repository",
-  workItem: "Spec",
+  workItem: AppTerms.spec.display,
   author: "Author",
   branch: "Branch",
   team: "Team"
