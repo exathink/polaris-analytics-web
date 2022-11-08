@@ -20,7 +20,7 @@ function getChartTitle(stateType, seriesName=null) {
 }
 
 function getChartSubTitle(stateType, specsOnly) {
-  return `${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} in ${WorkItemStateTypeDisplayName[stateType]}`
+  return `${specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`} in ${WorkItemStateTypeDisplayName[stateType]}`
 }
 export const WorkItemsDurationsHistogramChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItems", "specsOnly", "stateType"),

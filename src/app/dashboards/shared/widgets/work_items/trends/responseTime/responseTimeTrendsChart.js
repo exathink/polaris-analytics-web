@@ -147,7 +147,7 @@ export const ResponseTimeTrendsChart = (
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: title || `Response Time, ${specsOnly != null && !specsOnly ? AppTerms.cards.display : AppTerms.specs.display}`,
+      title: title || `Response Time, ${specsOnly != null && !specsOnly ? `All ${AppTerms.cards.display}` : AppTerms.specs.display}`,
       legendText: "Components",
       yAxisUom: "Days",
       plotLinesY: [

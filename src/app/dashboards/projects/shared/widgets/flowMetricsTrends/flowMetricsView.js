@@ -66,7 +66,7 @@ export function FlowMetricsView({
               <div className="tw-text-lg tw-text-gray-300">
                 Volume Details{" "}
                 <span className="tw-text-base tw-italic">
-                  {specsOnly ? AppTerms.specs.display : AppTerms.cards.display}, Last {flowAnalysisPeriod} Days
+                  {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last {flowAnalysisPeriod} Days
                 </span>
               </div>
             ),

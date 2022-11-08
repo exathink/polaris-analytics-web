@@ -134,7 +134,7 @@ describe("ProjectPipelineFunnelWidget", () => {
     test("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
-      const cardsRegex = new RegExp(`${AppTerms.cards.display}`, "i")
+      const cardsRegex = new RegExp(`All ${AppTerms.cards.display}`, "i")
       expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
 

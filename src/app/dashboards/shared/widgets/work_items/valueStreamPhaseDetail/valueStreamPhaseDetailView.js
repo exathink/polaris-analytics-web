@@ -152,7 +152,7 @@ const PhaseDetailView = ({
 
   function getChartSubTitle() {
     const specsOnly = workItemScope === "specs";
-    return `${specsOnly ? AppTerms.specs.display: AppTerms.cards.display} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
+    return `${specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
   }
 
   const seriesData = React.useMemo(() => {

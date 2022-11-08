@@ -35,7 +35,7 @@ function getWorkItemTitle(stateType, specsOnly) {
     if (specsOnly) {
       return `${AppTerms.specs.display}`;
     } else {
-      return AppTerms.cards.display;
+      return `All ${AppTerms.cards.display}`;
     }
   }
 }

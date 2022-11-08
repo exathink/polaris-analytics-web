@@ -34,7 +34,7 @@ export function DimensionThroughputDetailDashboard({
   return (
     <Dashboard dashboard={`${dashboard_id}`} className="tw-bg-ghostwhite tw-grid tw-grid-cols-6 tw-grid-rows-[7%_auto_auto_auto_5%_50%] tw-gap-2 tw-p-2" gridLayout={true}>
       <div className="tw-col-start-1 tw-col-span-2 tw-row-start-1 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Throughput Analysis, {limitToSpecsOnly ? AppTerms.specs.display : AppTerms.cards.display}</div>
+        <div className="tw-flex tw-justify-start">Throughput Analysis, {limitToSpecsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Last {daysRange} Days</div>
       </div>
       <div className="tw-col-start-4 tw-col-span-2 tw-row-start-1 tw-text-base">

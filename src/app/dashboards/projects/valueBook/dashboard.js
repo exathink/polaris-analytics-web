@@ -51,7 +51,7 @@ function ValueDashboard({
           name="flow-metrics"
           title={"Throughput"}
           className={styles.throughput}
-          subtitle={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}, Last ${flowAnalysisPeriod} days`}
+          subtitle={`${specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionThroughputWidget
@@ -106,7 +106,7 @@ function ValueDashboard({
           name="pipeline"
           className={styles.workInProgress}
           title={"Work In Progress"}
-          subtitle={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`}
+          subtitle={`${specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`}
 
           render={({view}) => (
             <DimensionWipFlowMetricsWidget

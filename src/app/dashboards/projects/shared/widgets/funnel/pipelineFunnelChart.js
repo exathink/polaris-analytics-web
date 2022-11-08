@@ -70,7 +70,7 @@ export const PipelineFunnelChart = Chart({
         backgroundColor: Colors.Chart.backgroundColor
       },
       title: {
-        text: title || `Flow, ${grouping === 'specs' ? AppTerms.specs.display : AppTerms.cards.display}`,
+        text: title || `Flow, ${grouping === 'specs' ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`,
         align: "center"
       },
       subtitle: {
