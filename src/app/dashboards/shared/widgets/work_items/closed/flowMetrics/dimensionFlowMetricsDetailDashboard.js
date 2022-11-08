@@ -5,6 +5,7 @@ import {DimensionDeliveryCycleFlowMetricsWidget} from "./dimensionDeliveryCycleF
 import {DaysRangeSlider} from "../../../../components/daysRangeSlider/daysRangeSlider";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {Box, Flex} from "reflexbox";
+import { AppTerms } from '../../../../config';
 
 const dashboard_id = 'dashboards.activity.projects.cycleMetrics.detail';
 
@@ -33,7 +34,7 @@ export const DimensionFlowMetricsDetailDashboard = (
     >
       <DashboardRow
         h={"20%"}
-        title={`${specsOnly? 'Specs' : 'Cards' } Closed in Last ${daysRange} days`}
+        title={`${specsOnly? AppTerms.specs.display : AppTerms.cards.display } Closed in Last ${daysRange} days`}
         controls={[
           () => (
             <div style={{minWidth: "300px", padding: "15px"}}>

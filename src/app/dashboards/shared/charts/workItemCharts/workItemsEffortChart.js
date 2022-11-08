@@ -4,6 +4,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {getWorkItemDurations} from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
+  AppTerms,
   Colors,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
@@ -205,7 +206,7 @@ export const WorkItemsEffortChart = Chart({
       series: series,
       legend: {
         title: {
-          text: specsOnly ? "Specs" : "Cards",
+          text: specsOnly ? AppTerms.specs.display : AppTerms.cards.display,
           style: {
             fontStyle: "italic",
           },

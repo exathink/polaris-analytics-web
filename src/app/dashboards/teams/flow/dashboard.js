@@ -138,7 +138,7 @@ function WipDashboard({
         />
 
       </DashboardRow>
-      <DashboardRow h="30%" title={"Wip Age & Idle Time"} className={styles.wipAge}>
+      <DashboardRow h="30%" title={"Wip Age & Latency"} className={styles.wipAge}>
         <DashboardWidget
           name="engineering"
           

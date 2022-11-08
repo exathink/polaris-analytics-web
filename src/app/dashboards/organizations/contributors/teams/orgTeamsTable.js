@@ -10,6 +10,7 @@ import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
 import { renderMetric } from "../../../../components/misc/statistic/statistic";
+import { AppTerms } from "../../../shared/config";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -145,7 +146,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
         {
           title: (
             <span>
-              {specsOnly ? "Specs" : "Cards"}<sup>pc</sup>
+              {specsOnly ? AppTerms.specs.display : AppTerms.cards.display}<sup>pc</sup>
             </span>
           ),
           dataIndex: "volume",

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {WorkItemStateTypes} from "../../shared/config";
+import {AppTerms, WorkItemStateTypes} from "../../shared/config";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
@@ -56,7 +56,7 @@ function WipDashboard({
     >
       <div className="tw-col-start-1 tw-row-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Wip Analysis, {specsOnly ? "Specs": "All Cards"}
+          Wip Analysis, {specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`}
         </div>
       </div>
       <div className="tw-col-start-3 tw-row-start-1 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">

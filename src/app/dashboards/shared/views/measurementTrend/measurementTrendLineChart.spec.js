@@ -4,7 +4,7 @@ import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/
 import {expectSetsAreEqual, formatNumber} from "../../../../../test/test-utils";
 
 import {MeasurementTrendLineChart} from "./measurementTrendLineChart";
-import {Colors} from "../../../shared/config";
+import {AppTerms, Colors} from "../../../shared/config";
 import {epoch, i18nDate} from "../../../../helpers/utility";
 
 // clear mocks after each test
@@ -203,7 +203,7 @@ describe("MeasurementTrendLineChart", () => {
         config: {
           xAxisUom: "datetime",
           yAxisUom: "Days",
-          legendText: "Specs",
+          legendText: AppTerms.specs.display,
         },
       };
 

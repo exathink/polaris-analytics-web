@@ -4,6 +4,7 @@ import {ProjectPipelinePhaseSummaryWidget} from "../../../../../projects/shared/
 import {DimensionValueStreamPhaseDetailWidget} from "../../valueStreamPhaseDetail";
 import {Box, Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
+import { AppTerms } from "../../../../config";
 
 const dashboard_id = "dashboards.activity.projects.pipeline.detail";
 
@@ -42,7 +43,7 @@ export const DimensionWipFlowMetricsDetailDashboard = ({
         <DashboardWidget
           w={1 / 4}
           name="project-pipeline-summary-detail-view"
-          subtitle={specsOnly ? `Active Specs by Phase` : `All Active Cards by Phase`}
+          subtitle={specsOnly ? `Active ${AppTerms.specs.display} by Phase` : `All Active ${AppTerms.cards.display} by Phase`}
           render={({view}) => (
             <ProjectPipelinePhaseSummaryWidget
               instanceKey={instanceKey}

@@ -8,6 +8,7 @@ import {ProjectDashboard} from "../../projectDashboard";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
+import { AppTerms } from "../../../shared/config";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -47,7 +48,7 @@ export function NewFlowDashboard({
     >
       <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Flow Analysis, {specsOnly ? "Specs": "All Cards"}
+          Flow Analysis, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
         </div>
         <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
@@ -55,7 +56,7 @@ export function NewFlowDashboard({
       </div>
       <div className="tw-row-start-1 tw-col-start-3 tw-col-span-4 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Cycle Time Limit
+          Age Limit
         </div>
         <div className="tw-text-base tw-flex tw-justify-start">
           {cycleTimeTarget} Days
@@ -63,7 +64,7 @@ export function NewFlowDashboard({
       </div>
       <div className="tw-text-base tw-col-start-8 tw-row-start-1">
         <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
         </Flex>
       </div>
       <div className="tw-col-span-2 tw-col-start-7 tw-row-start-1">

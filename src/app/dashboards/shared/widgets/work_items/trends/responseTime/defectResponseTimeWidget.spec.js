@@ -3,6 +3,7 @@ import {GraphQLError} from "graphql/error";
 import React from "react";
 import {getNDaysAgo} from "../../../../../../../test/test-utils";
 import {renderWithProviders, gqlUtils} from "../../../../../../framework/viz/charts/chart-test-utils";
+import { AppTerms } from "../../../../config";
 import {getFlowMetricsTrendsQuery} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 import {DimensionDefectResponseTimeWidget} from "./dimensionDefectResponseTimeWidget";
 
@@ -165,7 +166,8 @@ describe("DefectResponseTimeWidget", () => {
       // assert the chart existence (this also ensures chart is rendered)
       await screen.findByTestId("defect-response-chart");
 
-      expect(await screen.findByText(/Specs/i)).toBeInTheDocument();
+      const specsRegex = new RegExp(AppTerms.specs.display, "i")
+      expect(await screen.findByText(specsRegex)).toBeInTheDocument();
     });
   });
 });

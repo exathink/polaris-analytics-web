@@ -1,7 +1,7 @@
 import {Chart, tooltipHtml} from "../../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {percentileToText, pick, toMoment} from "../../../../../../helpers/utility";
-import {Colors} from "../../../../config";
+import {AppTerms, Colors} from "../../../../config";
 
 
 export const PredictabilityTrendsChart = Chart({
@@ -62,7 +62,7 @@ export const PredictabilityTrendsChart = Chart({
       },
       legend: {
         title: {
-          text: specsOnly != null && !specsOnly? `Cycle Time` : `Spec Cycle Time`,
+          text: specsOnly != null && !specsOnly? `Cycle Time` : `${AppTerms.spec.display} Cycle Time`,
           style: {
             fontStyle: "italic",
           },

@@ -11,6 +11,7 @@ import {Tag, Tooltip} from "antd";
 import { injectIntl } from "react-intl";
 import {AvgCycleTime, AvgLeadTime, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
 import { renderMetric } from "../../../../components/misc/statistic/statistic";
+import { AppTerms } from "../../../shared/config";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -176,7 +177,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
         {
           title: (
             <span>
-              {specsOnly ? "Specs" : "Cards"} <sup>PC</sup>{" "}
+              {specsOnly ? AppTerms.specs.display : AppTerms.cards.display} <sup>PC</sup>{" "}
             </span>
           ),
           dataIndex: "specs",

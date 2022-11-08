@@ -1,6 +1,6 @@
 import React from "react";
 import { i18nDate, i18nNumber, percentileToText } from "../../../../../../helpers/utility";
-import { ResponseTimeMetricsColor } from "../../../../config";
+import { AppTerms, ResponseTimeMetricsColor } from "../../../../config";
 import { MeasurementTrendLineChart } from "../../../../views/measurementTrend/measurementTrendLineChart";
 import { getFlowEfficiency } from "../../../../helpers/statsUtils";
 
@@ -147,7 +147,7 @@ export const ResponseTimeTrendsChart = (
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: title || `Response Time, ${specsOnly != null && !specsOnly ? "All Cards" : "Specs"}`,
+      title: title || `Response Time, ${specsOnly != null && !specsOnly ? `All ${AppTerms.cards.display}` : AppTerms.specs.display}`,
       legendText: "Components",
       yAxisUom: "Days",
       plotLinesY: [
@@ -225,7 +225,7 @@ export const ResponseTimeTrendsChart = (
                   ...getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
-                  ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly ? "Specs" : "Cards"}`],
+                  ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`],
                   ["Cycle Efficiency: ", `${i18nNumber(intl, getFlowEfficiency(measurement.avgEffort, measurement.avgCycleTime))} %`]
 
                 ]

@@ -1,5 +1,5 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {Colors} from "../../config";
+import {AppTerms, Colors} from "../../config";
 import {displayPlural, displaySingular, formatTerm} from "../../../../i18n";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import moment from 'moment';
@@ -50,7 +50,7 @@ export const MostActiveChildrenBarChart = Chart({
         },
         title: {
           // hack alert
-          text: childContext.name === Contexts.work_items.name ? `Most Active Specs` :  `Most Active ${displayPlural(intl, childContext)} `,
+          text: childContext.name === Contexts.work_items.name ? `Most Active ${AppTerms.specs.display}` :  `Most Active ${displayPlural(intl, childContext)} `,
           align: 'left'
         },
         subtitle: {

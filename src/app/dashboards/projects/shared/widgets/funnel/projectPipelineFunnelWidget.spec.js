@@ -2,6 +2,7 @@ import {screen, waitFor} from "@testing-library/react";
 import {GraphQLError} from "graphql/error";
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
+import { AppTerms } from "../../../../shared/config";
 import {PROJECT_PIPELINE_SUMMARY_QUERY} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 
@@ -133,7 +134,8 @@ describe("ProjectPipelineFunnelWidget", () => {
     test("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
-      expect(await screen.findByText(/All Cards/i)).toBeInTheDocument();
+      const cardsRegex = new RegExp(`All ${AppTerms.cards.display}`, "i")
+      expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
 
     test("should render legend title as Specs when Specs workItemScope is selected", async () => {
@@ -159,7 +161,8 @@ describe("ProjectPipelineFunnelWidget", () => {
       // assert the chart existence (this also ensures chart is rendered)
       await screen.findByTestId("pipeline-funnel-chart");
 
-      const specElements = await screen.findAllByText(/Specs/i);
+      const specsRegex = new RegExp(AppTerms.specs.display, "i")
+      const specElements = await screen.findAllByText(specsRegex);
       expect(specElements).toHaveLength(1);
     });
   });

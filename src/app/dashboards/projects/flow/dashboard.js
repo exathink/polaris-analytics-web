@@ -11,6 +11,7 @@ import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
 import { DimensionThroughputWidget } from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 import { DimensionResponseTimeWidget } from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
+import { AppTerms } from "../../shared/config";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -40,7 +41,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="response-time-flow"
           title={"Response Time"}
           className={styles.leadAndCycleTime}
-          subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
+          subtitle={`${AppTerms.specs.display}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionResponseTimeWidget
@@ -69,7 +70,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="pipeline"
           className={styles.pipeline}
           title={"Work In Progress"}
-          subtitle={"Specs"}
+          subtitle={AppTerms.specs.display}
 
           render={({view}) => (
             <DimensionPipelineQuadrantSummaryWidget
@@ -101,7 +102,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
           name="throughput-flow"
           title={"Throughput"}
           className={styles.throughput}
-          subtitle={`Specs, Last ${flowAnalysisPeriod} days`}
+          subtitle={`${AppTerms.specs.display}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
           render={({ view }) => (
             <DimensionThroughputWidget

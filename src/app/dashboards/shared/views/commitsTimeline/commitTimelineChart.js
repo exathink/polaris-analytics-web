@@ -1,6 +1,7 @@
 import {Chart} from "../../../../framework/viz/charts/index";
 import moment from 'moment';
 import {
+  AppTerms,
   Colors,
   Untracked,
   WorkItemStateTypeDisplayName,
@@ -206,7 +207,7 @@ export const CommitsTimelineChart = Chart({
         yAxis: {
           id: 'y-items',
           title: {
-            text: category !== 'workItem' ? capitalizeFirstLetter(category) : `Spec`
+            text: category !== 'workItem' ? capitalizeFirstLetter(category) : AppTerms.spec.display
           },
           categories: getYAxisCategoryDisplay(model, commits, categories, category),
           scrollbar: {

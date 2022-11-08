@@ -2,7 +2,7 @@ import React from "react";
 import {expectSetsAreEqual, formatDateRaw, formatNumber, getNDaysAgo} from "../../../../../test/test-utils";
 import {renderedChartConfig, renderedTooltipConfig} from "../../../../framework/viz/charts/chart-test-utils";
 import {epoch} from "../../../../helpers/utility";
-import {Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../config";
+import {AppTerms, Colors, Symbols, WorkItemTypeDisplayName, WorkItemTypeScatterRadius} from "../../config";
 import {FlowMetricsScatterPlotChart} from "./flowMetricsScatterPlotChart";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 // clear mocks after each test
@@ -184,7 +184,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`1 Specs closed`),
+          text: expect.stringMatching(`1 ${AppTerms.specs.display} closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -361,7 +361,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringMatching(`3 Specs closed`),
+          text: expect.stringMatching(`3 ${AppTerms.specs.display} closed`),
         },
         series: fixedSeriesConfig,
       };
@@ -538,7 +538,7 @@ describe("FlowMetricsScatterPlotChart", () => {
           ],
         },
         subtitle: {
-          text: expect.stringContaining(`1 Specs closed`),
+          text: expect.stringContaining(`1 ${AppTerms.specs.display} closed`),
         },
         series: [fixedSeriesConfig],
       };
@@ -899,7 +899,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithEffort,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed`),
+        text: expect.stringMatching(`1 ${AppTerms.specs.display} closed`),
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -975,7 +975,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfigWithAuthors,
       subtitle: {
-        text: expect.stringMatching(`1 Specs closed`),
+        text: expect.stringMatching(`1 ${AppTerms.specs.display} closed`),
       },
       series: [fixedSeriesConfig],
     };
