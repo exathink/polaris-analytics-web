@@ -35,7 +35,7 @@ function TrendsDashboard({
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
         h={"50%"}
-        title={"Value Delivered"}
+        title={"Investments"}
         controls={[
 
           () => (
@@ -89,7 +89,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
-              title={`Strategic Allocations: Last ${daysRange} Days`}
+              title={`Cost Allocations: Last ${daysRange} Days`}
               instanceKey={key}
               measurementWindow={daysRange}
               days={daysRange}
@@ -119,7 +119,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
-              title={"Response Time"}
+              title={"Time to Market"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}

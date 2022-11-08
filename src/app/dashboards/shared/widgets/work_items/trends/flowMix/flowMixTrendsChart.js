@@ -103,7 +103,7 @@ export const FlowMixTrendsChart = Chart({
         marginRight: 90
       },
       title: {
-        text: title || `${specsOnly ? 'Effort by Value Type' : 'Volume by Value Type'}`,
+        text: title || `${specsOnly ? 'Costs' : 'Allocations'}`,
         align: alignTitle || 'center',
       },
       subtitle: {

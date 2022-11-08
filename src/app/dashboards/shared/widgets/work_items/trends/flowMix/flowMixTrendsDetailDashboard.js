@@ -48,7 +48,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   return (
     <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_40%_10%_40%] tw-p-2">
       <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Value Mix Analysis, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}</div>
+        <div className="tw-flex tw-justify-start">{specsOnly ? `Cost Analysis, ${AppTerms.specs.display}` : `Allocations, All ${AppTerms.cards.display}`}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
       </div>
 
@@ -66,7 +66,7 @@ export const DimensionFlowMixTrendsDetailDashboard = (
               <Flex align={"center"}>
                 <Box pr={2} w={"100%"}>
                   <WorkItemScopeSelector
-                    display={["Effort", "Volume"]}
+                    display={["Costs", "Allocations"]}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />
