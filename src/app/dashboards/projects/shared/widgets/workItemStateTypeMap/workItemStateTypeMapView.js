@@ -7,6 +7,8 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
+import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
+import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
 
 const {Option} = Select;
@@ -151,15 +153,20 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
+  
+  const columns = useWorkItemStateTypeMapColumns();
+  const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
+  const stateMappings = sanitizeStateMappings(workItemStateMappings);
+
   return (
-    <div data-testid="state-type-map-view" className="tw-w-full tw-h-full tw-relative" id="state-type-mapping-wrapper">   
-      <div className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-w-full tw-flex tw-items-center tw-mt-[1px] tw-mb-[10px]">
+    <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
+      <div className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
       </div>
 
-      <div className="tw-w-full tw-h-full">
+      <div className="tw-h-full tw-w-full">
         <WorkItemStateTypeMapChart
           key={resetComponentStateKey}
           workItemSource={currentWorkItemSource}
@@ -168,6 +175,14 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           context={context}
           enableEdits={enableEdits}
           title={" "}
+        />
+        <WorkItemStateTypeMapTable
+          tableData={stateMappings.sort(
+            (a, b) =>
+              Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
+              Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
+          )}
+          columns={columns}
         />
       </div>
     </div>
