@@ -23,7 +23,7 @@ export const DimensionQuadrantSummaryView = ({
   }, [data, dimension]);
 
   return (
-    <PlainCard title="Schedule Risks" info={{title: "Schedule Risk"}}>
+    <PlainCard title="Flow Efficiency" info={{title: "Flow Efficiency"}}>
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
