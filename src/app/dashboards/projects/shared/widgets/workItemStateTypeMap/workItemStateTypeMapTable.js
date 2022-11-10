@@ -28,14 +28,13 @@ export function useWorkItemStateTypeMapColumns() {
   return columns;
 }
 
-export function WorkItemStateTypeMapTable({tableData, columns, loading, testId, rowSelection}) {
+export function WorkItemStateTypeMapTable({tableData, columns, loading, testId}) {
   return (
     <StripeTable
       dataSource={tableData}
       columns={columns}
       loading={loading}
       testId={testId}
-      rowSelection={rowSelection}
       rowKey={(record) => record.key}
       rowClassName={(record) => WorkItemStateTypeColorClass[record.stateType]}
     />
