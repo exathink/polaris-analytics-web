@@ -43,6 +43,15 @@ export function workItemReducer(state, action) {
         mode: mode.UNMAPPED_ERROR,
       };
     }
+    case actionTypes.UPDATE_FLOW_TYPE: {
+      return {
+        ...state,
+        flowTypeRecords: {
+          ...state.flowTypeRecords,
+          ...action.payload.keyValuePair
+        },
+      }
+    }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
       return {
