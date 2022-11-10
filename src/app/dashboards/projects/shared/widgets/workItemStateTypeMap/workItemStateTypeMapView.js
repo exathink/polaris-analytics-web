@@ -9,6 +9,7 @@ import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
 import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
 import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {useFlowEfficiencyDashboardsFeatureFlag} from "../../../../../helpers/utility";
 
 export function getFlowTypeInitialMapping(workItemSource) {
   const workItemStateMappings = workItemSource?.workItemStateMappings??[];
@@ -169,6 +170,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
 
+  const isFeatureFlagActive = useFlowEfficiencyDashboardsFeatureFlag();
+  debugger;
   return (
     <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
       <div className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
@@ -178,7 +181,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       </div>
 
       <div className="tw-h-full tw-w-full">
-        <div className="tw-h-1/2">
+        <div className={isFeatureFlagActive ? "tw-h-1/2": "tw-h-full"}>
           <WorkItemStateTypeMapChart
             key={resetComponentStateKey}
             workItemSource={currentWorkItemSource}
@@ -189,7 +192,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
             title={" "}
           />
         </div>
-        <div className="tw-mt-2 tw-h-1/2">
+        {isFeatureFlagActive && <div className="tw-mt-2 tw-h-1/2">
           <WorkItemStateTypeMapTable
             key={currentWorkItemSource.key}
             tableData={stateMappings.sort(
@@ -199,7 +202,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
             )}
             columns={columns}
           />
-        </div>
+        </div>}
       </div>
     </div>
   );

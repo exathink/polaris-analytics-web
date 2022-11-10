@@ -18,6 +18,7 @@ import {CONFIG_TABS, ConfigSelector} from "../../shared/widgets/configure/config
 
 import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
+import { useFlowEfficiencyDashboardsFeatureFlag } from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -106,6 +107,7 @@ export function ValueStreamMappingInitialDashboard() {
 }
 
 export function ValueStreamMappingDashboard() {
+  const isFeatureFlagActive = useFlowEfficiencyDashboardsFeatureFlag();
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
@@ -133,7 +135,7 @@ export function ValueStreamMappingDashboard() {
                 showDetail={false}
               />
               <DashboardWidget
-                className="tw-row-start-1 tw-col-start-2 tw-row-span-4"
+                className={isFeatureFlagActive ? "tw-row-start-1 tw-col-start-2 tw-row-span-4": "tw-row-start-1 tw-col-start-2 tw-row-span-3"}
                 title={" "}
                 infoConfig={WorkItemStateTypeMapWidget.infoConfig}
                 name="workitem-statetype-map"
