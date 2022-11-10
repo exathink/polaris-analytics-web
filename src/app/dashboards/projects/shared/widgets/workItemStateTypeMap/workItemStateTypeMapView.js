@@ -178,24 +178,28 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       </div>
 
       <div className="tw-h-full tw-w-full">
-        <WorkItemStateTypeMapChart
-          key={resetComponentStateKey}
-          workItemSource={currentWorkItemSource}
-          updateDraftState={dispatch}
-          view={view}
-          context={context}
-          enableEdits={enableEdits}
-          title={" "}
-        />
-        <WorkItemStateTypeMapTable
-          key={currentWorkItemSource.key}
-          tableData={stateMappings.sort(
-            (a, b) =>
-              Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
-              Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
-          )}
-          columns={columns}
-        />
+        <div className="tw-h-1/2">
+          <WorkItemStateTypeMapChart
+            key={resetComponentStateKey}
+            workItemSource={currentWorkItemSource}
+            updateDraftState={dispatch}
+            view={view}
+            context={context}
+            enableEdits={enableEdits}
+            title={" "}
+          />
+        </div>
+        <div className="tw-mt-2 tw-h-1/2">
+          <WorkItemStateTypeMapTable
+            key={currentWorkItemSource.key}
+            tableData={stateMappings.sort(
+              (a, b) =>
+                Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
+                Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
+            )}
+            columns={columns}
+          />
+        </div>
       </div>
     </div>
   );

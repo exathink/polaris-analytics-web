@@ -22,7 +22,7 @@ function getSeries(workItemStateMappings) {
         data: [
           {
             name: item.state,
-            y: 1.2,
+            y: 2,
             x: allStateTypeKeys.indexOf(item.stateType),
             color: WorkItemStateTypeColor[item.stateType],
           },
