@@ -7,17 +7,29 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
-import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
+import {WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
 import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
-
+function getFlowTypeInitialMapping(workItemSource) {
+  const workItemStateMappings = workItemSource?.workItemStateMappings??[];
+  const stateMappings = sanitizeStateMappings(workItemStateMappings);
+  return stateMappings.reduce((acc, item) => {
+      acc[item.state] = item.flowType;
+      return acc;
+  }, {});
+}
 const {Option} = Select;
 
 export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT, errorMessage: ""});
+  const [state, dispatch] = React.useReducer(workItemReducer, {
+    ...workItemSource,
+    flowTypeRecords: getFlowTypeInitialMapping(workItemSource),
+    mode: mode.INIT,
+    errorMessage: "",
+  });
 
   const [mutate, {loading, client}] = useUpdateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
@@ -153,8 +165,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
-  
-  const columns = useWorkItemStateTypeMapColumns();
+
   const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
 
@@ -177,12 +188,14 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           title={" "}
         />
         <WorkItemStateTypeMapTable
+          key={currentWorkItemSource.key}
           tableData={stateMappings.sort(
             (a, b) =>
               Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
               Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
           )}
-          columns={columns}
+          dispatch={dispatch}
+          flowTypeRecords={state.flowTypeRecords}
         />
       </div>
     </div>

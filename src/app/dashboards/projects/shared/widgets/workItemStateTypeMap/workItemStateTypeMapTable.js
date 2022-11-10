@@ -1,7 +1,22 @@
 import {StripeTable} from "../../../../../components/tables/tableUtils";
+import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
 import {WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import { actionTypes } from "./constants";
 
-export function useWorkItemStateTypeMapColumns() {
+const typeItems = [
+  {value: "unassigned", label: "Unassigned"},
+  {value: "active", label: "Active"},
+  {value: "waiting", label: "Waiting"}
+]
+
+
+export function useWorkItemStateTypeMapColumns([dispatch, flowTypeRecords]) {
+  function handleDropdownChange(state, flowTypeVal) {
+    const keyValuePair = {};
+    keyValuePair[state] = flowTypeVal;
+    dispatch({type: actionTypes.UPDATE_FLOW_TYPE, payload: {keyValuePair}});
+  }
+
   const columns = [
     {
       title: "Phase",
@@ -18,17 +33,28 @@ export function useWorkItemStateTypeMapColumns() {
       render: (text, record) => text,
     },
     {
-      title: "State Type",
-      dataIndex: "test",
-      key: "test",
+      title: "Flow Type",
+      dataIndex: "flowType",
+      key: "flowType",
       width: "40%",
-      render: (text, record) => text,
+      render: (text, record) => {
+        return (
+            <SelectDropdown2
+              value={typeItems.find(y => {
+                return y.value === (flowTypeRecords[record.state] ?? "unassigned");
+                })}
+              uniqueItems={typeItems}
+              handleChange={(flowTypeVal) => handleDropdownChange(record.state, flowTypeVal)}
+            />
+        );
+      },
     },
   ];
   return columns;
 }
 
-export function WorkItemStateTypeMapTable({tableData, columns, loading, testId}) {
+export function WorkItemStateTypeMapTable({tableData, dispatch, flowTypeRecords, loading, testId}) {
+  const columns = useWorkItemStateTypeMapColumns([dispatch, flowTypeRecords])
   return (
     <StripeTable
       dataSource={tableData}
