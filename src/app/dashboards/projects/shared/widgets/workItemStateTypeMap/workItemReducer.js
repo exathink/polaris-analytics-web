@@ -1,4 +1,5 @@
 import {actionTypes, mode} from "./constants";
+import { getFlowTypeInitialMapping } from "./workItemStateTypeMapView";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 // state has
@@ -50,6 +51,12 @@ export function workItemReducer(state, action) {
           ...state.flowTypeRecords,
           ...action.payload.keyValuePair
         },
+      }
+    }
+    case actionTypes.RESET_FLOW_TYPE_RECORDS: {
+      return {
+        ...state,
+        flowTypeRecords: getFlowTypeInitialMapping(action.payload),
       }
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {

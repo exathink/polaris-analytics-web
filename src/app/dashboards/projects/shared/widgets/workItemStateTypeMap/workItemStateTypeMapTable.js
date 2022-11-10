@@ -1,3 +1,4 @@
+import React from "react";
 import {StripeTable} from "../../../../../components/tables/tableUtils";
 import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
 import {WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
@@ -10,12 +11,16 @@ const typeItems = [
 ]
 
 
-export function useWorkItemStateTypeMapColumns([dispatch, flowTypeRecords]) {
+export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, currentWorkItemSource}) {
   function handleDropdownChange(state, flowTypeVal) {
     const keyValuePair = {};
     keyValuePair[state] = flowTypeVal;
     dispatch({type: actionTypes.UPDATE_FLOW_TYPE, payload: {keyValuePair}});
   }
+
+  React.useEffect(() => {
+    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: currentWorkItemSource})
+  }, [dispatch, currentWorkItemSource]);
 
   const columns = [
     {
@@ -53,8 +58,7 @@ export function useWorkItemStateTypeMapColumns([dispatch, flowTypeRecords]) {
   return columns;
 }
 
-export function WorkItemStateTypeMapTable({tableData, dispatch, flowTypeRecords, loading, testId}) {
-  const columns = useWorkItemStateTypeMapColumns([dispatch, flowTypeRecords])
+export function WorkItemStateTypeMapTable({tableData, columns, loading, testId}) {
   return (
     <StripeTable
       dataSource={tableData}

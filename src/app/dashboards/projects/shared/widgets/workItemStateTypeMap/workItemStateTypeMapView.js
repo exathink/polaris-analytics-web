@@ -7,10 +7,10 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
-import {WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
+import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
 import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
-function getFlowTypeInitialMapping(workItemSource) {
+export function getFlowTypeInitialMapping(workItemSource) {
   const workItemStateMappings = workItemSource?.workItemStateMappings??[];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
   return stateMappings.reduce((acc, item) => {
@@ -165,7 +165,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
-
+  const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords, currentWorkItemSource})
   const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
 
@@ -194,8 +194,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
               Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
               Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
           )}
-          dispatch={dispatch}
-          flowTypeRecords={state.flowTypeRecords}
+          columns={columns}
         />
       </div>
     </div>
