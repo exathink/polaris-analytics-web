@@ -46,3 +46,34 @@ export function SelectDropdown({
     </div>
   );
 }
+
+
+/**
+ *
+ * uniqueItems: array of {label, value} pair objects
+ */
+ export function SelectDropdown2({
+  title,
+  uniqueItems,
+  testId,
+  handleChange,
+  wrapperClassName,
+  className="tw-w-36",
+  value,
+  layout = "col",
+}) {
+  return (
+    <div
+      data-testid={testId}
+      className={classNames(
+        "tw-flex",
+        layout === "col" ? "tw-flex-col" : "tw-flex-row tw-items-center tw-space-x-4",
+        wrapperClassName
+      )}
+    >
+      {title && <div>{title}</div>}
+      <Select defaultValue={uniqueItems[0].value} value={value} options={uniqueItems} onChange={handleChange} className={className}>
+      </Select>
+    </div>
+  );
+}
