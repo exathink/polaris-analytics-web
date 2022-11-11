@@ -251,7 +251,7 @@ describe("WorkItemStateTypeMapChart", () => {
           // each state bar is modelled as series with single point.
           seriesData.flatMap((s) => s.data).map((point) => [point.x, point.y]),
           workItemStateMappings.map((item) => {
-            return [Object.keys(WorkItemStateTypeDisplayName).indexOf(item.stateType), 1.2];
+            return [Object.keys(WorkItemStateTypeDisplayName).indexOf(item.stateType), 2];
           })
         );
       });
