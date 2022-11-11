@@ -82,6 +82,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(index) {
     const workItemSource = workItemSources[index];
+    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: currentWorkItemSource})
     dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
   }
 
@@ -165,7 +166,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
-  const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords, currentWorkItemSource})
+  const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords})
   const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
 
@@ -191,7 +192,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
         </div>
         <div className="tw-mt-2 tw-h-1/2">
           <WorkItemStateTypeMapTable
-            key={currentWorkItemSource.key}
+            key={currentWorkItemSource?.key}
             tableData={stateMappings.sort(
               (a, b) =>
                 Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -

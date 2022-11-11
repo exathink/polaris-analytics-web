@@ -11,16 +11,12 @@ const typeItems = [
 ]
 
 
-export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, currentWorkItemSource}) {
+export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords}) {
   function handleDropdownChange(state, flowTypeVal) {
     const keyValuePair = {};
     keyValuePair[state] = flowTypeVal;
     dispatch({type: actionTypes.UPDATE_FLOW_TYPE, payload: {keyValuePair}});
   }
-
-  React.useEffect(() => {
-    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: currentWorkItemSource})
-  }, [dispatch, currentWorkItemSource]);
 
   const columns = [
     {
