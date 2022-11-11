@@ -169,7 +169,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords})
 
-  const stateMappings = sanitizeStateMappings(state.workItemStateMappings??[]);
+  const stateMappings = sanitizeStateMappings(state?.workItemStateMappings??[]);
 
   return (
     <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
