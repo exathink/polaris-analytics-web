@@ -3,6 +3,7 @@ import {StripeTable} from "../../../../../components/tables/tableUtils";
 import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
 import {WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import { actionTypes } from "./constants";
+import { LabelValue } from "../../../../../helpers/components";
 
 const typeItems = [
   {value: "unassigned", label: "Unassigned"},
@@ -27,7 +28,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords}) {
       render: (text, record) => <span className="tw-font-semibold">{WorkItemStateTypeDisplayName[text]}</span>,
     },
     {
-      title: "State",
+      title: "Workflow State",
       dataIndex: "state",
       key: "state",
       width: "40%",
@@ -63,6 +64,9 @@ export function WorkItemStateTypeMapTable({tableData, columns, loading, testId})
       testId={testId}
       rowKey={(record) => record.key}
       rowClassName={(record) => WorkItemStateTypeColorClass[record.stateType]}
+      renderTableSummary={(pageData) => {
+       return <LabelValue label="Workflow States" value={pageData?.length} />;
+    }}
     />
   );
 }
