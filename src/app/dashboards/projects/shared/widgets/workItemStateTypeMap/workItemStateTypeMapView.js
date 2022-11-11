@@ -29,6 +29,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     flowTypeRecords: getFlowTypeInitialMapping(workItemSource),
     mode: mode.INIT,
     errorMessage: "",
+    workItemSources
   });
 
   const [mutate, {loading, client}] = useUpdateProjectWorkItemSourceStateMaps({
@@ -82,7 +83,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(index) {
     const workItemSource = workItemSources[index];
-    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: currentWorkItemSource})
+    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource})
     dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
   }
 
@@ -167,8 +168,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords})
-  const workItemStateMappings = currentWorkItemSource ? currentWorkItemSource.workItemStateMappings : [];
-  const stateMappings = sanitizeStateMappings(workItemStateMappings);
+
+  const stateMappings = sanitizeStateMappings(state.workItemStateMappings);
 
   return (
     <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
