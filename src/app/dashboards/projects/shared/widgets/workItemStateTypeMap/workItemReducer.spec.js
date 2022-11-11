@@ -46,7 +46,7 @@ describe("workItemReducer", () => {
     const keyValuePair = {unscheduled: "closed"};
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.INIT},
+      state: {...workItemSourceFixture, mode: mode.INIT, workItemSources: [workItemSourceFixture]},
       action: {type: actionType, payload: {keyValuePair}},
     };
 
@@ -69,7 +69,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.CANCEL_EDIT_MODE;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -85,7 +85,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.MUTATION_SUCCESS;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -101,7 +101,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.SHOW_UNMAPPED_ERROR;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -117,7 +117,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.REPLACE_WORKITEM_SOURCE;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.INIT},
+      state: {...workItemSourceFixture, mode: mode.INIT, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 

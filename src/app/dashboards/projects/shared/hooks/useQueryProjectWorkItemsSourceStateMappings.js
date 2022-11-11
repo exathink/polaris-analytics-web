@@ -13,6 +13,7 @@ export const GET_STATE_MAPPING_QUERY = gql`
             workItemStateMappings {
               state
               stateType
+              flowType
             }
           }
         }

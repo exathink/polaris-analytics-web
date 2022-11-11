@@ -1,11 +1,12 @@
 import {actionTypes, mode} from "./constants";
+import { getFlowTypeInitialMapping } from "./workItemStateTypeMapView";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 // state has
 // 1. workItemSource properties (key, name, workItemStateMappings)
 // 2. mode
 export function workItemReducer(state, action) {
-  const {mode: _, errorMessage: _error, ...workItemSource} = state;
+  const {mode: _, errorMessage: _error, workItemSources, ...workItemSource} = state;
   // handle empty workItemSource case.
   if (isEmpty(workItemSource)) {
     return state;
@@ -19,8 +20,11 @@ export function workItemReducer(state, action) {
       };
     }
     case actionTypes.CANCEL_EDIT_MODE: {
+      const currentWorkItemSource_initialState = workItemSources.find(s => s.key === state.key)
       return {
         ...state,
+        // reset workItemStateMappings on cancel
+        workItemStateMappings: currentWorkItemSource_initialState?.workItemStateMappings,
         mode: mode.INIT,
       };
     }
@@ -42,6 +46,21 @@ export function workItemReducer(state, action) {
         ...state,
         mode: mode.UNMAPPED_ERROR,
       };
+    }
+    case actionTypes.UPDATE_FLOW_TYPE: {
+      return {
+        ...state,
+        flowTypeRecords: {
+          ...state.flowTypeRecords,
+          ...action.payload.keyValuePair
+        },
+      }
+    }
+    case actionTypes.RESET_FLOW_TYPE_RECORDS: {
+      return {
+        ...state,
+        flowTypeRecords: getFlowTypeInitialMapping(action.payload),
+      }
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
       const [[key, value]] = Object.entries(action.payload.keyValuePair);
