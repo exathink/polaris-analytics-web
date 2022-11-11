@@ -110,10 +110,10 @@ export function ValueStreamMappingDashboard() {
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
-          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-4 tw-gap-2">
+          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2">
             <DashboardRow title={" "}>
               <DashboardWidget
-                className="tw-row-start-2 tw-row-end-4"
+                className="tw-row-start-2 tw-row-span-4"
                 name="project-pipeline-detailed"
                 title={" "}
                 infoConfig={ProjectPipelineFunnelWidget.infoConfig}
@@ -133,7 +133,7 @@ export function ValueStreamMappingDashboard() {
                 showDetail={false}
               />
               <DashboardWidget
-                className="tw-row-start-1 tw-col-start-2 tw-row-span-4"
+                className="tw-row-start-1 tw-col-start-2 tw-row-span-6"
                 title={" "}
                 infoConfig={WorkItemStateTypeMapWidget.infoConfig}
                 name="workitem-statetype-map"
