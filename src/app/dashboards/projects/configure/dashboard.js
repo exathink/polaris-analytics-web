@@ -113,7 +113,7 @@ export function ValueStreamMappingDashboard() {
           <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-4 tw-gap-2">
             <DashboardRow title={" "}>
               <DashboardWidget
-                className="tw-row-start-1 tw-row-end-4"
+                className="tw-row-start-2 tw-row-end-4"
                 name="project-pipeline-detailed"
                 title={" "}
                 infoConfig={ProjectPipelineFunnelWidget.infoConfig}
