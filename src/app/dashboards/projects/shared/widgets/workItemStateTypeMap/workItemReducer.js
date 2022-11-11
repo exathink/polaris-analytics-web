@@ -6,7 +6,7 @@ const isEmpty = (obj) => Object.keys(obj).length === 0;
 // 1. workItemSource properties (key, name, workItemStateMappings)
 // 2. mode
 export function workItemReducer(state, action) {
-  const {mode: _, errorMessage: _error, ...workItemSource} = state;
+  const {mode: _, errorMessage: _error, workItemSources, ...workItemSource} = state;
   // handle empty workItemSource case.
   if (isEmpty(workItemSource)) {
     return state;
@@ -20,8 +20,11 @@ export function workItemReducer(state, action) {
       };
     }
     case actionTypes.CANCEL_EDIT_MODE: {
+      const currentWorkItemSource_initialState = workItemSources.find(s => s.key === state.key)
       return {
         ...state,
+        // reset workItemStateMappings on cancel
+        workItemStateMappings: currentWorkItemSource_initialState?.workItemStateMappings,
         mode: mode.INIT,
       };
     }
