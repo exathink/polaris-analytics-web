@@ -1,21 +1,3 @@
-.stateTypeWrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.controlsWrapper {
-  position: absolute;
-  top: 8px;
-  left: 16px;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  /* justify-content: space-between; */
-  margin-top: 1px;
-  margin-bottom: 10px;
-}
 
 .infoContent{
   position: absolute;
@@ -42,11 +24,6 @@
 
 .workItemSourceLabel {
   margin-left: 5px;
-}
-
-.chartWrapper {
-  width: 100%;
-  height: 100%;
 }
 
 .noWorkItemResources {

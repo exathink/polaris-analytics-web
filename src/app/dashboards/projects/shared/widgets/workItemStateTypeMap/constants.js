@@ -5,6 +5,8 @@ export const actionTypes = {
   MUTATION_SUCCESS: "MUTATION_SUCCESS",
   MUTATION_FAILURE: "MUTATION_FAILURE",
   SHOW_UNMAPPED_ERROR: "SHOW_UNMAPPED_ERROR",
+  UPDATE_FLOW_TYPE: "UPDATE_FLOW_TYPE",
+  RESET_FLOW_TYPE_RECORDS: "RESET_FLOW_TYPE_RECORDS"
 };
 
 // mini state machine to handle states for button and alert controls

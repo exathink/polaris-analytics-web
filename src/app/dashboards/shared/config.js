@@ -170,6 +170,15 @@ export const WorkItemStateTypeColor = {
   closed: '#7824b5'
 }
 
+export const WorkItemStateTypeColorClass = {
+  unmapped: 'tw-bg-[#8f9a8e] tw-bg-opacity-50',
+  backlog: 'tw-bg-[#65b59c] tw-bg-opacity-50',
+  open: 'tw-bg-[#c4ab49] tw-bg-opacity-50',
+  wip: 'tw-bg-[rgba(47,154,50,0.50)]',
+  complete: 'tw-bg-[#90d53f] tw-bg-opacity-50',
+  closed: 'tw-bg-[#7824b5] tw-bg-opacity-50'
+}
+
 export const PullRequestStateTypeColor = {
   unmapped: '#8f9a8e',
   open: '#c4ab49',
@@ -243,3 +252,20 @@ export const AppTerms = {
     display: "Work Item",
   },
 };
+
+export function sanitizeStateMappings(workItemStateMappings) {
+  const {...legalStateTypes} = WorkItemStateTypeDisplayName;
+
+  return workItemStateMappings
+    .filter((x) => x.state !== "created")
+    .map((x) => {
+      if (x.stateType === null) {
+        return {...x, stateType: "unmapped"};
+      } else if (legalStateTypes[x.stateType] === undefined) {
+        // we are here, means, x.stateType is not null and also its not one of legal state types
+        throw new Error(`${x.stateType} is not one of legal stateTypes.`);
+      }
+
+      return x;
+    });
+}

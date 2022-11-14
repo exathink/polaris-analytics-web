@@ -1,6 +1,6 @@
 import {Chart, Highcharts} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {Colors, sanitizeStateMappings, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
@@ -22,7 +22,7 @@ function getSeries(workItemStateMappings) {
         data: [
           {
             name: item.state,
-            y: 1.2,
+            y: 2,
             x: allStateTypeKeys.indexOf(item.stateType),
             color: WorkItemStateTypeColor[item.stateType],
           },
@@ -51,23 +51,6 @@ function getSeries(workItemStateMappings) {
       }),
     },
   ];
-}
-
-function sanitizeStateMappings(workItemStateMappings) {
-  const {...legalStateTypes} = WorkItemStateTypeDisplayName;
-
-  return workItemStateMappings
-    .filter((x) => x.state !== "created")
-    .map((x) => {
-      if (x.stateType === null) {
-        return {...x, stateType: "unmapped"};
-      } else if (legalStateTypes[x.stateType] === undefined) {
-        // we are here, means, x.stateType is not null and also its not one of legal state types
-        throw new Error(`${x.stateType} is not one of legal stateTypes.`);
-      }
-
-      return x;
-    });
 }
 
 export const WorkItemStateTypeMapChart = Chart({

@@ -2,21 +2,35 @@ import React from "react";
 import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
 import {Alert, Select} from "antd";
 import Button from "../../../../../../components/uielements/button";
-import styles from "./workItemStateType.module.css";
 import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {workItemReducer} from "./workItemReducer";
 import {actionTypes, mode} from "./constants";
 import {useResetComponentState} from "../../helper/hooks";
+import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
+import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
-
+export function getFlowTypeInitialMapping(workItemSource) {
+  const workItemStateMappings = workItemSource?.workItemStateMappings??[];
+  const stateMappings = sanitizeStateMappings(workItemStateMappings);
+  return stateMappings.reduce((acc, item) => {
+      acc[item.state] = item.flowType;
+      return acc;
+  }, {});
+}
 const {Option} = Select;
 
 export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
-  const [state, dispatch] = React.useReducer(workItemReducer, {...workItemSource, mode: mode.INIT, errorMessage: ""});
+  const [state, dispatch] = React.useReducer(workItemReducer, {
+    ...workItemSource,
+    flowTypeRecords: getFlowTypeInitialMapping(workItemSource),
+    mode: mode.INIT,
+    errorMessage: "",
+    workItemSources
+  });
 
   const [mutate, {loading, client}] = useUpdateProjectWorkItemSourceStateMaps({
     onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
@@ -35,7 +49,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   });
 
   function handleSaveClick(e) {
-    const {workItemStateMappings, key} = state;
+    const {workItemStateMappings, flowTypeRecords, key} = state;
     // show error if we have stateType values as null
     const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
@@ -49,7 +63,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     const payload = [
       {
         workItemsSourceKey: key,
-        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType})),
+        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType, flowType: flowTypeRecords[mapping.state]})),
       },
     ];
 
@@ -69,6 +83,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(index) {
     const workItemSource = workItemSources[index];
+    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource})
     dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
   }
 
@@ -99,7 +114,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           type="warning"
           showIcon
           closable
-          className={styles["noWorkItemResources"]}
+          className="tw-left-[30%] tw-mt-[10%]"
         />
       );
     }
@@ -109,7 +124,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     // when mutation is executing
     if (loading) {
       return (
-        <Button className={styles["shiftRight"]} type="primary" loading>
+        <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
           Processing...
         </Button>
       );
@@ -118,10 +133,10 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={styles["workItemSave"]} type="primary" size="small" shape="round">
+          <Button onClick={handleSaveClick} className="tw-ml-auto" type="primary" size="small" shape="round">
             Save
           </Button>
-          <Button onClick={handleCancelClick} className={styles["workItemCancel"]} type="default" size="small" shape="round">
+          <Button onClick={handleCancelClick} className="tw-mr-24 tw-ml-2" type="default" size="small" shape="round">
             Cancel
           </Button>
         </>
@@ -135,41 +150,58 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           type="error"
           showIcon
           closable
-          className={styles["shiftRight"]}
+          className="tw-ml-auto tw-mr-[90px]"
         />
       );
     }
 
     if (state.mode === mode.FAILURE) {
-      return <Alert message={state.errorMessage} type="error" showIcon closable className={styles["shiftRight"]} onClose={() => resetState()}/>;
+      return <Alert message={state.errorMessage} type="error" showIcon closable  className="tw-ml-auto tw-mr-[90px]" onClose={() => resetState()}/>;
     }
 
     if (state.mode === mode.SUCCESS) {
-      return <Alert message="Mapping updated successfully." type="success" showIcon closable className={styles["shiftRight"]} />;
+      return <Alert message="Mapping updated successfully." type="success" showIcon closable  className="tw-ml-auto tw-mr-[90px]" />;
     }
   }
 
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
+  const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords})
+
+  const stateMappings = sanitizeStateMappings(state?.workItemStateMappings??[]);
+
   return (
-    <div data-testid="state-type-map-view" className={styles["stateTypeWrapper"]} id="state-type-mapping-wrapper">   
-      <div className={styles["controlsWrapper"]}>
+    <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
+      <div className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
       </div>
 
-      <div className={styles["chartWrapper"]}>
-        <WorkItemStateTypeMapChart
-          key={resetComponentStateKey}
-          workItemSource={currentWorkItemSource}
-          updateDraftState={dispatch}
-          view={view}
-          context={context}
-          enableEdits={enableEdits}
-          title={" "}
-        />
+      <div className="tw-h-full tw-w-full">
+        <div className="tw-h-1/2">
+          <WorkItemStateTypeMapChart
+            key={resetComponentStateKey}
+            workItemSource={currentWorkItemSource}
+            updateDraftState={dispatch}
+            view={view}
+            context={context}
+            enableEdits={enableEdits}
+            title={" "}
+          />
+        </div>
+        <div className="tw-mt-2 tw-h-1/2">
+          <WorkItemStateTypeMapTable
+            key={currentWorkItemSource?.key}
+            tableData={stateMappings.sort(
+              (a, b) =>
+                Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
+                Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
+            )}
+            columns={columns}
+          />
+        </div>
       </div>
     </div>
   );

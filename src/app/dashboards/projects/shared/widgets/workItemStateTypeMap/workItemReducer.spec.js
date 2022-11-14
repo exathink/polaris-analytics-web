@@ -1,5 +1,6 @@
 import {actionTypes, mode} from "./constants";
 import {workItemReducer} from "./workItemReducer";
+import {getFlowTypeInitialMapping} from "./workItemStateTypeMapView";
 
 const workItemSourceFixture = {
   key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
@@ -46,7 +47,7 @@ describe("workItemReducer", () => {
     const keyValuePair = {unscheduled: "closed"};
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.INIT},
+      state: {...workItemSourceFixture, mode: mode.INIT, workItemSources: [workItemSourceFixture]},
       action: {type: actionType, payload: {keyValuePair}},
     };
 
@@ -69,7 +70,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.CANCEL_EDIT_MODE;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, flowTypeRecords: getFlowTypeInitialMapping(workItemSourceFixture), workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -85,7 +86,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.MUTATION_SUCCESS;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -101,7 +102,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.SHOW_UNMAPPED_ERROR;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.EDITING},
+      state: {...workItemSourceFixture, mode: mode.EDITING, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
@@ -117,7 +118,7 @@ describe("workItemReducer", () => {
     const actionType = actionTypes.REPLACE_WORKITEM_SOURCE;
 
     const input = {
-      state: {...workItemSourceFixture, mode: mode.INIT},
+      state: {...workItemSourceFixture, mode: mode.INIT, workItemSources: [workItemSourceFixture]},
       action: {type: actionType},
     };
 
