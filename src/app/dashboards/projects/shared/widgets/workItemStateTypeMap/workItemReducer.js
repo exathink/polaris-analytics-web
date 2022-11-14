@@ -25,6 +25,7 @@ export function workItemReducer(state, action) {
         ...state,
         // reset workItemStateMappings on cancel
         workItemStateMappings: currentWorkItemSource_initialState?.workItemStateMappings,
+        flowTypeRecords: getFlowTypeInitialMapping(currentWorkItemSource_initialState),
         mode: mode.INIT,
       };
     }
@@ -54,6 +55,7 @@ export function workItemReducer(state, action) {
           ...state.flowTypeRecords,
           ...action.payload.keyValuePair
         },
+        mode: mode.EDITING,
       }
     }
     case actionTypes.RESET_FLOW_TYPE_RECORDS: {

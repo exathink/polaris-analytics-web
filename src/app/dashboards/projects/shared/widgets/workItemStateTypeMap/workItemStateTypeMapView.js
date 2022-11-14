@@ -49,7 +49,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   });
 
   function handleSaveClick(e) {
-    const {workItemStateMappings, key} = state;
+    const {workItemStateMappings, flowTypeRecords, key} = state;
     // show error if we have stateType values as null
     const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
@@ -63,7 +63,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     const payload = [
       {
         workItemsSourceKey: key,
-        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType})),
+        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType, flowType: flowTypeRecords[mapping.state]})),
       },
     ];
 
