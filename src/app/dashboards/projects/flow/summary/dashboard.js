@@ -54,7 +54,7 @@ export function NewFlowDashboard({
           Last {flowAnalysisPeriod} Days
         </div>
       </div>
-      <div className="tw-row-start-1 tw-col-start-3 tw-col-span-4 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+      <div className="tw-row-start-1 tw-col-start-4 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
           Age Limit
         </div>
@@ -62,12 +62,12 @@ export function NewFlowDashboard({
           {cycleTimeTarget} Days
         </div>
       </div>
-      <div className="tw-text-base tw-col-start-8 tw-row-start-1">
+      <div className="tw-text-base tw-col-start-7 tw-row-start-1 tw-col-span-2">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
         </Flex>
       </div>
-      <div className="tw-col-span-2 tw-col-start-7 tw-row-start-1">
+      <div className="tw-col-span-2 tw-col-start-6 tw-row-start-1">
         {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
