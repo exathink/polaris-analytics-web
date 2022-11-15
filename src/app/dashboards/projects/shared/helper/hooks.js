@@ -30,5 +30,5 @@ export function useFlowEfficiency(workItems) {
       ? totalTimeInActiveStates / (totalTimeInWaitStates + totalTimeInActiveStates)
       : 0;
 
-  return getPercentage(fractionVal, intl);
+  return fractionVal === 0 ? "" : getPercentage(fractionVal, intl);
 }
