@@ -1,5 +1,5 @@
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
-import {WorkItemStateTypes} from "../../config";
+import {FlowTypeStates, WorkItemStateTypes} from "../../config";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -29,6 +29,21 @@ export function getCycleMetrics(workItem) {
   }
 }
 
+export function getTimeInActiveAndWaitStates(workItem) {
+  const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
+  let timeInWaitState = 0;
+  let timeInActiveState = 0;
+  for (let i = 0; i < durations.length; i++) {
+    if (durations[i].flowType === FlowTypeStates.WAITING) {
+      timeInWaitState = timeInWaitState + durations[i].daysInState;
+    }
+    if (durations[i].flowType === FlowTypeStates.ACTIVE) {
+      timeInActiveState = timeInActiveState + durations[i].daysInState;
+    }
+  }
+  return {timeInWaitState, timeInActiveState};
+}
+
 export function getWorkItemDurations(workItems) {
   return workItems.map(workItem => {
 
@@ -39,9 +54,11 @@ export function getWorkItemDurations(workItems) {
 
     // This is the version of latency that records the time since the most recent progress event.
     const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
-
+    const {timeInWaitState, timeInActiveState} = getTimeInActiveAndWaitStates(workItem);
     return {
       ...workItem,
+      timeInWaitState,
+      timeInActiveState,
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
