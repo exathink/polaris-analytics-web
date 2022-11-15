@@ -103,3 +103,8 @@ export function getHistogramSeries({intl, colWidthBoundaries, points, color, vis
 export function isClosed(stateType) {
   return stateType === WorkItemStateTypes.closed;
 }
+
+export function getPercentage(fractionVal, intl) {
+  const percentVal = i18nNumber(intl, fractionVal * 100, 2);
+  return `${percentVal}%`;
+}
