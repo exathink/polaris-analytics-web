@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import {useFlowEfficiency} from "../../../../../projects/shared/helper/hooks";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 
@@ -22,8 +23,10 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
+  const flowEfficiencyPercentage = useFlowEfficiency(workItems);
+
   return (
-    <PlainCard title="Flow Efficiency" info={{title: "Flow Efficiency"}}>
+    <PlainCard title="Flow Efficiency" value={flowEfficiencyPercentage} info={{title: "Flow Efficiency"}}>
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
