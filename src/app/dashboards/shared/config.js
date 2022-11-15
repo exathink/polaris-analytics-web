@@ -161,6 +161,12 @@ export const WorkItemStateTypeDisplayName = {
   closed: 'Closed'
 }
 
+export const FlowTypeStates = {
+  ACTIVE: "active",
+  WAITING: "waiting",
+  UNASSIGNED: "unassigned",
+}
+
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
