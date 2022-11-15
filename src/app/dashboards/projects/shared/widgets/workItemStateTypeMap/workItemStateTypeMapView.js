@@ -59,11 +59,22 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       return;
     }
 
+    const getFlowTypeRecord = (mapping) => {
+      if (flowTypeRecords[mapping.state] === "unassigned") {
+        return {flowType: null};
+      }
+      return flowTypeRecords[mapping.state] == null ? {} : {flowType: flowTypeRecords[mapping.state]};
+    };
+
     // call the mutation function to update data from here
     const payload = [
       {
         workItemsSourceKey: key,
-        stateMaps: workItemStateMappings.map((mapping) => ({state: mapping.state, stateType: mapping.stateType, flowType: flowTypeRecords[mapping.state]})),
+        stateMaps: workItemStateMappings.map((mapping) => ({
+          state: mapping.state,
+          stateType: mapping.stateType,
+          ...getFlowTypeRecord(mapping),
+        })),
       },
     ];
 
