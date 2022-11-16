@@ -16,7 +16,7 @@ export function useResetComponentState() {
 
 export function useFlowEfficiency(workItems) {
   const intl = useIntl();
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
+  const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
   const totalTimeInWaitStates = workItemsWithAggregateDurations.reduce((acc, item) => {
     acc += item.timeInWaitState;
     return acc;
