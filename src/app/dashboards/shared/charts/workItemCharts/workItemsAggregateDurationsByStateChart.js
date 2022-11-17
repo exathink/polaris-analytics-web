@@ -2,7 +2,7 @@ import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {pick} from "../../../../helpers/utility";
 
-import {Colors, WorkItemStateTypeColor, WorkItemTypeSortOrder} from "../../config";
+import {Colors, WorkItemFlowTypeColor, WorkItemTypeSortOrder} from "../../config";
 import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
@@ -30,7 +30,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       state => ({
         name: state,
         y: aggregateDurations[state].daysInState,
-        color: WorkItemStateTypeColor[aggregateDurations[state].stateType],
+        color: WorkItemFlowTypeColor[aggregateDurations[state].flowType],
         label: aggregateDurations[state].flowType,
       })
     )
