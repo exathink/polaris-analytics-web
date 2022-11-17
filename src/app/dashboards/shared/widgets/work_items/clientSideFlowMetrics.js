@@ -64,17 +64,18 @@ export function getDeliveryCycleDurationsByState(workItems) {
 }
 
 export function getTimeInActiveAndWaitStates(workItem) {
-  const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
+  const durations = getDeliveryCycleDurationsByState([workItem]);
+
   let timeInWaitState = 0;
   let timeInActiveState = 0;
-  for (let i = 0; i < durations.length; i++) {
-    if (durations[i].flowType === FlowTypeStates.WAITING) {
-      timeInWaitState = timeInWaitState + durations[i].daysInState;
+  Object.entries(durations).forEach(([_state, entry]) => {
+    if (entry.flowType === FlowTypeStates.WAITING) {
+      timeInWaitState = timeInWaitState + entry.daysInState;
     }
-    if (durations[i].flowType === FlowTypeStates.ACTIVE) {
-      timeInActiveState = timeInActiveState + durations[i].daysInState;
+    if (entry.flowType === FlowTypeStates.ACTIVE) {
+      timeInActiveState = timeInActiveState + entry.daysInState;
     }
-  }
+  })
   return {timeInWaitState, timeInActiveState};
 }
 
