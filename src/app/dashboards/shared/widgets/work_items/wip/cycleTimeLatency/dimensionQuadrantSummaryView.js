@@ -26,7 +26,7 @@ export const DimensionQuadrantSummaryView = ({
   const flowEfficiencyPercentage = useFlowEfficiency(workItems);
 
   return (
-    <PlainCard title="Flow Efficiency" value={flowEfficiencyPercentage} info={{title: "Flow Efficiency"}}>
+    <PlainCard title="Flow Efficiency" value={flowEfficiencyPercentage} info={{title: "Flow Efficiency"}} detailsView={{title: "Imp"}}>
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
