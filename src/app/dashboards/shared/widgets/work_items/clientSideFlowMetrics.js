@@ -1,5 +1,5 @@
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
-import {WorkItemStateTypes} from "../../config";
+import {FlowTypeStates, WorkItemStateTypes} from "../../config";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -29,6 +29,54 @@ export function getCycleMetrics(workItem) {
   }
 }
 
+export function getDeliveryCycleDurationsByState(workItems) {
+  return workItems.reduce((acc, workItem) => {
+    // delivery cycle durations, (each workItem has multiple durations, history of transitions)
+    const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
+    durations.forEach((duration) => {
+      // skip the below calculation for backlog entry of inprogress workItem,
+      if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
+        let daysInState = duration.daysInState ?? 0;
+
+        // for duration.stateType === 'closed' , clock stops ticking
+        // current state
+        if (workItem.state === duration.state && duration.stateType !== "closed") {
+          daysInState =
+            daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
+        }
+
+        if (acc[duration.state] != null) {
+          acc[duration.state].daysInState += daysInState;
+        } else {
+          acc[duration.state] = {
+            stateType: duration.stateType,
+            flowType: duration.flowType,
+            daysInState: daysInState,
+          };
+        }
+      }
+    });
+
+    return acc;
+  }, {});
+}
+
+export function getTimeInActiveAndWaitStates(workItem) {
+  const durations = getDeliveryCycleDurationsByState([workItem]);
+
+  let timeInWaitState = 0;
+  let timeInActiveState = 0;
+  Object.entries(durations).forEach(([_state, entry]) => {
+    if (entry.flowType === FlowTypeStates.WAITING) {
+      timeInWaitState = timeInWaitState + entry.daysInState;
+    }
+    if (entry.flowType === FlowTypeStates.ACTIVE) {
+      timeInActiveState = timeInActiveState + entry.daysInState;
+    }
+  })
+  return {timeInWaitState, timeInActiveState};
+}
+
 export function getWorkItemDurations(workItems) {
   return workItems.map(workItem => {
 
@@ -39,9 +87,11 @@ export function getWorkItemDurations(workItems) {
 
     // This is the version of latency that records the time since the most recent progress event.
     const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
-
+    const {timeInWaitState, timeInActiveState} = getTimeInActiveAndWaitStates(workItem);
     return {
       ...workItem,
+      timeInWaitState,
+      timeInActiveState,
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,

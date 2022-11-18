@@ -161,6 +161,12 @@ export const WorkItemStateTypeDisplayName = {
   closed: 'Closed'
 }
 
+export const FlowTypeStates = {
+  ACTIVE: "active",
+  WAITING: "waiting",
+  UNASSIGNED: "unassigned",
+}
+
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
@@ -169,6 +175,12 @@ export const WorkItemStateTypeColor = {
   complete: '#90d53f',
   closed: '#7824b5'
 }
+
+export const WorkItemFlowTypeColor = {
+  unassigned: "rgb(229,231,235)",
+  active: "rgb(134,239,172)",
+  waiting: "rgb(156,163,175)",
+};
 
 export const WorkItemStateTypeColorClass = {
   unmapped: 'tw-bg-[#8f9a8e] tw-bg-opacity-50',

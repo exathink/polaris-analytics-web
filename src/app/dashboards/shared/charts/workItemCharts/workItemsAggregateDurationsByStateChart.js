@@ -1,8 +1,9 @@
 import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {daysFromNow, pick, toMoment} from "../../../../helpers/utility";
+import {pick} from "../../../../helpers/utility";
 
-import {Colors, WorkItemStateTypeColor, WorkItemTypeSortOrder} from "../../config";
+import {Colors, WorkItemFlowTypeColor, WorkItemTypeSortOrder} from "../../config";
+import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (
@@ -13,29 +14,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
 
   getConfig: ({workItems, title, intl}) => {
 
-    const aggregateDurations = {}
-    for (let i = 0; i < workItems.length; i++) {
-      const durations = workItems[i].workItemStateDetails.currentDeliveryCycleDurations;
-      for (let j = 0; j < durations.length; j++) {
-        const state = durations[j].state
-        /* filter out backlog for non-closed items*/
-        if (workItems[i].stateType === 'closed' || durations[j].stateType !== 'backlog') {
-          /* adjust duration to include current state if needed*/
-          let daysInState = durations[j].daysInState;
-          if (workItems[i].state === state && durations[j].stateType !== 'closed') {
-            daysInState = daysInState + daysFromNow(toMoment(workItems[i].workItemStateDetails.currentStateTransition.eventDate));
-          }
-          if (aggregateDurations[state] != null) {
-            aggregateDurations[state].daysInState += daysInState;
-          } else {
-            aggregateDurations[state] = {
-              stateType: durations[j].stateType,
-              daysInState: daysInState || 0
-            };
-          }
-        }
-      }
-    }
+    const aggregateDurations = getDeliveryCycleDurationsByState(workItems);
 
     const series_data = Object.keys(aggregateDurations).sort(
       (stateA, stateB) => {
@@ -51,7 +30,8 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       state => ({
         name: state,
         y: aggregateDurations[state].daysInState,
-        color: WorkItemStateTypeColor[aggregateDurations[state].stateType]
+        color: WorkItemFlowTypeColor[aggregateDurations[state].flowType],
+        label: aggregateDurations[state].flowType,
       })
     )
 
@@ -92,6 +72,17 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       },
       series: [{
         data: series_data,
+        dataLabels: {
+          enabled: true,
+          inside: true,
+          style: {
+            textOverflow: 'clip',
+            fontSize: '14px'
+          },
+          formatter: function() {
+            return this.point.label;
+          }
+        },
         minPointLength: 3,
       }],
       legend: {

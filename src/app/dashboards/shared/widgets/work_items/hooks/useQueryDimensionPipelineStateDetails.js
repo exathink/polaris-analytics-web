@@ -50,6 +50,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
               currentDeliveryCycleDurations {
                 state
                 stateType
+                flowType
                 daysInState
               }
               earliestCommit

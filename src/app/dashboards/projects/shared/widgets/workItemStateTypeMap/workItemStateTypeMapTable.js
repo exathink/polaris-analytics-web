@@ -1,14 +1,14 @@
 import React from "react";
 import {StripeTable} from "../../../../../components/tables/tableUtils";
 import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
-import {WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {FlowTypeStates, WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 import { actionTypes } from "./constants";
 import { LabelValue } from "../../../../../helpers/components";
 
 const typeItems = [
-  {value: "unassigned", label: "Unassigned"},
-  {value: "active", label: "Active"},
-  {value: "waiting", label: "Waiting"}
+  {value: FlowTypeStates.UNASSIGNED, label: "Unassigned"},
+  {value: FlowTypeStates.ACTIVE, label: "Active"},
+  {value: FlowTypeStates.WAITING, label: "Waiting"}
 ]
 
 
