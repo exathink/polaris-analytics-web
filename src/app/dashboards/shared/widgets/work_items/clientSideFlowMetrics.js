@@ -33,31 +33,29 @@ export function getDeliveryCycleDurationsByState(workItems) {
   return workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
-    for (const duration of durations) {
-      // skip the below calculation for backlog entry of inprogress workItem, 
-      if (workItem.stateType !== "closed" && duration.stateType === "backlog") {
-        continue;
-      }
+    durations.forEach((duration) => {
+      // skip the below calculation for backlog entry of inprogress workItem,
+      if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
+        let daysInState = duration.daysInState ?? 0;
 
-      let daysInState = duration.daysInState ?? 0;
+        // for duration.stateType === 'closed' , clock stops ticking
+        // current state
+        if (workItem.state === duration.state && duration.stateType !== "closed") {
+          daysInState =
+            daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
+        }
 
-      // for duration.stateType === 'closed' , clock stops ticking
-      // current state
-      if (workItem.state === duration.state && duration.stateType !== "closed" && duration.daysInState == null) {
-        daysInState =
-          daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
+        if (acc[duration.state] != null) {
+          acc[duration.state].daysInState += daysInState;
+        } else {
+          acc[duration.state] = {
+            stateType: duration.stateType,
+            flowType: duration.flowType,
+            daysInState: daysInState,
+          };
+        }
       }
-
-      if (acc[duration.state] != null) {
-        acc[duration.state].daysInState += daysInState;
-      } else {
-        acc[duration.state] = {
-          stateType: duration.stateType,
-          flowType: duration.flowType,
-          daysInState: daysInState,
-        };
-      }
-    }
+    });
 
     return acc;
   }, {});
