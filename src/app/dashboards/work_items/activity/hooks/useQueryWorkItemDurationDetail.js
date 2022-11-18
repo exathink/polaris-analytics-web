@@ -31,6 +31,7 @@ export function useQueryWorkItemDurationDetail({instanceKey, referenceString}) {
                     state
                     stateType
                     daysInState
+                    flowType
                   }
                 }
               }

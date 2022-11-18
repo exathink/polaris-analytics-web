@@ -6,7 +6,7 @@ import { DimensionCycleTimeWidget } from "../closed/flowMetrics/dimensionCycleTi
 
 const dashboard_id = "dashboards.cycle.time.breakup";
 
-let globalCount = 0;
+
 
 export function DimensionCycleTimeDetailDashboard({
   dimension,
@@ -14,11 +14,6 @@ export function DimensionCycleTimeDetailDashboard({
   context,
   specsOnly
 }) {
-
-  // only when this counter is 1, we add grid-rows-[50%_50%] class, after this we remove it
-  React.useEffect(() => {
-    globalCount+=1;
-  })
 
   const {
     leadTimeTarget,
@@ -33,14 +28,13 @@ export function DimensionCycleTimeDetailDashboard({
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className={classNames("tw-grid tw-gap-2 tw-h-[650px] tw-w-[700px]", globalCount===1 ? "tw-grid-rows-[50%_50%]" : "")}
+      className={classNames("tw-grid tw-gap-2 tw-h-[650px] tw-w-[700px] tw-grid-rows-2")}
       gridLayout={true}
     >
       <DashboardRow>
         <DashboardWidget
           name="cycle-time-metrics"
           hideTitlesInDetailView={true}
-          className="tw-h-full"
           render={({view}) => (
             <DimensionCycleTimeWidget
               dimension={dimension}
@@ -69,7 +63,6 @@ export function DimensionCycleTimeDetailDashboard({
         <DashboardWidget
           title={""}
           name="cycle-time-histogram-details"
-          className="tw-h-full"
           render={({view}) => (
             <DimensionCycleTimeHistogramWidget
               dimension={dimension}

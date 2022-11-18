@@ -349,6 +349,16 @@ export const AvgEffort = ({displayType, displayProps, currentMeasurement, previo
   />
 }
 
+export const AvgFlowType = ({title, value}) => {
+  return <FlowStatistic
+    title={<span>{title}</span>}
+    currentValue={value}
+    precision={1}
+    uom={'Days'}
+    displayType={"cardAdvanced"}
+  />
+}
+
 export const PercentileEffort = ({currentMeasurement, previousMeasurement, good, target, targetPercentile, deltaThreshold}) => (
   <FlowStatistic
     title={<span>{'Effort'}<sup> {percentileToText(targetPercentile)} </sup></span>}

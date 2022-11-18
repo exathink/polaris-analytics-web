@@ -24,11 +24,6 @@ export class HighchartsChart extends React.Component {
       this.teardownChart();
       await this.initChart()
     }
-    if (this.props.isResize) {
-        const chart = this.getChart();
-        const {size} = this.props;
-        chart.setSize(size.width, size.height)
-    }
   }
 
   async initChart() {
@@ -61,6 +56,6 @@ export class HighchartsChart extends React.Component {
 
 
   render() {
-    return (<div ref={this.container}/>);
+    return (<div ref={this.container} className="tw-w-full tw-h-full"/>);
   }
 }
