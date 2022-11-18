@@ -24,7 +24,7 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const flowEfficiencyPercentage = useFlowEfficiency(workItems);
+  const {flowEfficiencyPercentage} = useFlowEfficiency(workItems);
 
   return (
     <PlainCard
