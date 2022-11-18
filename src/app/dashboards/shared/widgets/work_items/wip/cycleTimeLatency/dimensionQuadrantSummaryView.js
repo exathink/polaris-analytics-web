@@ -3,6 +3,7 @@ import React from "react";
 import {useFlowEfficiency} from "../../../../../projects/shared/helper/hooks";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
+import {AppTerms} from "../../../../config";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export const DimensionQuadrantSummaryView = ({
@@ -32,8 +33,16 @@ export const DimensionQuadrantSummaryView = ({
       value={flowEfficiencyPercentage}
       info={{title: "Flow Efficiency"}}
       detailsView={{
+        title: (
+          <div className="tw-text-lg tw-text-gray-300">
+            Flow Efficiency,{" "}
+            <span className="tw-text-base tw-italic">
+              {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+            </span>
+          </div>
+        ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={workItems}/>,
+        content: <FlowEfficiencyDetailsView workItems={workItems} />,
       }}
     >
       <QuadrantSummaryPanel
