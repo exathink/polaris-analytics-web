@@ -46,40 +46,32 @@ export const DimensionFlowMixTrendsDetailDashboard = (
   ] = useTrendsControlBarState(days || 45, measurementWindow || 30, samplingFrequency || 7);
 
   return (
-    <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-3 tw-grid-rows-[10%_40%_10%_40%] tw-p-2">
+    <Dashboard id={dashboard_id} gridLayout={true} className="tw-grid tw-grid-cols-4 tw-grid-rows-[10%_40%_10%_40%] tw-p-2">
       <div className="tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">{specsOnly ? `Cost Analysis, ${AppTerms.specs.display}` : `Allocations, All ${AppTerms.cards.display}`}</div>
         <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
       </div>
 
       <DashboardRow
-        h={"50%"}
-        className="tw-col-start-2 tw-col-span-2 tw-row-start-1 tw-text-base"
+        className="tw-col-start-2 tw-col-span-3 tw-row-start-1 tw-text-base"
         controls={[
           ...getTrendsControlBarControls([
             [daysRange, setDaysRange],
             [measurementWindowRange, setMeasurementWindowRange],
             [frequencyRange, setFrequencyRange],
           ]),
-          () => (
-            <div style={{minWidth: "220px", padding: "15px"}}>
-              <Flex align={"center"}>
-                <Box pr={2} w={"100%"}>
+          () => (   
                   <WorkItemScopeSelector
                     display={["Costs", "Allocations"]}
                     workItemScope={workItemScope}
                     setWorkItemScope={setWorkItemScope}
                   />
-                </Box>
-              </Flex>
-            </div>
           ),
         ]}
       >
         <DashboardWidget
-          w={1}
           name={"flow-mix"}
-          className="tw-row-start-2 tw-col-span-3"
+          className="tw-row-start-2 tw-col-span-4"
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={dimension}
@@ -102,7 +94,6 @@ export const DimensionFlowMixTrendsDetailDashboard = (
         />
       </DashboardRow>
       <DashboardRow
-        h={"50%"}
         className="tw-row-start-3 tw-col-start-3 tw-flex tw-justify-center"
         controls={[
           () =>
@@ -122,9 +113,8 @@ export const DimensionFlowMixTrendsDetailDashboard = (
         ]}
       >
         <DashboardWidget
-          w={1}
           name={"card-details-mix"}
-          className="tw-col-start-1 tw-row-start-4 tw-col-span-3"
+          className="tw-col-start-1 tw-row-start-4 tw-col-span-4"
           render={({view}) => (
             <CardDetailsWidget
               dimension={dimension}
