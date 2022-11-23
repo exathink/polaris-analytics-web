@@ -30,7 +30,8 @@ export const DimensionPullRequestsWidget = ({
   before,
   setBefore,
   selectedFilter,
-  setFilter
+  setFilter,
+  displayBag
 }) => {
   const {loading, error, data} = useQueryDimensionPullRequests({
     dimension,
@@ -86,6 +87,7 @@ export const DimensionPullRequestsWidget = ({
         view={view}
         context={context}
         pullRequestsType={pullRequestsType}
+        displayBag={displayBag}
       />
     );
     

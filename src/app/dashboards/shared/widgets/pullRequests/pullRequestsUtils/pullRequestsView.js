@@ -46,9 +46,10 @@ export function PullRequestsView({
   setBefore,
   selectedFilter,
   setFilter,
+  displayBag={}
 }) {
   const intl = useIntl();
-  const [tabSelection, setTab] = React.useState("table");
+  const {tabSelection, setTab} = displayBag;
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
