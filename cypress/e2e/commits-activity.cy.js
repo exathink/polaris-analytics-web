@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
-import {wait} from "@testing-library/react";
 import moment from "moment";
-import {COMMITS, ORGANIZATION, REPOSITORY, viewer_info} from "../support/queries-constants";
+import {COMMITS, REPOSITORY, viewer_info} from "../support/queries-constants";
 import {getQueryFullName, getNMonthsAgo} from "../support/utils";
 
 describe("Commit Activity", () => {
@@ -40,6 +39,7 @@ describe("Commit Activity", () => {
     // with_repository_instance
     var newDate = getNMonthsAgo(1);
     var strNewDate = moment.utc(newDate).format("YYYY-MM-DD");
+    var strPreviousDay = Date(newDate) - 1;
     var newTime = moment.utc(with_repository_instance.data.repository.latestCommit).format(" HH:mm:ss");
     with_repository_instance.data.repository.latestCommit = moment
       .utc(strNewDate + newTime)
@@ -133,21 +133,59 @@ describe("Commit Activity", () => {
       .first()
       .should("contain", "Bubble Size: Source Lines Changed");
 
-    cy.getBySel("commits")
-      .find(".highcharts-container")
-      .find(".highcharts-xaxis-labels")
-      .first()
-      .find("text")
-      .first()
-      .should("contain", "01:00");
+    var beginx = moment.utc(rcOneDay.data.repository.commits.edges[4].node.commitDate).local().format("HH");
+    var beginminute = moment.utc(rcOneDay.data.repository.commits.edges[4].node.commitDate).local().format("mm");
+    cy.log(beginx);
+
+    if (parseInt(beginminute) > 30) {
+      beginx = parseInt(beginx) + 1;
+    }
+
+    var endx = moment.utc(rcOneDay.data.repository.commits.edges[0].node.commitDate).local().format("H");
+    endx = parseInt(endx) + 1;
+    cy.log(beginx);
+
+    var maxLabelCount = parseInt(endx) - parseInt(beginx);
+    if (maxLabelCount < 0) {
+      maxLabelCount = 24 + maxLabelCount;
+    }
+
+    beginx = String(beginx) + ":00";
+    endx = String(endx) + ":00";
+
+    if (beginx == "24:00") {
+      beginx = moment
+        .utc(rcOneDay.data.repository.commits.edges[4].node.commitDate)
+        .add("d", 1)
+        .local()
+        .format("DD. MMM");
+    }
+
+    if (endx == "24:00") {
+      endx = moment
+        .utc(rcOneDay.data.repository.commits.edges[0].node.commitDate)
+        .add("d", 1)
+        .local()
+        .format("DD. MMM");
+    }
+
+    cy.log(endx);
 
     cy.getBySel("commits")
       .find(".highcharts-container")
       .find(".highcharts-xaxis-labels")
       .first()
       .find("text")
-      .eq(10)
-      .should("contain", "11:00");
+      .first()
+      .should("contain", beginx);
+
+    cy.getBySel("commits")
+      .find(".highcharts-container")
+      .find(".highcharts-xaxis-labels")
+      .first()
+      .find("text")
+      .eq(maxLabelCount)
+      .should("contain", endx);
 
     //Y-Axis
     cy.getBySel("commits").find(".highcharts-container").find(".highcharts-yaxis").first().should("contain", "Spec");
@@ -201,14 +239,14 @@ describe("Commit Activity", () => {
     var localDateToCompare = moment
       .utc(rcOneDay.data.repository.commits.edges[0].node.commitDate)
       .local()
-      .format("M/D/YYYY, hh:mm A");
+      .format("M/D/YYYY, h:mm A");
 
     cy.getBySel("commits-timeline-table").find(".rt-td").eq(2).should("contain", localDateToCompare);
 
     localDateToCompare = moment
       .utc(rcOneDay.data.repository.commits.edges[0].node.authorDate)
       .local()
-      .format("M/D/YYYY, hh:mm A");
+      .format("M/D/YYYY, h:mm A");
 
     cy.getBySel("commits-timeline-table").find(".rt-td").eq(3).should("contain", localDateToCompare);
 
@@ -572,14 +610,14 @@ describe("Commit Activity", () => {
     var localDateToCompare = moment
       .utc(rcOneDay.data.repository.commits.edges[1].node.commitDate)
       .local()
-      .format("M/D/YYYY, hh:mm A");
+      .format("M/D/YYYY, h:mm A");
 
     cy.getBySel("commits-timeline-table").find(".rt-td").eq(2).should("contain", localDateToCompare);
 
     localDateToCompare = moment
       .utc(rcOneDay.data.repository.commits.edges[1].node.authorDate)
       .local()
-      .format("M/D/YYYY, hh:mm A");
+      .format("M/D/YYYY, h:mm A");
 
     cy.getBySel("commits-timeline-table").find(".rt-td").eq(3).should("contain", localDateToCompare);
 
