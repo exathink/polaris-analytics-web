@@ -46,24 +46,6 @@ function getTransformedData(data, intl) {
   });
 }
 
-function customTeamsColRender({setShowPanel, setWorkItemKey}) {
-  return (text, record, searchText) => {
-    return (
-      text && (
-        <span
-          onClick={() => {
-            setShowPanel(true);
-            setWorkItemKey(record.key ?? record.workItemKey);
-          }}
-          className="tw-cursor-pointer tw-font-medium"
-        >
-          {record.teamNodeRefs.length > 1 ? "Multiple" : text}
-        </span>
-      )
-    );
-  };
-}
-
 export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
   const blurClass = useBlurClass("tw-blur-[2px]");
   const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
@@ -84,7 +66,6 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     render: customColumnRender({...callBacks, colRender: (text) => <>{text} FTE Days</>, className: "tw-textXs"}),
   };
   const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})};
-  const renderTeamsCol = {render: customTeamsColRender(callBacks)};
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
