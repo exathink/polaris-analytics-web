@@ -1,8 +1,9 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick} from "../../../../helpers/utility";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
+import {i18nNumber, pick} from "../../../../helpers/utility";
 
-import {Colors, WorkItemFlowTypeColor, WorkItemTypeSortOrder} from "../../config";
+import {Colors, WorkItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
 import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
@@ -31,7 +32,9 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
         name: state,
         y: aggregateDurations[state].daysInState,
         color: WorkItemFlowTypeColor[aggregateDurations[state].flowType],
+        phase: WorkItemStateTypeDisplayName[aggregateDurations[state].stateType],
         label: aggregateDurations[state].flowType,
+        average: workItems.length > 0 ? aggregateDurations[state].daysInState / (workItems.length) : 0
       })
     )
 
@@ -64,9 +67,9 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
         hideDelay: 50,
         formatter: function () {
 
-          return tooltipHtml({
-            header: `${intl.formatNumber(this.point.y)} days`,
-            body: []
+          return tooltipHtml_v2({
+            header: `State: ${this.point.name} <br/> Phase: ${this.point.phase}`,
+            body: [[`Total Time in State`, `${i18nNumber(intl, this.point.y, 1)} days`], [`Average Time in State`, `${i18nNumber(intl, this.point.average, 1)} days`]]
           })
         }
       },
