@@ -137,7 +137,7 @@ const PhaseDetailView = ({
     if (selectedFilter === null) {
       setSelectedGrouping(defaultSelectedGrouping);
     }
-  }, [selectedFilter]);
+  }, [selectedFilter, defaultSelectedGrouping]);
 
   function resetFilterAndMetric() {
     // clear bucket and clear series

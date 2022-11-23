@@ -18,7 +18,6 @@ function TrendsDashboard({
   viewerContext,
 }) {
   const {
-    leadTimeTarget,
     cycleTimeTarget,
     leadTimeConfidenceTarget,
     cycleTimeConfidenceTarget,
