@@ -6,26 +6,23 @@ export function useTrendsControlBarState(days, measurementWindow, samplingFreque
   const [measurementWindowRange, setMeasurementWindowRange] = useState(measurementWindow);
   const [frequencyRange, setFrequencyRange] = useState(samplingFrequency);
 
-
   return [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
-    [frequencyRange, setFrequencyRange]
-  ]
-
-
+    [frequencyRange, setFrequencyRange],
+  ];
 }
 
 export function getTrendsControlBarControls(
   [
     [daysRange, setDaysRange, daysMarks],
     [measurementWindowRange, setMeasurementWindowRange, measurementWindowMarks],
-    [frequencyRange, setFrequencyRange, frequencyRangeMarks]
+    [frequencyRange, setFrequencyRange, frequencyRangeMarks],
   ],
-  layout="col"
+  layout = "col"
 ) {
   return [
-    () =>
+    () => (
       <div title="Days" style={{minWidth: "350px"}}>
         <DaysRangeSlider
           initialDays={daysRange}
@@ -34,29 +31,69 @@ export function getTrendsControlBarControls(
           layout={layout}
         />
       </div>
-    ,
-    () =>
+    ),
+    () => (
       <div title="Sampling Frequency" style={{minWidth: "200px"}}>
         <DaysRangeSlider
-          title={'Frequency'}
+          title={"Frequency"}
           initialDays={frequencyRange}
           setDaysRange={setFrequencyRange}
           range={frequencyRangeMarks || [1, 7, 14, 30]}
           layout={layout}
         />
       </div>
-    ,
-    () =>
+    ),
+    () => (
       <div title="Window" style={{minWidth: "200px"}}>
         <DaysRangeSlider
-          title={'Window'}
+          title={"Window"}
           initialDays={measurementWindowRange}
           setDaysRange={setMeasurementWindowRange}
           range={measurementWindowMarks || [1, 7, 14, 30]}
           layout={layout}
         />
       </div>
-    ,
+    ),
+  ];
+}
 
-  ]
+export function TrendsControlBar({
+  trendState: [
+    [daysRange, setDaysRange, daysMarks],
+    [measurementWindowRange, setMeasurementWindowRange, measurementWindowMarks],
+    [frequencyRange, setFrequencyRange, frequencyRangeMarks],
+  ],
+  layout = "col",
+}) {
+  return (
+    <div className="tw-flex tw-text-base">
+      <div title="Days" className="tw-flex-[2_1_0%]">
+        <DaysRangeSlider
+          initialDays={daysRange}
+          setDaysRange={setDaysRange}
+          range={daysMarks || SIX_MONTHS}
+          layout={layout}
+        />
+      </div>
+
+      <div title="Sampling Frequency" className="tw-flex-1">
+        <DaysRangeSlider
+          title={"Frequency"}
+          initialDays={frequencyRange}
+          setDaysRange={setFrequencyRange}
+          range={frequencyRangeMarks || [1, 7, 14, 30]}
+          layout={layout}
+        />
+      </div>
+      <div title="Window" className="tw-flex-1">
+        <DaysRangeSlider
+          title={"Window"}
+          initialDays={measurementWindowRange}
+          setDaysRange={setMeasurementWindowRange}
+          range={measurementWindowMarks || [1, 7, 14, 30]}
+          layout={layout}
+        />
+      </div>
+    </div>
+  );
 }
