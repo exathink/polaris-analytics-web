@@ -66,7 +66,7 @@ export function TrendsControlBar({
   layout = "col",
 }) {
   return (
-    <div className="tw-flex">
+    <div className="tw-flex tw-text-base">
       <div title="Days" className="tw-flex-[2_1_0%]">
         <DaysRangeSlider
           initialDays={daysRange}
