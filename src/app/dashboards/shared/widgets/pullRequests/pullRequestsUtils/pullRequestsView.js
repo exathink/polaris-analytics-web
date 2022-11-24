@@ -46,9 +46,10 @@ export function PullRequestsView({
   setBefore,
   selectedFilter,
   setFilter,
+  displayBag={}
 }) {
   const intl = useIntl();
-  const [tabSelection, setTab] = React.useState("table");
+  const {tabSelection, setTab} = displayBag;
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
@@ -129,8 +130,8 @@ export function PullRequestsView({
         label={"View"}
         className={"tw-ml-auto"}
         groupings={[
-          {key: "table", display: "Pull Requests"},
           {key: "histogram", display: `Histogram`},
+          {key: "table", display: "Pull Requests"},
         ].map((item) => ({
           key: item.key,
           display: item.display,

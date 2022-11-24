@@ -40,6 +40,7 @@ export function DimensionResponseTimeDetailDashboard({
   const [selectedFilter, setFilter] = React.useState(null);
 
   const limitToSpecsOnly = workItemScope === 'specs';
+  const [tabSelection, setTab] = React.useState("histogram");
 
   return (
     <Dashboard
@@ -138,6 +139,7 @@ export function DimensionResponseTimeDetailDashboard({
                 selectedFilter={selectedFilter}
                 setFilter={setFilter}
                 display="histogramTable"
+                displayBag={{tabSelection, setTab}}
               />
             )}
             showDetail={false}
