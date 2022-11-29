@@ -8,6 +8,8 @@ const DEFAULTS = {
   PAGE_SIZE: 7,
 };
 
+const PAGINATION_LIMIT = 250;
+
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
   TWENTY_FIVE: "25vh",
@@ -26,7 +28,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
-        pagination={false}
+        pagination={dataSource.length > PAGINATION_LIMIT}
         columns={columns}
         dataSource={dataSource}
         scroll={{y: "100%"}}
