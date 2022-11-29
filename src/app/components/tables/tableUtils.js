@@ -5,10 +5,8 @@ import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
 const DEFAULTS = {
-  PAGE_SIZE: 7,
+  PAGE_SIZE: 250,
 };
-
-const PAGINATION_LIMIT = 250;
 
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
@@ -24,11 +22,14 @@ export const TABLE_HEIGHTS = {
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
   return (
-    <div className="tw-p-1 tw-h-full tw-w-full">
+    <div className="tw-h-full tw-w-full tw-p-1">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
-        pagination={dataSource.length > PAGINATION_LIMIT}
+        pagination={{
+          hideOnSinglePage: true,
+          defaultPageSize: tableProps?.pageSize ?? DEFAULTS.PAGE_SIZE,
+        }}
         columns={columns}
         dataSource={dataSource}
         scroll={{y: "100%"}}
@@ -66,30 +67,6 @@ export function BaseTable({columns, dataSource, height, testId, loading, onChang
     <Table
       size="small"
       pagination={false}
-      columns={columns}
-      dataSource={dataSource}
-      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
-      showSorterTooltip={false}
-      loading={loading}
-      data-testid={testId}
-      onChange={onChange}
-      {...tableProps}
-    />
-  );
-}
-
-export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options = {}, ...tableProps}) {
-  const {showTotal, pageSize} = options;
-
-  return (
-    <Table
-      size="small"
-      pagination={{
-        total: dataSource.length,
-        defaultPageSize: pageSize ?? DEFAULTS.PAGE_SIZE,
-        hideOnSinglePage: true,
-        showTotal: showTotal,
-      }}
       columns={columns}
       dataSource={dataSource}
       scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
