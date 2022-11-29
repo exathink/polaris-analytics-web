@@ -21,6 +21,28 @@ export const TABLE_HEIGHTS = {
 }
 
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
+  const {fetchMore, hasNextPage, endCursor} = tableProps;
+  // way to detect bottom of the table
+  React.useEffect(() => {
+    const node = window.document.querySelector(".ant-table .ant-table-body");
+
+
+    if (node) {
+      const handleScroll = () => {
+        const {scrollTop, scrollHeight, clientHeight} = node;
+        if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+          console.log("TODO: Scrolling has reached bottom, load more data...");
+          fetchMore?.({variables: {endCursor}})
+        }
+      };
+
+      node.addEventListener("scroll", handleScroll);
+
+      return () => node.removeEventListener("scroll", handleScroll);
+    }
+
+  }, [fetchMore, hasNextPage, endCursor]);
+
   return (
     <div className="tw-h-full tw-w-full tw-p-1">
       <Table
@@ -33,7 +55,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
         }}
         columns={columns}
         dataSource={dataSource}
-        scroll={{y: "100%"}}
+        scroll={{y: "100%", scrollToFirstRowOnChange: false}}
         showSorterTooltip={false}
         loading={loading}
         data-testid={testId}
