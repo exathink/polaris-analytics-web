@@ -29,6 +29,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
         pagination={{
           hideOnSinglePage: true,
           defaultPageSize: tableProps?.pageSize ?? DEFAULTS.PAGE_SIZE,
+          pageSizeOptions: [200, 250, 300]
         }}
         columns={columns}
         dataSource={dataSource}
