@@ -20,39 +20,33 @@ export const TABLE_HEIGHTS = {
   NINETY: "90vh"
 }
 
-export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
-  const {fetchMore, hasNextPage, endCursor} = tableProps;
+export function StripeTable({columns, dataSource, height, testId, loading, onChange, paginationOptions={}, ...tableProps}) {
+  const {fetchMore, hasNextPage, endCursor, updateQuery} = paginationOptions;
   // way to detect bottom of the table
   React.useEffect(() => {
     const node = window.document.querySelector(".ant-table .ant-table-body");
 
+    const handleScroll = () => {
+      const {scrollTop, scrollHeight, clientHeight} = node;
+      if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+        console.log("TODO: Scrolling has reached bottom, load more data...");
+        fetchMore?.({variables: {after: endCursor}, updateQuery});
+      }
+    };
 
-    if (node) {
-      const handleScroll = () => {
-        const {scrollTop, scrollHeight, clientHeight} = node;
-        if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
-          console.log("TODO: Scrolling has reached bottom, load more data...");
-          fetchMore?.({variables: {endCursor}})
-        }
-      };
+    node.addEventListener("scroll", handleScroll);
 
-      node.addEventListener("scroll", handleScroll);
+    return () => node.removeEventListener("scroll", handleScroll);
 
-      return () => node.removeEventListener("scroll", handleScroll);
-    }
-
-  }, [fetchMore, hasNextPage, endCursor]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endCursor]);
 
   return (
     <div className="tw-h-full tw-w-full tw-p-1">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
-        pagination={{
-          hideOnSinglePage: true,
-          defaultPageSize: tableProps?.pageSize ?? DEFAULTS.PAGE_SIZE,
-          pageSizeOptions: [200, 250, 300]
-        }}
+        pagination={false}
         columns={columns}
         dataSource={dataSource}
         scroll={{y: "100%", scrollToFirstRowOnChange: false}}
