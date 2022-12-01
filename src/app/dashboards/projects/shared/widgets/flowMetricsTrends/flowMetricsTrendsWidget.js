@@ -34,6 +34,7 @@ export const FlowMetricsTrendsWidget = ({
     samplingFrequency: samplingFrequency,
     targetPercentile,
     includeSubTasks,
+    specsOnly,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
   });
   if (loading) return <Loading />;
