@@ -29,6 +29,7 @@ export function WorkItemsDetailHistogramTable({
   tableSelectedMetric,
   setShowPanel,
   setWorkItemKey,
+  paginationOptions
 }) {
   return (
     <React.Fragment>
@@ -56,6 +57,7 @@ export function WorkItemsDetailHistogramTable({
             setWorkItemKey={setWorkItemKey}
             colWidthBoundaries={colWidthBoundaries}
             specsOnly={specsOnly}
+            paginationOptions={paginationOptions}
           />
         </div>
       )}

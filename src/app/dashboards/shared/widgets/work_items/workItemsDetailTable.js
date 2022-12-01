@@ -225,7 +225,8 @@ export const WorkItemsDetailTable =
     supportsFilterOnCard,
     onChange,
     loading,
-    specsOnly
+    specsOnly,
+    paginationOptions
   }) => {
     const intl = useIntl();
 
@@ -262,6 +263,7 @@ export const WorkItemsDetailTable =
         rowKey={(record) => record.rowKey}
         onChange={handleChange}
         loading={loading}
+        paginationOptions={paginationOptions}
         renderTableSummary={(pageData) => {
           const avgData = getAvgSortersData(pageData);
           const avgFiltersData = getAvgFiltersData(pageData);
