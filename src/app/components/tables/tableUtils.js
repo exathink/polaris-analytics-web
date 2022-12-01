@@ -4,10 +4,7 @@ import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
-const DEFAULTS = {
-  PAGE_SIZE: 250,
-};
-
+export const DEFAULT_PAGE_SIZE = 250;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
   TWENTY_FIVE: "25vh",

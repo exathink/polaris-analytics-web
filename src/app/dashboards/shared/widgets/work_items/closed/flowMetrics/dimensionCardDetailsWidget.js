@@ -1,6 +1,7 @@
 import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {CardDetailsView} from "./dimensionCardDetailsView";
 
@@ -20,7 +21,7 @@ export function CardDetailsWidget({
   workItemTypeFilter,
 }) {
   let _days = before === undefined ? initialDays : days;
-  const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
+  const {loading, error, data, fetchMore} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
     days: _days,
@@ -29,6 +30,8 @@ export function CardDetailsWidget({
     before,
     includeSubTasks,
     referenceString: latestWorkItemEvent,
+    first: DEFAULT_PAGE_SIZE,
+    after: null
   });
 
   if (loading) return <Loading />;
@@ -46,6 +49,7 @@ export function CardDetailsWidget({
       context={context}
       supportsFilterOnCard={supportsFilterOnCard}
       workItemTypeFilter={workItemTypeFilter}
+      fetchMore={fetchMore}
     />
   );
 }
