@@ -52,11 +52,17 @@ const PhaseDetailView = ({
 
   const updateQuery = React.useCallback(
     (prevResult, {fetchMoreResult}) => {
-      fetchMoreResult[dimension].workItems.edges = [
-        ...prevResult[dimension].workItems.edges,
-        ...fetchMoreResult[dimension].workItems.edges,
-      ];
-      return fetchMoreResult;
+      const mergedEdges = [...prevResult[dimension].workItems.edges, ...fetchMoreResult[dimension].workItems.edges];
+      const merged = {
+        [dimension]: {
+          ...fetchMoreResult[dimension],
+          workItems: {
+            ...fetchMoreResult[dimension].workItems,
+            edges: mergedEdges,
+          },
+        },
+      };
+      return merged;
     },
     [dimension]
   );
