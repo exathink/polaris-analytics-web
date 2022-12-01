@@ -12,6 +12,8 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
     $includeSubTasks: Boolean
     $includeSubTasksInClosedState: Boolean
     $includeSubTasksInNonClosedState: Boolean
+    $first: Int
+    $after: String
   ) {
     ${dimension}(key: $key, referenceString: $referenceString) {
       id
@@ -27,7 +29,16 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
           includeSubTasksInNonClosedState: $includeSubTasksInNonClosedState
         }
         referenceString: $referenceString
+        first: $first
+        after: $after
       ) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        count
         edges {
           node {
             name
@@ -79,6 +90,8 @@ export function useQueryDimensionPipelineStateDetails({
   activeOnly,
   funnelView,
   includeSubTasks,
+  first,
+  after
 }) {
   // oddity here is to support the same api signature while allowing either
   // a boolean value for includeSubtasks or a pair for the funnelView.
@@ -99,6 +112,8 @@ export function useQueryDimensionPipelineStateDetails({
         includeSubTasks: includeSubTasks,
         includeSubTasksInClosedState: includeSubTasksInClosedState,
         includeSubTasksInNonClosedState: includeSubTasksInNonClosedState,
+        first: first,
+        after: after
       },
       errorPolicy: "all",
       pollInterval: analytics_service.defaultPollInterval(),
