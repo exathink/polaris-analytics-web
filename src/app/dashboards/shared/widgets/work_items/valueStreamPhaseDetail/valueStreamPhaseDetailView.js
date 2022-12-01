@@ -38,6 +38,7 @@ const PhaseDetailView = ({
   view,
   context,
   intl,
+  fetchMore
 }) => {
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -49,6 +50,23 @@ const PhaseDetailView = ({
     [workItems]
   );
 
+  const updateQuery = React.useCallback(
+    (prevResult, {fetchMoreResult}) => {
+      fetchMoreResult[dimension].workItems.edges = [
+        ...prevResult[dimension].workItems.edges,
+        ...fetchMoreResult[dimension].workItems.edges,
+      ];
+      return fetchMoreResult;
+    },
+    [dimension]
+  );
+
+  const {pageInfo = {}} = data?.[dimension]?.["workItems"];
+  const paginationOptions = {
+    ...pageInfo,
+    fetchMore,
+    updateQuery
+  };
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   
   const [selectedTeam, setSelectedTeam] = React.useState("All");
@@ -298,6 +316,7 @@ const PhaseDetailView = ({
             tableSelectedMetric={selectedMetric}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
+            paginationOptions={paginationOptions}
           />
         </VizItem>
         <CardInspectorWithDrawer

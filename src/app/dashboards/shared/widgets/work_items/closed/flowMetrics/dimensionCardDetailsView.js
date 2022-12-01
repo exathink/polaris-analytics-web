@@ -37,7 +37,7 @@ const getData = (data, dimension) => {
   );
 };
 
-export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard, specsOnly}) {
+export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard, specsOnly, fetchMore}) {
   const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
     uniqueItems: uniqueIssueTypes,
     defaultVal: defaultIssueType,
@@ -69,7 +69,23 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
     });
   }, [data, dimension, selectedIssueType, selectedTeam]);
 
+  const updateQuery = React.useCallback(
+    (prevResult, {fetchMoreResult}) => {
+      fetchMoreResult[dimension].workItemDeliveryCycles.edges = [
+        ...prevResult[dimension].workItemDeliveryCycles.edges,
+        ...fetchMoreResult[dimension].workItemDeliveryCycles.edges,
+      ];
+      return fetchMoreResult;
+    },
+    [dimension]
+  );
 
+  const {pageInfo = {}} = data?.[dimension]?.["workItemDeliveryCycles"];
+  const paginationOptions = {
+    ...pageInfo,
+    fetchMore,
+    updateQuery,
+  };
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
@@ -101,6 +117,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           supportsFilterOnCard={supportsFilterOnCard}
           specsOnly={specsOnly}
+          paginationOptions={paginationOptions}
         />
       </div>
       <CardInspectorWithDrawer
