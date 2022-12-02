@@ -67,9 +67,10 @@ const PhaseDetailView = ({
     [dimension]
   );
 
-  const {pageInfo = {}} = data?.[dimension]?.["workItems"];
+  const {pageInfo = {}, count} = data?.[dimension]?.["workItems"];
   const paginationOptions = {
     ...pageInfo,
+    count,
     fetchMore,
     updateQuery
   };

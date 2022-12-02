@@ -80,9 +80,10 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
     [dimension]
   );
 
-  const {pageInfo = {}} = data?.[dimension]?.["workItemDeliveryCycles"];
+  const {pageInfo = {}, count} = data?.[dimension]?.["workItemDeliveryCycles"];
   const paginationOptions = {
     ...pageInfo,
+    count,
     fetchMore,
     updateQuery,
   };
