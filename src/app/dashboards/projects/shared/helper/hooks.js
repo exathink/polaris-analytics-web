@@ -32,3 +32,22 @@ export function useFlowEfficiency(workItems) {
 
   return {totalTimeInWaitStates, totalTimeInActiveStates, flowEfficiencyPercentage: getPercentage(fractionVal, intl)};
 }
+
+export function useUpdateQuery(dimension, items_name) {
+  return React.useCallback(
+    (prevResult, {fetchMoreResult}) => {
+      const mergedEdges = [...prevResult[dimension][items_name].edges, ...fetchMoreResult[dimension][items_name].edges];
+      const merged = {
+        [dimension]: {
+          ...fetchMoreResult[dimension],
+          [items_name]: {
+            ...fetchMoreResult[dimension][items_name],
+            edges: mergedEdges,
+          },
+        },
+      };
+      return merged;
+    },
+    [dimension, items_name]
+  );
+}
