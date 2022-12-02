@@ -159,7 +159,7 @@ export const FlowMixTrendsChart = Chart({
         labels: [{
           point: "defect%0",
           text:
-            `Cost of Defects: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'defect'), 1)} %`,
+            `Defect Fixing: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'defect'), 1)} %`,
           backgroundColor: Colors.FlowType['defect'],
           borderColor: Colors.FlowType['defect'],
           style: {
@@ -170,7 +170,7 @@ export const FlowMixTrendsChart = Chart({
         },{
           point: "feature%0",
           text:
-            `Direct Value: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'feature'), 1)} %`,
+            `New Development: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'feature'), 1)} %`,
           backgroundColor: Colors.FlowType['feature'],
           borderColor: Colors.FlowType['feature'],
           style: {
@@ -181,7 +181,7 @@ export const FlowMixTrendsChart = Chart({
         },{
           point: "task%0",
           text:
-            `Indirect Value: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'task'), 1)} %`,
+            `Platform: ${i18nNumber(intl, getFlowMixEffortPercentage(flowMixTrends[0]?.flowMix, 'task'), 1)} %`,
           backgroundColor: Colors.FlowType['task'],
           borderColor: Colors.FlowType['task'],
           style: {

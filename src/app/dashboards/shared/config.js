@@ -98,9 +98,9 @@ export const WorkItemTypeSortOrder = {
 }
 
 export const FlowTypeDisplayName = {
-  feature: 'Features',
+  feature: 'New Development',
   defect: 'Defects',
-  task: 'Platform'
+  task: 'Platform/Maintenance'
 }
 
 export const FlowTypeWorkItemType = {
