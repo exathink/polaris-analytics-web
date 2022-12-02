@@ -4,7 +4,7 @@ import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
-export const DEFAULT_PAGE_SIZE = 250;
+export const DEFAULT_PAGE_SIZE = 10;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
   TWENTY_FIVE: "25vh",
@@ -21,19 +21,20 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
   const {fetchMore, hasNextPage, endCursor, updateQuery} = paginationOptions;
   // way to detect bottom of the table
   React.useEffect(() => {
-    const node = window.document.querySelector(".ant-table .ant-table-body");
-
-    const handleScroll = () => {
-      const {scrollTop, scrollHeight, clientHeight} = node;
-      if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
-        console.log("TODO: Scrolling has reached bottom, load more data...");
-        fetchMore?.({variables: {after: endCursor}, updateQuery});
-      }
-    };
-
-    node.addEventListener("scroll", handleScroll);
-
-    return () => node.removeEventListener("scroll", handleScroll);
+    if (endCursor) {
+      const node = window.document.querySelector(".ant-table .ant-table-body");
+      const handleScroll = () => {
+        const {scrollTop, scrollHeight, clientHeight} = node;
+        if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+          console.log("TODO: Scrolling has reached bottom, load more data...");
+          fetchMore?.({variables: {after: endCursor}, updateQuery});
+        }
+      };
+  
+      node.addEventListener("scroll", handleScroll);
+  
+      return () => node.removeEventListener("scroll", handleScroll);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endCursor]);
