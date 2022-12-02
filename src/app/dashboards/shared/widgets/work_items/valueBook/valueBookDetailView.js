@@ -183,7 +183,7 @@ export function ValueBookDetailView({
     if (editedRecords.length === 0) {
       return null;
     }
-    return <span>Budget edited for {editedRecords.length} cards.</span>;
+    return <span>Budget edited for {editedRecords.length} work items.</span>;
   }
 
   const getRowClassName = (record, index) => {
@@ -216,7 +216,7 @@ export function ValueBookDetailView({
       <div className={styles.scopeSelector}>
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector
-            display={["Investments", "Cards"]}
+            display={["Investments", "Work Items"]}
             workItemScope={workItemScope}
             setWorkItemScope={setWorkItemScope}
           />

@@ -12,7 +12,7 @@
   "contexts.projects.instance": "Value Stream: {instance}",
   "dashboards.activity.repositories.instance.topRowTitle": "Activity Overview",
   "contexts.repositories.instance": "Repository: {instance}",
-  "contexts.work_items.instance": "Card: {instance}",
+  "contexts.work_items.instance": "Work Item: {instance}",
   "activitySummaryBubbleChart.title": "{subject} Activity Summary",
   "t.History": "History",
   "t.Number of commits": "Number of commits",

@@ -25,7 +25,7 @@ const messages = defineMessages({
   },
   work_items: {
     id: 'contexts.work_items.display',
-    defaultMessage: "{quantity, plural, one {Card} other {Cards}}"
+    defaultMessage: "{quantity, plural, one {Work Item} other {Work Items}}"
   },
   repositories: {
     id: 'contexts.repositories.display',
