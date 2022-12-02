@@ -33,21 +33,21 @@ export function useFlowEfficiency(workItems) {
   return {totalTimeInWaitStates, totalTimeInActiveStates, flowEfficiencyPercentage: getPercentage(fractionVal, intl)};
 }
 
-export function useUpdateQuery(dimension, items_name) {
+export function useUpdateQuery(dimension, list_prop) {
   return React.useCallback(
     (prevResult, {fetchMoreResult}) => {
-      const mergedEdges = [...prevResult[dimension][items_name].edges, ...fetchMoreResult[dimension][items_name].edges];
+      const mergedEdges = [...prevResult[dimension][list_prop].edges, ...fetchMoreResult[dimension][list_prop].edges];
       const merged = {
         [dimension]: {
           ...fetchMoreResult[dimension],
-          [items_name]: {
-            ...fetchMoreResult[dimension][items_name],
+          [list_prop]: {
+            ...fetchMoreResult[dimension][list_prop],
             edges: mergedEdges,
           },
         },
       };
       return merged;
     },
-    [dimension, items_name]
+    [dimension, list_prop]
   );
 }
