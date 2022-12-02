@@ -17,6 +17,13 @@ export const TABLE_HEIGHTS = {
   NINETY: "90vh"
 }
 
+export function getRecordsCount(pageData, paginationOptions) {
+  if (paginationOptions?.count) {
+    return <span>{pageData?.length} of {paginationOptions?.count}</span>
+  }
+  return pageData?.length;
+}
+
 export function StripeTable({columns, dataSource, height, testId, loading, onChange, paginationOptions={}, ...tableProps}) {
   const {fetchMore, hasNextPage, endCursor, updateQuery} = paginationOptions;
   // way to detect bottom of the table
@@ -60,7 +67,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
                 <Table.Summary.Cell index={0} align="left" colSpan="20">
                   <div className="tw-flex tw-space-x-6">
                     {tableProps?.renderTableSummary?.(pageData) ?? (
-                      <LabelValue label="Records" value={pageData.length} />
+                      <LabelValue label="Records" value={getRecordsCount(pageData, paginationOptions)} />
                     )}
                   </div>
                 </Table.Summary.Cell>
