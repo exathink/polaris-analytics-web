@@ -192,7 +192,7 @@ describe("WorkItemsEpicEffortChart", () => {
             header: `Quality Trends`,
             body: [
               [`Effort`, `1.5 FTE Days`],
-              [`Cards`, `2`],
+              [`Work Items`, `2`],
             ],
           });
         });

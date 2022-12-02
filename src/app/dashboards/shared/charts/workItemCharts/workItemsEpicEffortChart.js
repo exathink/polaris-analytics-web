@@ -225,7 +225,7 @@ export const WorkItemsEpicEffortChart = Chart({
               if (specsOnly) {
                 epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} FTE Days)`;
               } else {
-                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} work items)`;
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Work Items)`;
               }
             }
             const workItemTitle = workItem ?[[capitalizeFirstLetter(workItem.workItemType), name]] : [];
@@ -238,7 +238,7 @@ export const WorkItemsEpicEffortChart = Chart({
             header: `${name}`,
             body: [
               [`Effort`, `${intl.formatNumber(effortValue)} FTE Days`],
-              [`Work items`, `${workItems.length}`],
+              [`Work Items`, `${workItems.length}`],
             ],
           });
         },
