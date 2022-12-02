@@ -179,14 +179,6 @@ export const ResponseTimeTrendsChart = (
       annotations: [{
         visible: showAnnotations,
         labels: [{
-          point: { x: 0, y: 0 },
-          getText: (measurements, seriesKey, index, intl) =>
-            `Cycle Efficiency: ${i18nNumber(intl, getFlowEfficiency(flowMetricsTrends[0].avgEffort, flowMetricsTrends[0].avgCycleTime), 1)} %`,
-          backgroundColor: ResponseTimeMetricsColor.cycleTime,
-          borderColor: ResponseTimeMetricsColor.cycleTime,
-          align: "center",
-          distance: 9
-        }, {
           seriesKey: "avgLeadTime",
           index: 0,
           getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Days`,
