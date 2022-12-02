@@ -11,7 +11,7 @@ import {Alert, Select} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
-import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import {useResetComponentState, useUpdateQuery} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
@@ -50,23 +50,7 @@ const PhaseDetailView = ({
     [workItems]
   );
 
-  const updateQuery = React.useCallback(
-    (prevResult, {fetchMoreResult}) => {
-      const mergedEdges = [...prevResult[dimension].workItems.edges, ...fetchMoreResult[dimension].workItems.edges];
-      const merged = {
-        [dimension]: {
-          ...fetchMoreResult[dimension],
-          workItems: {
-            ...fetchMoreResult[dimension].workItems,
-            edges: mergedEdges,
-          },
-        },
-      };
-      return merged;
-    },
-    [dimension]
-  );
-
+  const updateQuery = useUpdateQuery(dimension, "workItems");
   const {pageInfo = {}, count} = data?.[dimension]?.["workItems"];
   const paginationOptions = {
     ...pageInfo,

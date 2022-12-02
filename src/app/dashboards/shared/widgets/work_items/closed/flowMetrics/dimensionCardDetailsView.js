@@ -1,5 +1,6 @@
 import React from "react";
 import {pick} from "../../../../../../helpers/utility";
+import {useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useSelect } from "../../../../components/select/selectDropdown";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
@@ -69,17 +70,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
     });
   }, [data, dimension, selectedIssueType, selectedTeam]);
 
-  const updateQuery = React.useCallback(
-    (prevResult, {fetchMoreResult}) => {
-      fetchMoreResult[dimension].workItemDeliveryCycles.edges = [
-        ...prevResult[dimension].workItemDeliveryCycles.edges,
-        ...fetchMoreResult[dimension].workItemDeliveryCycles.edges,
-      ];
-      return fetchMoreResult;
-    },
-    [dimension]
-  );
-
+  const updateQuery = useUpdateQuery(dimension, "workItemDeliveryCycles");
   const {pageInfo = {}, count} = data?.[dimension]?.["workItemDeliveryCycles"];
   const paginationOptions = {
     ...pageInfo,
