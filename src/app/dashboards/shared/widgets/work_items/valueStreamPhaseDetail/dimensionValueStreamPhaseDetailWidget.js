@@ -32,7 +32,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
 }) => {
   const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "specs");
 
-  const {loading, error, data, fetchMore} = useQueryDimensionPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
     activeOnly,
@@ -41,8 +41,6 @@ export const DimensionValueStreamPhaseDetailWidget = ({
     includeSubTasks,
     specsOnly: workItemScope === "specs",
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
-    first: DEFAULT_PAGE_SIZE,
-    after: null,
   });
   const targetMetrics = React.useMemo(
     () => ({leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget}),
@@ -67,7 +65,6 @@ export const DimensionValueStreamPhaseDetailWidget = ({
       setWorkItemScope={setWorkItemScope}
       workItemScopeVisible={!parentWorkItemScope}
       defaultToHistogram={defaultToHistogram}
-      fetchMore={fetchMore}
     />
   );
 };
