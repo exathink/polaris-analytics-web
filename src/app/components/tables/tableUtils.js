@@ -33,7 +33,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
       const handleScroll = () => {
         const {scrollTop, scrollHeight, clientHeight} = node;
         if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
-          console.log("TODO: Scrolling has reached bottom, load more data...");
+          // Scrolling has reached bottom, load more data...
           fetchMore?.({variables: {after: endCursor}, updateQuery});
         }
       };
