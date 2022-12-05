@@ -73,7 +73,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
       ...titleSearchState,
     },
     {
-      title: "Cards",
+      title: "Work Item",
       dataIndex: "cards",
       key: "cards",
       width: "7%",

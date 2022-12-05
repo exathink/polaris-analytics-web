@@ -60,7 +60,7 @@ export function WorkItemButtons({workItem, goToCardLink = true}) {
       {goToCardLink && (
         <Link to={`${url_for_instance(WorkItems, workItem.displayId, workItem.key)}`}>
           <Button type="primary" size="medium" style={{marginLeft: "15px"}}>
-            Go to Card
+            Go to Work Item
           </Button>
         </Link>
       )}

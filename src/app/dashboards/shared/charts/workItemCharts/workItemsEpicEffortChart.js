@@ -144,7 +144,7 @@ function getSeries(workItems, specsOnly, intl, view) {
           const dataLabelTitle = specsOnly ? (value/effortOut) * 100 : workItems.length;
           return `<div style="text-align: center;">${this.point.name}<br/>${intl.formatNumber(dataLabelTitle, {
             maximumSignificantDigits: 2,
-          } )} ${specsOnly ? `%` : `Cards`}</div>`;
+          } )} ${specsOnly ? `%` : `Work Items`}</div>`;
         },
       },
     },
@@ -225,7 +225,7 @@ export const WorkItemsEpicEffortChart = Chart({
               if (specsOnly) {
                 epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} FTE Days)`;
               } else {
-                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Cards)`;
+                epicTitle = `Epic: ${epicName} (${intl.formatNumber(epicVal)} Work Items)`;
               }
             }
             const workItemTitle = workItem ?[[capitalizeFirstLetter(workItem.workItemType), name]] : [];
@@ -238,7 +238,7 @@ export const WorkItemsEpicEffortChart = Chart({
             header: `${name}`,
             body: [
               [`Effort`, `${intl.formatNumber(effortValue)} FTE Days`],
-              [`Cards`, `${workItems.length}`],
+              [`Work Items`, `${workItems.length}`],
             ],
           });
         },

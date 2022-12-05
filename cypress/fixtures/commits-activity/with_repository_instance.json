@@ -1,0 +1,12 @@
+{
+    "data": {
+      "repository": {
+        "id": "UmVwb3NpdG9yeTphNGNiOTBhMS1kY2Y1LTQ3NjgtYjE0MC0yOTVjOTdiZTllZTA=",
+        "name": "polaris-analytics-web",
+        "key": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+        "earliestCommit": "2018-02-21T16:15:42",
+        "latestCommit": "2022-09-04T14:56:12",
+        "commitCount": 5199
+      }
+    }
+  }
