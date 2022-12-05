@@ -5,6 +5,7 @@ import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
+import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
 
 
 export const DimensionPipelineCycleTimeLatencyWidget = (
@@ -33,13 +34,15 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
 
 
 
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+  const {loading, error, data, fetchMore} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
     specsOnly,
     activeOnly: true,
     includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+    first: DEFAULT_PAGE_SIZE,
+    after: null
   })
   if (loading) return <Loading/>;
   if (error) {
@@ -65,6 +68,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
         tooltipType={tooltipType}
         view={view}
         context={context}
+        fetchMore={fetchMore}
       />
     );
   } else {

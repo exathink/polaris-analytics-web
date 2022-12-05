@@ -1,7 +1,7 @@
 import React from "react";
 import { useSearchMultiCol } from "../../../../../../components/tables/hooks";
 import { injectIntl } from "react-intl";
-import { SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
+import { getRecordsCount, SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
 import { AppTerms, WorkItemStateTypeDisplayName } from "../../../../config";
 import { getQuadrant, QuadrantColors, QuadrantNames, Quadrants } from "./cycleTimeLatencyUtils";
 import { InfoCircleFilled } from "@ant-design/icons";
@@ -285,7 +285,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
 }
 
 export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
+  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly, paginationOptions}) => {
     const [appliedSorter, setAppliedSorter] = React.useState();
     const [appliedName, setAppliedName] = React.useState();
 
@@ -317,6 +317,7 @@ export const CycleTimeLatencyTable = injectIntl(
         dataSource={dataSource}
         testId="cycle-time-latency-table"
         onChange={handleChange}
+        paginationOptions={paginationOptions}
         rowKey={(record) => record.key}
         renderTableSummary={(pageData) => {
                     // calculate avg for summary stats columns
@@ -334,7 +335,7 @@ export const CycleTimeLatencyTable = injectIntl(
 
           return (
             <>
-              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={pageData?.length} />
+              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={getRecordsCount(pageData, paginationOptions)} />
               {avgData !== 0 && avgData && (
                 <LabelValue
                   key={getMetricsMetaKey(appliedSorter, "stateType")}

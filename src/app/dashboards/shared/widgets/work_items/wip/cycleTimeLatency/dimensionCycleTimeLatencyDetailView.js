@@ -9,7 +9,7 @@ import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
-import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useResetComponentState, useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
@@ -91,6 +91,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   tooltipType,
   view,
   context,
+  fetchMore
 }) => {
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
@@ -139,6 +140,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
+
+  const updateQuery = useUpdateQuery(dimension, "workItems");
+  const {pageInfo = {}, count} = data?.[dimension]?.["workItems"];
+  const paginationOptions = {
+    ...pageInfo,
+    count,
+    fetchMore,
+    updateQuery,
+  };
 
   // we maintain separate state for table and chart, using single source of truth (initWorkItems)
   const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(
@@ -343,6 +353,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           callBacks={callBacks}
           appliedFilters={appliedFilters}
           specsOnly={specsOnly}
+          paginationOptions={paginationOptions}
         />
       </div>
       <div className={styles.cardInspectorPanel}>
