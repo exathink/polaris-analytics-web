@@ -22,6 +22,8 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
     intl
   } = props;
 
+  const idProps = { "data-testid": 'commits-timeline-table' };
+
   return (
     <Table
       filterable
@@ -157,6 +159,7 @@ export const CommitsTimelineTable = injectIntl((props: Props) => {
         };
       }}
       className="-striped -highlight"
+      getProps={() => idProps}
     />
   )
 });

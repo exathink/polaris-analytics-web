@@ -1,0 +1,33 @@
+{
+  "data": {
+    "commit": {
+      "id": "Q29tbWl0OmE0Y2I5MGExLWRjZjUtNDc2OC1iMTQwLTI5NWM5N2JlOWVlMDo1YzJkNzcyYWViZTE1NzUzYzhjODM1ODg0ZGQxY2UyZTgxZjBiZGFl",
+      "name": "5c2d772a",
+      "commitHash": "5c2d772aebe15753c8c835884dd1ce2e81f0bdae",
+      "repository": "polaris-analytics-web",
+      "integrationType": "gitlab",
+      "repositoryKey": "a4cb90a1-dcf5-4768-b140-295c97be9ee0",
+      "repositoryUrl": "https://gitlab.com/polaris-apps/polaris-analytics-web.git",
+      "author": "Aman Mavai",
+      "authorDate": "2022-08-26T14:24:50",
+      "authorKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+      "committer": "Aman Mavai",
+      "committerKey": "22a83ff0-00a1-45e1-bcfe-74542a64ceb1",
+      "commitDate": "2022-08-26T14:24:50",
+      "commitMessage": "refactor grid layout styling to fix layout issue\n",
+      "branch": "PP-232",
+      "stats": {
+        "files": 1,
+        "lines": 14,
+        "insertions": 7,
+        "deletions": 7
+      },
+      "fileTypesSummary": [
+        {
+          "fileType": "js",
+          "count": 1
+        }
+      ]
+    }
+  }
+}
