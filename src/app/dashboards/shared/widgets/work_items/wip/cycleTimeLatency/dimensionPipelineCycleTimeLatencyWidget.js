@@ -2,7 +2,7 @@ import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
-import {getReferenceString} from "../../../../../../helpers/utility";
+import {getReferenceString, useTablePaginationFeatureFlag} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
 import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
@@ -41,7 +41,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
     activeOnly: true,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
-    first: DEFAULT_PAGE_SIZE,
+    first: useTablePaginationFeatureFlag() ? DEFAULT_PAGE_SIZE : null,
     after: null
   })
   if (loading) return <Loading/>;
