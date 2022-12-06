@@ -7,6 +7,7 @@ export const SYSTEM_TEAMS = 'system.teams';
 export const AZURE_DEVOPS_CONNECTOR = 'connectors.azure-devops'
 export const UI_NEW_CARD_DESIGN = 'ui.new-card-design'
 export const DEMO_MODE = 'system.demo_mode'
+export const TABLE_PAGINATION = 'ui.table_pagination';
 
 
 
