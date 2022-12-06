@@ -2,6 +2,7 @@ import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
+import {useTablePaginationFeatureFlag} from "../../../../../../helpers/utility";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {CardDetailsView} from "./dimensionCardDetailsView";
 
@@ -30,8 +31,8 @@ export function CardDetailsWidget({
     before,
     includeSubTasks,
     referenceString: latestWorkItemEvent,
-    first: DEFAULT_PAGE_SIZE,
-    after: null
+    first: useTablePaginationFeatureFlag() ? DEFAULT_PAGE_SIZE : null,
+    after: null,
   });
 
   if (loading) return <Loading />;
