@@ -4,7 +4,7 @@ import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
-export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 5;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
   TWENTY_FIVE: "25vh",
@@ -24,8 +24,7 @@ export function getRecordsCount(pageData, paginationOptions) {
   return pageData?.length;
 }
 
-export function StripeTable({columns, dataSource, height, testId, loading, onChange, paginationOptions={}, ...tableProps}) {
-  const {fetchMore, hasNextPage, endCursor, updateQuery} = paginationOptions;
+export function useLoadNextPageOnScroll({fetchMore, hasNextPage, endCursor, updateQuery}) {
   // way to detect bottom of the table
   React.useEffect(() => {
     if (endCursor) {
@@ -37,14 +36,19 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
           fetchMore?.({variables: {after: endCursor}, updateQuery});
         }
       };
-  
+
       node.addEventListener("scroll", handleScroll);
-  
+
       return () => node.removeEventListener("scroll", handleScroll);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endCursor]);
+}
+
+export function StripeTable({columns, dataSource, height, testId, loading, onChange, paginationOptions={}, ...tableProps}) {
+
+  useLoadNextPageOnScroll(paginationOptions)
 
   return (
     <div className="tw-h-full tw-w-full tw-p-1">
