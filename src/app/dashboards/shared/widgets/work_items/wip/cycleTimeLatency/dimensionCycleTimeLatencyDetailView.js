@@ -9,7 +9,7 @@ import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
-import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useFlowEfficiency, useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
@@ -21,6 +21,7 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
+import {LabelValue} from "../../../../../../helpers/components";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -246,6 +247,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
           />
           <div className="tw-bg-chart">
+            <LabelValue
+              className="tw-ml-2"
+              label="Flow Efficiency"
+              value={
+                useFlowEfficiency(
+                  chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+                ).flowEfficiencyPercentage
+              }
+            />
             <QuadrantSummaryPanel
               workItems={chartFilteredWorkItems}
               stateTypes={engineeringStateTypes}
@@ -269,6 +279,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
             />
           </div>
           <div className="tw-bg-chart">
+            <LabelValue
+              className="tw-ml-2"
+              label="Flow Efficiency"
+              value={
+                useFlowEfficiency(
+                  chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+                ).flowEfficiencyPercentage
+              }
+            />
             <QuadrantSummaryPanel
               workItems={chartFilteredWorkItems}
               stateTypes={deliveryStateTypes}
