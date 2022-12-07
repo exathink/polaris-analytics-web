@@ -7,7 +7,7 @@ import {
 import {actionTypes} from "./constants";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import * as workItemUtils from "./workItemReducer";
-import {waitFor, screen, fireEvent} from "@testing-library/react";
+import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 Object.defineProperty(window, "matchMedia", {
@@ -208,6 +208,9 @@ describe("WorkItemStateTypeMapView", () => {
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
+      
+      const {getByText} = within(screen.queryByTestId("workitem-state-type-table"));
+      getByText(/no data/i);
     });
   });
 
@@ -293,14 +296,14 @@ describe("WorkItemStateTypeMapView", () => {
           {
             workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
             stateMaps: [
-              {state: "accepted", stateType: "closed"},
-              {state: "planned", stateType: "complete"},
-              {state: "unscheduled", stateType: "open"},
-              {state: "unstarted", stateType: "closed"},
-              {state: "started", stateType: "open"},
-              {state: "delivered", stateType: "wip"},
-              {state: "created", stateType: "backlog"},
-              {state: "finished", stateType: "complete"},
+              {state: "accepted", stateType: "closed", flowType: null},
+              {state: "planned", stateType: "complete", flowType: null},
+              {state: "unscheduled", stateType: "open", flowType: null},
+              {state: "unstarted", stateType: "closed", flowType: null},
+              {state: "started", stateType: "open", flowType: null},
+              {state: "delivered", stateType: "wip", flowType: null},
+              {state: "created", stateType: "backlog", flowType: null},
+              {state: "finished", stateType: "complete", flowType: null},
             ],
           },
         ],

@@ -205,6 +205,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
         </div>
         <div className="tw-mt-2 tw-h-1/2">
           <WorkItemStateTypeMapTable
+            testId="workitem-state-type-table"
             key={currentWorkItemSource?.key}
             tableData={stateMappings.sort(
               (a, b) =>
