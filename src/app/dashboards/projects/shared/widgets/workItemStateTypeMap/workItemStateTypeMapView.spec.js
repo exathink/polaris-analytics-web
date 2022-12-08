@@ -462,7 +462,7 @@ describe("WorkItemStateTypeMapView", () => {
                 {state: "accepted", stateType: "closed", flowType: "active"},
                 {state: "planned", stateType: "complete", flowType: null},
                 {state: "unscheduled", stateType: "open", flowType: null},
-                {state: "unstarted", stateType: "closed", flowType: null},
+                {state: "unstarted", stateType: "open", flowType: null},
                 {state: "started", stateType: "open", flowType: null},
                 {state: "delivered", stateType: "wip", flowType: null},
                 {state: "created", stateType: "backlog", flowType: null},
