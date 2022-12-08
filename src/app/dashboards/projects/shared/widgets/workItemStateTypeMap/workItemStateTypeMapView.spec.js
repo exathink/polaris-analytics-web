@@ -368,6 +368,40 @@ describe("WorkItemStateTypeMapView", () => {
       expect(cancelElement).toBeInTheDocument();
     });
 
+    test("when flow type value for an individual workflow state is updated, and cancel button is clicked, save/cancel buttons should disappear", async () => {
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        []
+      );
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Active/));
+
+      const saveElement = screen.getByText(/save/i);
+      const cancelElement = screen.getByText(/cancel/i);
+
+      // Before Cancel Button Click
+      expect(saveElement).toBeInTheDocument();
+      expect(cancelElement).toBeInTheDocument();
+
+      fireEvent.click(cancelElement);
+
+      // After Cancel Button Click
+      expect(saveElement).not.toBeInTheDocument();
+      expect(cancelElement).not.toBeInTheDocument();
+
+    });
+
     test("when cancel button is clicked, save/cancel buttons should disappear", async () => {
       await renderedDragDropConfig(
         <WorkItemStateTypeMapView
