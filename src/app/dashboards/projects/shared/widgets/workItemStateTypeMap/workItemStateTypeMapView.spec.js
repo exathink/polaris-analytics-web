@@ -451,7 +451,7 @@ describe("WorkItemStateTypeMapView", () => {
     });
 
     test("when flow type value for an individual workflow state is updated, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-      const gqlMutationRequest2 = {
+      const gqlMutationRequest = {
         query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
         variables: {
           projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
@@ -480,7 +480,7 @@ describe("WorkItemStateTypeMapView", () => {
           view="detail"
           enableEdits={true}
         />,
-        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest2}]
+        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
       );
 
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
@@ -504,7 +504,7 @@ describe("WorkItemStateTypeMapView", () => {
     });
 
     test("when flow type value for an individual workflow state is updated from active to unassinged, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
-      const gqlMutationRequest2 = {
+      const gqlMutationRequest = {
         query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
         variables: {
           projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
@@ -640,7 +640,7 @@ describe("WorkItemStateTypeMapView", () => {
           view="detail"
           enableEdits={true}
         />,
-        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest2}]
+        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
       );
 
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
