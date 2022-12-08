@@ -503,6 +503,166 @@ describe("WorkItemStateTypeMapView", () => {
       expect(successElement).toBeInTheDocument();
     });
 
+    test("when flow type value for an individual workflow state is updated from active to unassinged, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
+      const gqlMutationRequest2 = {
+        query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
+        variables: {
+          projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          workItemsSourceStateMaps: [
+            {
+              workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+              stateMaps: [
+                {state: "accepted", stateType: "closed", flowType: null},
+                {state: "planned", stateType: "complete", flowType: null},
+                {state: "unscheduled", stateType: "open", flowType: null},
+                {state: "unstarted", stateType: "open", flowType: null},
+                {state: "started", stateType: "open", flowType: null},
+                {state: "delivered", stateType: "wip", flowType: null},
+                {state: "created", stateType: "backlog", flowType: null},
+                {state: "finished", stateType: "complete", flowType: null},
+              ],
+            },
+          ],
+        },
+      };
+      const workItemSourcesFixture = [
+        {
+          key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+          name: "Polaris Platform",
+          workItemStateMappings: [
+            {
+              state: "accepted",
+              stateType: "closed",
+              flowType: "active"
+            },
+            {
+              state: "planned",
+              stateType: "complete",
+            },
+            {
+              state: "unscheduled",
+              stateType: "open",
+            },
+            {
+              state: "unstarted",
+              stateType: "open",
+            },
+            {
+              state: "started",
+              stateType: "open",
+            },
+            {
+              state: "delivered",
+              stateType: "wip",
+            },
+            {
+              state: "created",
+              stateType: "backlog",
+            },
+            {
+              state: "finished",
+              stateType: "complete",
+            },
+          ],
+        },
+        {
+          key: "46694f4f-e003-4430-a7a7-e4f288f40d22",
+          name: "Polaris",
+          workItemStateMappings: [
+            {
+              state: "ACCEPTED",
+              stateType: "closed",
+            },
+            {
+              state: "Closed",
+              stateType: "open",
+            },
+            {
+              state: "Code-Review-Needed",
+              stateType: "wip",
+            },
+            {
+              state: "Done",
+              stateType: "closed",
+            },
+            {
+              state: "ABANDONED",
+              stateType: "backlog",
+            },
+            {
+              state: "Backlog",
+              stateType: "backlog",
+            },
+            {
+              state: "ROADMAP",
+              stateType: "backlog",
+            },
+            {
+              state: "DEV-DONE",
+              stateType: "complete",
+            },
+            {
+              state: "created",
+              stateType: "open",
+            },
+            {
+              state: "DEPLOYED-TO-STAGING",
+              stateType: "open",
+            },
+            {
+              state: "Selected for Development",
+              stateType: "open",
+            },
+            {
+              state: "RELEASED",
+              stateType: "complete",
+            },
+            {
+              state: "DESIGN",
+              stateType: "open",
+            },
+            {
+              state: "In Progress",
+              stateType: "wip",
+            },
+            {
+              state: "READY-FOR-DEVELOPMENT",
+              stateType: "backlog",
+            },
+          ],
+        },
+      ];
+
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest2}]
+      );
+
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Unassigned/));
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/success/i);
+      expect(successElement).toBeInTheDocument();
+    });
+
     describe("when there are errors", () => {
       let logGraphQlError;
       beforeEach(() => {
