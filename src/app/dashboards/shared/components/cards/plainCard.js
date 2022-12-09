@@ -5,7 +5,7 @@ import {LabelValue} from "../../../../helpers/components";
 
 export function PlainCard({title, value, children, info, detailsView}) {
   return (
-    <div className="tw-flex tw-h-full tw-flex-col tw-space-y-1 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md">
+    <div className="tw-flex tw-flex-col tw-space-y-1 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md">
       <div className="tw-flex">
         <LabelValue
           label={title}

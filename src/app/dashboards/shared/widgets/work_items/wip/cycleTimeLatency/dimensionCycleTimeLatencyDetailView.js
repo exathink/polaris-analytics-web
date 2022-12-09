@@ -1,7 +1,7 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
-import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
+import {AppTerms, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
@@ -21,7 +21,8 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
-import {LabelValue} from "../../../../../../helpers/components";
+import { PlainCard } from "../../../../components/cards/plainCard";
+import { FlowEfficiencyDetailsView } from "./flowEfficiencyDetailsView";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -247,47 +248,85 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
           />
           <div className="tw-bg-chart">
-            <LabelValue
-              className="tw-ml-2"
-              label="Flow Efficiency"
+            <PlainCard
+              title="Flow Efficiency"
               value={
                 useFlowEfficiency(
                   chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
                 ).flowEfficiencyPercentage
               }
-            />
-            <QuadrantSummaryPanel
-              workItems={chartFilteredWorkItems}
-              stateTypes={engineeringStateTypes}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              onQuadrantClick={(quadrant) => {
-                if (
-                  selectedQuadrant !== undefined &&
-                  selectedQuadrant === quadrant &&
-                  quadrantStateType === QuadrantStateTypes.engineering
-                ) {
-                  handleResetAll();
-                } else {
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(QuadrantStateTypes.engineering);
-                }
+              info={{title: "Flow Efficiency"}}
+              detailsView={{
+                title: (
+                  <div className="tw-text-lg tw-text-gray-300">
+                    Flow Efficiency,{" "}
+                    <span className="tw-text-base tw-italic">
+                      {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+                    </span>
+                  </div>
+                ),
+                placement: "bottom",
+                content: (
+                  <FlowEfficiencyDetailsView
+                    workItems={chartFilteredWorkItems.filter(
+                      (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
+                    )}
+                  />
+                ),
               }}
-              selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
-              className="tw-mx-auto tw-w-[98%]"
-              valueFontClass="tw-text-3xl"
-            />
+            >
+              <QuadrantSummaryPanel
+                workItems={chartFilteredWorkItems}
+                stateTypes={engineeringStateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                onQuadrantClick={(quadrant) => {
+                  if (
+                    selectedQuadrant !== undefined &&
+                    selectedQuadrant === quadrant &&
+                    quadrantStateType === QuadrantStateTypes.engineering
+                  ) {
+                    handleResetAll();
+                  } else {
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(QuadrantStateTypes.engineering);
+                  }
+                }}
+                selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+                className="tw-mx-auto tw-w-[98%]"
+                valueFontClass="tw-text-3xl"
+                size="small"
+              />
+            </PlainCard>
           </div>
           <div className="tw-bg-chart">
-            <LabelValue
-              className="tw-ml-2"
-              label="Flow Efficiency"
+          <PlainCard
+              title="Flow Efficiency"
               value={
                 useFlowEfficiency(
                   chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
                 ).flowEfficiencyPercentage
               }
-            />
+              info={{title: "Flow Efficiency"}}
+              detailsView={{
+                title: (
+                  <div className="tw-text-lg tw-text-gray-300">
+                    Flow Efficiency,{" "}
+                    <span className="tw-text-base tw-italic">
+                      {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+                    </span>
+                  </div>
+                ),
+                placement: "bottom",
+                content: (
+                  <FlowEfficiencyDetailsView
+                    workItems={chartFilteredWorkItems.filter(
+                      (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
+                    )}
+                  />
+                ),
+              }}
+            >
             <QuadrantSummaryPanel
               workItems={chartFilteredWorkItems}
               stateTypes={deliveryStateTypes}
@@ -308,7 +347,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
               selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
               className="tw-mx-auto tw-w-[98%]"
               valueFontClass="tw-text-3xl"
+              size="small"
             />
+            </PlainCard>
           </div>
         </div>
       </div>
@@ -318,7 +359,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           valueIndex={teamValueIndex}
           handleTeamChange={handleTeamChange}
           className="tw-w-36"
-         />
+        />
         <SelectIssueTypeDropdown
           valueIndex={issueTypeValueIndex}
           handleIssueTypeChange={handleIssueTypeChange}
