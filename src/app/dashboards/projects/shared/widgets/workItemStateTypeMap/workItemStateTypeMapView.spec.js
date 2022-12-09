@@ -514,12 +514,6 @@ describe("WorkItemStateTypeMapView", () => {
               stateMaps: [
                 {state: "accepted", stateType: "closed", flowType: null},
                 {state: "planned", stateType: "complete", flowType: null},
-                {state: "unscheduled", stateType: "open", flowType: null},
-                {state: "unstarted", stateType: "open", flowType: null},
-                {state: "started", stateType: "open", flowType: null},
-                {state: "delivered", stateType: "wip", flowType: null},
-                {state: "created", stateType: "backlog", flowType: null},
-                {state: "finished", stateType: "complete", flowType: null},
               ],
             },
           ],
@@ -539,30 +533,6 @@ describe("WorkItemStateTypeMapView", () => {
               state: "planned",
               stateType: "complete",
             },
-            {
-              state: "unscheduled",
-              stateType: "open",
-            },
-            {
-              state: "unstarted",
-              stateType: "open",
-            },
-            {
-              state: "started",
-              stateType: "open",
-            },
-            {
-              state: "delivered",
-              stateType: "wip",
-            },
-            {
-              state: "created",
-              stateType: "backlog",
-            },
-            {
-              state: "finished",
-              stateType: "complete",
-            },
           ],
         },
         {
@@ -580,38 +550,6 @@ describe("WorkItemStateTypeMapView", () => {
             {
               state: "Code-Review-Needed",
               stateType: "wip",
-            },
-            {
-              state: "Done",
-              stateType: "closed",
-            },
-            {
-              state: "ABANDONED",
-              stateType: "backlog",
-            },
-            {
-              state: "Backlog",
-              stateType: "backlog",
-            },
-            {
-              state: "ROADMAP",
-              stateType: "backlog",
-            },
-            {
-              state: "DEV-DONE",
-              stateType: "complete",
-            },
-            {
-              state: "created",
-              stateType: "open",
-            },
-            {
-              state: "DEPLOYED-TO-STAGING",
-              stateType: "open",
-            },
-            {
-              state: "Selected for Development",
-              stateType: "open",
             },
             {
               state: "RELEASED",
