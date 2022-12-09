@@ -637,7 +637,7 @@ describe("WorkItemStateTypeMapView", () => {
           (points) => [points.find((p) => p.name === "unstarted")],
           mockNetworkError
         );
-        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        expect(screen.getByTestId("state-type-map-view")).toBeInTheDocument();
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
 
@@ -645,7 +645,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
+        expect(screen.getByText(/network error/i)).toBeInTheDocument();
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
@@ -660,7 +660,7 @@ describe("WorkItemStateTypeMapView", () => {
           mockGraphQlErrors
         );
 
-        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        expect(screen.getByTestId("state-type-map-view")).toBeInTheDocument();
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
 
@@ -668,7 +668,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+        expect(screen.getByText(/graphql error/i)).toBeInTheDocument();
       });
     });
   });
