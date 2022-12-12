@@ -2,10 +2,11 @@ import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
 import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
-import {getReferenceString, useTablePaginationFeatureFlag} from "../../../../../../helpers/utility";
+import {getReferenceString, useFeatureFlag} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
 import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
+import {TABLE_PAGINATION} from "../../../../../../../config/featureFlags";
 
 
 export const DimensionPipelineCycleTimeLatencyWidget = (
@@ -33,7 +34,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
 ) => {
 
 
-
+  const isFeatureFlagActive = useFeatureFlag(TABLE_PAGINATION, true);
   const {loading, error, data, fetchMore} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
@@ -41,7 +42,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = (
     activeOnly: true,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
-    first: useTablePaginationFeatureFlag() ? DEFAULT_PAGE_SIZE : null,
+    first: isFeatureFlagActive ? DEFAULT_PAGE_SIZE : null,
     after: null
   })
   if (loading) return <Loading/>;

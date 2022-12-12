@@ -8,7 +8,7 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
-import {EVENT_TYPES, getUniqItems, useTablePaginationFeatureFlag} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState, useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -21,6 +21,7 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
+import {TABLE_PAGINATION} from "../../../../../../../config/featureFlags";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -143,15 +144,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const updateQuery = useUpdateQuery(dimension, "workItems");
   const {pageInfo = {}, count} = data?.[dimension]?.["workItems"];
-  let paginationOptions;
-  if (useTablePaginationFeatureFlag()) {
-    paginationOptions = {
-      ...pageInfo,
-      count,
-      fetchMore,
-      updateQuery,
-    };
-  }
+  let paginationOptions = {
+    ...pageInfo,
+    count,
+    fetchMore,
+    updateQuery,
+  };
+  paginationOptions = useFeatureFlag(TABLE_PAGINATION, paginationOptions);
 
   // we maintain separate state for table and chart, using single source of truth (initWorkItems)
   const [tableFilteredWorkItems, setTableFilteredWorkItems] = useTableFilteredWorkItems(

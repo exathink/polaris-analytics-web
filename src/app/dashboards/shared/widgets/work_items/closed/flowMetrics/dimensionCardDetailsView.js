@@ -1,5 +1,6 @@
 import React from "react";
-import {pick, useTablePaginationFeatureFlag} from "../../../../../../helpers/utility";
+import {TABLE_PAGINATION} from "../../../../../../../config/featureFlags";
+import {pick, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useSelect } from "../../../../components/select/selectDropdown";
@@ -72,15 +73,13 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
 
   const updateQuery = useUpdateQuery(dimension, "workItemDeliveryCycles");
   const {pageInfo = {}, count} = data?.[dimension]?.["workItemDeliveryCycles"];
-  let paginationOptions;
-  if (useTablePaginationFeatureFlag()) {
-    paginationOptions = {
-      ...pageInfo,
-      count,
-      fetchMore,
-      updateQuery,
-    };
-  }
+  let paginationOptions = {
+    ...pageInfo,
+    count,
+    fetchMore,
+    updateQuery,
+  };
+  paginationOptions = useFeatureFlag(TABLE_PAGINATION, paginationOptions);
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
