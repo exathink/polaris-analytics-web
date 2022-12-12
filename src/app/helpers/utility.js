@@ -506,7 +506,13 @@ export function useBlurClass(overrideClass = "tw-blur-sm") {
   return isDemoFeatureFlagActive ? overrideClass : "";
 }
 
-export function useTablePaginationFeatureFlag() {
+/**
+ * if feature_flag is active, it returns value otherwise it returns null
+ * @param {string} feature_flag 
+ * @param {any} value 
+ * @returns value | null
+ */
+export function useFeatureFlag(feature_flag, value) {
   const context = useViewerContext();
-  return context.isFeatureFlagActive(TABLE_PAGINATION);
+  return context.isFeatureFlagActive(feature_flag) ? value : null;
 }
