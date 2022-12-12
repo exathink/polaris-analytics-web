@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 4% 50% 13% 34%;
+  grid-template-rows: 4% 50% 90px calc(47% - 90px);
   gap: 0 0.5rem;
   grid-template-areas:
     "title workItemScope workItemScope resetAll"
