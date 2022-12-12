@@ -7,7 +7,7 @@ import {
 import {actionTypes} from "./constants";
 import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
 import * as workItemUtils from "./workItemReducer";
-import {waitFor, screen, fireEvent} from "@testing-library/react";
+import {waitFor, screen, fireEvent, within} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
 Object.defineProperty(window, "matchMedia", {
@@ -208,6 +208,9 @@ describe("WorkItemStateTypeMapView", () => {
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
+      
+      const {getByText} = within(screen.queryByTestId("workitem-state-type-table"));
+      getByText(/no data/i);
     });
   });
 
@@ -293,14 +296,14 @@ describe("WorkItemStateTypeMapView", () => {
           {
             workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
             stateMaps: [
-              {state: "accepted", stateType: "closed"},
-              {state: "planned", stateType: "complete"},
-              {state: "unscheduled", stateType: "open"},
-              {state: "unstarted", stateType: "closed"},
-              {state: "started", stateType: "open"},
-              {state: "delivered", stateType: "wip"},
-              {state: "created", stateType: "backlog"},
-              {state: "finished", stateType: "complete"},
+              {state: "accepted", stateType: "closed", flowType: null},
+              {state: "planned", stateType: "complete", flowType: null},
+              {state: "unscheduled", stateType: "open", flowType: null},
+              {state: "unstarted", stateType: "closed", flowType: null},
+              {state: "started", stateType: "open", flowType: null},
+              {state: "delivered", stateType: "wip", flowType: null},
+              {state: "created", stateType: "backlog", flowType: null},
+              {state: "finished", stateType: "complete", flowType: null},
             ],
           },
         ],
@@ -339,7 +342,67 @@ describe("WorkItemStateTypeMapView", () => {
       expect(cancelElement).toBeInTheDocument();
     });
 
-    test("when cancel button is clicked, save/cancel buttons should disappear ", async () => {
+    test("when flow type value for an individual workflow state is updated, save/cancel buttons should appear", async () => {
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        []
+      );
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Active/));
+
+      const saveElement = screen.getByText(/save/i);
+      const cancelElement = screen.getByText(/cancel/i);
+
+      expect(saveElement).toBeInTheDocument();
+      expect(cancelElement).toBeInTheDocument();
+    });
+
+    test("when flow type value for an individual workflow state is updated, and cancel button is clicked, save/cancel buttons should disappear", async () => {
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        []
+      );
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Active/));
+
+      const saveElement = screen.getByText(/save/i);
+      const cancelElement = screen.getByText(/cancel/i);
+
+      // Before Cancel Button Click
+      expect(saveElement).toBeInTheDocument();
+      expect(cancelElement).toBeInTheDocument();
+
+      fireEvent.click(cancelElement);
+
+      // After Cancel Button Click
+      expect(saveElement).not.toBeInTheDocument();
+      expect(cancelElement).not.toBeInTheDocument();
+
+    });
+
+    test("when cancel button is clicked, save/cancel buttons should disappear", async () => {
       await renderedDragDropConfig(
         <WorkItemStateTypeMapView
           instanceKey={projectKey}
@@ -375,6 +438,157 @@ describe("WorkItemStateTypeMapView", () => {
         (points) => [points.find((p) => p.name === "unstarted")],
         updateWorkItemMappingMocks
       );
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/success/i);
+      expect(successElement).toBeInTheDocument();
+    });
+
+    test("when flow type value for an individual workflow state is updated, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
+      const gqlMutationRequest = {
+        query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
+        variables: {
+          projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          workItemsSourceStateMaps: [
+            {
+              workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+              stateMaps: [
+                {state: "accepted", stateType: "closed", flowType: "active"},
+                {state: "planned", stateType: "complete", flowType: null},
+                {state: "unscheduled", stateType: "open", flowType: null},
+                {state: "unstarted", stateType: "open", flowType: null},
+                {state: "started", stateType: "open", flowType: null},
+                {state: "delivered", stateType: "wip", flowType: null},
+                {state: "created", stateType: "backlog", flowType: null},
+                {state: "finished", stateType: "complete", flowType: null},
+              ],
+            },
+          ],
+        },
+      };
+
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
+      );
+
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Active/));
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/success/i);
+      expect(successElement).toBeInTheDocument();
+    });
+
+    test("when flow type value for an individual workflow state is updated from active to unassinged, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
+      const gqlMutationRequest = {
+        query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
+        variables: {
+          projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+          workItemsSourceStateMaps: [
+            {
+              workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+              stateMaps: [
+                {state: "accepted", stateType: "closed", flowType: null},
+                {state: "planned", stateType: "complete", flowType: null},
+              ],
+            },
+          ],
+        },
+      };
+      const workItemSourcesFixture = [
+        {
+          key: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
+          name: "Polaris Platform",
+          workItemStateMappings: [
+            {
+              state: "accepted",
+              stateType: "closed",
+              flowType: "active"
+            },
+            {
+              state: "planned",
+              stateType: "complete",
+            },
+          ],
+        },
+        {
+          key: "46694f4f-e003-4430-a7a7-e4f288f40d22",
+          name: "Polaris",
+          workItemStateMappings: [
+            {
+              state: "ACCEPTED",
+              stateType: "closed",
+            },
+            {
+              state: "Closed",
+              stateType: "open",
+            },
+            {
+              state: "Code-Review-Needed",
+              stateType: "wip",
+            },
+            {
+              state: "RELEASED",
+              stateType: "complete",
+            },
+            {
+              state: "DESIGN",
+              stateType: "open",
+            },
+            {
+              state: "In Progress",
+              stateType: "wip",
+            },
+            {
+              state: "READY-FOR-DEVELOPMENT",
+              stateType: "backlog",
+            },
+          ],
+        },
+      ];
+
+      await renderWithProviders(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          view="detail"
+          enableEdits={true}
+        />,
+        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
+      );
+
+      // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
+      const selectContainer = screen.getByTestId("flow-type-select-accepted");
+      const {getByRole, getByText} = within(selectContainer);
+      const selectElement = getByRole("combobox");
+
+      // select Active element
+      fireEvent.mouseDown(selectElement);
+      fireEvent.click(getByText(/Unassigned/));
 
       const saveElement = screen.getByText(/save/i);
       fireEvent.click(saveElement);
@@ -423,7 +637,7 @@ describe("WorkItemStateTypeMapView", () => {
           (points) => [points.find((p) => p.name === "unstarted")],
           mockNetworkError
         );
-        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        expect(screen.getByTestId("state-type-map-view")).toBeInTheDocument();
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
 
@@ -431,7 +645,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByText(/network error/i)).toBeInTheDocument();
+        expect(screen.getByText(/network error/i)).toBeInTheDocument();
       });
 
       test("it renders nothing and logs the error when there is a GraphQl error", async () => {
@@ -446,7 +660,7 @@ describe("WorkItemStateTypeMapView", () => {
           mockGraphQlErrors
         );
 
-        expect(screen.queryByTestId("state-type-map-view")).toBeInTheDocument();
+        expect(screen.getByTestId("state-type-map-view")).toBeInTheDocument();
         const saveElement = screen.getByText(/save/i);
         fireEvent.click(saveElement);
 
@@ -454,7 +668,7 @@ describe("WorkItemStateTypeMapView", () => {
         expect(inProgressElement).toBeInTheDocument();
 
         await waitFor(() => expect(logGraphQlError).toHaveBeenCalled());
-        expect(screen.queryByText(/graphql error/i)).toBeInTheDocument();
+        expect(screen.getByText(/graphql error/i)).toBeInTheDocument();
       });
     });
   });

@@ -60,10 +60,11 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
 
     const getFlowTypeRecord = (mapping) => {
-      if (flowTypeRecords[mapping.state] === "unassigned") {
+      if (flowTypeRecords[mapping.state] === "unassigned" || flowTypeRecords[mapping.state] == null) {
         return {flowType: null};
+      } else {
+        return {flowType: flowTypeRecords[mapping.state]}
       }
-      return flowTypeRecords[mapping.state] == null ? {} : {flowType: flowTypeRecords[mapping.state]};
     };
 
     // call the mutation function to update data from here
@@ -204,6 +205,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
         </div>
         <div className="tw-mt-2 tw-h-1/2">
           <WorkItemStateTypeMapTable
+            testId="workitem-state-type-table"
             key={currentWorkItemSource?.key}
             tableData={stateMappings.sort(
               (a, b) =>
