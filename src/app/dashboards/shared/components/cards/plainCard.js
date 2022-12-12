@@ -1,11 +1,12 @@
 import { PlusCircleFilled } from "@ant-design/icons";
 import {Popover} from "antd";
+import classNames from "classnames";
 import {InfoCard} from "../../../../components/misc/info";
 import {LabelValue} from "../../../../helpers/components";
 
-export function PlainCard({title, value, children, info, detailsView}) {
+export function PlainCard({title, value, children, info, detailsView, className}) {
   return (
-    <div className="tw-flex tw-h-full tw-flex-col tw-space-y-1 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md">
+    <div className={classNames("tw-flex tw-flex-col tw-space-y-1 tw-rounded-lg tw-border tw-border-solid tw-border-gray-200 tw-bg-white tw-p-2 tw-shadow-md", className)}>
       <div className="tw-flex">
         <LabelValue
           label={title}

@@ -44,6 +44,7 @@ export const DimensionQuadrantSummaryView = ({
         placement: "bottom",
         content: <FlowEfficiencyDetailsView workItems={workItems} />,
       }}
+      className="tw-h-full"
     >
       <QuadrantSummaryPanel
         workItems={workItems}

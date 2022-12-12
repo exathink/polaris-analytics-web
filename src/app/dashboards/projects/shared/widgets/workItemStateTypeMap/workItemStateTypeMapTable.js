@@ -47,6 +47,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords}) {
                 })}
               uniqueItems={typeItems}
               handleChange={(flowTypeVal) => handleDropdownChange(record.state, flowTypeVal)}
+              testId={`flow-type-select-${record.state}`}
             />
         );
       },
