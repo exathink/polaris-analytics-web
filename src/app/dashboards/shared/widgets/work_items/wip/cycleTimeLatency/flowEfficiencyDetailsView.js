@@ -16,7 +16,7 @@ export function FlowEfficiencyDetailsView({workItems}) {
         <AvgFlowType title={<span>Avg Wait Time</span>} value={avgWaitTime} />
       </div>
       <div className="chart tw-col-span-2 tw-row-start-2 tw-p-2">
-        <WorkItemsAggregateDurationsByStateChart workItems={workItems} title="Time spent by state" />
+        <WorkItemsAggregateDurationsByStateChart workItems={workItems} title="Average time spent by state" />
       </div>
     </div>
   );
