@@ -2,13 +2,13 @@ import {getNDaysAgo} from "../../../../../../cypress/support/utils";
 import {getDeliveryCycleDurationsByState} from "./clientSideFlowMetrics";
 
 describe("Flow Efficiency Measurement", () => {
-  test("when there are no workItems, flow efficiency calculation should be zero percentage", () => {
+  test("when there are no workItems", () => {
     const workItems = [];
     const result = getDeliveryCycleDurationsByState(workItems);
     expect(result).toMatchObject({});
   });
 
-  test("when there is single wip workItem, skip the calculation for backlog entry of inprogress workItem", () => {
+  test("when there is single wip workItem and it has backlog entry in transitions, skip the calculation for backlog entry of inprogress workItem", () => {
     const workItems = [
       {
         name: "Cycle Time Card on Flow Summary not updating when specs/all is toggled. ",
@@ -54,7 +54,7 @@ describe("Flow Efficiency Measurement", () => {
     expect(result).not.toHaveProperty("created");
   });
 
-  test("when there is single closed workItem, do not skip the calculation for backlog entry of closed workItem", () => {
+  test("when there is single closed workItem with backlog entry in transitions, do not skip the calculation for backlog entry of closed workItem", () => {
     const workItems = [
       {
         name: "Update the layout of the Pull Requests detail view when bring it up from the Variability analysis dashboard",
@@ -99,7 +99,7 @@ describe("Flow Efficiency Measurement", () => {
   /**
    *
    */
-  test("when there are multiple workItems, first scenario", () => {
+  test("when there are multiple wip workItems", () => {
     const workItems = [
       {
         name: "Cycle Time Card on Flow Summary not updating when specs/all is toggled. ",
@@ -355,7 +355,7 @@ describe("Flow Efficiency Measurement", () => {
       },
     ];
     const result = getDeliveryCycleDurationsByState(workItems);
-    
+
     expect(result).toHaveProperty("ACCEPTED");
     expect(result["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
 
