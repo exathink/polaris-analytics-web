@@ -113,7 +113,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-12-02T15:01:18.482000",
+            eventDate: getNDaysAgo(13)
           },
           currentDeliveryCycleDurations: [
             {
@@ -143,7 +143,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-11-28T10:46:22.669000",
+            eventDate: getNDaysAgo(20)
           },
           currentDeliveryCycleDurations: [
             {
@@ -173,7 +173,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-11-24T13:57:36.668000",
+            eventDate: getNDaysAgo(10)
           },
           currentDeliveryCycleDurations: [
             {
@@ -209,7 +209,7 @@ describe("Flow Efficiency Measurement", () => {
         ],
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-11-24T13:57:33.854000",
+            eventDate: getNDaysAgo(12)
           },
           currentDeliveryCycleDurations: [
             {
@@ -239,7 +239,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-11-23T16:55:06.553000",
+            eventDate: getNDaysAgo(15)
           },
           currentDeliveryCycleDurations: [
             {
@@ -269,7 +269,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-09-15T13:46:44.876000",
+            eventDate: getNDaysAgo(10)
           },
           currentDeliveryCycleDurations: [
             {
@@ -299,7 +299,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-05-06T15:06:20.055000",
+            eventDate: getNDaysAgo(20)
           },
           currentDeliveryCycleDurations: [
             {
@@ -329,7 +329,7 @@ describe("Flow Efficiency Measurement", () => {
         workItemsSourceName: "Polaris Platform",
         workItemStateDetails: {
           currentStateTransition: {
-            eventDate: "2022-05-04T17:43:20.893000",
+            eventDate: getNDaysAgo(30)
           },
           currentDeliveryCycleDurations: [
             {
@@ -355,9 +355,16 @@ describe("Flow Efficiency Measurement", () => {
       },
     ];
     const result = getDeliveryCycleDurationsByState(workItems);
+    
     expect(result).toHaveProperty("ACCEPTED");
+    expect(result["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
+
     expect(result).toHaveProperty("CODE REVIEW");
+    expect(result["CODE REVIEW"].daysInState).toBeCloseTo(63, 0);
+
     expect(result).toHaveProperty("In Progress");
+    expect(result["In Progress"].daysInState).toBeCloseTo(20, 0);
+
     expect(result).not.toHaveProperty("created");
     expect(result).not.toHaveProperty("Backlog");
   });
