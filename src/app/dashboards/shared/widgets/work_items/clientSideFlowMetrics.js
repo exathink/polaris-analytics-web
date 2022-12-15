@@ -29,11 +29,22 @@ export function getCycleMetrics(workItem) {
   }
 }
 
-export function getDeliveryCycleDurationsByState(workItems) {
+export function getDeliveryCycleDurationsByState(
+  workItems,
+  phases = [
+    WorkItemStateTypes.backlog,
+    WorkItemStateTypes.open,
+    WorkItemStateTypes.make,
+    WorkItemStateTypes.deliver,
+    WorkItemStateTypes.closed,
+  ]
+) {
   return workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
-    durations.forEach((duration) => {
+    durations
+      .filter((duration) => phases.includes(duration.stateType)) // filter out durations which don't belong to correct phase
+      .forEach((duration) => {
       // skip the below calculation for backlog entry of inprogress workItem,
       if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
         let daysInState = duration.daysInState ?? 0;
