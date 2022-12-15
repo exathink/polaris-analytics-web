@@ -1,5 +1,5 @@
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
-import {FlowTypeStates, WorkItemStateTypes} from "../../config";
+import {ALL_PHASES, FlowTypeStates, WorkItemStateTypes} from "../../config";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -31,13 +31,7 @@ export function getCycleMetrics(workItem) {
 
 export function getFlowEfficiencyUtils(
   workItems,
-  phases = [
-    WorkItemStateTypes.backlog,
-    WorkItemStateTypes.open,
-    WorkItemStateTypes.make,
-    WorkItemStateTypes.deliver,
-    WorkItemStateTypes.closed,
-  ]
+  phases = ALL_PHASES
 ) {
   const deliveryCycleDurationsByState = workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)

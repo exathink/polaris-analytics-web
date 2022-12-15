@@ -139,6 +139,13 @@ export const WorkItemStateTypes = {
   closed: 'closed'
 }
 export const WIP_PHASES = [WorkItemStateTypes.open, WorkItemStateTypes.make, WorkItemStateTypes.deliver];
+export const ALL_PHASES = [
+  WorkItemStateTypes.backlog,
+  WorkItemStateTypes.open,
+  WorkItemStateTypes.make,
+  WorkItemStateTypes.deliver,
+  WorkItemStateTypes.closed,
+];
 
 export function cycleTimeDisplay(stateType) {
   return stateType !== WorkItemStateTypes.closed ? 'Age': `Cycle Time`;
