@@ -82,7 +82,12 @@ export function getDeliveryCycleDurationsByState(
     }
   })
 
-  return {timeInWaitState, timeInActiveState, deliveryCycleDurationsByState};
+  const flowEfficiencyFraction =
+  timeInWaitState + timeInActiveState !== 0
+      ? timeInActiveState / (timeInWaitState + timeInActiveState)
+      : 0;
+
+  return {timeInWaitState, timeInActiveState, flowEfficiencyFraction, deliveryCycleDurationsByState};
 }
 
 export function getWorkItemDurations(workItems) {
