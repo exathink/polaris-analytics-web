@@ -15,7 +15,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
 
   getConfig: ({workItems, title, phases, intl}) => {
 
-    const aggregateDurations = getFlowEfficiencyUtils(workItems, phases);
+    const {deliveryCycleDurationsByState: aggregateDurations} = getFlowEfficiencyUtils(workItems, phases);
 
     const series_data = Object.keys(aggregateDurations).sort(
       (stateA, stateB) => {
