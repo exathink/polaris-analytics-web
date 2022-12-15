@@ -46,7 +46,7 @@ export const DimensionQuadrantSummaryView = ({
           </div>
         ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={workItems} />,
+        content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
       }}
       className="tw-h-full"
     >
