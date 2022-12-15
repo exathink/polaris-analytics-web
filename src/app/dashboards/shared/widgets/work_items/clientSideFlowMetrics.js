@@ -29,7 +29,7 @@ export function getCycleMetrics(workItem) {
   }
 }
 
-export function getDeliveryCycleDurationsByState(
+export function getFlowEfficiencyUtils(
   workItems,
   phases = [
     WorkItemStateTypes.backlog,

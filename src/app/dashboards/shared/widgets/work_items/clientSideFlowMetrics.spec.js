@@ -1,10 +1,10 @@
 import {getNDaysAgo} from "../../../../../../cypress/support/utils";
-import {getDeliveryCycleDurationsByState} from "./clientSideFlowMetrics";
+import {getFlowEfficiencyUtils} from "./clientSideFlowMetrics";
 
 describe("Flow Efficiency Measurement", () => {
   test("when there are no workItems", () => {
     const workItems = [];
-    const result = getDeliveryCycleDurationsByState(workItems);
+    const result = getFlowEfficiencyUtils(workItems);
     expect(result).toMatchObject({});
   });
 
@@ -47,7 +47,7 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
+    const {deliveryCycleDurationsByState} = getFlowEfficiencyUtils(workItems);
     expect(deliveryCycleDurationsByState).toHaveProperty("CODE REVIEW");
     expect(Number(deliveryCycleDurationsByState["CODE REVIEW"].daysInState)).toBeCloseTo(10, 0);
 
@@ -87,7 +87,7 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
+    const {deliveryCycleDurationsByState} = getFlowEfficiencyUtils(workItems);
     expect(deliveryCycleDurationsByState).toHaveProperty("in-prod");
     // for duration.stateType===closed, clock stops ticking
     expect(Number(deliveryCycleDurationsByState["in-prod"].daysInState)).toBeCloseTo(0, 0);
@@ -354,7 +354,7 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
+    const {deliveryCycleDurationsByState} = getFlowEfficiencyUtils(workItems);
 
     expect(deliveryCycleDurationsByState).toHaveProperty("ACCEPTED");
     expect(deliveryCycleDurationsByState["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
@@ -371,6 +371,6 @@ describe("Flow Efficiency Measurement", () => {
 
   test("when there are multiple workItems, second scenario", () => {
     const workItems = [];
-    const result = getDeliveryCycleDurationsByState(workItems);
+    const result = getFlowEfficiencyUtils(workItems);
   });
 });

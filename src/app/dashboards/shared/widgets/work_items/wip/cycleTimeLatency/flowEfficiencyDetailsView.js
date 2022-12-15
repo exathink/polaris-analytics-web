@@ -1,9 +1,9 @@
-import {useFlowEfficiency} from "../../../../../projects/shared/helper/hooks";
 import {WorkItemsAggregateDurationsByStateChart} from "../../../../charts/workItemCharts/workItemsAggregateDurationsByStateChart";
 import {AvgFlowType} from "../../../../components/flowStatistics/flowStatistics";
+import { getFlowEfficiencyUtils } from "../../clientSideFlowMetrics";
 
-export function FlowEfficiencyDetailsView({workItems}) {
-  const {timeInActiveState ,timeInWaitState} = useFlowEfficiency(workItems);
+export function FlowEfficiencyDetailsView({workItems, phases}) {
+  const {timeInActiveState ,timeInWaitState} = getFlowEfficiencyUtils(workItems, phases);
   const avgActiveTime = workItems.length > 0 ? timeInActiveState / workItems.length : 0;
   const avgWaitTime = workItems.length > 0 ? timeInWaitState / workItems.length : 0;
 
@@ -16,7 +16,7 @@ export function FlowEfficiencyDetailsView({workItems}) {
         <AvgFlowType title={<span>Avg Wait Time</span>} value={avgWaitTime} />
       </div>
       <div className="chart tw-col-span-2 tw-row-start-2 tw-p-2">
-        <WorkItemsAggregateDurationsByStateChart workItems={workItems} title="Time spent by state" />
+        <WorkItemsAggregateDurationsByStateChart workItems={workItems} phases={phases} title="Time spent by state" />
       </div>
     </div>
   );

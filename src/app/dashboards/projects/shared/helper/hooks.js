@@ -1,6 +1,6 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {getDeliveryCycleDurationsByState} from "../../../shared/widgets/work_items/clientSideFlowMetrics";
+import {getFlowEfficiencyUtils} from "../../../shared/widgets/work_items/clientSideFlowMetrics";
 import {getPercentage} from "./utils";
 
 export function useResetComponentState() {
@@ -16,7 +16,7 @@ export function useResetComponentState() {
 
 export function useFlowEfficiency(workItems) {
   const intl = useIntl();
-  const {timeInWaitState, timeInActiveState} = getDeliveryCycleDurationsByState(workItems);
+  const {timeInWaitState, timeInActiveState} = getFlowEfficiencyUtils(workItems);
   
   const fractionVal =
   timeInWaitState + timeInActiveState !== 0

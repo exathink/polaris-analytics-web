@@ -271,6 +271,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     workItems={chartFilteredWorkItems.filter(
                       (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
                     )}
+                    phases={stateTypes}
                   />
                 ),
               }}
@@ -323,6 +324,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     workItems={chartFilteredWorkItems.filter(
                       (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
                     )}
+                    phases={stateTypes}
                   />
                 ),
               }}

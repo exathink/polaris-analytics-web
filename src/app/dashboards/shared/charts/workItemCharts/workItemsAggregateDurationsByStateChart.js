@@ -4,18 +4,18 @@ import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 
 import {Colors, WorkItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
-import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
+import {getFlowEfficiencyUtils} from "../../widgets/work_items/clientSideFlowMetrics";
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems')
+    pick(props, 'workItems', 'phases')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItems, title, intl}) => {
+  getConfig: ({workItems, title, phases, intl}) => {
 
-    const aggregateDurations = getDeliveryCycleDurationsByState(workItems);
+    const aggregateDurations = getFlowEfficiencyUtils(workItems, phases);
 
     const series_data = Object.keys(aggregateDurations).sort(
       (stateA, stateB) => {
