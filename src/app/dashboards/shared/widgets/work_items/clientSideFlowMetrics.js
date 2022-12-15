@@ -39,7 +39,7 @@ export function getDeliveryCycleDurationsByState(
     WorkItemStateTypes.closed,
   ]
 ) {
-  return workItems.reduce((acc, workItem) => {
+  const deliveryCycleDurationsByState = workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
     durations
@@ -70,14 +70,10 @@ export function getDeliveryCycleDurationsByState(
 
     return acc;
   }, {});
-}
-
-export function getTimeInActiveAndWaitStates(workItem) {
-  const durations = getDeliveryCycleDurationsByState([workItem]);
 
   let timeInWaitState = 0;
   let timeInActiveState = 0;
-  Object.entries(durations).forEach(([_state, entry]) => {
+  Object.entries(deliveryCycleDurationsByState).forEach(([_state, entry]) => {
     if (entry.flowType === FlowTypeStates.WAITING) {
       timeInWaitState = timeInWaitState + entry.daysInState;
     }
@@ -85,7 +81,8 @@ export function getTimeInActiveAndWaitStates(workItem) {
       timeInActiveState = timeInActiveState + entry.daysInState;
     }
   })
-  return {timeInWaitState, timeInActiveState};
+
+  return {timeInWaitState, timeInActiveState, deliveryCycleDurationsByState};
 }
 
 export function getWorkItemDurations(workItems) {
@@ -98,11 +95,9 @@ export function getWorkItemDurations(workItems) {
 
     // This is the version of latency that records the time since the most recent progress event.
     const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
-    const {timeInWaitState, timeInActiveState} = getTimeInActiveAndWaitStates(workItem);
+
     return {
       ...workItem,
-      timeInWaitState,
-      timeInActiveState,
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
