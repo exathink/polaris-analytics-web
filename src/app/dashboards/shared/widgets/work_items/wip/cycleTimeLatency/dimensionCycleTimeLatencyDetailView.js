@@ -1,15 +1,15 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
+import {getPercentage, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {AppTerms, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
-import {getWorkItemDurations} from "../../clientSideFlowMetrics";
+import {getFlowEfficiencyUtils, getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
-import {useFlowEfficiency, useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
@@ -23,6 +23,7 @@ import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
 import { PlainCard } from "../../../../components/cards/plainCard";
 import { FlowEfficiencyDetailsView } from "./flowEfficiencyDetailsView";
+import {useIntl} from "react-intl";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -94,6 +95,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   view,
   context,
 }) => {
+  const intl = useIntl();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
@@ -251,9 +253,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
             <PlainCard
               title="Flow Efficiency"
               value={
-                useFlowEfficiency(
-                  chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
-                ).flowEfficiencyPercentage
+                getPercentage(getFlowEfficiencyUtils(
+                  chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), engineeringStateTypes
+                ).flowEfficiencyFraction, intl)
               }
               info={{title: "Flow Efficiency"}}
               detailsView={{
@@ -304,9 +306,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <PlainCard
               title="Flow Efficiency"
               value={
-                useFlowEfficiency(
-                  chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-                ).flowEfficiencyPercentage
+                getPercentage(getFlowEfficiencyUtils(
+                  chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), deliveryStateTypes
+                ).flowEfficiencyFraction, intl)
               }
               info={{title: "Flow Efficiency"}}
               detailsView={{
