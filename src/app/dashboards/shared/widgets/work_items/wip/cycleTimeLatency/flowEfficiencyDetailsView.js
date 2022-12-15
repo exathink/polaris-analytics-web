@@ -3,9 +3,9 @@ import {WorkItemsAggregateDurationsByStateChart} from "../../../../charts/workIt
 import {AvgFlowType} from "../../../../components/flowStatistics/flowStatistics";
 
 export function FlowEfficiencyDetailsView({workItems}) {
-  const {totalTimeInActiveStates, totalTimeInWaitStates} = useFlowEfficiency(workItems);
-  const avgActiveTime = workItems.length > 0 ? totalTimeInActiveStates / workItems.length : 0;
-  const avgWaitTime = workItems.length > 0 ? totalTimeInWaitStates / workItems.length : 0;
+  const {timeInActiveState ,timeInWaitState} = useFlowEfficiency(workItems);
+  const avgActiveTime = workItems.length > 0 ? timeInActiveState / workItems.length : 0;
+  const avgWaitTime = workItems.length > 0 ? timeInWaitState / workItems.length : 0;
 
   return (
     <div className="tw-grid tw-h-[450px] tw-w-[500px] tw-grid-cols-2 tw-grid-rows-[30%_70%] tw-gap-2">

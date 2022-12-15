@@ -1,6 +1,6 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {getWorkItemDurations} from "../../../shared/widgets/work_items/clientSideFlowMetrics";
+import {getDeliveryCycleDurationsByState} from "../../../shared/widgets/work_items/clientSideFlowMetrics";
 import {getPercentage} from "./utils";
 
 export function useResetComponentState() {
@@ -16,19 +16,12 @@ export function useResetComponentState() {
 
 export function useFlowEfficiency(workItems) {
   const intl = useIntl();
-  const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
-  const totalTimeInWaitStates = workItemsWithAggregateDurations.reduce((acc, item) => {
-    acc += item.timeInWaitState;
-    return acc;
-  }, 0);
-  const totalTimeInActiveStates = workItemsWithAggregateDurations.reduce((acc, item) => {
-    acc += item.timeInActiveState;
-    return acc;
-  }, 0);
+  const {timeInWaitState, timeInActiveState} = getDeliveryCycleDurationsByState(workItems);
+  
   const fractionVal =
-    totalTimeInWaitStates + totalTimeInActiveStates !== 0
-      ? totalTimeInActiveStates / (totalTimeInWaitStates + totalTimeInActiveStates)
+  timeInWaitState + timeInActiveState !== 0
+      ? timeInActiveState / (timeInWaitState + timeInActiveState)
       : 0;
 
-  return {totalTimeInWaitStates, totalTimeInActiveStates, flowEfficiencyPercentage: getPercentage(fractionVal, intl)};
+  return {timeInWaitState, timeInActiveState, flowEfficiencyPercentage: getPercentage(fractionVal, intl)};
 }
