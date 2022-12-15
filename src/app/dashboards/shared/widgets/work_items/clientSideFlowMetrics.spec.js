@@ -47,11 +47,11 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const result = getDeliveryCycleDurationsByState(workItems);
-    expect(result).toHaveProperty("CODE REVIEW");
-    expect(Number(result["CODE REVIEW"].daysInState)).toBeCloseTo(10, 0);
+    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
+    expect(deliveryCycleDurationsByState).toHaveProperty("CODE REVIEW");
+    expect(Number(deliveryCycleDurationsByState["CODE REVIEW"].daysInState)).toBeCloseTo(10, 0);
 
-    expect(result).not.toHaveProperty("created");
+    expect(deliveryCycleDurationsByState).not.toHaveProperty("created");
   });
 
   test("when there is single closed workItem with backlog entry in transitions, do not skip the calculation for backlog entry of closed workItem", () => {
@@ -87,13 +87,13 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const result = getDeliveryCycleDurationsByState(workItems);
-    expect(result).toHaveProperty("in-prod");
+    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
+    expect(deliveryCycleDurationsByState).toHaveProperty("in-prod");
     // for duration.stateType===closed, clock stops ticking
-    expect(Number(result["in-prod"].daysInState)).toBeCloseTo(0, 0);
+    expect(Number(deliveryCycleDurationsByState["in-prod"].daysInState)).toBeCloseTo(0, 0);
 
-    expect(result).toHaveProperty("created");
-    expect(Number(result["created"].daysInState)).toBeCloseTo(1.9, 1);
+    expect(deliveryCycleDurationsByState).toHaveProperty("created");
+    expect(Number(deliveryCycleDurationsByState["created"].daysInState)).toBeCloseTo(1.9, 1);
   });
 
   /**
@@ -354,19 +354,19 @@ describe("Flow Efficiency Measurement", () => {
         },
       },
     ];
-    const result = getDeliveryCycleDurationsByState(workItems);
+    const {deliveryCycleDurationsByState} = getDeliveryCycleDurationsByState(workItems);
 
-    expect(result).toHaveProperty("ACCEPTED");
-    expect(result["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
+    expect(deliveryCycleDurationsByState).toHaveProperty("ACCEPTED");
+    expect(deliveryCycleDurationsByState["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
 
-    expect(result).toHaveProperty("CODE REVIEW");
-    expect(result["CODE REVIEW"].daysInState).toBeCloseTo(63, 0);
+    expect(deliveryCycleDurationsByState).toHaveProperty("CODE REVIEW");
+    expect(deliveryCycleDurationsByState["CODE REVIEW"].daysInState).toBeCloseTo(63, 0);
 
-    expect(result).toHaveProperty("In Progress");
-    expect(result["In Progress"].daysInState).toBeCloseTo(20, 0);
+    expect(deliveryCycleDurationsByState).toHaveProperty("In Progress");
+    expect(deliveryCycleDurationsByState["In Progress"].daysInState).toBeCloseTo(20, 0);
 
-    expect(result).not.toHaveProperty("created");
-    expect(result).not.toHaveProperty("Backlog");
+    expect(deliveryCycleDurationsByState).not.toHaveProperty("created");
+    expect(deliveryCycleDurationsByState).not.toHaveProperty("Backlog");
   });
 
   test("when there are multiple workItems, second scenario", () => {
