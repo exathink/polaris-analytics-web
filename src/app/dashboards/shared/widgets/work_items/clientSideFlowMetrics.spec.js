@@ -2,10 +2,10 @@ import {getNDaysAgo} from "../../../../../../cypress/support/utils";
 import {getFlowEfficiencyUtils} from "./clientSideFlowMetrics";
 
 describe("Flow Efficiency Measurement", () => {
-  test("when there are no workItems", () => {
+  test("when there are no workItems, flow efficiency should be zero", () => {
     const workItems = [];
     const result = getFlowEfficiencyUtils(workItems);
-    expect(result).toMatchObject({});
+    expect(result.flowEfficiencyFraction).toEqual(0);
   });
 
   test("when there is single wip workItem and it has backlog entry in transitions, skip the calculation for backlog entry of inprogress workItem", () => {
