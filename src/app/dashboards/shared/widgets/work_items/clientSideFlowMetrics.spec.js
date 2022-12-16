@@ -9,7 +9,7 @@ describe("Flow Efficiency Measurement", () => {
     expect(result).toEqual(0);
   });
 
-  test("when there is single wip workItem and it has backlog entry in transitions, skip the calculation for backlog entry of inprogress workItem", () => {
+  test("when there is single wip workItem and it has backlog entry in currentDeliveryCycleDurations, skip the calculation for backlog entry of inprogress workItem", () => {
     const workItems = [
       {
         name: "Cycle Time Card on Flow Summary not updating when specs/all is toggled. ",
@@ -55,7 +55,7 @@ describe("Flow Efficiency Measurement", () => {
     expect(deliveryCycleDurationsByState).not.toHaveProperty("created");
   });
 
-  test("when there is single closed workItem with backlog entry in transitions, do not skip the calculation for backlog entry of closed workItem", () => {
+  test("when there is single closed workItem with backlog entry in currentDeliveryCycleDurations, do not skip the calculation for backlog entry of closed workItem", () => {
     const workItems = [
       {
         name: "Update the layout of the Pull Requests detail view when bring it up from the Variability analysis dashboard",
