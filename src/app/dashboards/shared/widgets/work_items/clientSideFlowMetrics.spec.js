@@ -887,7 +887,7 @@ describe("Flow Efficiency Measurement", () => {
     ];
 
     const deliveryCycleDurationsByState = getDeliveryCycleDurationsByState(workItems, [WorkItemStateTypes.deliver]);
-    console.log(JSON.stringify(deliveryCycleDurationsByState))
+
     expect(deliveryCycleDurationsByState).toHaveProperty("ACCEPTED");
     expect(deliveryCycleDurationsByState["ACCEPTED"].daysInState).toBeCloseTo(47, 0);
 
