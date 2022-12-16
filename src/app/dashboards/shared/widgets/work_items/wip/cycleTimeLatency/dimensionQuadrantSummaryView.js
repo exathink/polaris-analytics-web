@@ -1,11 +1,9 @@
 import classNames from "classnames";
 import React from "react";
-import {useIntl} from "react-intl";
-import {getPercentage} from "../../../../../projects/shared/helper/utils";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
-import {getFlowEfficiencyUtils} from "../../clientSideFlowMetrics";
+import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export const DimensionQuadrantSummaryView = ({
@@ -27,10 +25,8 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const {flowEfficiencyFraction} = getFlowEfficiencyUtils(workItems, stateTypes);
+  const flowEfficiencyPercentage = useFlowEfficiency(workItems, stateTypes);
 
-  const intl = useIntl();
-  const flowEfficiencyPercentage = getPercentage(flowEfficiencyFraction, intl)
   return (
     <PlainCard
       title="Flow Efficiency"

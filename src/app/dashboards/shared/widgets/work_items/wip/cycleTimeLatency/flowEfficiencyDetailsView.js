@@ -1,9 +1,9 @@
 import {WorkItemsAggregateDurationsByStateChart} from "../../../../charts/workItemCharts/workItemsAggregateDurationsByStateChart";
 import {AvgFlowType} from "../../../../components/flowStatistics/flowStatistics";
-import { getFlowEfficiencyUtils } from "../../clientSideFlowMetrics";
+import {getTimeInActiveAndWaitStates} from "../../clientSideFlowMetrics";
 
 export function FlowEfficiencyDetailsView({workItems, phases}) {
-  const {timeInActiveState ,timeInWaitState} = getFlowEfficiencyUtils(workItems, phases);
+  const {timeInActiveState ,timeInWaitState} = getTimeInActiveAndWaitStates(workItems, phases);
   const avgActiveTime = workItems.length > 0 ? timeInActiveState / workItems.length : 0;
   const avgWaitTime = workItems.length > 0 ? timeInWaitState / workItems.length : 0;
 

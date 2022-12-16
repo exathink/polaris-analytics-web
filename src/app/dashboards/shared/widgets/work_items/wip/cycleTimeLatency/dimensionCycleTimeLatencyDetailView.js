@@ -1,8 +1,8 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {getPercentage, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
+import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {AppTerms, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
-import {getFlowEfficiencyUtils, getWorkItemDurations} from "../../clientSideFlowMetrics";
+import {getWorkItemDurations, useFlowEfficiency} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
@@ -253,9 +253,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
             <PlainCard
               title="Flow Efficiency"
               value={
-                getPercentage(getFlowEfficiencyUtils(
+                useFlowEfficiency(
                   chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), engineeringStateTypes
-                ).flowEfficiencyFraction, intl)
+                )
               }
               info={{title: "Flow Efficiency"}}
               detailsView={{
@@ -306,9 +306,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <PlainCard
               title="Flow Efficiency"
               value={
-                getPercentage(getFlowEfficiencyUtils(
+                useFlowEfficiency(
                   chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), deliveryStateTypes
-                ).flowEfficiencyFraction, intl)
+                )
               }
               info={{title: "Flow Efficiency"}}
               detailsView={{
