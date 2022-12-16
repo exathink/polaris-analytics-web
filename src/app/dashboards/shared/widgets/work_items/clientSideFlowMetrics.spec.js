@@ -1,12 +1,12 @@
 import {getNDaysAgo} from "../../../../../../cypress/support/utils";
 import { WorkItemStateTypes } from "../../config";
-import {getDeliveryCycleDurationsByState} from "./clientSideFlowMetrics";
+import {getDeliveryCycleDurationsByState, getFlowEfficiencyFraction} from "./clientSideFlowMetrics";
 
 describe("Flow Efficiency Measurement", () => {
   test("when there are no workItems, flow efficiency should be zero", () => {
     const workItems = [];
-    const result = getDeliveryCycleDurationsByState(workItems);
-    // expect(result.flowEfficiencyFraction).toEqual(0);
+    const result = getFlowEfficiencyFraction(workItems);
+    expect(result).toEqual(0);
   });
 
   test("when there is single wip workItem and it has backlog entry in transitions, skip the calculation for backlog entry of inprogress workItem", () => {

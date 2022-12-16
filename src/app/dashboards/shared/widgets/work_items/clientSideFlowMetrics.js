@@ -67,7 +67,7 @@ export function getDeliveryCycleDurationsByState(workItems, phases = ALL_PHASES)
   return deliveryCycleDurationsByState;
 }
 
-export function getTimeInActiveAndWaitStates(workItems, phases) {
+export function getTimeInActiveAndWaitStates(workItems, phases = ALL_PHASES) {
   const deliveryCycleDurationsByState = getDeliveryCycleDurationsByState(workItems, phases);
   let timeInWaitState = 0;
   let timeInActiveState = 0;
@@ -83,10 +83,16 @@ export function getTimeInActiveAndWaitStates(workItems, phases) {
   return {timeInActiveState, timeInWaitState};
 }
 
-export function useFlowEfficiency(workItems, phases) {
+export function getFlowEfficiencyFraction(workItems, phases = ALL_PHASES) {
   const {timeInActiveState, timeInWaitState} = getTimeInActiveAndWaitStates(workItems, phases);
   const flowEfficiencyFraction =
     timeInWaitState + timeInActiveState !== 0 ? timeInActiveState / (timeInWaitState + timeInActiveState) : 0;
+
+  return flowEfficiencyFraction;
+}
+
+export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
+  const flowEfficiencyFraction = getFlowEfficiencyFraction(workItems, phases);
 
   const intl = useIntl();
   return getPercentage(flowEfficiencyFraction, intl);
