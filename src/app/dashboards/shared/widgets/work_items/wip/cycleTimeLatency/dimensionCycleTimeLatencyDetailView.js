@@ -23,7 +23,6 @@ import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
 import { PlainCard } from "../../../../components/cards/plainCard";
 import { FlowEfficiencyDetailsView } from "./flowEfficiencyDetailsView";
-import {useIntl} from "react-intl";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -95,7 +94,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   view,
   context,
 }) => {
-  const intl = useIntl();
+
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
