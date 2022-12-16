@@ -1,4 +1,6 @@
+import {useIntl} from "react-intl";
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
+import {getPercentage} from "../../../projects/shared/helper/utils";
 import {ALL_PHASES, FlowTypeStates, WorkItemStateTypes} from "../../config";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
@@ -29,42 +31,44 @@ export function getCycleMetrics(workItem) {
   }
 }
 
-export function getFlowEfficiencyUtils(
-  workItems,
-  phases = ALL_PHASES
-) {
+export function getDeliveryCycleDurationsByState(workItems, phases = ALL_PHASES) {
   const deliveryCycleDurationsByState = workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
     durations
       .filter((duration) => phases.includes(duration.stateType)) // filter out durations which don't belong to correct phase
       .forEach((duration) => {
-      // skip the below calculation for backlog entry of inprogress workItem,
-      if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
-        let daysInState = duration.daysInState ?? 0;
+        // skip the below calculation for backlog entry of inprogress workItem,
+        if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
+          let daysInState = duration.daysInState ?? 0;
 
-        // for duration.stateType === 'closed' , clock stops ticking
-        // current state
-        if (workItem.state === duration.state && duration.stateType !== "closed") {
-          daysInState =
-            daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
-        }
+          // for duration.stateType === 'closed' , clock stops ticking
+          // current state
+          if (workItem.state === duration.state && duration.stateType !== "closed") {
+            daysInState =
+              daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
+          }
 
-        if (acc[duration.state] != null) {
-          acc[duration.state].daysInState += daysInState;
-        } else {
-          acc[duration.state] = {
-            stateType: duration.stateType,
-            flowType: duration.flowType,
-            daysInState: daysInState,
-          };
+          if (acc[duration.state] != null) {
+            acc[duration.state].daysInState += daysInState;
+          } else {
+            acc[duration.state] = {
+              stateType: duration.stateType,
+              flowType: duration.flowType,
+              daysInState: daysInState,
+            };
+          }
         }
-      }
-    });
+      });
 
     return acc;
   }, {});
 
+  return deliveryCycleDurationsByState;
+}
+
+export function getTimeInActiveAndWaitStates(workItems, phases) {
+  const deliveryCycleDurationsByState = getDeliveryCycleDurationsByState(workItems, phases);
   let timeInWaitState = 0;
   let timeInActiveState = 0;
   Object.entries(deliveryCycleDurationsByState).forEach(([_state, entry]) => {
@@ -74,14 +78,18 @@ export function getFlowEfficiencyUtils(
     if (entry.flowType === FlowTypeStates.ACTIVE) {
       timeInActiveState = timeInActiveState + entry.daysInState;
     }
-  })
+  });
 
+  return {timeInActiveState, timeInWaitState};
+}
+
+export function useFlowEfficiency(workItems, phases) {
+  const {timeInActiveState, timeInWaitState} = getTimeInActiveAndWaitStates(workItems, phases);
   const flowEfficiencyFraction =
-  timeInWaitState + timeInActiveState !== 0
-      ? timeInActiveState / (timeInWaitState + timeInActiveState)
-      : 0;
+    timeInWaitState + timeInActiveState !== 0 ? timeInActiveState / (timeInWaitState + timeInActiveState) : 0;
 
-  return {timeInWaitState, timeInActiveState, flowEfficiencyFraction, deliveryCycleDurationsByState};
+  const intl = useIntl();
+  return getPercentage(flowEfficiencyFraction, intl);
 }
 
 export function getWorkItemDurations(workItems) {
