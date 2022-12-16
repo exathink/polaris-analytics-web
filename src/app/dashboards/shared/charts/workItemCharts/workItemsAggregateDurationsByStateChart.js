@@ -6,6 +6,10 @@ import {i18nNumber, pick} from "../../../../helpers/utility";
 import {Colors, WorkItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
 import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
 
+function getAverageTimeInState(workItems, aggregateDurations, state) {
+  return workItems.length > 0 ? aggregateDurations[state].daysInState / (workItems.length) : 0;
+}
+
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (
     pick(props, 'workItems', 'phases')
@@ -30,11 +34,10 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
     ).map(
       state => ({
         name: state,
-        y: aggregateDurations[state].daysInState,
+        y: getAverageTimeInState(workItems, aggregateDurations, state),
         color: WorkItemFlowTypeColor[aggregateDurations[state].flowType],
         phase: WorkItemStateTypeDisplayName[aggregateDurations[state].stateType],
         label: aggregateDurations[state].flowType,
-        average: workItems.length > 0 ? aggregateDurations[state].daysInState / (workItems.length) : 0
       })
     )
 
@@ -69,7 +72,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
 
           return tooltipHtml_v2({
             header: `State: ${this.point.name} <br/> Phase: ${this.point.phase}`,
-            body: [[`Total Time in State`, `${i18nNumber(intl, this.point.y, 1)} days`], [`Average Time in State`, `${i18nNumber(intl, this.point.average, 1)} days`]]
+            body: [[`Average Time in State`, `${i18nNumber(intl, this.point.y, 1)} days`]]
           })
         }
       },
