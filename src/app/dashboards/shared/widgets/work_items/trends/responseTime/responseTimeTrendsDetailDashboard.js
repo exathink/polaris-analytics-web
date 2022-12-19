@@ -58,7 +58,7 @@ export const ResponseTimeTrendsDetailDashboard = (
     <Dashboard
       dashboard={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-rows-[10%,37%,6%,43%]"
+      className="tw-grid tw-grid-rows-[10%,37%,6%,43%] tw-grid-cols-1"
     >
       <DashboardRow
         title={`Response Time Trends`}
@@ -75,6 +75,7 @@ export const ResponseTimeTrendsDetailDashboard = (
       >
         <DashboardWidget
           name="response-time-trends"
+          className="tw-col-span-1"
           render={
             ({view}) =>
               <DimensionResponseTimeTrendsWidget
@@ -100,6 +101,7 @@ export const ResponseTimeTrendsDetailDashboard = (
       <DashboardRow title={getTimePeriod(measurementWindowRange, before)}>
         <DashboardWidget
           name="flow-metrics-delivery-details"
+          className="tw-col-span-1"
           render={({view}) => (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
