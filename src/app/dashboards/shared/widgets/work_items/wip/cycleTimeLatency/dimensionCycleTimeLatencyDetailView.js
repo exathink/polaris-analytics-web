@@ -20,7 +20,7 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
-import {FlowEfficiencyQuadrantSummaryCard} from "./FlowEfficiencyCard";
+import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
