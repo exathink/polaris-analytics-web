@@ -4,7 +4,7 @@ import {AppTerms} from "../../../../config";
 import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export function FlowEfficiencyCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
+export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
   const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
   const value = useFlowEfficiency(filteredWorkItems, stateTypes);
 

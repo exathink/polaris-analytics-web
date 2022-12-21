@@ -12,7 +12,6 @@ import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import classNames from "classnames";
 import {
   defaultIssueType,
@@ -21,7 +20,7 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
-import {FlowEfficiencyCard} from "./FlowEfficiencyCard";
+import {FlowEfficiencyQuadrantSummaryCard} from "./FlowEfficiencyCard";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -248,7 +247,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
           />
           <div className="tw-bg-chart">
-            <FlowEfficiencyCard
+            <FlowEfficiencyQuadrantSummaryCard
               workItems={chartFilteredWorkItems}
               stateTypes={engineeringStateTypes}
               specsOnly={specsOnly}
@@ -270,7 +269,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             />
           </div>
           <div className="tw-bg-chart">
-            <FlowEfficiencyCard
+            <FlowEfficiencyQuadrantSummaryCard
               workItems={chartFilteredWorkItems}
               stateTypes={deliveryStateTypes}
               specsOnly={specsOnly}
