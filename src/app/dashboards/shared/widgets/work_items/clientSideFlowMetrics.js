@@ -1,5 +1,7 @@
+import {useIntl} from "react-intl";
 import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
-import {FlowTypeStates, WorkItemStateTypes} from "../../config";
+import {getPercentage} from "../../../projects/shared/helper/utils";
+import {ALL_PHASES, FlowTypeStates, WorkItemStateTypes} from "../../config";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -29,52 +31,71 @@ export function getCycleMetrics(workItem) {
   }
 }
 
-export function getDeliveryCycleDurationsByState(workItems) {
-  return workItems.reduce((acc, workItem) => {
+export function getDeliveryCycleDurationsByState(workItems, phases = ALL_PHASES) {
+  const deliveryCycleDurationsByState = workItems.reduce((acc, workItem) => {
     // delivery cycle durations, (each workItem has multiple durations, history of transitions)
     const durations = workItem.workItemStateDetails.currentDeliveryCycleDurations;
-    durations.forEach((duration) => {
-      // skip the below calculation for backlog entry of inprogress workItem,
-      if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
-        let daysInState = duration.daysInState ?? 0;
+    durations
+      .filter((duration) => phases.includes(duration.stateType)) // filter out durations which don't belong to correct phase
+      .forEach((duration) => {
+        // skip the below calculation for backlog entry of inprogress workItem,
+        if (workItem.stateType === "closed" || duration.stateType !== "backlog") {
+          let daysInState = duration.daysInState ?? 0;
 
-        // for duration.stateType === 'closed' , clock stops ticking
-        // current state
-        if (workItem.state === duration.state && duration.stateType !== "closed") {
-          daysInState =
-            daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
-        }
+          // for duration.stateType === 'closed' , clock stops ticking
+          // current state
+          if (workItem.state === duration.state && duration.stateType !== "closed") {
+            daysInState =
+              daysInState + daysFromNow(toMoment(workItem.workItemStateDetails.currentStateTransition.eventDate));
+          }
 
-        if (acc[duration.state] != null) {
-          acc[duration.state].daysInState += daysInState;
-        } else {
-          acc[duration.state] = {
-            stateType: duration.stateType,
-            flowType: duration.flowType,
-            daysInState: daysInState,
-          };
+          if (acc[duration.state] != null) {
+            acc[duration.state].daysInState += daysInState;
+          } else {
+            acc[duration.state] = {
+              stateType: duration.stateType,
+              flowType: duration.flowType,
+              daysInState: daysInState,
+            };
+          }
         }
-      }
-    });
+      });
 
     return acc;
   }, {});
+
+  return deliveryCycleDurationsByState;
 }
 
-export function getTimeInActiveAndWaitStates(workItem) {
-  const durations = getDeliveryCycleDurationsByState([workItem]);
-
+export function getTimeInActiveAndWaitStates(workItems, phases = ALL_PHASES) {
+  const deliveryCycleDurationsByState = getDeliveryCycleDurationsByState(workItems, phases);
   let timeInWaitState = 0;
   let timeInActiveState = 0;
-  Object.entries(durations).forEach(([_state, entry]) => {
+  Object.entries(deliveryCycleDurationsByState).forEach(([_state, entry]) => {
     if (entry.flowType === FlowTypeStates.WAITING) {
       timeInWaitState = timeInWaitState + entry.daysInState;
     }
     if (entry.flowType === FlowTypeStates.ACTIVE) {
       timeInActiveState = timeInActiveState + entry.daysInState;
     }
-  })
-  return {timeInWaitState, timeInActiveState};
+  });
+
+  return {timeInActiveState, timeInWaitState};
+}
+
+export function getFlowEfficiencyFraction(workItems, phases = ALL_PHASES) {
+  const {timeInActiveState, timeInWaitState} = getTimeInActiveAndWaitStates(workItems, phases);
+  const flowEfficiencyFraction =
+    timeInWaitState + timeInActiveState !== 0 ? timeInActiveState / (timeInWaitState + timeInActiveState) : 0;
+
+  return flowEfficiencyFraction;
+}
+
+export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
+  const flowEfficiencyFraction = getFlowEfficiencyFraction(workItems, phases);
+
+  const intl = useIntl();
+  return getPercentage(flowEfficiencyFraction, intl);
 }
 
 export function getWorkItemDurations(workItems) {
@@ -87,11 +108,9 @@ export function getWorkItemDurations(workItems) {
 
     // This is the version of latency that records the time since the most recent progress event.
     const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
-    const {timeInWaitState, timeInActiveState} = getTimeInActiveAndWaitStates(workItem);
+
     return {
       ...workItem,
-      timeInWaitState,
-      timeInActiveState,
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,

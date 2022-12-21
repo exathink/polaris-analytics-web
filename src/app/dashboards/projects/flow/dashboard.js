@@ -11,7 +11,7 @@ import styles from "../../projects/flow/dashboard.module.css";
 import { DimensionValueStreamPhaseDetailWidget } from "../../shared/widgets/work_items/valueStreamPhaseDetail";
 import { DimensionThroughputWidget } from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
 import { DimensionResponseTimeWidget } from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
-import { AppTerms } from "../../shared/config";
+import { AppTerms, WIP_PHASES } from "../../shared/config";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -87,6 +87,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               view={view}
               specsOnly={specsOnly}
               workItemScope={workItemScope}
+              stateTypes={WIP_PHASES}
               setWorkItemScope={setWorkItemScope}
               context={context}
               groupByState={true}

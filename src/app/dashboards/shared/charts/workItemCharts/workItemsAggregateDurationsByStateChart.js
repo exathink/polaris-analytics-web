@@ -12,14 +12,14 @@ function getAverageTimeInState(workItems, aggregateDurations, state) {
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (
-    pick(props, 'workItems')
+    pick(props, 'workItems', 'phases')
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
-  getConfig: ({workItems, title, intl}) => {
+  getConfig: ({workItems, title, phases, intl}) => {
 
-    const aggregateDurations = getDeliveryCycleDurationsByState(workItems);
+    const aggregateDurations = getDeliveryCycleDurationsByState(workItems, phases);
 
     const series_data = Object.keys(aggregateDurations).sort(
       (stateA, stateB) => {

@@ -1,36 +1,17 @@
-import classNames from "classnames";
-import React from "react";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
 import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export const DimensionQuadrantSummaryView = ({
-  dimension,
-  stageName,
-  data,
-  stateTypes,
-  groupByState,
-  cycleTimeTarget,
-  latencyTarget,
-  displayBag,
-  specsOnly,
-  tooltipType,
-  view,
-  context,
-}) => {
-  const workItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
-
-  const flowEfficiencyPercentage = useFlowEfficiency(workItems, stateTypes);
+export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
+  const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
+  const flowEfficiency = useFlowEfficiency(filteredWorkItems, stateTypes);
 
   return (
     <PlainCard
       title="Flow Efficiency"
-      value={flowEfficiencyPercentage}
+      value={flowEfficiency}
       info={{title: "Flow Efficiency"}}
       detailsView={{
         title: (
@@ -42,17 +23,20 @@ export const DimensionQuadrantSummaryView = ({
           </div>
         ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
+        content: <FlowEfficiencyDetailsView workItems={filteredWorkItems} phases={stateTypes} />,
       }}
-      className="tw-h-full"
     >
       <QuadrantSummaryPanel
         workItems={workItems}
         stateTypes={stateTypes}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
-        className={classNames("tw-mx-auto tw-h-full tw-w-[98%]", displayBag?.fontSize)}
+        onQuadrantClick={onQuadrantClick}
+        selectedQuadrant={selectedQuadrant}
+        className="tw-mx-auto tw-w-[98%]"
+        valueFontClass="tw-text-3xl"
+        size="small"
       />
     </PlainCard>
   );
-};
+}

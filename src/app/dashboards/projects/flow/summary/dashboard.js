@@ -8,7 +8,7 @@ import {ProjectDashboard} from "../../projectDashboard";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
-import { AppTerms } from "../../../shared/config";
+import {AppTerms, WIP_PHASES} from "../../../shared/config";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -135,6 +135,7 @@ export function NewFlowDashboard({
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               wipLimit={wipLimit}
+              stateTypes={WIP_PHASES}
               view={view}
               specsOnly={specsOnly}
               workItemScope={workItemScope}
