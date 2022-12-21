@@ -1,8 +1,8 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
-import {AppTerms, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
-import {getWorkItemDurations, useFlowEfficiency} from "../../clientSideFlowMetrics";
+import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
+import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
