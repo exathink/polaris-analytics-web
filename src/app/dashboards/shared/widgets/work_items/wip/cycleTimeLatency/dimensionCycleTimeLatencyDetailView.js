@@ -21,8 +21,7 @@ import {
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
-import { PlainCard } from "../../../../components/cards/plainCard";
-import { FlowEfficiencyDetailsView } from "./flowEfficiencyDetailsView";
+import {FlowEfficiencyCard} from "./FlowEfficiencyCard";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -249,33 +248,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
           />
           <div className="tw-bg-chart">
-            <PlainCard
-              title="Flow Efficiency"
-              value={
-                useFlowEfficiency(
-                  chartFilteredWorkItems.filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), engineeringStateTypes
-                )
-              }
-              info={{title: "Flow Efficiency"}}
-              detailsView={{
-                title: (
-                  <div className="tw-text-lg tw-text-gray-300">
-                    Flow Efficiency,{" "}
-                    <span className="tw-text-base tw-italic">
-                      {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
-                    </span>
-                  </div>
-                ),
-                placement: "bottom",
-                content: (
-                  <FlowEfficiencyDetailsView
-                    workItems={chartFilteredWorkItems.filter(
-                      (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
-                    )}
-                    phases={stateTypes}
-                  />
-                ),
-              }}
+            <FlowEfficiencyCard
+              workItems={chartFilteredWorkItems}
+              stateTypes={engineeringStateTypes}
+              specsOnly={specsOnly}
             >
               <QuadrantSummaryPanel
                 workItems={chartFilteredWorkItems}
@@ -299,36 +275,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 valueFontClass="tw-text-3xl"
                 size="small"
               />
-            </PlainCard>
+            </FlowEfficiencyCard>
           </div>
           <div className="tw-bg-chart">
-          <PlainCard
-              title="Flow Efficiency"
-              value={
-                useFlowEfficiency(
-                  chartFilteredWorkItems.filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), deliveryStateTypes
-                )
-              }
-              info={{title: "Flow Efficiency"}}
-              detailsView={{
-                title: (
-                  <div className="tw-text-lg tw-text-gray-300">
-                    Flow Efficiency,{" "}
-                    <span className="tw-text-base tw-italic">
-                      {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
-                    </span>
-                  </div>
-                ),
-                placement: "bottom",
-                content: (
-                  <FlowEfficiencyDetailsView
-                    workItems={chartFilteredWorkItems.filter(
-                      (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
-                    )}
-                    phases={stateTypes}
-                  />
-                ),
-              }}
+          <FlowEfficiencyCard
+            workItems={chartFilteredWorkItems}
+            stateTypes={deliveryStateTypes}
+            specsOnly={specsOnly}
             >
             <QuadrantSummaryPanel
               workItems={chartFilteredWorkItems}
@@ -352,7 +305,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               valueFontClass="tw-text-3xl"
               size="small"
             />
-            </PlainCard>
+            </FlowEfficiencyCard>
           </div>
         </div>
       </div>
