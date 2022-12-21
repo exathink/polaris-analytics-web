@@ -6,12 +6,12 @@ import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
   const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
-  const value = useFlowEfficiency(filteredWorkItems, stateTypes);
+  const flowEfficiency = useFlowEfficiency(filteredWorkItems, stateTypes);
 
   return (
     <PlainCard
       title="Flow Efficiency"
-      value={value}
+      value={flowEfficiency}
       info={{title: "Flow Efficiency"}}
       detailsView={{
         title: (
