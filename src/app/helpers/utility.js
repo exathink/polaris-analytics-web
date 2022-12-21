@@ -4,7 +4,7 @@ import {notification, Tooltip} from "antd";
 import flowright from "lodash.flowright";
 import chunk from "lodash/chunk";
 import {useViewerContext} from "../framework/viewer/viewerContext";
-import {DEMO_MODE, TABLE_PAGINATION} from "../../config/featureFlags";
+import {DEMO_MODE} from "../../config/featureFlags";
 import { AppTerms } from "../dashboards/shared/config";
 
 export function removeItemAtIndex(arr, index) {

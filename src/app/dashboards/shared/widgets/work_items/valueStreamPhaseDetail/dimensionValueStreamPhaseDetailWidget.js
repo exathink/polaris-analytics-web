@@ -5,7 +5,6 @@ import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useChildState} from "../../../../../helpers/hooksUtil";
 import { getReferenceString } from "../../../../../helpers/utility";
-import {DEFAULT_PAGE_SIZE} from "../../../../../components/tables/tableUtils";
 
 export const DimensionValueStreamPhaseDetailWidget = ({
   dimension,
