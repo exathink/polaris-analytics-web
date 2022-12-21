@@ -252,40 +252,28 @@ export const DimensionCycleTimeLatencyDetailView = ({
               workItems={chartFilteredWorkItems}
               stateTypes={engineeringStateTypes}
               specsOnly={specsOnly}
-            >
-              <QuadrantSummaryPanel
-                workItems={chartFilteredWorkItems}
-                stateTypes={engineeringStateTypes}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                onQuadrantClick={(quadrant) => {
-                  if (
-                    selectedQuadrant !== undefined &&
-                    selectedQuadrant === quadrant &&
-                    quadrantStateType === QuadrantStateTypes.engineering
-                  ) {
-                    handleResetAll();
-                  } else {
-                    setSelectedQuadrant(quadrant);
-                    setQuadrantStateType(QuadrantStateTypes.engineering);
-                  }
-                }}
-                selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
-                className="tw-mx-auto tw-w-[98%]"
-                valueFontClass="tw-text-3xl"
-                size="small"
-              />
-            </FlowEfficiencyCard>
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              onQuadrantClick={(quadrant) => {
+                if (
+                  selectedQuadrant !== undefined &&
+                  selectedQuadrant === quadrant &&
+                  quadrantStateType === QuadrantStateTypes.engineering
+                ) {
+                  handleResetAll();
+                } else {
+                  setSelectedQuadrant(quadrant);
+                  setQuadrantStateType(QuadrantStateTypes.engineering);
+                }
+              }}
+              selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+            />
           </div>
           <div className="tw-bg-chart">
-          <FlowEfficiencyCard
-            workItems={chartFilteredWorkItems}
-            stateTypes={deliveryStateTypes}
-            specsOnly={specsOnly}
-            >
-            <QuadrantSummaryPanel
+            <FlowEfficiencyCard
               workItems={chartFilteredWorkItems}
               stateTypes={deliveryStateTypes}
+              specsOnly={specsOnly}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               onQuadrantClick={(quadrant) => {
@@ -301,11 +289,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 }
               }}
               selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
-              className="tw-mx-auto tw-w-[98%]"
-              valueFontClass="tw-text-3xl"
-              size="small"
             />
-            </FlowEfficiencyCard>
           </div>
         </div>
       </div>

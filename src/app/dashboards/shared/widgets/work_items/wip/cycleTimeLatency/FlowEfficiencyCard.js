@@ -1,9 +1,10 @@
+import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
 import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export function FlowEfficiencyCard({workItems, stateTypes, specsOnly, children}) {
+export function FlowEfficiencyCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
   const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
   const value = useFlowEfficiency(filteredWorkItems, stateTypes);
 
@@ -25,7 +26,17 @@ export function FlowEfficiencyCard({workItems, stateTypes, specsOnly, children})
         content: <FlowEfficiencyDetailsView workItems={filteredWorkItems} phases={stateTypes} />,
       }}
     >
-      {children}
+      <QuadrantSummaryPanel
+        workItems={workItems}
+        stateTypes={stateTypes}
+        cycleTimeTarget={cycleTimeTarget}
+        latencyTarget={latencyTarget}
+        onQuadrantClick={onQuadrantClick}
+        selectedQuadrant={selectedQuadrant}
+        className="tw-mx-auto tw-w-[98%]"
+        valueFontClass="tw-text-3xl"
+        size="small"
+      />
     </PlainCard>
   );
 }
