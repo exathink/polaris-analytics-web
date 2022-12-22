@@ -1,5 +1,5 @@
 import {actionTypes, mode} from "./constants";
-import { getFlowTypeInitialMapping } from "./workItemStateTypeMapView";
+import {getInitialMapping } from "./workItemStateTypeMapView";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 // state has
@@ -25,7 +25,8 @@ export function workItemReducer(state, action) {
         ...state,
         // reset workItemStateMappings on cancel
         workItemStateMappings: currentWorkItemSource_initialState?.workItemStateMappings,
-        flowTypeRecords: getFlowTypeInitialMapping(currentWorkItemSource_initialState),
+        flowTypeRecords: getInitialMapping(currentWorkItemSource_initialState, "flowType"),
+        releaseStatusRecords: getInitialMapping(currentWorkItemSource_initialState, "releaseStatus"),
         mode: mode.INIT,
       };
     }
@@ -58,10 +59,26 @@ export function workItemReducer(state, action) {
         mode: mode.EDITING,
       }
     }
+    case actionTypes.UPDATE_RELEASE_STATUS: {
+      return {
+        ...state,
+        releaseStatusRecords: {
+          ...state.releaseStatusRecords,
+          ...action.payload.keyValuePair
+        },
+        mode: mode.EDITING,
+      }
+    }
     case actionTypes.RESET_FLOW_TYPE_RECORDS: {
       return {
         ...state,
-        flowTypeRecords: getFlowTypeInitialMapping(action.payload),
+        flowTypeRecords: getInitialMapping(action.payload, "flowType"),
+      }
+    }
+    case actionTypes.RESET_RELEASE_STATUS_RECORDS: {
+      return {
+        ...state,
+        flowTypeRecords: getInitialMapping(action.payload, "releaseStatus"),
       }
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {
