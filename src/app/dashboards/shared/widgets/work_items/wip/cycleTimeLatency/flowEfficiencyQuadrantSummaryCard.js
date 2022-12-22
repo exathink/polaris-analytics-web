@@ -5,8 +5,7 @@ import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
-  const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
-  const flowEfficiency = useFlowEfficiency(filteredWorkItems, stateTypes);
+  const flowEfficiency = useFlowEfficiency(workItems, stateTypes);
 
   return (
     <PlainCard
@@ -23,7 +22,7 @@ export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsO
           </div>
         ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={filteredWorkItems} phases={stateTypes} />,
+        content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
       }}
     >
       <QuadrantSummaryPanel
