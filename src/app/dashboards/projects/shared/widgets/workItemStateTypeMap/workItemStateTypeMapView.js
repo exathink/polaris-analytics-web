@@ -10,11 +10,17 @@ import {useResetComponentState} from "../../helper/hooks";
 import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
 import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
 
-export function getFlowTypeInitialMapping(workItemSource) {
+/**
+ * Initial mapping for the records
+ * @param {any} workItemSource 
+ * @param {'flowType' | 'releaseStatus'} type 
+ * @returns 
+ */
+export function getInitialMapping(workItemSource, type) {
   const workItemStateMappings = workItemSource?.workItemStateMappings??[];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
   return stateMappings.reduce((acc, item) => {
-      acc[item.state] = item.flowType;
+      acc[item.state] = item[type];
       return acc;
   }, {});
 }
@@ -26,7 +32,8 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   const [workItemSource = {}] = workItemSources;
   const [state, dispatch] = React.useReducer(workItemReducer, {
     ...workItemSource,
-    flowTypeRecords: getFlowTypeInitialMapping(workItemSource),
+    flowTypeRecords: getInitialMapping(workItemSource, "flowType"),
+    releaseStatusRecords: getInitialMapping(workItemSource, "releaseStatus"),
     mode: mode.INIT,
     errorMessage: "",
     workItemSources
@@ -49,7 +56,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
   });
 
   function handleSaveClick(e) {
-    const {workItemStateMappings, flowTypeRecords, key} = state;
+    const {workItemStateMappings, flowTypeRecords, releaseStatusRecords, key} = state;
     // show error if we have stateType values as null
     const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
@@ -67,6 +74,14 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       }
     };
 
+    const getReleaseStatusRecord = (mapping) => {
+      if (releaseStatusRecords[mapping.state] === "unassigned" || releaseStatusRecords[mapping.state] == null) {
+        return {releaseStatus: null};
+      } else {
+        return {releaseStatus: releaseStatusRecords[mapping.state]}
+      }
+    };
+
     // call the mutation function to update data from here
     const payload = [
       {
@@ -75,6 +90,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           state: mapping.state,
           stateType: mapping.stateType,
           ...getFlowTypeRecord(mapping),
+          ...getReleaseStatusRecord(mapping)
         })),
       },
     ];
@@ -179,7 +195,11 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
-  const columns = useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords: state.flowTypeRecords})
+  const columns = useWorkItemStateTypeMapColumns({
+    dispatch,
+    flowTypeRecords: state.flowTypeRecords,
+    releaseStatusRecords: state.releaseStatusRecords,
+  });
 
   const stateMappings = sanitizeStateMappings(state?.workItemStateMappings??[]);
 

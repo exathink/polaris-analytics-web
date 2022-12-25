@@ -175,6 +175,16 @@ export const FlowTypeStates = {
   UNASSIGNED: "unassigned",
 }
 
+export const ReleaseStatus = {
+  DEFERRED: "deferred",
+  DEPLOYABLE: "deployable",
+  DEPLOYED: "deployed",
+  RELEASABLE: "releasable",
+  RELEASED: "released",
+  ABANDONED: "abandoned",
+  UNASSIGNED: "unassigned",
+}
+
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: '#65b59c',
