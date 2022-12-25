@@ -14,6 +14,7 @@ export const GET_STATE_MAPPING_QUERY = gql`
               state
               stateType
               flowType
+              releaseStatus
             }
           }
         }

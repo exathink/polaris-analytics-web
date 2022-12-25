@@ -296,14 +296,14 @@ describe("WorkItemStateTypeMapView", () => {
           {
             workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
             stateMaps: [
-              {state: "accepted", stateType: "closed", flowType: null},
-              {state: "planned", stateType: "complete", flowType: null},
-              {state: "unscheduled", stateType: "open", flowType: null},
-              {state: "unstarted", stateType: "closed", flowType: null},
-              {state: "started", stateType: "open", flowType: null},
-              {state: "delivered", stateType: "wip", flowType: null},
-              {state: "created", stateType: "backlog", flowType: null},
-              {state: "finished", stateType: "complete", flowType: null},
+              {state: "accepted", stateType: "closed", flowType: null, releaseStatus: null},
+              {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
+              {state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null},
+              {state: "unstarted", stateType: "closed", flowType: null, releaseStatus: null},
+              {state: "started", stateType: "open", flowType: null, releaseStatus: null},
+              {state: "delivered", stateType: "wip", flowType: null, releaseStatus: null},
+              {state: "created", stateType: "backlog", flowType: null, releaseStatus: null},
+              {state: "finished", stateType: "complete", flowType: null, releaseStatus: null},
             ],
           },
         ],
@@ -459,14 +459,14 @@ describe("WorkItemStateTypeMapView", () => {
             {
               workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
               stateMaps: [
-                {state: "accepted", stateType: "closed", flowType: "active"},
-                {state: "planned", stateType: "complete", flowType: null},
-                {state: "unscheduled", stateType: "open", flowType: null},
-                {state: "unstarted", stateType: "open", flowType: null},
-                {state: "started", stateType: "open", flowType: null},
-                {state: "delivered", stateType: "wip", flowType: null},
-                {state: "created", stateType: "backlog", flowType: null},
-                {state: "finished", stateType: "complete", flowType: null},
+                {state: "accepted", stateType: "closed", flowType: "active", releaseStatus: null},
+                {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
+                {state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null},
+                {state: "unstarted", stateType: "open", flowType: null, releaseStatus: null},
+                {state: "started", stateType: "open", flowType: null, releaseStatus: null},
+                {state: "delivered", stateType: "wip", flowType: null, releaseStatus: null},
+                {state: "created", stateType: "backlog", flowType: null, releaseStatus: null},
+                {state: "finished", stateType: "complete", flowType: null, releaseStatus: null},
               ],
             },
           ],
@@ -512,8 +512,8 @@ describe("WorkItemStateTypeMapView", () => {
             {
               workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
               stateMaps: [
-                {state: "accepted", stateType: "closed", flowType: null},
-                {state: "planned", stateType: "complete", flowType: null},
+                {state: "accepted", stateType: "closed", flowType: null, releaseStatus: null},
+                {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
               ],
             },
           ],
@@ -527,7 +527,8 @@ describe("WorkItemStateTypeMapView", () => {
             {
               state: "accepted",
               stateType: "closed",
-              flowType: "active"
+              flowType: "active",
+              releaseStatus: null
             },
             {
               state: "planned",
