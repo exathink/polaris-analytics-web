@@ -1,6 +1,9 @@
 import React from "react";
+import { TABLE_PAGINATION } from "../../../../../../../config/featureFlags";
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import {DEFAULT_PAGE_SIZE} from "../../../../../../components/tables/tableUtils";
+import {useFeatureFlag} from "../../../../../../helpers/utility";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {CardDetailsView} from "./dimensionCardDetailsView";
 
@@ -20,7 +23,8 @@ export function CardDetailsWidget({
   workItemTypeFilter,
 }) {
   let _days = before === undefined ? initialDays : days;
-  const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
+  const isFeatureFlagActive = useFeatureFlag(TABLE_PAGINATION, true);
+  const {loading, error, data, fetchMore} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
     days: _days,
@@ -29,6 +33,8 @@ export function CardDetailsWidget({
     before,
     includeSubTasks,
     referenceString: latestWorkItemEvent,
+    first: isFeatureFlagActive ? DEFAULT_PAGE_SIZE : null,
+    after: null,
   });
 
   if (loading) return <Loading />;
@@ -46,6 +52,7 @@ export function CardDetailsWidget({
       context={context}
       supportsFilterOnCard={supportsFilterOnCard}
       workItemTypeFilter={workItemTypeFilter}
+      fetchMore={fetchMore}
     />
   );
 }
