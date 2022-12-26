@@ -250,7 +250,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
 
           const remainingEntries =
             tooltipType === "small"
-              ? []
+              ? [[`Entered:`, `${timeInStateDisplay}`]]
               : [
                 [],
                 [`Current State:`, `${state.toLowerCase()}`],
