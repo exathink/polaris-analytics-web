@@ -4,12 +4,13 @@ import {AppTerms} from "../../../../config";
 import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
+export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
   const flowEfficiency = useFlowEfficiency(workItems, stateTypes);
 
   return (
     <PlainCard
       title="Flow Efficiency"
+      className={className}
       value={flowEfficiency}
       info={{title: "Flow Efficiency"}}
       detailsView={{
