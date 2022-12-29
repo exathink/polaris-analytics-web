@@ -31,7 +31,7 @@ export class ReviewImportStep extends React.Component {
           type={'primary'}
           onClick={() => onDoImport()}
           disabled={selectedRepositories.length === 0}
-        >Import {selectedRepositories.length > 1 ? 'Repositories' : 'Repository'}</Button>
+        >Connect {selectedRepositories.length > 1 ? 'Repositories' : 'Repository'}</Button>
         </div>
       </div>
     )
