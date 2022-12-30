@@ -4,10 +4,7 @@ import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
-const DEFAULTS = {
-  PAGE_SIZE: 7,
-};
-
+export const DEFAULT_PAGE_SIZE = 200;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
   TWENTY_FIVE: "25vh",
@@ -20,16 +17,48 @@ export const TABLE_HEIGHTS = {
   NINETY: "90vh"
 }
 
-export function StripeTable({columns, dataSource, height, testId, loading, onChange, ...tableProps}) {
+export function getRecordsCount(pageData, paginationOptions) {
+  if (paginationOptions?.count) {
+    return <span>{pageData?.length} of {paginationOptions?.count}</span>
+  }
+  return pageData?.length;
+}
+
+export function useLoadNextPageOnScroll({fetchMore, hasNextPage, endCursor, updateQuery}) {
+  // way to detect bottom of the table
+  React.useEffect(() => {
+    if (endCursor) {
+      const node = window.document.querySelector(".ant-table .ant-table-body");
+      const handleScroll = () => {
+        const {scrollTop, scrollHeight, clientHeight} = node;
+        if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+          // Scrolling has reached bottom, load more data...
+          fetchMore?.({variables: {after: endCursor}, updateQuery});
+        }
+      };
+
+      node.addEventListener("scroll", handleScroll);
+
+      return () => node.removeEventListener("scroll", handleScroll);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endCursor]);
+}
+
+export function StripeTable({columns, dataSource, height, testId, loading, onChange, paginationOptions={}, ...tableProps}) {
+
+  useLoadNextPageOnScroll(paginationOptions)
+
   return (
-    <div className="tw-p-1 tw-h-full tw-w-full">
+    <div className="tw-h-full tw-w-full tw-p-1">
       <Table
         rowClassName={(record, index) => styles.tableRow}
         size="small"
         pagination={false}
         columns={columns}
         dataSource={dataSource}
-        scroll={{y: "100%"}}
+        scroll={{y: "100%", scrollToFirstRowOnChange: false}}
         showSorterTooltip={false}
         loading={loading}
         data-testid={testId}
@@ -42,7 +71,7 @@ export function StripeTable({columns, dataSource, height, testId, loading, onCha
                 <Table.Summary.Cell index={0} align="left" colSpan="20">
                   <div className="tw-flex tw-space-x-6">
                     {tableProps?.renderTableSummary?.(pageData) ?? (
-                      <LabelValue label="Records" value={pageData.length} />
+                      <LabelValue label="Records" value={getRecordsCount(pageData, paginationOptions)} />
                     )}
                   </div>
                 </Table.Summary.Cell>
@@ -64,30 +93,6 @@ export function BaseTable({columns, dataSource, height, testId, loading, onChang
     <Table
       size="small"
       pagination={false}
-      columns={columns}
-      dataSource={dataSource}
-      scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}
-      showSorterTooltip={false}
-      loading={loading}
-      data-testid={testId}
-      onChange={onChange}
-      {...tableProps}
-    />
-  );
-}
-
-export function PaginatedTable({columns, dataSource, height, testId, loading, onChange, options = {}, ...tableProps}) {
-  const {showTotal, pageSize} = options;
-
-  return (
-    <Table
-      size="small"
-      pagination={{
-        total: dataSource.length,
-        defaultPageSize: pageSize ?? DEFAULTS.PAGE_SIZE,
-        hideOnSinglePage: true,
-        showTotal: showTotal,
-      }}
       columns={columns}
       dataSource={dataSource}
       scroll={{y: height ?? TABLE_HEIGHTS.SIXTY}}

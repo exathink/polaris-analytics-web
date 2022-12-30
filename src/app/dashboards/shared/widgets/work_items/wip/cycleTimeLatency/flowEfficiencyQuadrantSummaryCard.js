@@ -4,13 +4,13 @@ import {AppTerms} from "../../../../config";
 import {useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant}) {
-  const filteredWorkItems = workItems.filter((workItem) => stateTypes.indexOf(workItem.stateType) !== -1);
-  const flowEfficiency = useFlowEfficiency(filteredWorkItems, stateTypes);
+export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
+  const flowEfficiency = useFlowEfficiency(workItems, stateTypes);
 
   return (
     <PlainCard
       title="Flow Efficiency"
+      className={className}
       value={flowEfficiency}
       info={{title: "Flow Efficiency"}}
       detailsView={{
@@ -23,7 +23,7 @@ export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsO
           </div>
         ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={filteredWorkItems} phases={stateTypes} />,
+        content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
       }}
     >
       <QuadrantSummaryPanel

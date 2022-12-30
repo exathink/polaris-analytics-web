@@ -505,3 +505,14 @@ export function useBlurClass(overrideClass = "tw-blur-sm") {
   const isDemoFeatureFlagActive = context.isFeatureFlagActive(DEMO_MODE);
   return isDemoFeatureFlagActive ? overrideClass : "";
 }
+
+/**
+ * if feature_flag is active, it returns value otherwise it returns null
+ * @param {string} feature_flag 
+ * @param {any} value 
+ * @returns value | null
+ */
+export function useFeatureFlag(feature_flag, value) {
+  const context = useViewerContext();
+  return context.isFeatureFlagActive(feature_flag) ? value : null;
+}

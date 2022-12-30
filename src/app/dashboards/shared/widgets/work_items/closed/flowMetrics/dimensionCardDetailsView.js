@@ -1,5 +1,7 @@
 import React from "react";
-import {pick} from "../../../../../../helpers/utility";
+import {TABLE_PAGINATION} from "../../../../../../../config/featureFlags";
+import {pick, useFeatureFlag} from "../../../../../../helpers/utility";
+import {useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useSelect } from "../../../../components/select/selectDropdown";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
@@ -37,7 +39,7 @@ const getData = (data, dimension) => {
   );
 };
 
-export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard, specsOnly}) {
+export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard, specsOnly, fetchMore}) {
   const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
     uniqueItems: uniqueIssueTypes,
     defaultVal: defaultIssueType,
@@ -69,7 +71,15 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
     });
   }, [data, dimension, selectedIssueType, selectedTeam]);
 
-
+  const updateQuery = useUpdateQuery(dimension, "workItemDeliveryCycles");
+  const {pageInfo = {}, count} = data?.[dimension]?.["workItemDeliveryCycles"];
+  let paginationOptions = {
+    ...pageInfo,
+    count,
+    fetchMore,
+    updateQuery,
+  };
+  paginationOptions = useFeatureFlag(TABLE_PAGINATION, paginationOptions);
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
@@ -101,6 +111,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           supportsFilterOnCard={supportsFilterOnCard}
           specsOnly={specsOnly}
+          paginationOptions={paginationOptions}
         />
       </div>
       <CardInspectorWithDrawer
