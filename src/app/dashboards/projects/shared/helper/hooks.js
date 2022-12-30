@@ -10,3 +10,22 @@ export function useResetComponentState() {
 
   return [resetComponentStateKey, resetComponentState];
 }
+
+export function useUpdateQuery(dimension, list_prop) {
+  return React.useCallback(
+    (prevResult, {fetchMoreResult}) => {
+      const mergedEdges = [...prevResult[dimension][list_prop].edges, ...fetchMoreResult[dimension][list_prop].edges];
+      const merged = {
+        [dimension]: {
+          ...fetchMoreResult[dimension],
+          [list_prop]: {
+            ...fetchMoreResult[dimension][list_prop],
+            edges: mergedEdges,
+          },
+        },
+      };
+      return merged;
+    },
+    [dimension, list_prop]
+  );
+}

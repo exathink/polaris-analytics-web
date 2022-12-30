@@ -10,6 +10,8 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
     $defectsOnly: Boolean
     $specsOnly: Boolean
     $includeSubTasks: Boolean
+    $first: Int
+    $after: String
   ) {
     ${dimension}(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
@@ -18,9 +20,17 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
         defectsOnly: $defectsOnly
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
-        
+        first: $first
+        after: $after
         interfaces: [WorkItemInfo, DeliveryCycleInfo, CycleMetrics, ImplementationCost, TeamNodeRefs, EpicNodeRef, WorkItemsSourceRef]
       ) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        count
         edges {
           node {
             name
@@ -62,7 +72,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
   }
 `;
 
-export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks}) {
+export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks, first, after}) {
   return useQuery(queryDimensionClosedDeliveryCycleDetail(dimension), {
     service: analytics_service,
     variables: {
@@ -73,6 +83,8 @@ export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey
       before: before,
       includeSubTasks: includeSubTasks,
       referenceString: referenceString,
+      first: first,
+      after: after
     },
     errorPolicy: "all",
     pollInterval: analytics_service.defaultPollInterval(),
