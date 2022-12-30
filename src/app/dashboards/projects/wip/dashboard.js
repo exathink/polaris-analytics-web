@@ -170,6 +170,7 @@ function WipDashboard({
               latestCommit={latestCommit}
               targetPercentile={cycleTimeConfidenceTarget}
               includeSubTasks={includeSubTasksWipInspector}
+              displayBag={{displayType: "FlowEfficiencyCard"}}
             />
           )}
           showDetail={true}
@@ -197,6 +198,7 @@ function WipDashboard({
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               includeSubTasks={includeSubTasksWipInspector}
+              displayBag={{displayType: "FlowEfficiencyCard"}}
             />
           )}
           showDetail={true}

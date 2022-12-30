@@ -4,7 +4,8 @@ import {VizItem, VizRow} from "../../../../containers/layout";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {EVENT_TYPES, useBlurClass} from "../../../../../../helpers/utility";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import { FlowEfficiencyQuadrantSummaryCard } from "./flowEfficiencyQuadrantSummaryCard";
+import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 
 export const DimensionCycleTimeLatencyView = ({
   dimension,
@@ -54,15 +55,26 @@ export const DimensionCycleTimeLatencyView = ({
           />
         </div>
         <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
-          <QuadrantSummaryPanel
-            workItems={workItems}
-            stateTypes={stateTypes}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            className="tw-w-[98%] tw-mx-auto"
-            size={displayBag?.summaryPanelSize}
-            valueFontClass={displayBag?.summaryPanelValueFontSize}
-          />
+          {displayBag?.displayType === "FlowEfficiencyCard" ? (
+            <FlowEfficiencyQuadrantSummaryCard
+              workItems={workItems}
+              stateTypes={stateTypes}
+              specsOnly={specsOnly}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              className="tw-mx-auto tw-w-[98%]"
+            />
+          ) : (
+            <QuadrantSummaryPanel
+              workItems={workItems}
+              stateTypes={stateTypes}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              className="tw-mx-auto tw-w-[98%]"
+              size={displayBag?.summaryPanelSize}
+              valueFontClass={displayBag?.summaryPanelValueFontSize}
+            />
+          )}
         </div>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
