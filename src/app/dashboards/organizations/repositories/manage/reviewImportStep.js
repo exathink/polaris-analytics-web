@@ -5,10 +5,11 @@ import {CompactTable} from "../../../../components/tables";
 
 const { Column} = CompactTable;
 
-export class ReviewImportStep extends React.Component {
+export function ReviewImportStep(props) {
+  const [loading, setLoading] = React.useState(false);
 
-  render() {
-    const {selectedRepositories, onDoImport} = this.props;
+
+    const {selectedRepositories, onDoImport} = props;
     return (
       <div className={'selected-repositories'}>
         <h3>{selectedRepositories.length} {selectedRepositories.length > 1 ? 'repositories' : 'repository'} selected for import</h3>
@@ -28,12 +29,21 @@ export class ReviewImportStep extends React.Component {
         </CompactTable>
         <div style={{display: "flex", justifyContent: "center"}}>
         <Button
-          type={'primary'}
-          onClick={() => onDoImport()}
-          disabled={selectedRepositories.length === 0}
-        >Connect {selectedRepositories.length > 1 ? 'Repositories' : 'Repository'}</Button>
+            type={"primary"}
+            onClick={() => {
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+              }, 5000);
+              onDoImport();
+            }}
+            disabled={selectedRepositories.length === 0}
+            loading={loading}
+          >
+            Connect {selectedRepositories.length > 1 ? "Repositories" : "Repository"}
+          </Button>
         </div>
       </div>
     )
-  }
+
 }
