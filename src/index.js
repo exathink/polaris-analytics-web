@@ -1,14 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import PolarisFlowApp from "./polarisFlow";
+// import PolarisFlowApp from "./polarisFlow";
+// import PolarisDemoApp from "./polarisDemo";
 import "./styles/index.css";
 import "antd/dist/antd.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <PolarisFlowApp />
-  </React.StrictMode>,
-  document.getElementById("root")
+function importBuildTarget() { 
+  if (process.env.REACT_APP_BUILD_TARGET === 'demo') { 
+    return import("./polarisDemo.js"); 
+  } else {
+    return import("./polarisFlow.js"); 
+  } 
+}
+
+// Import the entry point and render it's default export 
+importBuildTarget().then(({ default: Environment }) => 
+  ReactDOM.render( 
+    <React.StrictMode> 
+      <Environment /> 
+    </React.StrictMode>
+  , document.getElementById("root") 
+  ) 
 );
 
 // Hot Module Replacement API
