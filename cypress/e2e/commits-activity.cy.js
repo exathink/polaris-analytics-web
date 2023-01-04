@@ -158,7 +158,7 @@ describe("Commit Activity", () => {
         .utc(rcOneDay.data.repository.commits.edges[4].node.commitDate)
         .add("d", 1)
         .local()
-        .format("DD. MMM");
+        .format("D. MMM");
     }
 
     if (endx == "24:00") {
@@ -166,7 +166,7 @@ describe("Commit Activity", () => {
         .utc(rcOneDay.data.repository.commits.edges[0].node.commitDate)
         .add("d", 1)
         .local()
-        .format("DD. MMM");
+        .format("D. MMM");
     }
 
     cy.log(endx);
