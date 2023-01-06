@@ -1,44 +1,53 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { store} from './redux/store';
-import AllRoutes from './demo/router';
-import { ThemeProvider } from 'styled-components';
-import { ConfigProvider } from 'antd';
-import { IntlProvider } from 'react-intl';
-import themes from './config/themes';
-import AppLocale from './app/i18n';
-import config, {
-  getCurrentLanguage
-} from './containers/LanguageSwitcher/config';
-import { themeConfig } from './config';
-import AppHolder from './polarisFlowStyle';
-import {DefaultApolloProvider} from "./app/services/graphql";
+import React from "react";
+import {IntlProvider} from "react-intl";
+import AppLocale from "./app/i18n";
+import config, {getCurrentLanguage} from "./containers/LanguageSwitcher/config";
 import {initGA} from "./app/ga";
-import {getContainerNode} from "./app/helpers/utility";
+import {ProjectPipelineFunnelView} from "./app/dashboards/projects/shared/widgets/funnel/projectPipelineFunnelView";
 
-const currentAppLocale =
-  AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
+const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || "english").locale];
 
 // Run the Google Analytics initialization
 initGA();
 
+const workItemStateTypeCounts = {
+  __typename: "StateTypeAggregateMeasure",
+  backlog: 102,
+  open: 20,
+  wip: 50,
+  complete: 40,
+  closed: 30,
+  unmapped: null,
+};
+
+const totalEffortByStateType = {
+  __typename: "StateTypeAggregateMeasure",
+  backlog: 5.58333333333333,
+  open: null,
+  wip: 13,
+  complete: 2.91666666666667,
+  closed: null,
+  unmapped: null,
+};
+
 const PolarisDemoApp = () => (
-  <ConfigProvider locale={currentAppLocale.antd} getPopupContainer={getContainerNode}>
-    <IntlProvider
-      locale={currentAppLocale.locale}
-      messages={currentAppLocale.messages}
-    >
-      <ThemeProvider theme={themes[themeConfig.theme]}>
-        <AppHolder>
-          <DefaultApolloProvider>
-            <Provider store={store}>
-              <AllRoutes/>
-            </Provider>
-          </DefaultApolloProvider>
-        </AppHolder>
-      </ThemeProvider>
-    </IntlProvider>
-  </ConfigProvider>
+  <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
+    <div className="tw-container tw-mx-auto tw-flex tw-h-[400px]">
+      <ProjectPipelineFunnelView
+        context={{}}
+        days={30}
+        workItemStateTypeCounts={workItemStateTypeCounts}
+        totalEffortByStateType={totalEffortByStateType}
+        // workItemScope={workItemScope}
+        // setWorkItemScope={setWorkItemScope}
+        showVolumeOrEffort={"volume"}
+        leadTimeTarget={30}
+        cycleTimeTarget={7}
+        view={"primary"}
+        displayBag={{}}
+      />
+    </div>
+  </IntlProvider>
 );
 export default PolarisDemoApp;
-export { AppLocale };
+export {AppLocale};
