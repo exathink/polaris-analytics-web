@@ -70,10 +70,10 @@ const PolarisDemoApp = () => (
                 <li>
                   <a
                     href="#"
-                    class="tw-bg-blue-700 md:tw-text-blue-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 tw-text-white dark:tw-text-white md:tw-bg-transparent md:tw-p-0"
+                    class="tw-bg-blue-700 md:tw-text-blue-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 md:tw-bg-transparent md:tw-p-0"
                     aria-current="page"
                   >
-                    Home
+                    Polaris Advisor
                   </a>
                 </li>
                 <li>
@@ -81,7 +81,7 @@ const PolarisDemoApp = () => (
                     href="#"
                     class="tw-text-gray-700 md:hover:tw-text-blue-700 dark:tw-text-gray-400 dark:hover:tw-bg-gray-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 hover:tw-bg-gray-100 dark:hover:tw-text-white md:tw-border-0 md:tw-p-0 md:hover:tw-bg-transparent md:dark:hover:tw-bg-transparent md:dark:hover:tw-text-white"
                   >
-                    About
+                    Polaris Platform
                   </a>
                 </li>
                 <li>
@@ -89,7 +89,7 @@ const PolarisDemoApp = () => (
                     href="#"
                     class="tw-text-gray-700 md:hover:tw-text-blue-700 dark:tw-text-gray-400 dark:hover:tw-bg-gray-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 hover:tw-bg-gray-100 dark:hover:tw-text-white md:tw-border-0 md:tw-p-0 md:hover:tw-bg-transparent md:dark:hover:tw-bg-transparent md:dark:hover:tw-text-white"
                   >
-                    Services
+                    Optimization
                   </a>
                 </li>
                 <li>
@@ -97,7 +97,7 @@ const PolarisDemoApp = () => (
                     href="#"
                     class="tw-text-gray-700 md:hover:tw-text-blue-700 dark:tw-text-gray-400 dark:hover:tw-bg-gray-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 hover:tw-bg-gray-100 dark:hover:tw-text-white md:tw-border-0 md:tw-p-0 md:hover:tw-bg-transparent md:dark:hover:tw-bg-transparent md:dark:hover:tw-text-white"
                   >
-                    Pricing
+                    Ergnometrics
                   </a>
                 </li>
                 <li>
@@ -105,7 +105,7 @@ const PolarisDemoApp = () => (
                     href="#"
                     class="tw-text-gray-700 md:hover:tw-text-blue-700 dark:tw-text-gray-400 dark:hover:tw-bg-gray-700 tw-block tw-rounded tw-py-2 tw-pl-3 tw-pr-4 hover:tw-bg-gray-100 dark:hover:tw-text-white md:tw-border-0 md:tw-p-0 md:hover:tw-bg-transparent md:dark:hover:tw-bg-transparent md:dark:hover:tw-text-white"
                   >
-                    Contact
+                    About Us
                   </a>
                 </li>
               </ul>
