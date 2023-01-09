@@ -32,7 +32,7 @@ const totalEffortByStateType = {
 
 const PolarisDemoApp = () => (
   <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
-    <div className="tw-min-h-full">
+    <div className="tw-flex tw-h-full tw-flex-col">
       <header className="">
         <nav class="tw-py-2.5 dark:tw-bg-gray-900 tw-rounded tw-border-gray-200 tw-bg-white tw-px-2 sm:tw-px-4">
           <div class="container tw-mx-auto tw-flex tw-flex-wrap tw-items-center tw-justify-between">
@@ -113,23 +113,27 @@ const PolarisDemoApp = () => (
           </div>
         </nav>
       </header>
-      <div className="main tw-container tw-mx-auto tw-border tw-border-solid tw-border-black">
-        <ProjectPipelineFunnelView
-          context={{}}
-          days={30}
-          workItemStateTypeCounts={workItemStateTypeCounts}
-          totalEffortByStateType={totalEffortByStateType}
-          // workItemScope={workItemScope}
-          // setWorkItemScope={setWorkItemScope}
-          showVolumeOrEffort={"volume"}
-          leadTimeTarget={30}
-          cycleTimeTarget={7}
-          view={"primary"}
-          displayBag={{}}
-        />
+      <div className="main tw-container tw-mx-auto">
+        <div className="tw-flex tw-justify-center">
+          <div className="tw-w-full lg:tw-w-1/2">
+            <ProjectPipelineFunnelView
+              context={{}}
+              days={30}
+              workItemStateTypeCounts={workItemStateTypeCounts}
+              totalEffortByStateType={totalEffortByStateType}
+              // workItemScope={workItemScope}
+              // setWorkItemScope={setWorkItemScope}
+              showVolumeOrEffort={"volume"}
+              leadTimeTarget={30}
+              cycleTimeTarget={7}
+              view={"primary"}
+              displayBag={{}}
+            />
+          </div>
+        </div>
       </div>
 
-      <footer class="dark:tw-bg-gray-800 tw-rounded-lg tw-bg-white tw-p-4 tw-shadow md:tw-flex md:tw-items-center md:tw-justify-between md:tw-p-6">
+      <footer class="dark:tw-bg-gray-800 tw-mt-auto tw-rounded-lg tw-bg-white tw-p-4 tw-shadow md:tw-flex md:tw-items-center md:tw-justify-between md:tw-p-6">
         <span class="tw-text-gray-500 dark:tw-text-gray-400 tw-text-sm sm:tw-text-center">
           © 2023{" "}
           <a href="https://exathink.com/" class="hover:tw-underline">

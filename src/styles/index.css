@@ -29,3 +29,8 @@
   }
   /* ! END_TAILWIND_CUSTOM_COMPONENTS */
 }
+@layer base { 
+  html,body,#root{
+    height: 100%;
+  }
+}
