@@ -62,7 +62,7 @@ export const DimensionCycleTimeLatencyView = ({
             chartConfig={{
               title: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly}),
               xAxisTitle: "Age in Days",
-              subtitle: "Chart SubTitle",
+              subtitle: "",
             }}
             selectedMetric={"age"}
             specsOnly={specsOnly}
