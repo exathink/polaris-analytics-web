@@ -9,6 +9,7 @@ import { getHistogramSeries } from "../../../../../projects/shared/helper/utils"
 import { ResponseTimeMetricsColor } from "../../../../config";
 import { useIntl } from "react-intl";
 import {getTitle} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
+import {localNow} from "../../../../../../helpers/utility";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -62,7 +63,7 @@ export const DimensionCycleTimeLatencyView = ({
             chartConfig={{
               title: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly}),
               xAxisTitle: "Age in Days",
-              subtitle: "",
+              subtitle: `Age Distribution ${localNow(intl)}`,
             }}
             selectedMetric={"age"}
             specsOnly={specsOnly}
