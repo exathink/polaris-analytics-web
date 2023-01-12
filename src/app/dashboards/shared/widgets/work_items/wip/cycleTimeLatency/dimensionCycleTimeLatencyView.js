@@ -8,6 +8,7 @@ import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metrics
 import { getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ResponseTimeMetricsColor } from "../../../../config";
 import { useIntl } from "react-intl";
+import {getTitle} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -32,12 +33,11 @@ export const DimensionCycleTimeLatencyView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-
+  const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
+    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
+  );
+ 
   const seriesData = React.useMemo(() => {
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
-      stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    );
-
     const points = workItemsWithAggregateDurations
       .filter((cycle) => cycle.workItemType !== "epic")
       .map((cycle) => projectDeliveryCycleFlowMetricsMeta["age"].value(cycle));
@@ -52,15 +52,18 @@ export const DimensionCycleTimeLatencyView = ({
     });
 
     return [seriesObj];
-  }, [workItems, stateTypes, intl]);
+  }, [workItemsWithAggregateDurations, intl]);
 
   return (
     <VizRow h={1}>
       <VizItem w={1}>
         <div className="tw-h-[77%]">
           <WorkItemsDetailHistogramChart
-            chartSubTitle={"Subtitle"}
-            
+            chartConfig={{
+              title: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly}),
+              xAxisTitle: "Age in Days",
+              subtitle: "Chart SubTitle",
+            }}
             selectedMetric={"age"}
             specsOnly={specsOnly}
             colWidthBoundaries={COL_WIDTH_BOUNDARIES}
