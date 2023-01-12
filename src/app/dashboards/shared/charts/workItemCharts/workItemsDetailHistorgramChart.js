@@ -45,7 +45,6 @@ export const WorkItemsDetailHistogramChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
-    chartSubTitle,
     specsOnly,
     intl,
     series,
@@ -54,6 +53,7 @@ export const WorkItemsDetailHistogramChart = Chart({
     selectedMetric = getDefaultMetricKey(stateType),
     onPointClick,
     clearFilters,
+    chartConfig
   }) => {
     return {
       chart: {
@@ -65,14 +65,14 @@ export const WorkItemsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: getChartTitle(selectedMetric, stateType),
+        text: chartConfig?.title || getChartTitle(selectedMetric, stateType),
       },
       subtitle: {
-        text: chartSubTitle,
+        text: chartConfig?.subtitle,
       },
       xAxis: {
         title: {
-          text: getSelectedMetricDisplayName(selectedMetric, stateType),
+          text: chartConfig?.xAxisTitle || getSelectedMetricDisplayName(selectedMetric, stateType),
         },
         categories: getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom),
         crosshair: true,
