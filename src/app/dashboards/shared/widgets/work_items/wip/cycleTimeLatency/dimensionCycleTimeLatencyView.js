@@ -6,12 +6,27 @@ import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/w
 import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 import { getHistogramSeries } from "../../../../../projects/shared/helper/utils";
-import { ResponseTimeMetricsColor } from "../../../../config";
+import { AppTerms, ResponseTimeMetricsColor } from "../../../../config";
 import { useIntl } from "react-intl";
-import {getTitle} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {localNow} from "../../../../../../helpers/utility";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
+export function getTitle({workItems, specsOnly, intl}) {
+  const count = workItems.length;
+
+  const countDisplay = `${count} ${
+    count === 1
+      ? specsOnly
+        ? AppTerms.spec.display
+        : AppTerms.card.display
+      : specsOnly
+      ? AppTerms.specs.display
+      : AppTerms.cards.display
+  }`;
+
+  return `${countDisplay} as of ${localNow(intl)}`;
+}
 
 export const DimensionCycleTimeLatencyView = ({
   dimension,
@@ -61,9 +76,9 @@ export const DimensionCycleTimeLatencyView = ({
         <div className="tw-h-[77%]">
           <WorkItemsDetailHistogramChart
             chartConfig={{
-              title: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly}),
+              title: `Age Distribution: ${stageName}`,
+              subtitle: getTitle({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
               xAxisTitle: "Age in Days",
-              subtitle: `Age Distribution ${localNow(intl)}`,
             }}
             selectedMetric={"age"}
             specsOnly={specsOnly}
