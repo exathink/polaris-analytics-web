@@ -4,15 +4,14 @@ import { FlowEfficiencyQuadrantSummaryCard } from "./flowEfficiencyQuadrantSumma
 import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { getWorkItemDurations } from "../../clientSideFlowMetrics";
-import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
-import { getHistogramSeries } from "../../../../../projects/shared/helper/utils";
-import { AppTerms, ResponseTimeMetricsColor } from "../../../../config";
+import { AppTerms } from "../../../../config";
 import { useIntl } from "react-intl";
 import {localNow} from "../../../../../../helpers/utility";
+import { useCycleTimeLatencyHook, getSubTitleForHistogram } from "./cycleTimeLatencyUtils";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export function getTitle({workItems, specsOnly, intl}) {
+export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
 
   const countDisplay = `${count} ${
@@ -53,31 +52,7 @@ export const DimensionCycleTimeLatencyView = ({
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
  
-  const seriesData = React.useMemo(() => {
-    const pointsByState = workItemsWithAggregateDurations
-      .filter((cycle) => cycle.workItemType !== "epic")
-      .reduce((acc, item, index) => {
-        const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
-        if (acc[item.state] == null) {
-          acc[item.state] = [ageVal];
-        } else {
-          acc[item.state] = [...acc[item.state], ageVal];
-        }
-        return acc;
-      }, {});
-
-    const seriesArr = Object.entries(pointsByState).map(([state, points]) => {
-      return getHistogramSeries({
-        id: state,
-        intl,
-        colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-        name: state,
-        points,
-      });
-    });
-
-    return seriesArr;
-  }, [workItemsWithAggregateDurations, intl]);
+  const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
 
   return (
     <VizRow h={1}>
@@ -86,7 +61,7 @@ export const DimensionCycleTimeLatencyView = ({
           <WorkItemsDetailHistogramChart
             chartConfig={{
               title: `Age Distribution: ${stageName}`,
-              subtitle: getTitle({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
+              subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
               xAxisTitle: "Age in Days",
             }}
             selectedMetric={"age"}
