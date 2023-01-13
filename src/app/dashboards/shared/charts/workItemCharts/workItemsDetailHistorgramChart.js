@@ -1,4 +1,4 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
+import {Chart} from "../../../../framework/viz/charts";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
@@ -9,6 +9,7 @@ import {
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
 import {getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 
 function getChartTitle(metric, stateType) {
   const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
@@ -89,7 +90,7 @@ export const WorkItemsDetailHistogramChart = Chart({
         hideDelay: 50,
         formatter: function () {
           const uom = this.series.userOptions.id === "effort" ? "FTE Days" : "days";
-          return tooltipHtml({
+          return tooltipHtml_v2({
             header: `${this.series.name}: ${this.point.category}`,
             body: [
               [getWorkItemTitle(stateType, specsOnly), this.point.y],
