@@ -54,20 +54,29 @@ export const DimensionCycleTimeLatencyView = ({
   );
  
   const seriesData = React.useMemo(() => {
-    const points = workItemsWithAggregateDurations
+    const pointsByState = workItemsWithAggregateDurations
       .filter((cycle) => cycle.workItemType !== "epic")
-      .map((cycle) => projectDeliveryCycleFlowMetricsMeta["age"].value(cycle));
+      .reduce((acc, item, index) => {
+        const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
+        if (acc[item.state] == null) {
+          acc[item.state] = [ageVal];
+        } else {
+          acc[item.state] = [...acc[item.state], ageVal];
+        }
+        return acc;
+      }, {});
 
-    const seriesObj = getHistogramSeries({
-      id: "age",
-      intl,
-      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-      name: projectDeliveryCycleFlowMetricsMeta["age"].display,
-      points,
-      color: ResponseTimeMetricsColor.age,
+    const seriesArr = Object.entries(pointsByState).map(([state, points]) => {
+      return getHistogramSeries({
+        id: state,
+        intl,
+        colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+        name: state,
+        points,
+      });
     });
 
-    return [seriesObj];
+    return seriesArr;
   }, [workItemsWithAggregateDurations, intl]);
 
   return (
