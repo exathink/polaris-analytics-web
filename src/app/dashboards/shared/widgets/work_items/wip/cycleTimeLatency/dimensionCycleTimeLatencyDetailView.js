@@ -1,5 +1,4 @@
 import React from "react";
-import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
@@ -7,7 +6,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {getQuadrant} from "./cycleTimeLatencyUtils";
+import {COL_WIDTH_BOUNDARIES, getQuadrant} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -21,6 +20,9 @@ import {
 import {useSelect} from "../../../../components/select/selectDropdown";
 import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
 import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
+import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import {useIntl} from "react-intl";
+import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -73,9 +75,9 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
-function getTitle(stageName) {
-  return `Delay Analyzer`;
-}
+// function getTitle(stageName) {
+//   return `Delay Analyzer`;
+// }
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -92,7 +94,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   view,
   context,
 }) => {
-
+  const intl = useIntl();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
@@ -191,9 +193,19 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
+  const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems).filter(
+    (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
+  );
+  const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems).filter(
+    (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
+  );
+
+  const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
+  const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
+
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-text-2xl")}>{getTitle(stageName)}</div>
+      <div className={classNames(styles.title, "tw-text-2xl")}>Delay Analyzer</div>
       <div className={styles.workItemScope}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
       </div>
@@ -212,7 +224,31 @@ export const DimensionCycleTimeLatencyDetailView = ({
           key={resetComponentStateKey}
           data-testid="wip-latency-chart-panels"
         >
-          <WorkItemsCycleTimeVsLatencyChart
+          <WorkItemsDetailHistogramChart
+            chartConfig={{
+              title: `Age Distribution: ${stageName}`,
+              subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
+              xAxisTitle: "Age in Days",
+            }}
+            selectedMetric={"age"}
+            specsOnly={specsOnly}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            stateType={"deliver"}
+            series={seriesDataEngineering}
+          />
+          <WorkItemsDetailHistogramChart
+            chartConfig={{
+              title: `Age Distribution: ${stageName}`,
+              subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
+              xAxisTitle: "Age in Days",
+            }}
+            selectedMetric={"age"}
+            specsOnly={specsOnly}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            stateType={"deliver"}
+            series={seriesDataDelivery}
+          />
+          {/* <WorkItemsCycleTimeVsLatencyChart
             view={view}
             stageName={"Coding"}
             specsOnly={specsOnly}
@@ -245,7 +281,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             tooltipType={tooltipType}
             onSelectionChange={handleSelectionChange}
             selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
-          />
+          /> */}
           <div className="tw-bg-chart">
             <FlowEfficiencyQuadrantSummaryCard
               workItems={chartFilteredWorkItems}
