@@ -7,9 +7,7 @@ import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { AppTerms } from "../../../../config";
 import { useIntl } from "react-intl";
 import {localNow} from "../../../../../../helpers/utility";
-import { useCycleTimeLatencyHook, getSubTitleForHistogram } from "./cycleTimeLatencyUtils";
-
-const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
