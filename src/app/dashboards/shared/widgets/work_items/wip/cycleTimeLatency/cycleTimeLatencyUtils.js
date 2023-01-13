@@ -4,6 +4,7 @@ import { localNow } from "../../../../../../helpers/utility";
 import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
 import { AppTerms } from "../../../../config";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
+export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const Quadrants = {
   ok: 'ok',
@@ -55,8 +56,6 @@ export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarg
 }
 
 
-
-const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 export function useCycleTimeLatencyHook(workItems) {
   const intl = useIntl();
   const seriesData = React.useMemo(() => {
