@@ -102,6 +102,7 @@ export const WorkItemsDetailHistogramChart = Chart({
       series: series,
       plotOptions: {
         series: {
+          stacking: 'normal',
           animation: false,
           allowPointSelect: true,
           cursor: "pointer",
