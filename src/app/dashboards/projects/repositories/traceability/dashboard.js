@@ -23,8 +23,6 @@ export const dashboard = () => (
 
         const days = flowAnalysisPeriod;
         return (
-          <Dashboard dashboard={`${dashboard_id}`}>
-            <DashboardRow h={"100%"}>
               <ProjectTraceabilityTrendsDetailDashboard
                 instanceKey={project.key}
                 days={days}
@@ -35,8 +33,7 @@ export const dashboard = () => (
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
               />
-            </DashboardRow>
-          </Dashboard>
+
         );
       }}
   />
