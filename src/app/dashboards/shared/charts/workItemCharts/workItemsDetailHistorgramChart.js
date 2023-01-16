@@ -125,7 +125,7 @@ export const WorkItemsDetailHistogramChart = Chart({
             },
           },
           events: {
-            legendItemClick: function () {
+            legendItemClick: chartConfig?.legendItemClick || function () {
               clearFilters();
               // reset subtitle on series change
               this.chart.setSubtitle({text: this.chart.userOptions.subtitle.text});

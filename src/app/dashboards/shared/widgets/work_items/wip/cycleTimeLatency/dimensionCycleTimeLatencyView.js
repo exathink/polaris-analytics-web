@@ -61,6 +61,7 @@ export const DimensionCycleTimeLatencyView = ({
               title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
               subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
               xAxisTitle: "Age in Days",
+              legendItemClick: () => {}
             }}
             selectedMetric={"age"}
             specsOnly={specsOnly}
