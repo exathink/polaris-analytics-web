@@ -7,7 +7,7 @@ import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { AppTerms } from "../../../../config";
 import { useIntl } from "react-intl";
 import {localNow} from "../../../../../../helpers/utility";
-import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
+import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, getTitleForHistogram} from "./cycleTimeLatencyUtils";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -58,7 +58,7 @@ export const DimensionCycleTimeLatencyView = ({
         <div className="tw-h-[77%]">
           <WorkItemsDetailHistogramChart
             chartConfig={{
-              title: `Age Distribution: ${stageName}`,
+              title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
               subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
               xAxisTitle: "Age in Days",
             }}
