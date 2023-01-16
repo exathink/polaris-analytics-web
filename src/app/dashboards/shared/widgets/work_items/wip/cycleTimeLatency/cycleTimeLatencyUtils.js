@@ -2,7 +2,7 @@ import React from "react";
 import {useIntl} from "react-intl";
 import { localNow } from "../../../../../../helpers/utility";
 import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
-import { AppTerms } from "../../../../config";
+import { AppTerms, assignWorkItemStateColor } from "../../../../config";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -64,20 +64,21 @@ export function useCycleTimeLatencyHook(workItems) {
       .reduce((acc, item, index) => {
         const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
         if (acc[item.state] == null) {
-          acc[item.state] = [ageVal];
+          acc[item.state] = [{ageVal, stateType: item.stateType}];
         } else {
-          acc[item.state] = [...acc[item.state], ageVal];
+          acc[item.state] = [...acc[item.state], {ageVal, stateType: item.stateType}];
         }
         return acc;
       }, {});
 
-    const seriesArr = Object.entries(pointsByState).map(([state, points]) => {
+    const seriesArr = Object.entries(pointsByState).map(([state, points], index) => {
       return getHistogramSeries({
         id: state,
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         name: String(state).toLowerCase(),
-        points,
+        points: points.map(x => x.ageVal),
+        color: assignWorkItemStateColor(points[0].stateType, index)
       });
     });
 
