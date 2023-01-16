@@ -76,7 +76,7 @@ export function useCycleTimeLatencyHook(workItems) {
         id: state,
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-        name: state,
+        name: String(state).toLowerCase(),
         points,
       });
     });
