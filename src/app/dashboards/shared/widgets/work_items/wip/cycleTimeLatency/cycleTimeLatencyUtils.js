@@ -102,3 +102,19 @@ export function getSubTitleForHistogram({workItems, specsOnly, intl}) {
 
   return `${countDisplay} as of ${localNow(intl)}`;
 }
+
+export function getTitleForHistogram({workItems, specsOnly, stageName}) {
+  const count = workItems.length;
+
+  const countDisplay = `${count} ${
+    count === 1
+      ? specsOnly
+        ? AppTerms.spec.display
+        : AppTerms.card.display
+      : specsOnly
+      ? AppTerms.specs.display
+      : AppTerms.cards.display
+  }`;
+
+  return `Age Distribution: ${countDisplay} in ${stageName}`;
+}
