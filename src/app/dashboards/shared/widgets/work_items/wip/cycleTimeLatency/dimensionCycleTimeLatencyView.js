@@ -1,4 +1,5 @@
 import React from "react";
+import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
 import { FlowEfficiencyQuadrantSummaryCard } from "./flowEfficiencyQuadrantSummaryCard";
 import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
@@ -6,8 +7,10 @@ import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/w
 import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { AppTerms } from "../../../../config";
 import { useIntl } from "react-intl";
-import {localNow} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, localNow, useBlurClass, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, getTitleForHistogram} from "./cycleTimeLatencyUtils";
+import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
+import { useGenerateTicks } from "../../../../hooks/useGenerateTicks";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -40,35 +43,61 @@ export const DimensionCycleTimeLatencyView = ({
   displayBag={}
 }) => {
   const intl = useIntl();
+  const blurClass = useBlurClass();
+  const tick = useGenerateTicks(2, 60000);
 
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
  
   const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
-
+  const ageLatencyFeatureFlag = useFeatureFlag('ui.age_latency_enhancements', true);
   return (
     <VizRow h={1}>
       <VizItem w={1}>
         <div className="tw-h-[77%]">
-          <WorkItemsDetailHistogramChart
-            chartConfig={{
-              title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
-              subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
-              xAxisTitle: "Age in Days",
-              legendItemClick: () => {}
-            }}
-            selectedMetric={"age"}
-            specsOnly={specsOnly}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            stateType={"deliver"}
-            series={seriesData}
-          />
+          {ageLatencyFeatureFlag ? (
+            <WorkItemsDetailHistogramChart
+              chartConfig={{
+                title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
+                subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
+                xAxisTitle: "Age in Days",
+                legendItemClick: () => {},
+              }}
+              selectedMetric={"age"}
+              specsOnly={specsOnly}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              stateType={"deliver"}
+              series={seriesData}
+            />
+          ) : (
+            <WorkItemsCycleTimeVsLatencyChart
+              view={view}
+              stageName={stageName}
+              specsOnly={specsOnly}
+              workItems={workItems}
+              stateTypes={stateTypes}
+              groupByState={groupByState}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tick={tick}
+              tooltipType={tooltipType}
+              blurClass={blurClass}
+              onSelectionChange={(workItems, eventType) => {
+                if (eventType === EVENT_TYPES.POINT_CLICK) {
+                  setWorkItemKey(workItems[0].key);
+                  setShowPanel(true);
+                }
+              }}
+            />
+          )}
         </div>
         <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
           {displayBag?.displayType === "FlowEfficiencyCard" ? (
@@ -92,6 +121,13 @@ export const DimensionCycleTimeLatencyView = ({
             />
           )}
         </div>
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          context={context}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          drawerOptions={{placement: "bottom"}}
+        />
       </VizItem>
     </VizRow>
   );

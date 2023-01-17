@@ -1,4 +1,5 @@
 import React from "react";
+import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
@@ -7,7 +8,7 @@ import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {COL_WIDTH_BOUNDARIES, getQuadrant} from "./cycleTimeLatencyUtils";
-import {EVENT_TYPES, getUniqItems} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -202,6 +203,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
+  const ageLatencyFeatureFlag = useFeatureFlag('ui.age_latency_enhancements', true);
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
@@ -224,64 +226,71 @@ export const DimensionCycleTimeLatencyDetailView = ({
           key={resetComponentStateKey}
           data-testid="wip-latency-chart-panels"
         >
-          <WorkItemsDetailHistogramChart
-            chartConfig={{
-              title: `Age Distribution: ${stageName}`,
-              subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
-              xAxisTitle: "Age in Days",
-            }}
-            selectedMetric={"age"}
-            specsOnly={specsOnly}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            stateType={"deliver"}
-            series={seriesDataEngineering}
-          />
-          <WorkItemsDetailHistogramChart
-            chartConfig={{
-              title: `Age Distribution: ${stageName}`,
-              subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
-              xAxisTitle: "Age in Days",
-            }}
-            selectedMetric={"age"}
-            specsOnly={specsOnly}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            stateType={"deliver"}
-            series={seriesDataDelivery}
-          />
-          {/* <WorkItemsCycleTimeVsLatencyChart
-            view={view}
-            stageName={"Coding"}
-            specsOnly={specsOnly}
-            workItems={
-              quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.engineering
-                ? chartFilteredWorkItems
-                : []
-            }
-            stateTypes={engineeringStateTypes}
-            groupByState={groupByState}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            tooltipType={tooltipType}
-            onSelectionChange={handleSelectionChange}
-            selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
-          />
-          <WorkItemsCycleTimeVsLatencyChart
-            view={view}
-            stageName={"Delivery"}
-            specsOnly={specsOnly}
-            workItems={
-              quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.delivery
-                ? chartFilteredWorkItems
-                : []
-            }
-            stateTypes={deliveryStateTypes}
-            groupByState={groupByState}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            tooltipType={tooltipType}
-            onSelectionChange={handleSelectionChange}
-            selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
-          /> */}
+          {ageLatencyFeatureFlag ? (
+            <>
+              <WorkItemsDetailHistogramChart
+                chartConfig={{
+                  title: `Age Distribution: ${stageName}`,
+                  subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
+                  xAxisTitle: "Age in Days",
+                }}
+                selectedMetric={"age"}
+                specsOnly={specsOnly}
+                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+                stateType={"deliver"}
+                series={seriesDataEngineering}
+              />
+              <WorkItemsDetailHistogramChart
+                chartConfig={{
+                  title: `Age Distribution: ${stageName}`,
+                  subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
+                  xAxisTitle: "Age in Days",
+                }}
+                selectedMetric={"age"}
+                specsOnly={specsOnly}
+                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+                stateType={"deliver"}
+                series={seriesDataDelivery}
+              />
+            </>
+          ) : (
+            <>
+              <WorkItemsCycleTimeVsLatencyChart
+                view={view}
+                stageName={"Coding"}
+                specsOnly={specsOnly}
+                workItems={
+                  quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.engineering
+                    ? chartFilteredWorkItems
+                    : []
+                }
+                stateTypes={engineeringStateTypes}
+                groupByState={groupByState}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                tooltipType={tooltipType}
+                onSelectionChange={handleSelectionChange}
+                selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+              />
+              <WorkItemsCycleTimeVsLatencyChart
+                view={view}
+                stageName={"Delivery"}
+                specsOnly={specsOnly}
+                workItems={
+                  quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.delivery
+                    ? chartFilteredWorkItems
+                    : []
+                }
+                stateTypes={deliveryStateTypes}
+                groupByState={groupByState}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                tooltipType={tooltipType}
+                onSelectionChange={handleSelectionChange}
+                selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
+              />
+            </>
+          )}
           <div className="tw-bg-chart">
             <FlowEfficiencyQuadrantSummaryCard
               workItems={chartFilteredWorkItems}
