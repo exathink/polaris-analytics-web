@@ -507,12 +507,12 @@ export function useBlurClass(overrideClass = "tw-blur-sm") {
 }
 
 /**
- * if feature_flag is active, it returns value otherwise it returns null
+ * if feature_flag is active, it returns value otherwise it returns undefined
  * @param {string} feature_flag 
  * @param {any} value 
- * @returns value | null
+ * @returns value | undefined
  */
 export function useFeatureFlag(feature_flag, value) {
   const context = useViewerContext();
-  return context.isFeatureFlagActive(feature_flag) ? value : null;
+  return context.isFeatureFlagActive(feature_flag) ? value : undefined;
 }
