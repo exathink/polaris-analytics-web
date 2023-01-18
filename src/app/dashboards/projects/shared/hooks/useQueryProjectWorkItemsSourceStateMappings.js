@@ -50,6 +50,7 @@ export const UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS = gql`
     ) {
       success
       errorMessage
+      deliveryCyclesRebuilt
     }
   }
 `;
