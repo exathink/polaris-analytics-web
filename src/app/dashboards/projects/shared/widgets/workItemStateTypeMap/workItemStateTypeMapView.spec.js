@@ -2,14 +2,15 @@ import React from "react";
 import {
   renderWithProviders,
   gqlUtils,
-  renderWithProvidersGetChartAndConfig,
+  renderWithProvidersGetChartAndConfig
 } from "../../../../../framework/viz/charts/chart-test-utils";
-import {actionTypes} from "./constants";
-import {WorkItemStateTypeMapView} from "./workItemStateTypeMapView";
+import { actionTypes } from "./constants";
+import { WorkItemStateTypeMapView } from "./workItemStateTypeMapView";
 import * as workItemUtils from "./workItemReducer";
-import {waitFor, screen, fireEvent, within} from "@testing-library/react";
-import {GraphQLError} from "graphql";
-import {UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
+import { waitFor, screen, fireEvent, within } from "@testing-library/react";
+import { GraphQLError } from "graphql";
+import { UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS } from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
@@ -20,8 +21,8 @@ Object.defineProperty(window, "matchMedia", {
     removeListener: jest.fn(), // Deprecated
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
+    dispatchEvent: jest.fn()
+  }))
 });
 
 beforeAll(() => {
@@ -45,12 +46,12 @@ async function renderedDragDropConfig(component, dropCategoryIndex, mapper = (po
       plotOptions: {
         series: {
           point: {
-            events: {drop},
-          },
-        },
-      },
+            events: { drop }
+          }
+        }
+      }
     },
-    chart: {series},
+    chart: { series }
   } = await renderWithProvidersGetChartAndConfig(component, mocks);
 
   // get the points from single point series, filter out last series(pedestal series).
@@ -63,7 +64,7 @@ async function renderedDragDropConfig(component, dropCategoryIndex, mapper = (po
   await waitFor(() => {
     // call the drop function only for the mapped points
     reducerArgs = _points.map((point, i) => {
-      const eventWithNewPoint = {newPoint: {x: dropCategoryIndex}};
+      const eventWithNewPoint = { newPoint: { x: dropCategoryIndex } };
       // call the drop function in the context of point
       drop.bind(point)(eventWithNewPoint);
 
@@ -86,37 +87,37 @@ const workItemSourcesFixture = [
     workItemStateMappings: [
       {
         state: "accepted",
-        stateType: "closed",
+        stateType: "closed"
       },
       {
         state: "planned",
-        stateType: "complete",
+        stateType: "complete"
       },
       {
         state: "unscheduled",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "unstarted",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "started",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "delivered",
-        stateType: "wip",
+        stateType: "wip"
       },
       {
         state: "created",
-        stateType: "backlog",
+        stateType: "backlog"
       },
       {
         state: "finished",
-        stateType: "complete",
-      },
-    ],
+        stateType: "complete"
+      }
+    ]
   },
   {
     key: "46694f4f-e003-4430-a7a7-e4f288f40d22",
@@ -124,66 +125,66 @@ const workItemSourcesFixture = [
     workItemStateMappings: [
       {
         state: "ACCEPTED",
-        stateType: "closed",
+        stateType: "closed"
       },
       {
         state: "Closed",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "Code-Review-Needed",
-        stateType: "wip",
+        stateType: "wip"
       },
       {
         state: "Done",
-        stateType: "closed",
+        stateType: "closed"
       },
       {
         state: "ABANDONED",
-        stateType: "backlog",
+        stateType: "backlog"
       },
       {
         state: "Backlog",
-        stateType: "backlog",
+        stateType: "backlog"
       },
       {
         state: "ROADMAP",
-        stateType: "backlog",
+        stateType: "backlog"
       },
       {
         state: "DEV-DONE",
-        stateType: "complete",
+        stateType: "complete"
       },
       {
         state: "created",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "DEPLOYED-TO-STAGING",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "Selected for Development",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "RELEASED",
-        stateType: "complete",
+        stateType: "complete"
       },
       {
         state: "DESIGN",
-        stateType: "open",
+        stateType: "open"
       },
       {
         state: "In Progress",
-        stateType: "wip",
+        stateType: "wip"
       },
       {
         state: "READY-FOR-DEVELOPMENT",
-        stateType: "backlog",
-      },
-    ],
-  },
+        stateType: "backlog"
+      }
+    ]
+  }
 ];
 
 const projectKey = "41af8b92-51f6-4e88-9765-cc3dbea35e1a";
@@ -192,7 +193,7 @@ describe("WorkItemStateTypeMapView", () => {
   describe("when there are no workItemSources", () => {
     test("renders only the base pedestal series", async () => {
       const {
-        chartConfig: {series},
+        chartConfig: { series }
       } = await renderWithProvidersGetChartAndConfig(
         <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={[]} view="detail" enableEdits={true} />,
         []
@@ -208,14 +209,14 @@ describe("WorkItemStateTypeMapView", () => {
       );
 
       expect(screen.getByText(/There are no work streams in this value stream/i)).toBeInTheDocument();
-      
-      const {getByText} = within(screen.queryByTestId("workitem-state-type-table"));
+
+      const { getByText } = within(screen.queryByTestId("workitem-state-type-table"));
       getByText(/no data/i);
     });
   });
 
   describe("when there are no mappings available for workItemSource", () => {
-    const workItemSourcesWithEmptyMappings = workItemSourcesFixture.map((w) => ({...w, workItemStateMappings: []}));
+    const workItemSourcesWithEmptyMappings = workItemSourcesFixture.map((w) => ({ ...w, workItemStateMappings: [] }));
 
     test("it renders without an error", async () => {
       await renderWithProviders(
@@ -233,7 +234,7 @@ describe("WorkItemStateTypeMapView", () => {
       await renderWithProviders(
         <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />,
         [],
-        {chartTestId: "state-type-map-chart"}
+        { chartTestId: "state-type-map-chart" }
       );
       // this assertion makes sure chart is rendered till this is successful.
       expect(await screen.findByTestId("state-type-map-chart")).toBeInTheDocument();
@@ -242,7 +243,7 @@ describe("WorkItemStateTypeMapView", () => {
 
     test("renders only the base pedestal series", async () => {
       const {
-        chartConfig: {series},
+        chartConfig: { series }
       } = await renderWithProvidersGetChartAndConfig(
         <WorkItemStateTypeMapView instanceKey={projectKey} workItemSources={workItemSourcesWithEmptyMappings} />,
         []
@@ -268,7 +269,7 @@ describe("WorkItemStateTypeMapView", () => {
 
         expect(action.type).toBe(actionTypes.UPDATE_WORKITEM_SOURCE);
         expect(action.payload).toHaveProperty("keyValuePair");
-        expect(action.payload.keyValuePair).toMatchObject({[workItemState]: "closed"});
+        expect(action.payload.keyValuePair).toMatchObject({ [workItemState]: "closed" });
       });
     });
 
@@ -296,18 +297,18 @@ describe("WorkItemStateTypeMapView", () => {
           {
             workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
             stateMaps: [
-              {state: "accepted", stateType: "closed", flowType: null, releaseStatus: null},
-              {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
-              {state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null},
-              {state: "unstarted", stateType: "closed", flowType: null, releaseStatus: null},
-              {state: "started", stateType: "open", flowType: null, releaseStatus: null},
-              {state: "delivered", stateType: "wip", flowType: null, releaseStatus: null},
-              {state: "created", stateType: "backlog", flowType: null, releaseStatus: null},
-              {state: "finished", stateType: "complete", flowType: null, releaseStatus: null},
-            ],
-          },
-        ],
-      },
+              { state: "accepted", stateType: "closed", flowType: null, releaseStatus: null },
+              { state: "planned", stateType: "complete", flowType: null, releaseStatus: null },
+              { state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null },
+              { state: "unstarted", stateType: "closed", flowType: null, releaseStatus: null },
+              { state: "started", stateType: "open", flowType: null, releaseStatus: null },
+              { state: "delivered", stateType: "wip", flowType: null, releaseStatus: null },
+              { state: "created", stateType: "backlog", flowType: null, releaseStatus: null },
+              { state: "finished", stateType: "complete", flowType: null, releaseStatus: null }
+            ]
+          }
+        ]
+      }
     };
 
     const updateWorkItemMappingMocks = [
@@ -318,10 +319,11 @@ describe("WorkItemStateTypeMapView", () => {
             updateProjectStateMaps: {
               success: true,
               errorMessage: null,
-            },
-          },
-        },
-      },
+              deliveryCyclesRebuilt: false
+            }
+          }
+        }
+      }
     ];
 
     test("when work item state is dragged to a desired phase, save/cancel buttons should appear on the screen", async () => {
@@ -354,7 +356,7 @@ describe("WorkItemStateTypeMapView", () => {
       );
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
       const selectContainer = screen.getByTestId("flow-type-select-accepted");
-      const {getByRole, getByText} = within(selectContainer);
+      const { getByRole, getByText } = within(selectContainer);
       const selectElement = getByRole("combobox");
 
       // select Active element
@@ -380,7 +382,7 @@ describe("WorkItemStateTypeMapView", () => {
       );
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
       const selectContainer = screen.getByTestId("flow-type-select-accepted");
-      const {getByRole, getByText} = within(selectContainer);
+      const { getByRole, getByText } = within(selectContainer);
       const selectElement = getByRole("combobox");
 
       // select Active element
@@ -450,6 +452,43 @@ describe("WorkItemStateTypeMapView", () => {
       expect(successElement).toBeInTheDocument();
     });
 
+    test("when save button is clicked, and the backend reports delivery cycles are rebuilt, we should display this in the alert", async () => {
+      const updateWorkItemMappingMocksWhenRebuilt = [
+        {
+          request: gqlMutationRequest,
+          result: {
+            data: {
+              updateProjectStateMaps: {
+                success: true,
+                errorMessage: null,
+                deliveryCyclesRebuilt: true
+              }
+            }
+          }
+        }
+      ];
+      await renderedDragDropConfig(
+        <WorkItemStateTypeMapView
+          instanceKey={projectKey}
+          workItemSources={workItemSourcesFixture}
+          enableEdits={true}
+        />,
+        5, // dropping to closed category
+        (points) => [points.find((p) => p.name === "unstarted")],
+        updateWorkItemMappingMocksWhenRebuilt
+      );
+
+      const saveElement = screen.getByText(/save/i);
+      fireEvent.click(saveElement);
+
+      const inProgressElement = screen.getByText(/Processing.../i);
+      expect(inProgressElement).toBeInTheDocument();
+
+      // after brief time, success message should appear.
+      const successElement = await screen.findByText(/Note: This change requires metrics history to be rebuilt./i);
+      expect(successElement).toBeInTheDocument();
+    });
+
     test("when flow type value for an individual workflow state is updated, and save button is clicked, button loading state should appear during the time mutation is executing. after that there is success message.", async () => {
       const gqlMutationRequest = {
         query: UPDATE_PROJECT_WORKITEM_SOURCE_STATE_MAPS,
@@ -459,18 +498,18 @@ describe("WorkItemStateTypeMapView", () => {
             {
               workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
               stateMaps: [
-                {state: "accepted", stateType: "closed", flowType: "active", releaseStatus: null},
-                {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
-                {state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null},
-                {state: "unstarted", stateType: "open", flowType: null, releaseStatus: null},
-                {state: "started", stateType: "open", flowType: null, releaseStatus: null},
-                {state: "delivered", stateType: "wip", flowType: null, releaseStatus: null},
-                {state: "created", stateType: "backlog", flowType: null, releaseStatus: null},
-                {state: "finished", stateType: "complete", flowType: null, releaseStatus: null},
-              ],
-            },
-          ],
-        },
+                { state: "accepted", stateType: "closed", flowType: "active", releaseStatus: null },
+                { state: "planned", stateType: "complete", flowType: null, releaseStatus: null },
+                { state: "unscheduled", stateType: "open", flowType: null, releaseStatus: null },
+                { state: "unstarted", stateType: "open", flowType: null, releaseStatus: null },
+                { state: "started", stateType: "open", flowType: null, releaseStatus: null },
+                { state: "delivered", stateType: "wip", flowType: null, releaseStatus: null },
+                { state: "created", stateType: "backlog", flowType: null, releaseStatus: null },
+                { state: "finished", stateType: "complete", flowType: null, releaseStatus: null }
+              ]
+            }
+          ]
+        }
       };
 
       await renderWithProviders(
@@ -480,12 +519,12 @@ describe("WorkItemStateTypeMapView", () => {
           view="detail"
           enableEdits={true}
         />,
-        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
+        [{ ...updateWorkItemMappingMocks[0], request: gqlMutationRequest }]
       );
 
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
       const selectContainer = screen.getByTestId("flow-type-select-accepted");
-      const {getByRole, getByText} = within(selectContainer);
+      const { getByRole, getByText } = within(selectContainer);
       const selectElement = getByRole("combobox");
 
       // select Active element
@@ -512,12 +551,12 @@ describe("WorkItemStateTypeMapView", () => {
             {
               workItemsSourceKey: "a92d9cc9-25ba-4337-899f-cba7797a6c12",
               stateMaps: [
-                {state: "accepted", stateType: "closed", flowType: null, releaseStatus: null},
-                {state: "planned", stateType: "complete", flowType: null, releaseStatus: null},
-              ],
-            },
-          ],
-        },
+                { state: "accepted", stateType: "closed", flowType: null, releaseStatus: null },
+                { state: "planned", stateType: "complete", flowType: null, releaseStatus: null }
+              ]
+            }
+          ]
+        }
       };
       const workItemSourcesFixture = [
         {
@@ -532,9 +571,9 @@ describe("WorkItemStateTypeMapView", () => {
             },
             {
               state: "planned",
-              stateType: "complete",
-            },
-          ],
+              stateType: "complete"
+            }
+          ]
         },
         {
           key: "46694f4f-e003-4430-a7a7-e4f288f40d22",
@@ -542,34 +581,34 @@ describe("WorkItemStateTypeMapView", () => {
           workItemStateMappings: [
             {
               state: "ACCEPTED",
-              stateType: "closed",
+              stateType: "closed"
             },
             {
               state: "Closed",
-              stateType: "open",
+              stateType: "open"
             },
             {
               state: "Code-Review-Needed",
-              stateType: "wip",
+              stateType: "wip"
             },
             {
               state: "RELEASED",
-              stateType: "complete",
+              stateType: "complete"
             },
             {
               state: "DESIGN",
-              stateType: "open",
+              stateType: "open"
             },
             {
               state: "In Progress",
-              stateType: "wip",
+              stateType: "wip"
             },
             {
               state: "READY-FOR-DEVELOPMENT",
-              stateType: "backlog",
-            },
-          ],
-        },
+              stateType: "backlog"
+            }
+          ]
+        }
       ];
 
       await renderWithProviders(
@@ -579,12 +618,12 @@ describe("WorkItemStateTypeMapView", () => {
           view="detail"
           enableEdits={true}
         />,
-        [{...updateWorkItemMappingMocks[0], request: gqlMutationRequest}]
+        [{ ...updateWorkItemMappingMocks[0], request: gqlMutationRequest }]
       );
 
       // Select Desired FlowType (By Default First Value Unassigned from the dropdown is selected)
       const selectContainer = screen.getByTestId("flow-type-select-accepted");
-      const {getByRole, getByText} = within(selectContainer);
+      const { getByRole, getByText } = within(selectContainer);
       const selectElement = getByRole("combobox");
 
       // select Active element
@@ -606,7 +645,8 @@ describe("WorkItemStateTypeMapView", () => {
       let logGraphQlError;
       beforeEach(() => {
         // changing the mockImplementation to be no-op, so that console remains clean. as we only need to assert whether it has been called.
-        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {});
+        logGraphQlError = jest.spyOn(gqlUtils, "logGraphQlError").mockImplementation(() => {
+        });
       });
       afterEach(() => {
         logGraphQlError.mockRestore();
@@ -615,17 +655,17 @@ describe("WorkItemStateTypeMapView", () => {
       const mockNetworkError = [
         {
           request: gqlMutationRequest,
-          error: new Error("A network error Occurred"),
-        },
+          error: new Error("A network error Occurred")
+        }
       ];
 
       const mockGraphQlErrors = [
         {
           request: gqlMutationRequest,
           result: {
-            errors: [new GraphQLError("A GraphQL Error Occurred")],
-          },
-        },
+            errors: [new GraphQLError("A GraphQL Error Occurred")]
+          }
+        }
       ];
       test("it renders nothing and logs the error when there is a network error", async () => {
         await renderedDragDropConfig(

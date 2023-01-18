@@ -1,32 +1,40 @@
 import React from "react";
-import {WorkItemStateTypeMapChart} from "./workItemStateTypeMapChart";
-import {Alert, Select} from "antd";
+import { WorkItemStateTypeMapChart } from "./workItemStateTypeMapChart";
+import { Alert, Select } from "antd";
 import Button from "../../../../../../components/uielements/button";
-import {useUpdateProjectWorkItemSourceStateMaps} from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
-import {logGraphQlError} from "../../../../../components/graphql/utils";
-import {workItemReducer} from "./workItemReducer";
-import {actionTypes, mode} from "./constants";
-import {useResetComponentState} from "../../helper/hooks";
-import {useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable} from "./workItemStateTypeMapTable";
-import {sanitizeStateMappings, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import { useUpdateProjectWorkItemSourceStateMaps } from "../../hooks/useQueryProjectWorkItemsSourceStateMappings";
+import { logGraphQlError } from "../../../../../components/graphql/utils";
+import { workItemReducer } from "./workItemReducer";
+import { actionTypes, mode } from "./constants";
+import { useResetComponentState } from "../../helper/hooks";
+import { useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable } from "./workItemStateTypeMapTable";
+import { sanitizeStateMappings, WorkItemStateTypeDisplayName } from "../../../../shared/config";
 
 /**
  * Initial mapping for the records
- * @param {any} workItemSource 
- * @param {'flowType' | 'releaseStatus'} type 
- * @returns 
+ * @param {any} workItemSource
+ * @param {'flowType' | 'releaseStatus'} type
+ * @returns
  */
 export function getInitialMapping(workItemSource, type) {
-  const workItemStateMappings = workItemSource?.workItemStateMappings??[];
+  const workItemStateMappings = workItemSource?.workItemStateMappings ?? [];
   const stateMappings = sanitizeStateMappings(workItemStateMappings);
   return stateMappings.reduce((acc, item) => {
-      acc[item.state] = item[type];
-      return acc;
+    acc[item.state] = item[type];
+    return acc;
   }, {});
 }
-const {Option} = Select;
 
-export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, context, enableEdits, showMeLinkVisible}) {
+const { Option } = Select;
+
+export function WorkItemStateTypeMapView({
+                                           workItemSources,
+                                           instanceKey,
+                                           view,
+                                           context,
+                                           enableEdits,
+                                           showMeLinkVisible
+                                         }) {
   // set first workitemsource as default
   // handling empty workItemSources case by defaulting it to blank object
   const [workItemSource = {}] = workItemSources;
@@ -39,28 +47,33 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     workItemSources
   });
 
-  const [mutate, {loading, client}] = useUpdateProjectWorkItemSourceStateMaps({
-    onCompleted: ({updateProjectStateMaps: {success, errorMessage}}) => {
+  const [mutate, { loading, client }] = useUpdateProjectWorkItemSourceStateMaps({
+    onCompleted: ({ updateProjectStateMaps: { success, errorMessage, deliveryCyclesRebuilt } }) => {
       if (success) {
-        dispatch({type: actionTypes.MUTATION_SUCCESS});
+
+        if (deliveryCyclesRebuilt) {
+          dispatch({ type: actionTypes.MUTATION_SUCCESS_WITH_REBUILD });
+        } else {
+          dispatch({ type: actionTypes.MUTATION_SUCCESS });
+        }
         client.resetStore();
       } else {
         logGraphQlError("WorkItemStateTypeMapView.useUpdateProjectWorkItemSourceStateMaps", errorMessage);
-        dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
+        dispatch({ type: actionTypes.MUTATION_FAILURE, payload: errorMessage });
       }
     },
     onError: (error) => {
       logGraphQlError("WorkItemStateTypeMapView.useUpdateProjectWorkItemSourceStateMaps", error);
-      dispatch({type: actionTypes.MUTATION_FAILURE, payload: error.message});
-    },
+      dispatch({ type: actionTypes.MUTATION_FAILURE, payload: error.message });
+    }
   });
 
   function handleSaveClick(e) {
-    const {workItemStateMappings, flowTypeRecords, releaseStatusRecords, key} = state;
+    const { workItemStateMappings, flowTypeRecords, releaseStatusRecords, key } = state;
     // show error if we have stateType values as null
     const isAnyStateTypeUnmapped = workItemStateMappings.some((x) => x.stateType === null);
     if (isAnyStateTypeUnmapped) {
-      dispatch({type: actionTypes.SHOW_UNMAPPED_ERROR});
+      dispatch({ type: actionTypes.SHOW_UNMAPPED_ERROR });
 
       // if we have error here, don't proceed further.
       return;
@@ -68,17 +81,17 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
     const getFlowTypeRecord = (mapping) => {
       if (flowTypeRecords[mapping.state] === "unassigned" || flowTypeRecords[mapping.state] == null) {
-        return {flowType: null};
+        return { flowType: null };
       } else {
-        return {flowType: flowTypeRecords[mapping.state]}
+        return { flowType: flowTypeRecords[mapping.state] };
       }
     };
 
     const getReleaseStatusRecord = (mapping) => {
       if (releaseStatusRecords[mapping.state] === "unassigned" || releaseStatusRecords[mapping.state] == null) {
-        return {releaseStatus: null};
+        return { releaseStatus: null };
       } else {
-        return {releaseStatus: releaseStatusRecords[mapping.state]}
+        return { releaseStatus: releaseStatusRecords[mapping.state] };
       }
     };
 
@@ -91,12 +104,12 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
           stateType: mapping.stateType,
           ...getFlowTypeRecord(mapping),
           ...getReleaseStatusRecord(mapping)
-        })),
-      },
+        }))
+      }
     ];
 
     // call mutation here
-    mutate({variables: {projectKey: instanceKey, workItemsSourceStateMaps: payload}});
+    mutate({ variables: { projectKey: instanceKey, workItemsSourceStateMaps: payload } });
   }
 
   // utilizing this trick to reset component (changing the key will remount the chart component with same props)
@@ -104,15 +117,15 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
 
   // Reset state on cancel
   function handleCancelClick(e) {
-    dispatch({type: actionTypes.CANCEL_EDIT_MODE});
+    dispatch({ type: actionTypes.CANCEL_EDIT_MODE });
     resetState();
   }
 
   // currently not maintaining state when dropdown value for workItemSource change
   function handleChange(index) {
     const workItemSource = workItemSources[index];
-    dispatch({type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource})
-    dispatch({type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: {...workItemSource, mode: mode.INIT}});
+    dispatch({ type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource });
+    dispatch({ type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: { ...workItemSource, mode: mode.INIT } });
   }
 
   function selectDropdown() {
@@ -120,7 +133,7 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
       <div>
         <Select
           defaultValue={0}
-          style={{width: 200}}
+          style={{ width: 200 }}
           onChange={handleChange}
           getPopupContainer={(node) => node.parentNode}
         >
@@ -184,28 +197,36 @@ export function WorkItemStateTypeMapView({workItemSources, instanceKey, view, co
     }
 
     if (state.mode === mode.FAILURE) {
-      return <Alert message={state.errorMessage} type="error" showIcon closable  className="tw-ml-auto tw-mr-[90px]" onClose={() => resetState()}/>;
+      return <Alert message={state.errorMessage} type="error" showIcon closable className="tw-ml-auto tw-mr-[90px]"
+                    onClose={() => resetState()} />;
     }
 
     if (state.mode === mode.SUCCESS) {
-      return <Alert message="Mapping updated successfully." type="success" showIcon closable  className="tw-ml-auto tw-mr-[90px]" />;
+      return <Alert message="Mapping updated successfully." type="success" showIcon closable
+                    className="tw-ml-auto tw-mr-[90px]" />;
+    }
+    if (state.mode === mode.SUCCESS_WITH_REBUILD) {
+      return <Alert
+        message="Mapping updated successfully"
+        description={"Note: This change requires metrics history to be rebuilt. This may take a few minutes to reflect in the application."}
+        type="success" showIcon closable className="tw-ml-auto tw-mr-[90px]" />;
     }
   }
-
 
 
   const currentWorkItemSource = workItemSources.length > 0 ? workItemSources.find((x) => x.key === state.key) : null;
   const columns = useWorkItemStateTypeMapColumns({
     dispatch,
     flowTypeRecords: state.flowTypeRecords,
-    releaseStatusRecords: state.releaseStatusRecords,
+    releaseStatusRecords: state.releaseStatusRecords
   });
 
-  const stateMappings = sanitizeStateMappings(state?.workItemStateMappings??[]);
+  const stateMappings = sanitizeStateMappings(state?.workItemStateMappings ?? []);
 
   return (
     <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
-      <div className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
+      <div
+        className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
