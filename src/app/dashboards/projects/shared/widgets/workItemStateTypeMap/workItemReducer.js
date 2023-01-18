@@ -36,6 +36,12 @@ export function workItemReducer(state, action) {
         mode: mode.SUCCESS,
       };
     }
+    case actionTypes.MUTATION_SUCCESS_WITH_REBUILD: {
+      return {
+        ...state,
+        mode: mode.SUCCESS_WITH_REBUILD,
+      };
+    }
     case actionTypes.MUTATION_FAILURE: {
       return {
         ...state,
