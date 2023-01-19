@@ -97,7 +97,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   );
 }
 
-function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
+export function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
   const count = workItems.length;
 
   const countDisplay = `${count} ${count === 1 ? specsOnly ? AppTerms.spec.display : AppTerms.card.display : specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`;

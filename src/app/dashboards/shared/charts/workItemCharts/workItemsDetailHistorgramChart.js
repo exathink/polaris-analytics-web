@@ -1,5 +1,5 @@
-import {Chart, tooltipHtml} from "../../../../framework/viz/charts";
-import {i18nNumber, pick} from "../../../../helpers/utility";
+import {Chart} from "../../../../framework/viz/charts";
+import { capitalizeFirstLetter, i18nNumber, pick } from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {AppTerms, Colors, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
@@ -9,6 +9,7 @@ import {
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
 import {getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 
 function getChartTitle(metric, stateType) {
   const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
@@ -45,7 +46,6 @@ export const WorkItemsDetailHistogramChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
   getConfig: ({
-    chartSubTitle,
     specsOnly,
     intl,
     series,
@@ -54,6 +54,7 @@ export const WorkItemsDetailHistogramChart = Chart({
     selectedMetric = getDefaultMetricKey(stateType),
     onPointClick,
     clearFilters,
+    chartConfig
   }) => {
     return {
       chart: {
@@ -65,14 +66,14 @@ export const WorkItemsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: getChartTitle(selectedMetric, stateType),
+        text: chartConfig?.title || getChartTitle(selectedMetric, stateType),
       },
       subtitle: {
-        text: chartSubTitle,
+        text: chartConfig?.subtitle,
       },
       xAxis: {
         title: {
-          text: getSelectedMetricDisplayName(selectedMetric, stateType),
+          text: chartConfig?.xAxisTitle || getSelectedMetricDisplayName(selectedMetric, stateType),
         },
         categories: getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom),
         crosshair: true,
@@ -89,11 +90,10 @@ export const WorkItemsDetailHistogramChart = Chart({
         hideDelay: 50,
         formatter: function () {
           const uom = this.series.userOptions.id === "effort" ? "FTE Days" : "days";
-          return tooltipHtml({
-            header: `${this.series.name}: ${this.point.category}`,
+          return tooltipHtml_v2({
+            header: `${capitalizeFirstLetter(this.series.name)}: ${this.point.category} <br/> ${this.point.y} ${getWorkItemTitle(stateType, specsOnly)}`,
             body: [
-              [getWorkItemTitle(stateType, specsOnly), this.point.y],
-              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
+              [`Average age: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
             ],
           });
         },
@@ -101,6 +101,7 @@ export const WorkItemsDetailHistogramChart = Chart({
       series: series,
       plotOptions: {
         series: {
+          stacking: 'normal',
           animation: false,
           allowPointSelect: true,
           cursor: "pointer",
@@ -123,7 +124,7 @@ export const WorkItemsDetailHistogramChart = Chart({
             },
           },
           events: {
-            legendItemClick: function () {
+            legendItemClick: chartConfig?.legendItemClick || function () {
               clearFilters();
               // reset subtitle on series change
               this.chart.setSubtitle({text: this.chart.userOptions.subtitle.text});

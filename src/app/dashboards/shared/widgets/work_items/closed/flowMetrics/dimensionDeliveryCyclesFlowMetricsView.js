@@ -374,14 +374,16 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
 
   return (
     <WorkItemsDetailHistogramChart
-      chartSubTitle={getChartSubTitle({
-        filteredData: model,
-        defectsOnly: false,
-        specsOnly: specsOnly,
-        days: days,
-        before: before,
-        selectedMetric: "cycleTime",
-      })}
+      chartConfig={{
+        subtitle: getChartSubTitle({
+          filteredData: model,
+          defectsOnly: false,
+          specsOnly: specsOnly,
+          days: days,
+          before: before,
+          selectedMetric: "cycleTime",
+        }),
+      }}
       selectedMetric={"cycleTime"}
       specsOnly={specsOnly}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
