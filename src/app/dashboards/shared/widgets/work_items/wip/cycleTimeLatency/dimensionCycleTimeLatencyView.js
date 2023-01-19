@@ -11,6 +11,7 @@ import {EVENT_TYPES, localNow, useBlurClass, useFeatureFlag} from "../../../../.
 import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, getTitleForHistogram} from "./cycleTimeLatencyUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useGenerateTicks } from "../../../../hooks/useGenerateTicks";
+import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -58,7 +59,7 @@ export const DimensionCycleTimeLatencyView = ({
   );
  
   const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
-  const ageLatencyFeatureFlag = useFeatureFlag('ui.age_latency_enhancements', true);
+  const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   return (
     <VizRow h={1}>
       <VizItem w={1}>

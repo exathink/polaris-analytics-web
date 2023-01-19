@@ -24,6 +24,7 @@ import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummary
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {useIntl} from "react-intl";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
+import { AGE_LATENCY_ENHANCEMENTS } from "../../../../../../../config/featureFlags";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -203,7 +204,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
-  const ageLatencyFeatureFlag = useFeatureFlag('ui.age_latency_enhancements', true);
+  const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
