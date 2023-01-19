@@ -35,7 +35,7 @@ export function WorkItemsDetailHistogramTable({
     <React.Fragment>
       <div className={tabSelection === "table" ? "tw-hidden" : "tw-h-full tw-w-full"}>
         <WorkItemsDetailHistogramChart
-          chartSubTitle={chartSubTitle}
+          chartConfig={{subtitle: chartSubTitle}}
           selectedMetric={chartSelectedMetric}
           specsOnly={specsOnly}
           colWidthBoundaries={colWidthBoundaries}
