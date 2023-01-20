@@ -1,7 +1,7 @@
 import {screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
-import {getProjectPullRequests} from "../hooks/useQueryDimensionPullRequests";
+import {getDimensionPullRequests} from "../hooks/useQueryDimensionPullRequests";
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 import {GraphQLError} from "graphql";
 import {getReferenceString} from "../../../../../helpers/utility";
@@ -15,7 +15,7 @@ const referenceDates = {
 }
 
 const gqlRequest = {
-  query: getProjectPullRequests('project'),
+  query: getDimensionPullRequests('project'),
   variables: {
     projectKey: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     activeOnly: true,

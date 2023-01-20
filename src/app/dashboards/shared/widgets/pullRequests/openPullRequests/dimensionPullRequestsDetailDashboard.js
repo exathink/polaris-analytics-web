@@ -15,6 +15,7 @@ const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 export const DimensionPullRequestsDetailDashboard = ({
   dimension,
   instanceKey,
+  specsOnly,
   view,
   context,
   days,
@@ -74,6 +75,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               <ClosedPullRequestsCardWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                specsOnly={specsOnly}
                 view={view}
                 days={daysRange}
                 measurementWindow={daysRange}
@@ -106,6 +108,7 @@ export const DimensionPullRequestsDetailDashboard = ({
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
                 activeOnly={true}
+                specsOnly={specsOnly}
                 cardSelection={cardSelection}
                 onClick={() => {
                   if (cardSelection !== "open") {
@@ -127,6 +130,7 @@ export const DimensionPullRequestsDetailDashboard = ({
             <PullRequestsCompletedTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              specsOnly={specsOnly}
               view={view}
               days={daysRange}
               measurementWindow={measurementWindowRange}
@@ -152,6 +156,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               selectedFilter={selectedFilter}
               setFilter={setFilter}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
+              specsOnly={specsOnly}
               before={before}
               setBefore={setBefore}
               closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
@@ -167,6 +172,7 @@ export const DimensionPullRequestsDetailDashboard = ({
             <PullRequestsReviewTimeTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              specsOnly={specsOnly}
               view={view}
               days={daysRange}
               measurementWindow={measurementWindowRange}
@@ -193,6 +199,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
               before={cardSelection === "closed" && before === undefined ? toMoment(getTodayDate()) : before}
+              specsOnly={specsOnly}
               setBefore={setBefore}
               closedWithinDays={
                 cardSelection === "closed" && before === undefined
