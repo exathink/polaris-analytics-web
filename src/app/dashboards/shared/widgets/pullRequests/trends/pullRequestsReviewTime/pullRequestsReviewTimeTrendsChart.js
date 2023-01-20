@@ -22,7 +22,6 @@ export const PullRequestsReviewTimeTrendsChart = ({
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
     metrics={[
-      {key: "maxAge", displayName: "Max", visible: true, type: "spline", color: ResponseTimeMetricsColor.cycleTime},
       {key: "avgAge", displayName: "Avg", visible: true, type: "areaspline", color: ResponseTimeMetricsColor.cycleTime},
     ]}
     measurementPeriod={measurementPeriod}

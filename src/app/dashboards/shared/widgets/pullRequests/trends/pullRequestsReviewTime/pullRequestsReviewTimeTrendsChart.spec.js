@@ -123,10 +123,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
     const expectedChartConfig = {
       ...fixedChartConfig,
       series: [
-        {
-          ...fixedSeriesConfig,
-          data: [],
-        },
+
         {
           ...fixedSeriesConfig,
           data: [],
@@ -155,11 +152,10 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
 
     describe("test plot lines", () => {
       const {
-        series: [{data: maxAgeData}, {data: avgAgeData}],
+        series: [ {data: avgAgeData}],
       } = renderedChartConfig(<PullRequestsReviewTimeTrendsChart {...pullRequestsReviewTime} view={"primary"}/>);
 
       const cases = [
-        {metric: "maxAge", data: maxAgeData, displayName: "Max Time to Review: "},
         {metric: "avgAge", data: avgAgeData, displayName: "Avg Time to Review: "},
       ];
       // Generating test cases for similar usecases
@@ -215,7 +211,6 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
       test("line type is correct", () => {
         expectSetsAreEqual(chartConfig.series.map((series) => [series.key, series.type]),
           [
-            ["maxAge", "spline"],
             ["avgAge", "areaspline"],
           ]);
       });
@@ -223,7 +218,6 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
       test("they are visible by default", () => {
         expectSetsAreEqual(chartConfig.series.map((series) => [series.key, series.visible]),
           [
-            ["maxAge", true],
             ["avgAge", true],
           ]);
       });
