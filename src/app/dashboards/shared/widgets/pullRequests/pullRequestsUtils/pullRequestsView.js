@@ -17,15 +17,15 @@ const COL_WIDTH_BOUNDARIES = [1 / 48, 6 / 24, 1, 3, 7];
 
 function getChartSubTitle({pullRequests, closedWithinDays, intl, before}) {
   if (closedWithinDays === 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed on ${i18nDate(intl, before)}`;
+    return `For ${pullRequests.length} pull request closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays === 1 && pullRequests.length !== 1) {
-    return `${pullRequests.length} pull requests closed on ${i18nDate(intl, before)}`;
+    return `For ${pullRequests.length} pull requests closed on ${i18nDate(intl, before)}`;
   }
   if (closedWithinDays > 1 && pullRequests.length === 1) {
-    return `${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${i18nDate(intl, before)}`;
+    return `For ${pullRequests.length} pull request closed within last ${closedWithinDays} days ending ${i18nDate(intl, before)}`;
   }
-  return `${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending${i18nDate(intl, before)}`;
+  return `For ${pullRequests.length} pull requests closed within last ${closedWithinDays} days ending${i18nDate(intl, before)}`;
 }
 
 function getSelectedFilterText({closedWithinDays, intl, before}) {
@@ -89,11 +89,11 @@ export function PullRequestsView({
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
-      title={pullRequestsType === "closed" ? `Review Time Details` : `Open Pull Requests`}
+      title={pullRequestsType === "closed" ? `Review Time Distribution` : `Age Distribution`}
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
-          : `Age Distribution`
+          : `For ${pullRequests.length} open ${pullRequests.length == 1 ? "pull request" : "pull requests"}`
       }
       selectedMetric={"pullRequestAvgAge"}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
