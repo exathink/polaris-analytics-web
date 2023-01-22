@@ -28,7 +28,7 @@ export const PullRequestsReviewTimeTrendsChart = ({
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: "Review Time",
+      title: "Closed Pull Requests: Avg. Review Time",
       yAxisUom: "Days",
       plotBands: {
         metric: "avgAge",

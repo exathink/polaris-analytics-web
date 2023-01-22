@@ -89,11 +89,11 @@ export function PullRequestsView({
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
-      title={pullRequestsType === "closed" ? `Review Time Distribution` : `Age Distribution`}
+      title={pullRequestsType === "closed" ? `Closed Pull Requests: Review Time Distribution` : `Open Pull Requests: Age Distribution`}
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})
-          : `For ${pullRequests.length} open ${pullRequests.length == 1 ? "pull request" : "pull requests"}`
+          : `${pullRequests.length}  ${pullRequests.length == 1 ? "pull request" : "pull requests"}`
       }
       selectedMetric={"pullRequestAvgAge"}
       colWidthBoundaries={COL_WIDTH_BOUNDARIES}
