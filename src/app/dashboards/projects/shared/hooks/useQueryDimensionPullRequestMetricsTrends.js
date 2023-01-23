@@ -1,9 +1,10 @@
 import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export function useQueryProjectPullRequestMetricsTrends({
+export function useQueryDimensionPullRequestMetricsTrends({
   dimension,
   instanceKey,
+  specsOnly,
   days,
   measurementWindow,
   samplingFrequency,
@@ -17,6 +18,7 @@ export function useQueryProjectPullRequestMetricsTrends({
         $measurementWindow: Int!
         $samplingFrequency: Int!
         $referenceString: String
+        $specsOnly: Boolean
       ) {
         ${dimension}(
           key: $key
@@ -26,7 +28,7 @@ export function useQueryProjectPullRequestMetricsTrends({
             measurementWindow: $measurementWindow
             samplingFrequency: $samplingFrequency
             metrics: [avg_age, max_age, total_closed]
-            specsOnly: true
+            specsOnly: $specsOnly
           }
           referenceString: $referenceString
         ) {
@@ -44,6 +46,7 @@ export function useQueryProjectPullRequestMetricsTrends({
       service: analytics_service,
       variables: {
         key: instanceKey,
+        specsOnly: specsOnly,
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,

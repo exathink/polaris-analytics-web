@@ -12,7 +12,7 @@ export const PullRequestsCompletedTrendsChart = ({pullRequestMetricsTrends, meas
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: "Closed Pull Requests",
+      title: "Pull Requests Closed",
       yAxisUom: "Pull Requests",
       plotBands: {
         metric: "totalClosed",

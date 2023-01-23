@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import {PullRequestsCompletedTrendsWidget} from "../trends/pullRequestsCompleted";
 import {PullRequestsReviewTimeTrendsWidget, ClosedPullRequestsCardWidget} from "../trends/pullRequestsReviewTime";
@@ -9,12 +9,15 @@ import {
 import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
 import {OpenPullRequestsCardWidget} from "./openPullRequestsCardWidget";
 import {getTodayDate, toMoment} from "../../../../../helpers/utility";
+import { Flex } from "reflexbox";
+import { GroupingSelector } from "../../../components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
 
 export const DimensionPullRequestsDetailDashboard = ({
   dimension,
   instanceKey,
+  specsOnly,
   view,
   context,
   days,
@@ -34,6 +37,8 @@ export const DimensionPullRequestsDetailDashboard = ({
   const [before, setBefore] = React.useState();
   const [selectedFilter, setFilter] = React.useState(null);
   const [cardSelection, setCardSelection] = React.useState("open");
+  const [traceableOrAll, setTraceableOrAll] = useState(specsOnly ? "traceable" : "all");
+  const traceableOnly = traceableOrAll === 'traceable'
 
   React.useEffect(() => {
     if (cardSelection === "open" || cardSelection===undefined) {
@@ -50,21 +55,37 @@ export const DimensionPullRequestsDetailDashboard = ({
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Code Review Flow Analysis</div>
         <div className="tw-flex tw-justify-start tw-text-sm">
-          Open and Closed Pull Requests, Last {measurementWindow} Days
+          { traceableOnly ? "Traceable" : "All"} Open and Closed Pull Requests, Last {measurementWindow} Days
         </div>
       </div>
       <DashboardRow
         title={``}
         subTitle={``}
-        className="tw-col-span-3 tw-col-start-3 tw-text-base"
-        controls={getTrendsControlBarControls(
+        className="tw-col-span-4 tw-col-start-3 tw-text-base"
+        controls={[
+          ...getTrendsControlBarControls(
           [
             [daysRange, setDaysRange],
             [measurementWindowRange, setMeasurementWindowRange],
             [frequencyRange, setFrequencyRange],
-          ],
-          "row"
-        )}
+          ], "row"),
+          () => <GroupingSelector
+              label={"Show"}
+              groupings={[
+                {
+                  key: "traceable",
+                  display: "Traceable",
+                },
+                {
+                  key: "all",
+                  display: "All",
+                },
+              ]}
+              initialValue={"traceable"}
+              value={traceableOrAll}
+              onGroupingChanged={(selected) => setTraceableOrAll(selected)}
+            />
+        ]}
       >
         <DashboardWidget
           name="pr-closed-summary"
@@ -74,6 +95,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               <ClosedPullRequestsCardWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                specsOnly={traceableOnly}
                 view={view}
                 days={daysRange}
                 measurementWindow={daysRange}
@@ -106,6 +128,7 @@ export const DimensionPullRequestsDetailDashboard = ({
                 latestWorkItemEvent={latestWorkItemEvent}
                 latestPullRequestEvent={latestPullRequestEvent}
                 activeOnly={true}
+                specsOnly={traceableOnly}
                 cardSelection={cardSelection}
                 onClick={() => {
                   if (cardSelection !== "open") {
@@ -127,6 +150,7 @@ export const DimensionPullRequestsDetailDashboard = ({
             <PullRequestsCompletedTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              specsOnly={traceableOnly}
               view={view}
               days={daysRange}
               measurementWindow={measurementWindowRange}
@@ -152,6 +176,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               selectedFilter={selectedFilter}
               setFilter={setFilter}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
+              specsOnly={traceableOnly}
               before={before}
               setBefore={setBefore}
               closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
@@ -167,6 +192,7 @@ export const DimensionPullRequestsDetailDashboard = ({
             <PullRequestsReviewTimeTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              specsOnly={traceableOnly}
               view={view}
               days={daysRange}
               measurementWindow={measurementWindowRange}
@@ -193,6 +219,7 @@ export const DimensionPullRequestsDetailDashboard = ({
               latestPullRequestEvent={latestPullRequestEvent}
               activeOnly={cardSelection === "closed" || before ? undefined : true}
               before={cardSelection === "closed" && before === undefined ? toMoment(getTodayDate()) : before}
+              specsOnly={traceableOnly}
               setBefore={setBefore}
               closedWithinDays={
                 cardSelection === "closed" && before === undefined
