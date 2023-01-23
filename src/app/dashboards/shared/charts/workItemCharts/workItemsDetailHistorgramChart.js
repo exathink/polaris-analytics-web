@@ -93,7 +93,7 @@ export const WorkItemsDetailHistogramChart = Chart({
           return tooltipHtml_v2({
             header: `${capitalizeFirstLetter(this.series.name)}: ${this.point.category} <br/> ${this.point.y} ${getWorkItemTitle(stateType, specsOnly)}`,
             body: [
-              [`Average age: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
+              [`Average age: `, `${i18nNumber(intl, this.point.options.total / this.point.y, 2)} ${uom}`],
             ],
           });
         },
