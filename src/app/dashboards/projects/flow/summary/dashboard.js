@@ -75,7 +75,7 @@ export function NewFlowDashboard({
               groupings={[
                 {
                   key: "volume",
-                  display: "Time to Clear",
+                  display: "Residence Time",
                 },
                 {
                   key: "effort",
@@ -204,7 +204,7 @@ export function NewFlowDashboard({
               displayBag={{
                 funnelCenter: ["42%", "50%"],
                 title: "Flow, All Phases",
-                subTitle: volumeOrEffort === "volume" ? "Expected Time to Clear" : "Cost of Unshipped Code",
+                subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
                 series: {dataLabels: {fontSize: "14px"}},
                 legend: {title: {fontSize: "14px"}, fontSize: "14px"}
               }}

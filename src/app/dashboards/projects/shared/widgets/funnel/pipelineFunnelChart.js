@@ -2,7 +2,7 @@ import { Chart } from "../../../../../framework/viz/charts";
 import {
   DefaultSelectionEventHandler
 } from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
+import { pick, humanizeDuration, i18nNumber } from "../../../../../helpers/utility";
 import {
   Colors,
   WorkItemStateTypeColor,
@@ -11,7 +11,7 @@ import {
   AppTerms
 } from "../../../../shared/config";
 import { Highcharts } from "../../../../../framework/viz/charts/chartWrapper";
-import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
+import { tooltipHtml_v2 } from "../../../../../framework/viz/charts/tooltip";
 
 require("highcharts/modules/funnel")(Highcharts);
 
@@ -20,7 +20,7 @@ function getCloseRate(workItemStateTypeCounts, days) {
   return (workItemStateTypeCounts[WorkItemStateTypes.closed] || 0) / days;
 }
 
-function getTimeToClear(workItemStateTypeCounts, days) {
+function getResidenceTime(workItemStateTypeCounts, days) {
   const timeToClear = {};
   const closeRate = getCloseRate(workItemStateTypeCounts, days);
   if (closeRate > 0) {
@@ -44,6 +44,8 @@ function getTimeToClear(workItemStateTypeCounts, days) {
 }
 
 
+
+
 export const PipelineFunnelChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days", "leadTimeTarget", "cycleTimeTarget"),
   eventHandler: DefaultSelectionEventHandler,
@@ -57,24 +59,24 @@ export const PipelineFunnelChart = Chart({
                 cycleTimeTarget,
                 grouping,
                 showVolumeOrEffort = "volume",
-                displayBag={},
+                displayBag = {},
                 intl
               }) => {
 
     const selectedSummary = workItemStateTypeCounts;
-    const timeToClear = getTimeToClear(workItemStateTypeCounts, days);
-    const {funnelCenter = ["38%", "50%"], title, subTitle} = displayBag;
+    const timeToClear = getResidenceTime(workItemStateTypeCounts, days);
+    const { funnelCenter = ["38%", "50%"], title, subTitle } = displayBag;
     return {
       chart: {
         type: "funnel",
         backgroundColor: Colors.Chart.backgroundColor
       },
       title: {
-        text: title || `Flow, ${grouping === 'specs' ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`,
+        text: title || `Flow, ${grouping === "specs" ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`,
         align: "center"
       },
       subtitle: {
-        text: subTitle || (showVolumeOrEffort === 'volume' ? "Expected Time to Clear by Phase" : "Total Effort by Phase"),
+        text: subTitle || (showVolumeOrEffort === "volume" ? "Residence Time by Phase" : "Total Effort by Phase"),
         align: "center"
       },
       plotOptions: {
@@ -90,7 +92,7 @@ export const PipelineFunnelChart = Chart({
               fontSize: displayBag?.series?.dataLabels?.fontSize
             },
             softConnector: true,
-            color: "black",
+            color: "black"
           }, {
             enabled: true,
             align: "center",
@@ -126,7 +128,7 @@ export const PipelineFunnelChart = Chart({
           text: "Phases",
           style: {
             fontStyle: "italic",
-            fontSize: displayBag?.legend?.title?.fontSize,
+            fontSize: displayBag?.legend?.title?.fontSize
           }
         },
         align: "left",
@@ -161,7 +163,14 @@ export const PipelineFunnelChart = Chart({
         followPointer: false,
         hideDelay: 0,
         formatter: function() {
-          const timeToClear = this.point.timeToClear ? `<br/>Expected Time to Clear: ${humanizeDuration(this.point.timeToClear)}` : "";
+          let timeToClear = ``;
+          if (this.point.timeToClear != null) {
+            if (this.point.name === WorkItemStateTypeDisplayName.backlog) {
+              timeToClear =  `<br/>Supply: ${humanizeDuration(this.point.timeToClear)}`;
+            } else {
+              timeToClear = `<br/>Residence Time: ${humanizeDuration(this.point.timeToClear)}`;
+            }
+          }
           const closeRate = getCloseRate(workItemStateTypeCounts, days);
           const wipLevelInfo = [
             ["Avg. Throughput: ", `${i18nNumber(intl, closeRate, 3)} /day`],
@@ -174,9 +183,9 @@ export const PipelineFunnelChart = Chart({
           return tooltipHtml_v2({
               header: `Phase: ${this.point.name}${timeToClear}`,
               body: [
-                [`Volume: `, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? AppTerms.specs.display : AppTerms.cards.display}`],
+                [`${this.point.stateType === WorkItemStateTypes.closed ? "Volume:" : "Queue Size: " }`, ` ${intl.formatNumber(this.point.count)} ${grouping === "specs" ? AppTerms.specs.display : AppTerms.cards.display}`],
 
-                [`Effort: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
+                [`Cost: `, ` ${intl.formatNumber(totalEffortByStateType[this.point.stateType])}  FTE Days`],
 
                 ...(this.point.stateType === WorkItemStateTypes.closed ? wipLevelInfo : [["", ""]])
               ]
