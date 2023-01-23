@@ -55,7 +55,7 @@ export const DimensionPullRequestsDetailDashboard = ({
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Code Review Flow Analysis</div>
         <div className="tw-flex tw-justify-start tw-text-sm">
-          Open and Closed Pull Requests, Last {measurementWindow} Days
+          { traceableOnly ? "Traceable" : "All"} Open and Closed Pull Requests, Last {measurementWindow} Days
         </div>
       </div>
       <DashboardRow
