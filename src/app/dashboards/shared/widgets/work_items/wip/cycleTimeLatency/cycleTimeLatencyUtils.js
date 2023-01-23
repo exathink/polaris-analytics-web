@@ -1,6 +1,7 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import { localNow } from "../../../../../../helpers/utility";
+import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
+import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
 import { AppTerms, assignWorkItemStateColor } from "../../../../config";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
@@ -118,4 +119,11 @@ export function getTitleForHistogram({workItems, specsOnly, stageName}) {
   }`;
 
   return `Age Distribution: ${countDisplay} in ${stageName}`;
+}
+
+export function getTooltipForAgeLatency(tooltipObj, title, intl) {
+  return tooltipHtml_v2({
+    header: `${capitalizeFirstLetter(tooltipObj.series.name)}: ${tooltipObj.point.category} <br/> ${tooltipObj.point.y} ${title}`,
+    body: [[`Average age: `, `${i18nNumber(intl, tooltipObj.point.options.total / tooltipObj.point.y, 2)} days`]],
+  });
 }
