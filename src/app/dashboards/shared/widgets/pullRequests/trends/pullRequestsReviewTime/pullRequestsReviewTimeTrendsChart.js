@@ -22,14 +22,13 @@ export const PullRequestsReviewTimeTrendsChart = ({
   <MeasurementTrendLineChart
     measurements={pullRequestMetricsTrends}
     metrics={[
-      {key: "maxAge", displayName: "Max", visible: true, type: "spline", color: ResponseTimeMetricsColor.cycleTime},
       {key: "avgAge", displayName: "Avg", visible: true, type: "areaspline", color: ResponseTimeMetricsColor.cycleTime},
     ]}
     measurementPeriod={measurementPeriod}
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: "Review Time",
+      title: "Closed Pull Requests: Avg. Review Time",
       yAxisUom: "Days",
       plotBands: {
         metric: "avgAge",

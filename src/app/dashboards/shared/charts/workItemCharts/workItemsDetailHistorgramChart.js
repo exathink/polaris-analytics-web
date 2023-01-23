@@ -1,5 +1,5 @@
 import {Chart} from "../../../../framework/viz/charts";
-import { capitalizeFirstLetter, i18nNumber, pick } from "../../../../helpers/utility";
+import { i18nNumber, pick } from "../../../../helpers/utility";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {AppTerms, Colors, WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../config";
@@ -90,10 +90,12 @@ export const WorkItemsDetailHistogramChart = Chart({
         hideDelay: 50,
         formatter: function () {
           const uom = this.series.userOptions.id === "effort" ? "FTE Days" : "days";
-          return tooltipHtml_v2({
-            header: `${capitalizeFirstLetter(this.series.name)}: ${this.point.category} <br/> ${this.point.y} ${getWorkItemTitle(stateType, specsOnly)}`,
+
+          return chartConfig?.tooltip?.(this, getWorkItemTitle(stateType, specsOnly), intl) || tooltipHtml_v2({
+            header: `${this.series.name}: ${this.point.category}`,
             body: [
-              [`Average age: `, `${i18nNumber(intl, this.point.total / this.point.y, 2)} ${uom}`],
+              [getWorkItemTitle(stateType, specsOnly), this.point.y],
+              [`Average ${this.series.name}: `, `${i18nNumber(intl, this.point.options.total / this.point.y, 2)} ${uom}`],
             ],
           });
         },

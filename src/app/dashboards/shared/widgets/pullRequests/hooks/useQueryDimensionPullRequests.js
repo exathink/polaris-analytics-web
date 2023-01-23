@@ -1,10 +1,11 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export const getProjectPullRequests = (dimension) => gql`
+export const getDimensionPullRequests = (dimension) => gql`
 query ${dimension}PullRequests(
   $projectKey: String!
   $activeOnly: Boolean
+  $specsOnly: Boolean
   $before: DateTime
   $closedWithinDays: Int
   $referenceString: String
@@ -14,6 +15,7 @@ query ${dimension}PullRequests(
     pullRequests(
       interfaces: [BranchRef, WorkItemsSummaries]
       activeOnly: $activeOnly
+      specsOnly: $specsOnly
       before: $before
       closedWithinDays: $closedWithinDays
     ) {
@@ -44,12 +46,13 @@ query ${dimension}PullRequests(
 }
 `;
 
-export function useQueryDimensionPullRequests({dimension, instanceKey, activeOnly, before, closedWithinDays, referenceString}) {
-  return useQuery(getProjectPullRequests(dimension), {
+export function useQueryDimensionPullRequests({dimension, instanceKey, activeOnly, specsOnly, before, closedWithinDays, referenceString}) {
+  return useQuery(getDimensionPullRequests(dimension), {
     service: analytics_service,
     variables: {
       projectKey: instanceKey,
       activeOnly: activeOnly,
+      specsOnly: specsOnly,
       before: before,
       closedWithinDays: closedWithinDays,
       referenceString: referenceString,

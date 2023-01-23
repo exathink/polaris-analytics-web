@@ -1,7 +1,7 @@
 import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 
-import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
+import {useQueryDimensionPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryDimensionPullRequestMetricsTrends";
 import {PullRequestsCompletedTrendsView} from "./pullRequestsCompletedTrendsView";
 import {PullRequestsCompletedTrendsDetailDashboard} from "./pullRequestsCompletedTrendsDetailDashboard";
 import {toMoment} from "../../../../../../helpers/utility";
@@ -9,6 +9,7 @@ import {toMoment} from "../../../../../../helpers/utility";
 export const PullRequestsCompletedTrendsWidget = React.memo(({
   dimension,
   instanceKey,
+  specsOnly,
   view,
   context,
   days,
@@ -17,9 +18,10 @@ export const PullRequestsCompletedTrendsWidget = React.memo(({
   latestCommit,
   setBefore
 }) => {
-  const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
+  const {loading, error, data} = useQueryDimensionPullRequestMetricsTrends({
     dimension,
     instanceKey,
+    specsOnly,
     days,
     measurementWindow,
     samplingFrequency,

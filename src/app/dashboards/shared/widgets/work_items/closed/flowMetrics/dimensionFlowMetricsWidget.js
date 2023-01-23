@@ -4,7 +4,7 @@ import {AggregateFlowMetricsView} from "./aggregateFlowMetricsView";
 import {DimensionFlowMetricsDetailDashboard} from "./dimensionFlowMetricsDetailDashboard";
 import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
 import { getReferenceString } from "../../../../../../helpers/utility";
-import { useQueryProjectPullRequestMetricsTrends } from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
+import { useQueryDimensionPullRequestMetricsTrends } from "../../../../../projects/shared/hooks/useQueryDimensionPullRequestMetricsTrends";
 
 export const DimensionFlowMetricsWidget = (
   {
@@ -44,7 +44,7 @@ export const DimensionFlowMetricsWidget = (
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   });
-  const {loading: loading1, error: error1, data: data1} = useQueryProjectPullRequestMetricsTrends({
+  const {loading: loading1, error: error1, data: data1} = useQueryDimensionPullRequestMetricsTrends({
     dimension,
     instanceKey,
     days,

@@ -22,6 +22,7 @@ export const dashboard = () => (
         <DimensionPullRequestsDetailDashboard
           dimension={"project"}
           instanceKey={project.key}
+          specsOnly={true}
           latestWorkItemEvent={project.latestWorkItemEvent}
           latestCommit={project.latestCommit}
           latestPullRequestEvent={project.latestPullRequestEvent}
