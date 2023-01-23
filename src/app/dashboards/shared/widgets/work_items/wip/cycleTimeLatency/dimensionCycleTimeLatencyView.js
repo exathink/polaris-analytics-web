@@ -8,7 +8,7 @@ import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { AppTerms } from "../../../../config";
 import { useIntl } from "react-intl";
 import {EVENT_TYPES, localNow, useBlurClass, useFeatureFlag} from "../../../../../../helpers/utility";
-import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, getTitleForHistogram} from "./cycleTimeLatencyUtils";
+import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, getTitleForHistogram, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useGenerateTicks } from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
@@ -71,6 +71,7 @@ export const DimensionCycleTimeLatencyView = ({
                 subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
                 xAxisTitle: "Age in Days",
                 legendItemClick: () => {},
+                tooltip: getTooltipForAgeLatency,
               }}
               selectedMetric={"age"}
               specsOnly={specsOnly}

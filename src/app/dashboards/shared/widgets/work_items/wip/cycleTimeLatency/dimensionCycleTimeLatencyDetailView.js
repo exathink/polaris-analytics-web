@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {COL_WIDTH_BOUNDARIES, getQuadrant} from "./cycleTimeLatencyUtils";
+import {COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -234,6 +234,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   title: `Age Distribution: ${stageName}`,
                   subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
                   xAxisTitle: "Age in Days",
+                  tooltip: getTooltipForAgeLatency
                 }}
                 selectedMetric={"age"}
                 specsOnly={specsOnly}
@@ -246,6 +247,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   title: `Age Distribution: ${stageName}`,
                   subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
                   xAxisTitle: "Age in Days",
+                  tooltip: getTooltipForAgeLatency
                 }}
                 selectedMetric={"age"}
                 specsOnly={specsOnly}
