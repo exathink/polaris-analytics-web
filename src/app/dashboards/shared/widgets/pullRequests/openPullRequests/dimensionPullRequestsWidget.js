@@ -23,6 +23,7 @@ export const DimensionPullRequestsWidget = ({
   context,
   pollInterval,
   activeOnly,
+  specsOnly,
   closedWithinDays,
   asStatistic,
   asCard,
@@ -37,6 +38,7 @@ export const DimensionPullRequestsWidget = ({
     dimension,
     instanceKey,
     activeOnly: activeOnly,
+    specsOnly: specsOnly,
     before: before,
     closedWithinDays: closedWithinDays,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
@@ -59,6 +61,7 @@ export const DimensionPullRequestsWidget = ({
       <DimensionPullRequestsDetailDashboard
         dimension={dimension}
         instanceKey={instanceKey}
+        specsOnly={specsOnly}
         latestWorkItemEvent={latestWorkItemEvent}
         latestCommit={latestCommit}
         latestPullRequestEvent={latestPullRequestEvent}

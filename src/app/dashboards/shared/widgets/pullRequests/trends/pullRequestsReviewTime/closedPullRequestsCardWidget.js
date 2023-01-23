@@ -1,14 +1,15 @@
 import React from "react";
 import {Loading} from "../../../../../../components/graphql/loading";
 
-import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
+import {useQueryDimensionPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryDimensionPullRequestMetricsTrends";
 import {ClosedPullRequestsCardView} from "./closedPullRequestsCardView";
 
 export const ClosedPullRequestsCardWidget = React.memo(
-  ({dimension, instanceKey, view, days, measurementWindow, samplingFrequency, latestCommit, cardSelection, onClick, latencyTarget}) => {
-    const {loading, error, data} = useQueryProjectPullRequestMetricsTrends({
+  ({dimension, instanceKey, specsOnly,  view, days, measurementWindow, samplingFrequency, latestCommit, cardSelection, onClick, latencyTarget}) => {
+    const {loading, error, data} = useQueryDimensionPullRequestMetricsTrends({
       dimension,
       instanceKey,
+      specsOnly,
       days,
       measurementWindow,
       samplingFrequency,

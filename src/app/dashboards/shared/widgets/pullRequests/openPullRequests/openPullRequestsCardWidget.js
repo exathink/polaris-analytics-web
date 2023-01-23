@@ -8,6 +8,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 export const OpenPullRequestsCardWidget = ({
   dimension,
   instanceKey,
+  specsOnly,
   latestWorkItemEvent,
   latestCommit,
   latestPullRequestEvent,
@@ -20,6 +21,7 @@ export const OpenPullRequestsCardWidget = ({
     dimension,
     instanceKey,
     activeOnly: activeOnly,
+    specsOnly: specsOnly,
     referenceString: getReferenceString(latestCommit, latestWorkItemEvent, latestPullRequestEvent),
   });
 

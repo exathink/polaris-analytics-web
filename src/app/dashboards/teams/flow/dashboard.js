@@ -183,6 +183,7 @@ function WipDashboard({
               latestPullRequestEvent={latestPullRequestEvent}
               asStatistic={false}
               activeOnly={true}
+              specsOnly={true}
               days={wipAnalysisPeriod}
               measurementWindow={wipAnalysisPeriod}
               samplingFrequency={wipAnalysisPeriod}

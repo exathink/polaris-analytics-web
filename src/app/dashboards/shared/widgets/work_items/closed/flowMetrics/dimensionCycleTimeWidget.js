@@ -3,7 +3,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {CycleTimeDetailView} from "./aggregateFlowMetricsView";
 import {useQueryDimensionFlowMetrics} from "./useQueryDimensionFlowMetrics";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import {useQueryProjectPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryProjectPullRequestMetricsTrends";
+import {useQueryDimensionPullRequestMetricsTrends} from "../../../../../projects/shared/hooks/useQueryDimensionPullRequestMetricsTrends";
 
 export const DimensionCycleTimeWidget = ({
   dimension,
@@ -40,7 +40,7 @@ export const DimensionCycleTimeWidget = ({
     loading: loading1,
     error: error1,
     data: data1,
-  } = useQueryProjectPullRequestMetricsTrends({
+  } = useQueryDimensionPullRequestMetricsTrends({
     dimension,
     instanceKey,
     days,

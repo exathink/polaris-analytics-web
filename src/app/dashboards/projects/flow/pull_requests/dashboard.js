@@ -26,6 +26,7 @@ export const dashboard = () => (
           latestCommit={project.latestCommit}
           latestPullRequestEvent={project.latestPullRequestEvent}
           context={context}
+          specsOnly={true}
           days={flowAnalysisPeriod}
           measurementWindow={flowAnalysisPeriod}
           samplingFrequency={flowAnalysisPeriod}
