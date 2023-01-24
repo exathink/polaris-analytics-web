@@ -6,6 +6,9 @@ import {logGraphQlError} from "../../../components/graphql/utils";
 // As we do not want to render without provider and fail in that case if its there.
 const WidgetContext = React.createContext();
 
+/**
+ * Consume Graphql Query result from WidgetProvider
+ */
 export function useWidget() {
   const context = React.useContext(WidgetContext);
   if (context === undefined) {
