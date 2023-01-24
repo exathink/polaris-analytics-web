@@ -35,7 +35,7 @@ export function useWidget() {
  *   // ViewComponent template
  *   // No need to pass queryVars to ViewComponent as props, since they are available from useWidget() hook
  *   export function ViewComponent(props) {
- *     const {data, loading, error, variables} = useWidget();
+ *     const {data, loading, error, variables: {dimension, specsOnly}} = useWidget();
  * 
  *     // use data and view_props to render views
  *     return <div> {data} </div>;
