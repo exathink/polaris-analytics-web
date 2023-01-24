@@ -76,7 +76,7 @@ export const PipelineFunnelChart = Chart({
         align: "center"
       },
       subtitle: {
-        text: subTitle || (showVolumeOrEffort === "volume" ? "Residence Time by Phase" : "Total Effort by Phase"),
+        text: (showVolumeOrEffort === "volume" ? "Avg. Residence Time by Phase" : "Total Effort by Phase"),
         align: "center"
       },
       plotOptions: {
@@ -168,7 +168,7 @@ export const PipelineFunnelChart = Chart({
             if (this.point.name === WorkItemStateTypeDisplayName.backlog) {
               timeToClear =  `<br/>Supply: ${humanizeDuration(this.point.timeToClear)}`;
             } else {
-              timeToClear = `<br/>Residence Time: ${humanizeDuration(this.point.timeToClear)}`;
+              timeToClear = `<br/>Avg. Residence Time: ${humanizeDuration(this.point.timeToClear)}`;
             }
           }
           const closeRate = getCloseRate(workItemStateTypeCounts, days);
