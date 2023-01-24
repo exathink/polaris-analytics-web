@@ -56,7 +56,7 @@ export function FlowMetricsView({
       ),
     volumeWithThroughput: (
       <VolumeWithThroughput
-        title={"Closed"}
+        title={"Volume"}
         displayType={displayType}
         displayProps={{
           info: {title: "title"},
