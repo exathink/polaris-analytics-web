@@ -91,7 +91,7 @@ export const FlowMixTrendsChart = Chart({
       [];
     const series = [...work_item_count_series, ...flow_mix_series];
 
-    const metricDisplay = specsOnly ? 'Traceable Effort' : 'Volume';
+    const metricDisplay = specsOnly ? 'Capacity' : 'Volume';
 
     return {
       chart: {
@@ -107,7 +107,7 @@ export const FlowMixTrendsChart = Chart({
         align: alignTitle || 'center',
       },
       subtitle: {
-        text: subTitle || showCounts ? `% of ${metricDisplay}` : `% of ${metricDisplay} by Value Type`,
+        text: specsOnly ? '%Capacity, %Volume' : '%Volume',
         align: alignTitle || 'center',
       },
       legend: {

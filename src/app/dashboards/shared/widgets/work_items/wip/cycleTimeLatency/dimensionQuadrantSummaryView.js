@@ -29,13 +29,13 @@ export const DimensionQuadrantSummaryView = ({
 
   return (
     <PlainCard
-      title="Flow Efficiency"
+      title="WIP Flow Efficiency"
       value={flowEfficiencyPercentage}
       info={{title: "Flow Efficiency"}}
       detailsView={{
         title: (
           <div className="tw-text-lg tw-text-gray-300">
-            Flow Efficiency,{" "}
+            WIP Flow Efficiency,{" "}
             <span className="tw-text-base tw-italic">
               {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
             </span>
