@@ -2,6 +2,11 @@ import React from "react";
 import {Loading} from "../../../components/graphql/loading";
 import {logGraphQlError} from "../../../components/graphql/utils";
 
+/**
+ * @typedef {import('@apollo/client').QueryResult} QueryResult
+ * @typedef {import('react').ReactNode} ReactNode
+ */
+
 // not including a default value and that's intentional.
 // As we do not want to render without provider and fail in that case if its there.
 const WidgetContext = React.createContext();
@@ -65,10 +70,6 @@ export function useWidget() {
  * ```
  */
 
-/**
- * @typedef {import('@apollo/client').QueryResult} QueryResult
- * @typedef {import('react').ReactNode} ReactNode
- */
 
 /**
  * @typedef {Object} WidgetCoreProps
