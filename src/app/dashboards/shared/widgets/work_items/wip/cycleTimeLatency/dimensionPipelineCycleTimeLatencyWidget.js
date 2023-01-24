@@ -1,93 +1,16 @@
-import React from 'react';
-import {Loading} from "../../../../../../components/graphql/loading";
+import React from "react";
+import {WidgetCore} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
-import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
-import {getReferenceString} from "../../../../../../helpers/utility";
-import {logGraphQlError} from "../../../../../../components/graphql/utils";
-import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
 
+export const DimensionPipelineCycleTimeLatencyWidget = ({queryVars, children}) => {
+  const result = useQueryDimensionPipelineStateDetails(queryVars);
 
-export const DimensionPipelineCycleTimeLatencyWidget = (
-  {
-    dimension,
-    instanceKey,
-    specsOnly,
-    workItemScope,
-    setWorkItemScope,
-    stateTypes,
-    latestWorkItemEvent,
-    latestCommit,
-    days,
-    cycleTimeTarget,
-    targetPercentile,
-    latencyTarget,
-    stageName,
-    groupByState,
-    includeSubTasks,
-    tooltipType,
-    view,
-    context,
-    displayBag
-  }
-) => {
-
-
-
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
-    dimension,
-    instanceKey,
-    specsOnly,
-    activeOnly: true,
-    includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
-  if (loading) return <Loading/>;
-  if (error) {
-    logGraphQlError('DimensionPipelineCycleTimeLatencyWidget.pipelineStateDetails', error);
-    return null;
-  }
-
-
-
-  if (view === "detail") {
-    return (
-      <DimensionCycleTimeLatencyDetailView
-        dimension={dimension}
-        workItemScope={workItemScope}
-        setWorkItemScope={setWorkItemScope}
-        specsOnly={specsOnly}
-        data={data}
-        // stateTypes={stateTypes}
-        stageName={stageName}
-        groupByState={groupByState}
-        cycleTimeTarget={cycleTimeTarget}
-        latencyTarget={latencyTarget}
-        tooltipType={tooltipType}
-        view={view}
-        context={context}
-      />
-    );
-  } else {
-    return (
-      <DimensionCycleTimeLatencyView
-        dimension={dimension}
-        stageName={stageName}
-        specsOnly={specsOnly}
-        workItemScope={workItemScope}
-        setWorkItemScope={setWorkItemScope}
-        data={data}
-        stateTypes={stateTypes}
-        groupByState={groupByState}
-        cycleTimeTarget={cycleTimeTarget}
-        latencyTarget={latencyTarget}
-        tooltipType={tooltipType}
-        view={view}
-        context={context}
-        displayBag={displayBag}
-      />
-    );
-  }
-}
+  return (
+    <WidgetCore result={result} errorContext="DimensionPipelineCycleTimeLatencyWidget.pipelineStateDetails">
+      {children}
+    </WidgetCore>
+  );
+};
 
 DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
   title: "Coding",
@@ -97,6 +20,8 @@ DimensionPipelineCycleTimeLatencyWidget.infoConfig = {
     </>
   ),
   content1: () => (
-    <><p>Detailed Description</p></>
+    <>
+      <p>Detailed Description</p>
+    </>
   ),
 };
