@@ -31,20 +31,18 @@ export function getSubTitle({workItems, specsOnly, intl}) {
 }
 
 export const DimensionCycleTimeLatencyView = ({
-  dimension,
   stageName,
   stateTypes,
   groupByState,
   cycleTimeTarget,
   latencyTarget,
-  specsOnly,
   tooltipType,
   view,
   context,
   displayBag={}
 }) => {
   const intl = useIntl();
-  const {data} = useWidget();
+  const {data, variables: {dimension, specsOnly}} = useWidget();
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 

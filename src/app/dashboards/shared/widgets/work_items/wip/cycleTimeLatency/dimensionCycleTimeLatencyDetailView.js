@@ -83,7 +83,6 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 // }
 
 export const DimensionCycleTimeLatencyDetailView = ({
-  dimension,
   stateTypes,
   stageName,
   groupByState,
@@ -91,13 +90,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
   latencyTarget,
   workItemScope,
   setWorkItemScope,
-  specsOnly,
   tooltipType,
   view,
   context,
 }) => {
   const intl = useIntl();
-  const {data} = useWidget();
+  const {data, variables: {dimension, specsOnly}} = useWidget();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
