@@ -14,7 +14,8 @@ export function useWidget() {
   return context;
 }
 /**
- * this is the widget component which we write for every new query
+ * ```
+ * // this is the widget component which we write for every new query
  * import {useQueryFn} from "file-path";
  * export function SpecialWidget({children, queryVars}) {
  *   const result = useQueryHookFn(queryVars);
@@ -56,6 +57,7 @@ export function useWidget() {
  *      </SpecialWidget>
  *     );
  *   }
+ * ```
  * 
 }
  */
