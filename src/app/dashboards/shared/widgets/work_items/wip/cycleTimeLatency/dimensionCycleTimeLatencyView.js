@@ -31,6 +31,7 @@ export function getSubTitle({workItems, specsOnly, intl}) {
 }
 
 export const DimensionCycleTimeLatencyView = ({
+  dimension,
   stageName,
   stateTypes,
   groupByState,
@@ -42,7 +43,8 @@ export const DimensionCycleTimeLatencyView = ({
   displayBag={}
 }) => {
   const intl = useIntl();
-  const {data, variables: {dimension, specsOnly}} = useWidget();
+  const {data, variables: {specsOnly}} = useWidget();
+
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 
