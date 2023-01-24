@@ -89,7 +89,8 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
-              title={`Cost Allocations: Last ${daysRange} Days`}
+              title={`Allocations: Last ${daysRange} Days`}
+              subTitle={`% Capacity and % Volume`}
               instanceKey={key}
               measurementWindow={daysRange}
               days={daysRange}
@@ -119,7 +120,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
-              title={"Time to Market"}
+              title={"Time to Market, All Dev Items"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
