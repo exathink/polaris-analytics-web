@@ -67,7 +67,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
 
         <div className="tw-shrink-0 tw-text-base">
           <WorkItemScopeSelector
-            display={["Costs", "Allocations"]}
+            display={["Dev-Items", "All"]}
             workItemScope={workItemScope}
             setWorkItemScope={setWorkItemScope}
           />
