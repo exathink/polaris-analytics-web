@@ -61,8 +61,24 @@ export function useWidget() {
  *     );
  *   }
  * ```
- * 
-}
+ */
+
+/**
+ * @typedef {import('@apollo/client').QueryResult} QueryResult
+ * @typedef {import('react').ReactNode} ReactNode
+ */
+
+/**
+ * @typedef {Object} WidgetCoreProps
+ * @property {QueryResult} result - The result of the GraphQL query
+ * @property {ReactNode} children - The children to render within the context provider
+ * @property {boolean} showLoadingError - A flag indicating whether to show loading or error states
+ * @property {string} errorContext - A string to indicate context of the error
+ */
+
+/**
+ * Component that provides the result of a GraphQL query as context to its children
+ * @param {WidgetCoreProps} props 
  */
 export function WidgetCore({children, result, showLoadingError = true, errorContext = ""}) {
   if (showLoadingError) {
