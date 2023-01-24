@@ -97,7 +97,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   context,
 }) => {
   const intl = useIntl();
-  const data = useWidget();
+  const {data} = useWidget();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);

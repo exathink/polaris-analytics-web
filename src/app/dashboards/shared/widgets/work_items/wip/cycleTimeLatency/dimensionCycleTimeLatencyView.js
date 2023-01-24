@@ -44,7 +44,7 @@ export const DimensionCycleTimeLatencyView = ({
   displayBag={}
 }) => {
   const intl = useIntl();
-  const data = useWidget();
+  const {data} = useWidget();
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 
