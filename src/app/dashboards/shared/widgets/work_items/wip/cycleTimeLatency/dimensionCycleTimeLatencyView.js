@@ -12,6 +12,7 @@ import {useCycleTimeLatencyHook, getSubTitleForHistogram, COL_WIDTH_BOUNDARIES, 
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { useGenerateTicks } from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
+import { useWidget } from "../../../../../../framework/viz/dashboard/widgetCore";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -32,7 +33,6 @@ export function getSubTitle({workItems, specsOnly, intl}) {
 export const DimensionCycleTimeLatencyView = ({
   dimension,
   stageName,
-  data,
   stateTypes,
   groupByState,
   cycleTimeTarget,
@@ -44,6 +44,7 @@ export const DimensionCycleTimeLatencyView = ({
   displayBag={}
 }) => {
   const intl = useIntl();
+  const data = useWidget();
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 

@@ -25,6 +25,7 @@ import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/w
 import {useIntl} from "react-intl";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
 import { AGE_LATENCY_ENHANCEMENTS } from "../../../../../../../config/featureFlags";
+import { useWidget } from "../../../../../../framework/viz/dashboard/widgetCore";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -83,7 +84,6 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
-  data,
   stateTypes,
   stageName,
   groupByState,
@@ -97,6 +97,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   context,
 }) => {
   const intl = useIntl();
+  const data = useWidget();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
