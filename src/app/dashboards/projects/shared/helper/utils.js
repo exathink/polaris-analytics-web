@@ -57,14 +57,14 @@ export function getHistogramCategories(colWidthBoundaries, uom) {
   return [...lessThanOneArr, start, ...middle, end];
 }
 
-export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id}) {
+export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id, originalData}) {
   const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill({y: 0, total: 0});
-  points.forEach((y) => {
+  const data = new Array(allPairsData.length).fill({y: 0, total: 0, bucket: []});
+  points.forEach((y, index) => {
     for (let i = 0; i < allPairsData.length; i++) {
       const [x1, x2] = allPairsData[i];
       if (y >= x1 && y < x2) {
-        data[i] = {y: data[i].y + 1, total: data[i].total + y};
+        data[i] = {y: data[i].y + 1, total: data[i].total + y, bucket: [...data[i].bucket, originalData[index]]};
 
         // we found the correct bucket, no need to traverse entire loop now
         break;
