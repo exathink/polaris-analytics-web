@@ -65,9 +65,9 @@ export function useCycleTimeLatencyHook(workItems) {
       .reduce((acc, item, index) => {
         const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
         if (acc[item.state] == null) {
-          acc[item.state] = [{ageVal, stateType: item.stateType}];
+          acc[item.state] = [{ageVal, ...item}];
         } else {
-          acc[item.state] = [...acc[item.state], {ageVal, stateType: item.stateType}];
+          acc[item.state] = [...acc[item.state], {ageVal, ...item}];
         }
         return acc;
       }, {});
@@ -79,6 +79,7 @@ export function useCycleTimeLatencyHook(workItems) {
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         name: String(state).toLowerCase(),
         points: points.map(x => x.ageVal),
+        originalData: points,
         color: assignWorkItemStateColor(points[0].stateType, index)
       });
     });
