@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
+import {ClearFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -19,20 +19,21 @@ import {
   uniqueIssueTypes,
 } from "../../../../components/select/selectIssueTypeDropdown";
 import {useSelect} from "../../../../components/select/selectDropdown";
-import { defaultTeam, getAllUniqueTeams, SelectTeamDropdown } from "../../../../components/select/selectTeamDropdown";
+import {defaultTeam, getAllUniqueTeams, SelectTeamDropdown} from "../../../../components/select/selectTeamDropdown";
 import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {useIntl} from "react-intl";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
-import { AGE_LATENCY_ENHANCEMENTS } from "../../../../../../../config/featureFlags";
+import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
+import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
 
 const QuadrantStateTypes = {
   engineering: "engineering",
-  delivery: "delivery"
-}
+  delivery: "delivery",
+};
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -83,7 +84,6 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
-  data,
   stateTypes,
   stageName,
   groupByState,
@@ -91,12 +91,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
   latencyTarget,
   workItemScope,
   setWorkItemScope,
-  specsOnly,
   tooltipType,
   view,
   context,
 }) => {
   const intl = useIntl();
+  const {
+    data,
+    variables: {specsOnly},
+  } = useWidget();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
@@ -174,12 +177,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setAppliedFilters(EmptyObj);
     setSelectedQuadrant(undefined);
 
-    setQuadrantStateType(undefined)
+    setQuadrantStateType(undefined);
     // reset chart components state
     resetComponentState();
   }
 
-  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
+  const {
+    selectedVal: {key: selectedIssueType},
+    valueIndex: issueTypeValueIndex,
+    handleChange: handleIssueTypeChange,
+  } = useSelect({
     uniqueItems: uniqueIssueTypes,
     defaultVal: defaultIssueType,
   });
@@ -190,7 +197,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
       (x) => x.teamKey
     ).map((x) => ({key: x.teamKey, name: x.teamName}))
   );
-  const {selectedVal: {key: selectedTeam}, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
+  const {
+    selectedVal: {key: selectedTeam},
+    valueIndex: teamValueIndex,
+    handleChange: handleTeamChange,
+  } = useSelect({
     uniqueItems: uniqueTeams,
     defaultVal: defaultTeam,
   });
@@ -205,6 +216,20 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
+
+  const [selectedCodingFilter, setCodingFilter] = React.useState([]);
+  const [selectedCodingCategory, setSelectedCodingCategory] = React.useState();
+  function handleCodingClearClick() {
+    setCodingFilter([]);
+    setSelectedCodingCategory(undefined);
+  }
+
+  const [selectedDeliveryFilter, setDeliveryFilter] = React.useState([]);
+  const [selectedDeliveryCategory, setSelectedDeliveryCategory] = React.useState();
+  function handleDeliveryClearClick() {
+    setDeliveryFilter([]);
+    setSelectedDeliveryCategory(undefined);
+  }
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
@@ -229,32 +254,86 @@ export const DimensionCycleTimeLatencyDetailView = ({
         >
           {ageLatencyFeatureFlag ? (
             <>
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Distribution: ${stageName}`,
-                  subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataEngineering}
-              />
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Distribution: ${stageName}`,
-                  subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataDelivery}
-              />
+              {selectedCodingFilter.length > 0 && (
+                <div className="tw-relative tw-h-full">
+                  <WorkItemsCycleTimeVsLatencyChart
+                    view={view}
+                    stageName={"Coding"}
+                    specsOnly={specsOnly}
+                    workItems={selectedCodingFilter}
+                    stateTypes={engineeringStateTypes}
+                    groupByState={groupByState}
+                    cycleTimeTarget={cycleTimeTarget}
+                    latencyTarget={latencyTarget}
+                    tooltipType={tooltipType}
+                    onSelectionChange={handleSelectionChange}
+                    selectedQuadrant={
+                      quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined
+                    }
+                  />
+                  <ClearFilterWrapper selectedFilter={selectedCodingCategory} handleClearClick={handleCodingClearClick} />
+                </div>
+              )}
+              {selectedCodingFilter.length === 0 && (
+                <WorkItemsDetailHistogramChart
+                  chartConfig={{
+                    title: `Age Distribution: Coding`,
+                    subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
+                    xAxisTitle: "Age in Days",
+                    tooltip: getTooltipForAgeLatency,
+                    legendItemClick: () => {},
+                  }}
+                  selectedMetric={"age"}
+                  specsOnly={specsOnly}
+                  colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+                  stateType={"deliver"}
+                  series={seriesDataEngineering}
+                  onPointClick={({options, category}) => {
+                    const bucket = options.bucket;
+                    setCodingFilter?.(bucket);
+                    setSelectedCodingCategory(category);
+                  }}
+                />
+              )}
+              {selectedDeliveryFilter.length > 0 && (
+                <div className="tw-relative tw-h-full">
+                  <WorkItemsCycleTimeVsLatencyChart
+                    view={view}
+                    stageName={"Delivery"}
+                    specsOnly={specsOnly}
+                    workItems={selectedDeliveryFilter}
+                    stateTypes={deliveryStateTypes}
+                    groupByState={groupByState}
+                    cycleTimeTarget={cycleTimeTarget}
+                    latencyTarget={latencyTarget}
+                    tooltipType={tooltipType}
+                    onSelectionChange={handleSelectionChange}
+                    selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
+                  />
+                  <ClearFilterWrapper selectedFilter={selectedDeliveryCategory} handleClearClick={handleDeliveryClearClick} />
+                </div>
+              )}
+              {selectedDeliveryFilter.length === 0 && (
+                <WorkItemsDetailHistogramChart
+                  chartConfig={{
+                    title: `Age Distribution: Delivery`,
+                    subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
+                    xAxisTitle: "Age in Days",
+                    tooltip: getTooltipForAgeLatency,
+                    legendItemClick: () => {},
+                  }}
+                  selectedMetric={"age"}
+                  specsOnly={specsOnly}
+                  colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+                  stateType={"deliver"}
+                  series={seriesDataDelivery}
+                  onPointClick={({options, category}) => {
+                    const bucket = options.bucket;
+                    setDeliveryFilter?.(bucket);
+                    setSelectedDeliveryCategory(category);
+                  }}
+                />
+              )}
             </>
           ) : (
             <>

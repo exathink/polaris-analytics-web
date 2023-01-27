@@ -3,6 +3,7 @@ import {useIntl} from "react-intl";
 import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
+import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, assignWorkItemStateColor } from "../../../../config";
 import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -65,9 +66,9 @@ export function useCycleTimeLatencyHook(workItems) {
       .reduce((acc, item, index) => {
         const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
         if (acc[item.state] == null) {
-          acc[item.state] = [{ageVal, stateType: item.stateType}];
+          acc[item.state] = [{ageVal, ...item}];
         } else {
-          acc[item.state] = [...acc[item.state], {ageVal, stateType: item.stateType}];
+          acc[item.state] = [...acc[item.state], {ageVal, ...item}];
         }
         return acc;
       }, {});
@@ -79,6 +80,7 @@ export function useCycleTimeLatencyHook(workItems) {
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         name: String(state).toLowerCase(),
         points: points.map(x => x.ageVal),
+        originalData: points,
         color: assignWorkItemStateColor(points[0].stateType, index)
       });
     });
@@ -126,4 +128,17 @@ export function getTooltipForAgeLatency(tooltipObj, title, intl) {
     header: `${capitalizeFirstLetter(tooltipObj.series.name)}: ${tooltipObj.point.category} <br/> ${tooltipObj.point.y} ${title}`,
     body: [[`Average age: `, `${i18nNumber(intl, tooltipObj.point.options.total / tooltipObj.point.y, 2)} days`]],
   });
+}
+
+export function ClearFilterWrapper({selectedFilter, handleClearClick}) {
+  return (
+    <div className="tw-absolute tw-right-12 tw-top-0">
+      <ClearFilters
+        selectedFilter={selectedFilter}
+        selectedMetric={"Age Bucket"}
+        stateType={""}
+        handleClearClick={handleClearClick}
+      />
+    </div>
+  );
 }

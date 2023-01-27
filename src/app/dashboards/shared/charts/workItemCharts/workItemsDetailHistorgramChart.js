@@ -116,12 +116,11 @@ export const WorkItemsDetailHistogramChart = Chart({
           point: {
             events: {
               click: function () {
-                const category = this.category;
                 const selectedMetric = this.series.userOptions.id;
                 // update subtitle
                 this.series.chart.setSubtitle({text: getNewSubtitle(this.y, specsOnly, stateType)});
 
-                onPointClick({category, selectedMetric});
+                onPointClick?.({...this, selectedMetric});
               },
             },
           },
