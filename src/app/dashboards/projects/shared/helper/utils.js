@@ -57,7 +57,7 @@ export function getHistogramCategories(colWidthBoundaries, uom) {
   return [...lessThanOneArr, start, ...middle, end];
 }
 
-export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id, originalData}) {
+export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id, originalData=[]}) {
   const allPairsData = allPairs(colWidthBoundaries);
   const data = new Array(allPairsData.length).fill({y: 0, total: 0, bucket: []});
   points.forEach((y, index) => {
