@@ -12,7 +12,7 @@ export function ClearFilters({selectedFilter, selectedMetric, stateType, handleC
       title="Clear Filters"
       onClick={handleClearClick}
     >
-      <div className="tw-textXs tw-flex tw-flex-row tw-items-start tw-gap-1">
+      <div className="tw-textXs tw-flex tw-flex-row tw-justify-center tw-gap-1">
         <div>
           <ClearFilterIcon style={{color: getSelectedMetricColor(selectedMetric, stateType)}} />
         </div>
@@ -20,7 +20,7 @@ export function ClearFilters({selectedFilter, selectedMetric, stateType, handleC
       </div>
       <div className="tw-w-full">
         <Tag color={getSelectedMetricColor(selectedMetric, stateType)} className="tw-w-full tw-text-center">
-          {selectedFilter}
+          <span className="tw-px-2">{selectedFilter}</span>
         </Tag>
       </div>
     </div>

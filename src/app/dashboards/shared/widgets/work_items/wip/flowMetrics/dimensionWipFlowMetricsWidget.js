@@ -74,19 +74,21 @@ export const DimensionWipFlowMetricsWidget = ({
   } else {
     return (
       <DimensionPipelineCycleTimeLatencyWidget
-        dimension={dimension}
-        instanceKey={instanceKey}
+        queryVars={{
+          dimension: dimension,
+          instanceKey: instanceKey,
+          specsOnly: workItemScope === "specs",
+          activeOnly: true,
+          includeSubTasks: includeSubTasks,
+          referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+        }}
         view={view}
         tooltipType="small"
         groupByState={true}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget || cycleTimeTarget}
         context={context}
-        latestWorkItemEvent={latestWorkItemEvent}
-        latestCommit={latestCommit}
         targetPercentile={cycleTimeTargetPercentile}
-        specsOnly={workItemScope === "specs"}
-        includeSubTasks={includeSubTasks}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
       />
