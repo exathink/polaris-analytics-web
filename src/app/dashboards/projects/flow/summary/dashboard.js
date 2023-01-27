@@ -48,7 +48,7 @@ export function NewFlowDashboard({
     >
       <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Flow Analysis, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+          Flow Monitoring, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
         </div>
         <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
