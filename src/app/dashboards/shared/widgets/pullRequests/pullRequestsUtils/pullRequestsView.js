@@ -75,7 +75,6 @@ export function PullRequestsView({
         intl,
         colWidthBoundaries: COL_WIDTH_BOUNDARIES,
         points: pullRequests.map((x) => x["age"]),
-        originalData: pullRequests,
         name: pullRequestsType === "closed" ? "Time to Review" : "Age",
         visible: true,
         color: ResponseTimeMetricsColor.duration,
