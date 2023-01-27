@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
+import {ClearFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -26,7 +26,6 @@ import {useIntl} from "react-intl";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
-import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -272,14 +271,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                       quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined
                     }
                   />
-                  <div className="tw-absolute tw-inset-0 tw-m-auto tw-w-1/4">
-                    <ClearFilters
-                      selectedFilter={selectedCodingCategory}
-                      selectedMetric={"Age Bucket"}
-                      stateType={""}
-                      handleClearClick={handleCodingClearClick}
-                    />
-                  </div>
+                  <ClearFilterWrapper selectedFilter={selectedCodingCategory} handleClearClick={handleCodingClearClick} />
                 </div>
               )}
               {selectedCodingFilter.length === 0 && (
@@ -317,14 +309,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     onSelectionChange={handleSelectionChange}
                     selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
                   />
-                  <div className="tw-absolute tw-inset-0 tw-m-auto tw-w-1/4">
-                    <ClearFilters
-                      selectedFilter={selectedDeliveryCategory}
-                      selectedMetric={"Age Bucket"}
-                      stateType={""}
-                      handleClearClick={handleDeliveryClearClick}
-                    />
-                  </div>
+                  <ClearFilterWrapper selectedFilter={selectedDeliveryCategory} handleClearClick={handleDeliveryClearClick} />
                 </div>
               )}
               {selectedDeliveryFilter.length === 0 && (

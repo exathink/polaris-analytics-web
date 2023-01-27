@@ -14,12 +14,12 @@ import {
   COL_WIDTH_BOUNDARIES,
   getTitleForHistogram,
   getTooltipForAgeLatency,
+  ClearFilterWrapper,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
-import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -104,14 +104,7 @@ export const DimensionCycleTimeLatencyView = ({
                     }
                   }}
                 />
-                <div className="tw-absolute tw-inset-0 tw-m-auto tw-w-1/4">
-                  <ClearFilters
-                    selectedFilter={selectedCategory}
-                    selectedMetric={"Age Bucket"}
-                    stateType={""}
-                    handleClearClick={handleClearClick}
-                  />
-                </div>
+                <ClearFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
                 </>
               )}
 
