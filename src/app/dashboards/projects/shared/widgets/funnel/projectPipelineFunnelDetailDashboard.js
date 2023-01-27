@@ -32,12 +32,9 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
-        h={"40%"}
-        title={``}
-        subTitle={``}
+        h={"100%"}
         controls={
           [
-
             () => (
               <div style={{ marginLeft: "20px", minWidth: "300px" }}>
                 <Flex align={"center"}>
@@ -46,82 +43,11 @@ export const ProjectPipelineFunnelDetailDashboard = ({
                   </Box>
                 </Flex>
               </div>
-            ),
-            () => (
-              <div style={{ marginLeft: "20px", minWidth: "100px" }}>
-                <Flex align={"center"}>
-                  <GroupingSelector
-                    label={"Show"}
-
-                    groupings={
-                      specsOnly ?
-                        [
-                          {
-                            key: "volume",
-                            display: "Time to Clear"
-                          },
-                          {
-                            key: "effort",
-                            display: "Cost"
-                          }
-                        ]
-                        : [
-                          {
-                            key: "volume",
-                            display: "Time to Clear"
-                          }
-                        ]
-                    }
-                    initialValue={'volume'}
-                    value={volumeOrEffort}
-                    onGroupingChanged={(selected) => setVolumeOrEffort(selected)}
-
-                  />
-                </Flex>
-              </div>
             )
           ]
 
         }
       >
-        <DashboardWidget
-          w={1 / 3}
-          name="project-pipeline-funnel-detailed"
-          render={({ view }) => (
-            null
-          )}
-          showDetail={false}
-        />
-        <DashboardWidget
-          w={1 / 3}
-          name="project-pipeline-funnel-detailed"
-          render={({ view }) => (
-            <ProjectPipelineFunnelWidget
-              instanceKey={instanceKey}
-              context={context}
-              workItemScope={workItemScope}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              days={daysRange}
-              showVolumeOrEffort={volumeOrEffort}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              view={view}
-              includeSubTasks={includeSubTasks}
-            />
-          )}
-          showDetail={false}
-        />
-         <DashboardWidget
-          w={1 / 3}
-          name="project-pipeline-funnel-detailed"
-          render={({ view }) => (
-            null
-          )}
-          showDetail={false}
-        />
-      </DashboardRow>
-      <DashboardRow h={"55%"}>
         <DashboardWidget
           w={1}
           name="project-pipeline-queues"
@@ -147,7 +73,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
               defaultToHistogram={false}
             />
           )}
-          showDetail={true}
+          showDetail={false}
         />
       </DashboardRow>
     </Dashboard>
