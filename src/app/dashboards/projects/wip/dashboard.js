@@ -57,7 +57,7 @@ function WipDashboard({
     >
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Wip Analysis, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+          Wip Monitoring, {specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`}
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">

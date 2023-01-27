@@ -93,7 +93,7 @@ export const ResponseTimeTrendsChart = (
     measurementWindow,
     onSelectionChange,
     defaultSeries,
-    specsOnly,
+    specsOnly = true,
     showAnnotations = false,
     view
   }) => {
@@ -132,7 +132,7 @@ export const ResponseTimeTrendsChart = (
     },
     {
       key: "avgEffort",
-      displayName: `Tr. Effort`,
+      displayName: `Cost of Change`,
       visible: isVisibleByDefault(defaultSeries, "effort"),
       type: "spline",
       color: ResponseTimeMetricsColor.effort
@@ -148,7 +148,7 @@ export const ResponseTimeTrendsChart = (
     onSelectionChange={onSelectionChange}
     config={{
       title: title || `Response Time, ${specsOnly != null && !specsOnly ? `All ${AppTerms.cards.display}` : AppTerms.specs.display}`,
-      legendText: "Components",
+      legendText: "Average",
       yAxisUom: "Days",
       plotLinesY: [
         {
@@ -217,8 +217,8 @@ export const ResponseTimeTrendsChart = (
                   ...getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl)
                   ,
                   [`------`, ``],
-                  ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`],
-                  ["Cycle Efficiency: ", `${i18nNumber(intl, getFlowEfficiency(measurement.avgEffort, measurement.avgCycleTime))} %`]
+                  ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${!specsOnly ?  AppTerms.cards.display : AppTerms.specs.display}`],
+
 
                 ]
             }
