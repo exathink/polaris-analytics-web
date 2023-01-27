@@ -281,6 +281,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
                     xAxisTitle: "Age in Days",
                     tooltip: getTooltipForAgeLatency,
+                    legendItemClick: () => {},
                   }}
                   selectedMetric={"age"}
                   specsOnly={specsOnly}
@@ -319,6 +320,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
                     xAxisTitle: "Age in Days",
                     tooltip: getTooltipForAgeLatency,
+                    legendItemClick: () => {},
                   }}
                   selectedMetric={"age"}
                   specsOnly={specsOnly}
