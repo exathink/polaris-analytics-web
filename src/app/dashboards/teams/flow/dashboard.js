@@ -12,24 +12,23 @@ import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
 import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
+import {DimensionCycleTimeLatencyDetailView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyDetailView";
+import {DimensionCycleTimeLatencyView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyView";
+import {getReferenceString} from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
-
-export const dashboard = (
-  {viewerContext}
-) =>
+export const dashboard = ({viewerContext}) => (
   <TeamDashboard
     pollInterval={1000 * 60}
-    render={
-      props => <WipDashboard viewerContext={viewerContext}  {...props}/>
-    }
-  />;
+    render={(props) => <WipDashboard viewerContext={viewerContext} {...props} />}
+  />
+);
 
 function WipDashboard({
   team: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
-  viewerContext
+  viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("specs");
   const specsOnly = workItemScope === "specs";
@@ -43,19 +42,19 @@ function WipDashboard({
     wipAnalysisPeriod,
     includeSubTasksWipInspector,
     includeSubTasksFlowMetrics,
-    latencyTarget
+    latencyTarget,
   } = settingsWithDefaults;
+  const DIMENSION = "team";
   return (
     <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className={styles.teamsFlowDashboard}>
       <DashboardRow h="15%">
         <DashboardWidget
           name="flow-metrics-response-time"
           title={"Response Time"}
-
           className={styles.responseTimeSLA}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          render={({ view }) => (
+          render={({view}) => (
             <DimensionResponseTimeWidget
               dimension={"team"}
               instanceKey={key}
@@ -80,13 +79,11 @@ function WipDashboard({
         />
         <DashboardWidget
           name="pipeline"
-          
           className={styles.pipeline}
           title={"Work In Progress"}
-
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
-              dimension={'team'}
+              dimension={"team"}
               instanceKey={key}
               display={"commonWipSummary"}
               latestCommit={latestCommit}
@@ -109,11 +106,10 @@ function WipDashboard({
         <DashboardWidget
           name="flow-metrics-throughput"
           title={"Throughput"}
-
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
-          render={({ view }) => (
+          render={({view}) => (
             <DimensionThroughputWidget
               dimension={"team"}
               instanceKey={key}
@@ -136,33 +132,31 @@ function WipDashboard({
           )}
           showDetail={false}
         />
-
       </DashboardRow>
       <DashboardRow h="30%" title={"Wip Age & Latency"} className={styles.wipAge}>
         <DashboardWidget
           name="engineering"
-          
           className={styles.engineering}
-
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={'team'}
-              instanceKey={key}
-              view={view}
-              tooltipType="small"
+              queryVars={{
+                dimension: DIMENSION,
+                instanceKey: key,
+                specsOnly,
+                activeOnly: true,
+                includeSubTasks: includeSubTasksWipInspector,
+                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+              }}
               stageName={"Coding"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              tooltipType="small"
+              view={view}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              targetPercentile={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksWipInspector}
               displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
             />
           )}
@@ -170,11 +164,10 @@ function WipDashboard({
         />
         <DashboardWidget
           name={"code-reviews"}
-          
           className={styles.codeReviews}
           render={({view}) => (
             <DimensionPullRequestsWidget
-              dimension={'team'}
+              dimension={"team"}
               instanceKey={key}
               view={view}
               context={context}
@@ -195,27 +188,27 @@ function WipDashboard({
         />
         <DashboardWidget
           name="delivery"
-          
           className={styles.delivery}
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={'team'}
-              instanceKey={key}
-              view={view}
-              tooltipType="small"
+              queryVars={{
+                dimension: DIMENSION,
+                instanceKey: key,
+                specsOnly,
+                activeOnly: true,
+                includeSubTasks: includeSubTasksWipInspector,
+                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+              }}
               stageName={"Delivery"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.deliver]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              tooltipType="small"
+              view={view}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              targetPercentile={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksWipInspector}
               displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
             />
           )}
@@ -226,7 +219,6 @@ function WipDashboard({
         <DashboardWidget
           name="commits"
           className={styles.commits}
-          
           render={({view}) => (
             <DimensionCommitsNavigatorWidget
               dimension={"team"}
@@ -236,10 +228,8 @@ function WipDashboard({
               days={1}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              groupBy={'author'}
-              groupings={
-                  ["author", "workItem",   "repository", "branch"]
-              }
+              groupBy={"author"}
+              groupings={["author", "workItem", "repository", "branch"]}
               showHeader
               showTable
             />
@@ -251,5 +241,4 @@ function WipDashboard({
   );
 }
 
-export default withViewerContext(dashboard)
-
+export default withViewerContext(dashboard);

@@ -5,15 +5,14 @@ import {AppTerms, WorkItemStateTypes} from "../../shared/config";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
-import {
-  DimensionPipelineCycleTimeLatencyWidget,
-} from "../../shared/widgets/work_items/wip";
+import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
-import { DimensionWipSummaryWidget } from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
+import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
+import {getReferenceString} from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -47,6 +46,8 @@ function WipDashboard({
     latencyTarget,
   } = settingsWithDefaults;
 
+  const DIMENSION = "project";
+
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
@@ -54,20 +55,16 @@ function WipDashboard({
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-col-start-1 tw-row-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
+      <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
           Wip Monitoring, {specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`}
         </div>
       </div>
-      <div className="tw-col-start-3 tw-row-start-1 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">
-          Age Limit
-        </div>
-        <div className="tw-text-base tw-flex tw-justify-start">
-          {cycleTimeTarget} Days
-        </div>
+      <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Age Limit</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-text-base tw-col-start-6 tw-row-start-1">
+      <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
         <Flex w={1} justify={"center"}>
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
@@ -75,11 +72,11 @@ function WipDashboard({
       <DashboardRow>
         <DashboardWidget
           name="pipeline"
-          className="tw-col-start-1 tw-col-span-2"
+          className="tw-col-span-2 tw-col-start-1"
           title={""}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
-              dimension={"project"}
+              dimension={DIMENSION}
               instanceKey={key}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -102,11 +99,11 @@ function WipDashboard({
 
         <DashboardWidget
           name="summary-wip"
-          className="tw-col-start-3 tw-col-span-2"
+          className="tw-col-span-2 tw-col-start-3"
           title={""}
           render={({view}) => (
             <DimensionWipSummaryWidget
-              dimension={"project"}
+              dimension={DIMENSION}
               instanceKey={key}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
@@ -127,11 +124,11 @@ function WipDashboard({
 
         <DashboardWidget
           name="base-wip"
-          className="tw-col-start-5 tw-col-span-2"
+          className="tw-col-span-2 tw-col-start-5"
           title={""}
           render={({view}) => (
             <DimensionWipWidget
-              dimension={"project"}
+              dimension={DIMENSION}
               instanceKey={key}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
@@ -150,26 +147,27 @@ function WipDashboard({
       <DashboardRow title={" "}>
         <DashboardWidget
           name="engineering"
-          className="tw-col-start-1 tw-col-span-3 tw-row-start-3"
+          className="tw-col-span-3 tw-col-start-1 tw-row-start-3"
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={"project"}
-              instanceKey={key}
-              view={view}
-              tooltipType="small"
-              stageName={"Coding"}
+              queryVars={{
+                dimension: DIMENSION,
+                instanceKey: key,
+                specsOnly,
+                activeOnly: true,
+                includeSubTasks: includeSubTasksWipInspector,
+                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+              }}
+              stageName="Coding"
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
+              tooltipType="small"
+              view={view}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              targetPercentile={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksWipInspector}
               displayBag={{displayType: "FlowEfficiencyCard"}}
             />
           )}
@@ -178,26 +176,27 @@ function WipDashboard({
 
         <DashboardWidget
           name="delivery"
-          className="tw-col-start-4 tw-col-span-3 tw-row-start-3"
+          className="tw-col-span-3 tw-col-start-4 tw-row-start-3"
           render={({view}) => (
             <DimensionPipelineCycleTimeLatencyWidget
-              dimension={"project"}
-              instanceKey={key}
-              view={view}
-              tooltipType="small"
+              queryVars={{
+                dimension: DIMENSION,
+                instanceKey: key,
+                specsOnly,
+                activeOnly: true,
+                includeSubTasks: includeSubTasksWipInspector,
+                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+              }}
               stageName={"Delivery"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.deliver]}
               groupByState={true}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
+              tooltipType="small"
+              view={view}
               context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              targetPercentile={cycleTimeConfidenceTarget}
-              specsOnly={specsOnly}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              includeSubTasks={includeSubTasksWipInspector}
               displayBag={{displayType: "FlowEfficiencyCard"}}
             />
           )}
