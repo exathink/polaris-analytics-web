@@ -147,39 +147,18 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-            >
-              {view === "primary" && (
-                <DimensionCycleTimeLatencyView
-                  dimension={DIMENSION}
-                  stageName={"Coding"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                  displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
-                />
-              )}
-
-              {view === "detail" && (
-                <DimensionCycleTimeLatencyDetailView
-                  dimension={DIMENSION}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stageName={"Coding"}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                />
-              )}
-            </DimensionPipelineCycleTimeLatencyWidget>
+              stageName={"Coding"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType="small"
+              view={view}
+              context={context}
+              displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
+            />
           )}
           showDetail={true}
         />
@@ -220,39 +199,18 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-            >
-              {view === "primary" && (
-                <DimensionCycleTimeLatencyView
-                  dimension={DIMENSION}
-                  stageName={"Delivery"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stateTypes={[WorkItemStateTypes.deliver]}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                  displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
-                />
-              )}
-
-              {view === "detail" && (
-                <DimensionCycleTimeLatencyDetailView
-                  dimension={DIMENSION}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stageName={"Delivery"}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                />
-              )}
-            </DimensionPipelineCycleTimeLatencyWidget>
+              stageName={"Delivery"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              stateTypes={[WorkItemStateTypes.deliver]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType="small"
+              view={view}
+              context={context}
+              displayBag={{summaryPanelSize: "small", summaryPanelValueFontSize: "tw-text-base"}}
+            />
           )}
           showDetail={true}
         />

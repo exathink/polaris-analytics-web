@@ -12,8 +12,6 @@ import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelect
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
-import {DimensionCycleTimeLatencyDetailView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyDetailView";
-import {DimensionCycleTimeLatencyView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyView";
 import {getReferenceString} from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
@@ -160,40 +158,18 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-            >
-              {view === "primary" && (
-                <DimensionCycleTimeLatencyView
-                  dimension={DIMENSION}
-                  stageName={"Coding"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                  displayBag={{displayType: "FlowEfficiencyCard"}}
-                />
-              )}
-
-              {view === "detail" && (
-                <DimensionCycleTimeLatencyDetailView
-                  dimension={DIMENSION}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  // stateTypes={stateTypes}
-                  stageName={"Coding"}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                />
-              )}
-            </DimensionPipelineCycleTimeLatencyWidget>
+              stageName="Coding"
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType="small"
+              view={view}
+              context={context}
+              displayBag={{displayType: "FlowEfficiencyCard"}}
+            />
           )}
           showDetail={true}
         />
@@ -211,40 +187,18 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-            >
-              {view === "primary" && (
-                <DimensionCycleTimeLatencyView
-                  dimension={DIMENSION}
-                  stageName={"Delivery"}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  stateTypes={[WorkItemStateTypes.deliver]}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                  displayBag={{displayType: "FlowEfficiencyCard"}}
-                />
-              )}
-
-              {view === "detail" && (
-                <DimensionCycleTimeLatencyDetailView
-                  dimension={DIMENSION}
-                  workItemScope={workItemScope}
-                  setWorkItemScope={setWorkItemScope}
-                  // stateTypes={stateTypes}
-                  stageName={"Delivery"}
-                  groupByState={true}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tooltipType="small"
-                  view={view}
-                  context={context}
-                />
-              )}
-            </DimensionPipelineCycleTimeLatencyWidget>
+              stageName={"Delivery"}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              stateTypes={[WorkItemStateTypes.deliver]}
+              groupByState={true}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              tooltipType="small"
+              view={view}
+              context={context}
+              displayBag={{displayType: "FlowEfficiencyCard"}}
+            />
           )}
           showDetail={true}
         />
