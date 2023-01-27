@@ -111,7 +111,7 @@ function TrendsDashboard({
       </DashboardRow>
       <DashboardRow
         h="38%"
-        title={`Flow`}
+        title={`Flow Metrics`}
 
       >
         <DashboardWidget
