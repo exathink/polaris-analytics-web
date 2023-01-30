@@ -222,6 +222,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   function handleCodingClearClick() {
     setCodingFilter([]);
     setSelectedCodingCategory(undefined);
+    setTableFilteredWorkItems(initWorkItems)
   }
 
   const [selectedDeliveryFilter, setDeliveryFilter] = React.useState([]);
@@ -229,7 +230,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
   function handleDeliveryClearClick() {
     setDeliveryFilter([]);
     setSelectedDeliveryCategory(undefined);
+    setTableFilteredWorkItems(initWorkItems)
   }
+
+  React.useEffect(() => {
+    if (selectedCodingFilter.length > 0) {
+      setTableFilteredWorkItems(selectedCodingFilter)
+    }
+    if (selectedDeliveryFilter.length > 0) {
+      setTableFilteredWorkItems(selectedDeliveryFilter)
+    } 
+  }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
