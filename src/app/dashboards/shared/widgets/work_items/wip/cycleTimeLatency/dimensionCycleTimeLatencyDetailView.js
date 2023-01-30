@@ -178,6 +178,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setSelectedQuadrant(undefined);
 
     setQuadrantStateType(undefined);
+
+    setDeliveryFilter([]);
+    setCodingFilter([]);
+    
     // reset chart components state
     resetComponentState();
   }
