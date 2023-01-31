@@ -307,6 +307,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     const bucket = options.bucket;
                     setCodingFilter?.(bucket);
                     setSelectedCodingCategory(category);
+
+                    // disallow compound selection
+                    setDeliveryFilter([]);
+                    setSelectedDeliveryCategory(undefined);
                   }}
                 />
               )}
@@ -346,6 +350,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     const bucket = options.bucket;
                     setDeliveryFilter?.(bucket);
                     setSelectedDeliveryCategory(category);
+
+                    // disallow compound selection
+                    setCodingFilter([]);
+                    setSelectedCodingCategory(undefined);
                   }}
                 />
               )}
