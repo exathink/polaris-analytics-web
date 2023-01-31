@@ -210,12 +210,34 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
-  const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems).filter(
-    (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
-  );
-  const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems).filter(
-    (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
-  );
+  const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+    .filter(
+      (workItem) =>
+        quadrantStateType === undefined ||
+        (quadrantStateType === QuadrantStateTypes.engineering
+          ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
+          : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+    )
+    .filter(
+      (x) =>
+        selectedQuadrant === undefined ||
+        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+    );
+  const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+    .filter(
+      (workItem) =>
+        quadrantStateType === undefined ||
+        (quadrantStateType === QuadrantStateTypes.engineering
+          ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
+          : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+    )
+    .filter(
+      (x) =>
+        selectedQuadrant === undefined ||
+        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+    );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
