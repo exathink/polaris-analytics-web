@@ -323,6 +323,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
                       title: `Age Distribution: Coding`,
+                      align: {align: "left"},
                       subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
                       xAxisTitle: "Age in Days",
                       tooltip: getTooltipForAgeLatency,
@@ -378,6 +379,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
                       title: `Age Distribution: Delivery`,
+                      align: {align: "left"},
                       subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
                       xAxisTitle: "Age in Days",
                       tooltip: getTooltipForAgeLatency,
