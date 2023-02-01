@@ -14,7 +14,7 @@ import {
   COL_WIDTH_BOUNDARIES,
   getTitleForHistogram,
   getTooltipForAgeLatency,
-  ClearFilterWrapper,
+  AgeFilterWrapper,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -104,7 +104,7 @@ export const DimensionCycleTimeLatencyView = ({
                     }
                   }}
                 />
-                <ClearFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
+                <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
                 </>
               )}
 
