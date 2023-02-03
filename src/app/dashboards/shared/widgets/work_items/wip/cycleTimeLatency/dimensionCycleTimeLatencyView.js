@@ -16,6 +16,9 @@ import {
   getTooltipForAgeLatency,
   AgeFilterWrapper,
   getQuadrant,
+  QuadrantFilterWrapper,
+  QuadrantNames,
+  getQuadrantDescription,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -88,6 +91,12 @@ export const DimensionCycleTimeLatencyView = ({
     setFilter([]);
     setSelectedCategory(undefined);
   }
+  function handleQuadrantClearClick() {
+    setSelectedQuadrant(undefined);
+
+    setQuadrantStateType(undefined);
+  }
+
   const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   return (
@@ -98,49 +107,59 @@ export const DimensionCycleTimeLatencyView = ({
             <>
               {selectedFilter.length > 0 && (
                 <>
-                <WorkItemsCycleTimeVsLatencyChart
-                  view={view}
-                  stageName={stageName}
-                  specsOnly={specsOnly}
-                  workItems={selectedFilter}
-                  stateTypes={stateTypes}
-                  groupByState={groupByState}
-                  cycleTimeTarget={cycleTimeTarget}
-                  latencyTarget={latencyTarget}
-                  tick={tick}
-                  tooltipType={tooltipType}
-                  blurClass={blurClass}
-                  onSelectionChange={(workItems, eventType) => {
-                    if (eventType === EVENT_TYPES.POINT_CLICK) {
-                      setWorkItemKey(workItems[0].key);
-                      setShowPanel(true);
-                    }
-                  }}
-                />
-                <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
+                  <WorkItemsCycleTimeVsLatencyChart
+                    view={view}
+                    stageName={stageName}
+                    specsOnly={specsOnly}
+                    workItems={selectedFilter}
+                    stateTypes={stateTypes}
+                    groupByState={groupByState}
+                    cycleTimeTarget={cycleTimeTarget}
+                    latencyTarget={latencyTarget}
+                    tick={tick}
+                    tooltipType={tooltipType}
+                    blurClass={blurClass}
+                    onSelectionChange={(workItems, eventType) => {
+                      if (eventType === EVENT_TYPES.POINT_CLICK) {
+                        setWorkItemKey(workItems[0].key);
+                        setShowPanel(true);
+                      }
+                    }}
+                  />
+                  <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
                 </>
               )}
 
               {selectedFilter.length === 0 && (
-                <WorkItemsDetailHistogramChart
-                  chartConfig={{
-                    title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
-                    subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
-                    xAxisTitle: "Age in Days",
-                    legendItemClick: () => {},
-                    tooltip: getTooltipForAgeLatency,
-                  }}
-                  selectedMetric={"age"}
-                  specsOnly={specsOnly}
-                  colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                  stateType={"deliver"}
-                  series={seriesData}
-                  onPointClick={({options, category}) => {
-                    const bucket = options.bucket;
-                    setFilter?.(bucket);
-                    setSelectedCategory(category);
-                  }}
-                />
+                <div className="tw-relative tw-h-full">
+                  <WorkItemsDetailHistogramChart
+                    chartConfig={{
+                      title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
+                      align: {align: "left"},
+                      subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
+                      xAxisTitle: "Age in Days",
+                      legendItemClick: () => {},
+                      tooltip: getTooltipForAgeLatency,
+                    }}
+                    selectedMetric={"age"}
+                    specsOnly={specsOnly}
+                    colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+                    stateType={"deliver"}
+                    series={seriesData}
+                    onPointClick={({options, category}) => {
+                      const bucket = options.bucket;
+                      setFilter?.(bucket);
+                      setSelectedCategory(category);
+                    }}
+                  />
+                  {selectedQuadrant && (
+                    <QuadrantFilterWrapper
+                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
+                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+                      handleClearClick={handleQuadrantClearClick}
+                    />
+                  )}
+                </div>
               )}
             </>
           ) : (
