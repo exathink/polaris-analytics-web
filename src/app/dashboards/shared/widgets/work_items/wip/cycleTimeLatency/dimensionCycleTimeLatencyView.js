@@ -15,6 +15,7 @@ import {
   getTitleForHistogram,
   getTooltipForAgeLatency,
   AgeFilterWrapper,
+  getQuadrant,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -67,9 +68,21 @@ export const DimensionCycleTimeLatencyView = ({
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
-    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-  );
+  const [selectedQuadrant, setSelectedQuadrant] = React.useState();
+  const [quadrantStateType, setQuadrantStateType] = React.useState();
+
+  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+    .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+    .filter(
+      (x) =>
+        selectedQuadrant === undefined ||
+        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+    );
+
+  function handleResetAll() {
+    setSelectedQuadrant(undefined);
+    setQuadrantStateType(undefined);
+  }
 
   function handleClearClick() {
     setFilter([]);
@@ -161,6 +174,19 @@ export const DimensionCycleTimeLatencyView = ({
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
               className="tw-mx-auto tw-w-[98%]"
+              onQuadrantClick={(quadrant) => {
+                if (
+                  selectedQuadrant !== undefined &&
+                  selectedQuadrant === quadrant &&
+                  quadrantStateType === stageName
+                ) {
+                  handleResetAll();
+                } else {
+                  setSelectedQuadrant(quadrant);
+                  setQuadrantStateType(stageName);
+                }
+              }}
+              selectedQuadrant={selectedQuadrant}
             />
           ) : (
             <QuadrantSummaryPanel
