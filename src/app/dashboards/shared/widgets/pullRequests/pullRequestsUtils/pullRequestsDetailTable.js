@@ -254,7 +254,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
   const categories = getHistogramCategories(colWidthBoundaries, "days");
-  const displayId = [AppTerms.spec.display, AppTerms.card.display];
+
   const allPairsData = allPairs(colWidthBoundaries);
   const columns = usePullRequestsDetailTableColumns({
     intl,
