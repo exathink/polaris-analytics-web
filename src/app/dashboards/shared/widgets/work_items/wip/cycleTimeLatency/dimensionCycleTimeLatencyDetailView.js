@@ -179,8 +179,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
     setQuadrantStateType(undefined);
 
-    setDeliveryFilter([]);
-    setCodingFilter([]);
+    setDeliveryFilter(undefined);
+    setCodingFilter(undefined);
     
     // reset chart components state
     resetComponentState();
@@ -219,11 +219,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
           : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
     )
-    .filter(
-      (x) =>
-        selectedQuadrant === undefined ||
-        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-    );
+
   const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems)
     .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
     .filter(
@@ -233,44 +229,35 @@ export const DimensionCycleTimeLatencyDetailView = ({
           ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
           : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
     )
-    .filter(
-      (x) =>
-        selectedQuadrant === undefined ||
-        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-    );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
 
-  const [selectedCodingFilter, setCodingFilter] = React.useState([]);
+  const [selectedCodingFilter, setCodingFilter] = React.useState();
   const [selectedCodingCategory, setSelectedCodingCategory] = React.useState();
-  function handleCodingClearClick() {
-    setCodingFilter([]);
-    setSelectedCodingCategory(undefined);
-    setTableFilteredWorkItems(initWorkItems)
-  }
 
-  const [selectedDeliveryFilter, setDeliveryFilter] = React.useState([]);
+  const [selectedDeliveryFilter, setDeliveryFilter] = React.useState();
   const [selectedDeliveryCategory, setSelectedDeliveryCategory] = React.useState();
-  function handleDeliveryClearClick() {
-    setDeliveryFilter([]);
-    setSelectedDeliveryCategory(undefined);
-    setTableFilteredWorkItems(initWorkItems)
-  }
 
-  function handleQuadrantClearClick() {
+  function handleClearClick() {
+    setCodingFilter(undefined);
+    setDeliveryFilter(undefined);
+
     setSelectedQuadrant(undefined);
-
     setQuadrantStateType(undefined);
+
+    setSelectedCodingCategory(undefined);
+    setSelectedDeliveryCategory(undefined);
+
     setTableFilteredWorkItems(initWorkItems)
   }
 
   React.useEffect(() => {
-    if (selectedCodingFilter.length > 0) {
+    if (selectedCodingFilter) {
       setTableFilteredWorkItems(selectedCodingFilter)
     }
-    if (selectedDeliveryFilter.length > 0) {
+    if (selectedDeliveryFilter) {
       setTableFilteredWorkItems(selectedDeliveryFilter)
     } 
   }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
@@ -298,7 +285,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         >
           {ageLatencyFeatureFlag ? (
             <>
-              {selectedCodingFilter.length > 0 && (
+              {selectedCodingFilter !== undefined && (
                 <div className="tw-relative tw-h-full">
                   <WorkItemsCycleTimeVsLatencyChart
                     view={view}
@@ -315,10 +302,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
                       quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined
                     }
                   />
-                  <AgeFilterWrapper selectedFilter={selectedCodingCategory} handleClearClick={handleCodingClearClick} />
+                  {!selectedQuadrant && <AgeFilterWrapper selectedFilter={selectedCodingCategory} handleClearClick={handleClearClick} />}
+                  {selectedQuadrant && quadrantStateType === QuadrantStateTypes.engineering && (
+                    <QuadrantFilterWrapper
+                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
+                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+                      handleClearClick={handleClearClick}
+                    />
+                  )}
                 </div>
               )}
-              {selectedCodingFilter.length === 0 && (
+              {selectedCodingFilter===undefined && (
                 <div className="tw-relative tw-h-full">
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
@@ -340,20 +334,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
                       setSelectedCodingCategory(category);
 
                       // disallow compound selection
-                      setDeliveryFilter([]);
+                      setDeliveryFilter(undefined);
                       setSelectedDeliveryCategory(undefined);
                     }}
                   />
-                  {selectedQuadrant && quadrantStateType === QuadrantStateTypes.engineering && (
-                    <QuadrantFilterWrapper
-                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                      handleClearClick={handleQuadrantClearClick}
-                    />
-                  )}
+
                 </div>
               )}
-              {selectedDeliveryFilter.length > 0 && (
+              {selectedDeliveryFilter !== undefined && (
                 <div className="tw-relative tw-h-full">
                   <WorkItemsCycleTimeVsLatencyChart
                     view={view}
@@ -368,13 +356,20 @@ export const DimensionCycleTimeLatencyDetailView = ({
                     onSelectionChange={handleSelectionChange}
                     selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
                   />
-                  <AgeFilterWrapper
+                  {!selectedQuadrant && <AgeFilterWrapper
                     selectedFilter={selectedDeliveryCategory}
-                    handleClearClick={handleDeliveryClearClick}
-                  />
+                    handleClearClick={handleClearClick}
+                  />}
+                                    {selectedQuadrant && quadrantStateType === QuadrantStateTypes.delivery && (
+                    <QuadrantFilterWrapper
+                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
+                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+                      handleClearClick={handleClearClick}
+                    />
+                  )}
                 </div>
               )}
-              {selectedDeliveryFilter.length === 0 && (
+              {selectedDeliveryFilter===undefined && (
                 <div className="tw-relative tw-h-full">
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
@@ -396,17 +391,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
                       setSelectedDeliveryCategory(category);
 
                       // disallow compound selection
-                      setCodingFilter([]);
+                      setCodingFilter(undefined);
                       setSelectedCodingCategory(undefined);
                     }}
                   />
-                  {selectedQuadrant && quadrantStateType === QuadrantStateTypes.delivery && (
-                    <QuadrantFilterWrapper
-                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                      handleClearClick={handleQuadrantClearClick}
-                    />
-                  )}
+
                 </div>
               )}
             </>
@@ -463,6 +452,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 ) {
                   handleResetAll();
                 } else {
+                  const items = workItemsEngineering.filter(
+                    (x) =>
+                      quadrant === undefined ||
+                      quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                  );
+                  setCodingFilter(items);
+
+                  // disallow compound selection
+                  setDeliveryFilter(undefined)
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.engineering);
                 }
@@ -485,6 +483,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 ) {
                   handleResetAll();
                 } else {
+                  const items = workItemsDelivery.filter(
+                    (x) =>
+                      quadrant === undefined ||
+                      quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                  );
+                  setDeliveryFilter(items);
+                  
+                  // disallow compound selection
+                  setCodingFilter(undefined)
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.delivery);
                 }
