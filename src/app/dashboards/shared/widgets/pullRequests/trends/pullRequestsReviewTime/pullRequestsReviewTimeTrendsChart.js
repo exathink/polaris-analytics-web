@@ -35,9 +35,9 @@ export const PullRequestsReviewTimeTrendsChart = ({
       },
       legendText: "Review Time",
       yAxisNormalization: {
-        metric: "maxAge",
-        minScale: 0,
-        maxScale: 1,
+        metric: undefined,
+        minScale: undefined,
+        maxScale: undefined,
       },
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
