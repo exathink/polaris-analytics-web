@@ -58,7 +58,7 @@ export const DimensionCycleTimeLatencyView = ({
     data,
     variables: {specsOnly},
   } = useWidget();
-  const [selectedFilter, setFilter] = React.useState([]);
+  const [selectedFilter, setFilter] = React.useState();
   const [selectedCategory, setSelectedCategory] = React.useState();
 
   const blurClass = useBlurClass();
@@ -76,25 +76,16 @@ export const DimensionCycleTimeLatencyView = ({
 
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
     .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
-    .filter(
-      (x) =>
-        selectedQuadrant === undefined ||
-        selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-    );
 
   function handleResetAll() {
     setSelectedQuadrant(undefined);
     setQuadrantStateType(undefined);
+    setFilter(undefined);
   }
 
   function handleClearClick() {
-    setFilter([]);
+    setFilter(undefined);
     setSelectedCategory(undefined);
-  }
-  function handleQuadrantClearClick() {
-    setSelectedQuadrant(undefined);
-
-    setQuadrantStateType(undefined);
   }
 
   const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
@@ -105,7 +96,7 @@ export const DimensionCycleTimeLatencyView = ({
         <div className="tw-relative tw-h-[77%]">
           {ageLatencyFeatureFlag ? (
             <>
-              {selectedFilter.length > 0 && (
+              {selectedFilter!==undefined && (
                 <>
                   <WorkItemsCycleTimeVsLatencyChart
                     view={view}
@@ -126,11 +117,18 @@ export const DimensionCycleTimeLatencyView = ({
                       }
                     }}
                   />
-                  <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
+                  {!selectedQuadrant && <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />}
+                  {selectedQuadrant && (
+                    <QuadrantFilterWrapper
+                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
+                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+                      handleClearClick={handleResetAll}
+                    />
+                  )}
                 </>
               )}
 
-              {selectedFilter.length === 0 && (
+              {selectedFilter===undefined && (
                 <div className="tw-relative tw-h-full">
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
@@ -152,13 +150,7 @@ export const DimensionCycleTimeLatencyView = ({
                       setSelectedCategory(category);
                     }}
                   />
-                  {selectedQuadrant && (
-                    <QuadrantFilterWrapper
-                      selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                      selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                      handleClearClick={handleQuadrantClearClick}
-                    />
-                  )}
+
                 </div>
               )}
             </>
@@ -201,6 +193,15 @@ export const DimensionCycleTimeLatencyView = ({
                 ) {
                   handleResetAll();
                 } else {
+                  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+                    .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+                    .filter(
+                      (x) =>
+                        quadrant === undefined ||
+                        quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                    );
+
+                  setFilter?.(workItemsWithAggregateDurations);
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(stageName);
                 }
