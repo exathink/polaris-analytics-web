@@ -212,23 +212,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems)
     .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
-    .filter(
-      (workItem) =>
-        quadrantStateType === undefined ||
-        (quadrantStateType === QuadrantStateTypes.engineering
-          ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
-          : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-    )
 
   const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems)
     .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-    .filter(
-      (workItem) =>
-        quadrantStateType === undefined ||
-        (quadrantStateType === QuadrantStateTypes.engineering
-          ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
-          : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-    )
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
@@ -254,10 +240,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }
 
   React.useEffect(() => {
-    if (selectedCodingFilter) {
+    if (selectedCodingFilter && selectedCodingFilter.length > 0) {
       setTableFilteredWorkItems(selectedCodingFilter)
     }
-    if (selectedDeliveryFilter) {
+    if (selectedDeliveryFilter && selectedDeliveryFilter.length > 0) {
       setTableFilteredWorkItems(selectedDeliveryFilter)
     } 
   }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
@@ -460,7 +446,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   setCodingFilter(items);
 
                   // disallow compound selection
-                  setDeliveryFilter(undefined)
+                  setDeliveryFilter([])
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.engineering);
                 }
@@ -491,7 +477,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   setDeliveryFilter(items);
                   
                   // disallow compound selection
-                  setCodingFilter(undefined)
+                  setCodingFilter([])
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.delivery);
                 }
@@ -525,7 +511,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
                   : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
             )
-            .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
             .filter(
               (x) =>
                 selectedQuadrant === undefined ||
