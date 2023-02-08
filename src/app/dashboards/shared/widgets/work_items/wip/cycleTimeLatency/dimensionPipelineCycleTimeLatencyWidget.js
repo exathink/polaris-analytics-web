@@ -15,7 +15,8 @@ export const DimensionPipelineCycleTimeLatencyWidget = ({
   latencyTarget,
   tooltipType,
   groupByState,
-  context
+  context,
+  displayBag
 }) => {
   const result = useQueryDimensionPipelineStateDetails(queryVars);
   const {dimension} = queryVars;
@@ -35,7 +36,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = ({
           tooltipType={tooltipType}
           view={view}
           context={context}
-          displayBag={{displayType: "FlowEfficiencyCard"}}
+          displayBag={displayBag}
         />
       )}
 
