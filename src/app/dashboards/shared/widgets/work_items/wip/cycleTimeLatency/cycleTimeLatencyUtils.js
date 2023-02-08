@@ -52,6 +52,12 @@ export const QuadrantNames = {
   [Quadrants.age]: "Delayed",
   [Quadrants.critical]: "Stalled"
 };
+export const getQuadrantDescription = ({intl, cycleTimeTarget, latencyTarget}) => ({
+  [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
+});
 
 export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget) {
   return QuadrantNames[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)]
@@ -130,12 +136,25 @@ export function getTooltipForAgeLatency(tooltipObj, title, intl) {
   });
 }
 
-export function ClearFilterWrapper({selectedFilter, handleClearClick}) {
+export function AgeFilterWrapper({selectedFilter, handleClearClick}) {
   return (
     <div className="tw-absolute tw-right-12 tw-top-0">
       <ClearFilters
         selectedFilter={selectedFilter}
         selectedMetric={"Age Bucket"}
+        stateType={""}
+        handleClearClick={handleClearClick}
+      />
+    </div>
+  );
+}
+
+export function QuadrantFilterWrapper({selectedFilter, selectedQuadrant, handleClearClick}) {
+  return (
+    <div className="tw-absolute tw-right-12 tw-top-0">
+      <ClearFilters
+        selectedFilter={selectedFilter}
+        selectedMetric={selectedQuadrant}
         stateType={""}
         handleClearClick={handleClearClick}
       />

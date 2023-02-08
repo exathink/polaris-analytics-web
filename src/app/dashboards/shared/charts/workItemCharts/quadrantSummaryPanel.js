@@ -4,9 +4,9 @@ import { Popover } from "antd";
 
 import {
   getQuadrant,
+  getQuadrantDescription,
   QuadrantColors,
   QuadrantNames,
-  Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
@@ -168,12 +168,7 @@ export function QuadrantSummaryPanel({
   );
 
   const selectedBorderClasses = "tw-border-2 tw-border-solid tw-border-gray-300";
-  const quadrantDescription = {
-    [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
-    [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
-    [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
-    [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
-  };
+  const quadrantDescription = getQuadrantDescription({intl, cycleTimeTarget, latencyTarget});
   const allQuadrants = Object.entries(QuadrantNames).map(([key, value]) => ({
     quadKey: key,
     name: value,

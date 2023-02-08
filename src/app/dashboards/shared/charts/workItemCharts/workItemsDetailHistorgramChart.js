@@ -67,9 +67,11 @@ export const WorkItemsDetailHistogramChart = Chart({
       },
       title: {
         text: chartConfig?.title || getChartTitle(selectedMetric, stateType),
+        ...chartConfig?.align
       },
       subtitle: {
         text: chartConfig?.subtitle,
+        ...chartConfig?.align
       },
       xAxis: {
         title: {
