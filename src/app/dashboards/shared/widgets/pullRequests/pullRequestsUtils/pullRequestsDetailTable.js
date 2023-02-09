@@ -189,6 +189,10 @@ function usePullRequestsDetailTableColumns({intl, filters, selectedFilter, setSh
       dataIndex: "displayId",
       key: "displayId",
       width: "5%",
+      filters: ["traceable", "non-traceable"].map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => {
+        return value === "traceable" ? record.workItemsSummaries.length > 0: record.workItemsSummaries.length === 0;
+      },
       render: allCardsRender(setShowPanel, setWorkItemKey),
     },
     {
@@ -250,6 +254,7 @@ export function PullRequestsDetailTable({tableData, colWidthBoundaries, selected
   const dataSource = getTransformedData(tableData, intl);
   const repos = [...new Set(tableData.map((x) => x.repositoryName))];
   const categories = getHistogramCategories(colWidthBoundaries, "days");
+
   const allPairsData = allPairs(colWidthBoundaries);
   const columns = usePullRequestsDetailTableColumns({
     intl,
