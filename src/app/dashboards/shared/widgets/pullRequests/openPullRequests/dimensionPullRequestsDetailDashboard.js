@@ -52,40 +52,48 @@ export const DimensionPullRequestsDetailDashboard = ({
       gridLayout={true}
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[7%_20%_36%_33%] tw-gap-2 tw-p-2"
     >
-      <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Code Review Monitoring</div>
-        <div className="tw-flex tw-justify-start tw-text-sm">
-          { traceableOnly ? "Traceable" : "All"} Open and Closed Pull Requests, Last {measurementWindow} Days
+      <div className="tw-col-span-6 tw-col-start-1 tw-row-start-1  tw-flex tw-items-center tw-text-gray-300">
+        <div className="tw-flex tw-flex-col tw-text-2xl">
+          <div className="tw-flex tw-justify-start">Code Review Monitoring</div>
+          <div className="tw-flex tw-justify-start tw-text-sm">
+            {traceableOnly ? "Traceable" : "All"} Open and Closed Pull Requests, Last {measurementWindow} Days
+          </div>
+        </div>
+        <div className="tw-flex tw-items-center tw-ml-auto">
+          {[
+            ...getTrendsControlBarControls(
+              [
+                [daysRange, setDaysRange],
+                [measurementWindowRange, setMeasurementWindowRange],
+                [frequencyRange, setFrequencyRange],
+              ],
+              "row"
+            ),
+            () => (
+              <GroupingSelector
+                label={"Show"}
+                groupings={[
+                  {
+                    key: "traceable",
+                    display: "Traceable",
+                  },
+                  {
+                    key: "all",
+                    display: "All",
+                  },
+                ]}
+                initialValue={"traceable"}
+                value={traceableOrAll}
+                onGroupingChanged={(selected) => setTraceableOrAll(selected)}
+              />
+            ),
+          ].map((control) => control())}
         </div>
       </div>
       <DashboardRow
         title={``}
         subTitle={``}
         className="tw-col-span-4 tw-col-start-3 tw-text-base"
-        controls={[
-          ...getTrendsControlBarControls(
-          [
-            [daysRange, setDaysRange],
-            [measurementWindowRange, setMeasurementWindowRange],
-            [frequencyRange, setFrequencyRange],
-          ], "row"),
-          () => <GroupingSelector
-              label={"Show"}
-              groupings={[
-                {
-                  key: "traceable",
-                  display: "Traceable",
-                },
-                {
-                  key: "all",
-                  display: "All",
-                },
-              ]}
-              initialValue={"traceable"}
-              value={traceableOrAll}
-              onGroupingChanged={(selected) => setTraceableOrAll(selected)}
-            />
-        ]}
       >
         <DashboardWidget
           name="pr-closed-summary"
