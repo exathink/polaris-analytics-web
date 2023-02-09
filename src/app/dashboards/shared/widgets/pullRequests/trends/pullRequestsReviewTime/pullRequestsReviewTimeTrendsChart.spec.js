@@ -196,7 +196,7 @@ describe("PullRequestsReviewTimeTrendsChart", () => {
               header: expect.stringMatching(`${commonMeasurementProps.measurementWindow}`),
               body: [
                 [displayName, `${formatNumber(firstReviewTimePoint[metric])} Days`],
-                ["Requests Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
+                ["Reviews Completed: ", `${formatNumber(firstReviewTimePoint.totalClosed)}`],
               ],
             });
           });
