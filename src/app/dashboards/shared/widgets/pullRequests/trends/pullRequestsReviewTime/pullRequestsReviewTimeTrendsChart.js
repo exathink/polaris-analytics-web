@@ -30,22 +30,14 @@ export const PullRequestsReviewTimeTrendsChart = ({
     config={{
       title: "Closed Pull Requests: Avg. Review Time",
       yAxisUom: "Days",
-      plotBands: {
-        metric: "avgAge",
-      },
       legendText: "Review Time",
-      yAxisNormalization: {
-        metric: undefined,
-        minScale: undefined,
-        maxScale: undefined,
-      },
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
           return {
             header: `${measurementWindow} days ending ${i18nDate(intl, toMoment(measurement.measurementDate))}`,
             body: [
               getSelectedMetricDisplay(measurement, seriesKey, intl),
-              ["Requests Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
+              ["Reviews Completed: ", `${i18nNumber(intl, measurement.totalClosed)}`],
             ],
           };
         },
