@@ -13,6 +13,7 @@ import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip
 import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 import {getReferenceString} from "../../../helpers/utility";
+import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -33,6 +34,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("specs");
+  const [wipChartType, setWipChartType] = useState("age");
   const specsOnly = workItemScope === "specs";
 
   const {
@@ -57,12 +59,29 @@ function WipDashboard({
     >
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Wip Monitoring, {specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`}
+          Wip Monitoring, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Age Limit</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+      </div>
+      <div className="tw-col-start-5 tw-row-start-1 tw-text-base">
+        <GroupingSelector
+          label="Show"
+          value={wipChartType}
+          onGroupingChanged={setWipChartType}
+          groupings={[
+            {
+              key: "age",
+              display: "Age",
+            },
+            {
+              key: "latency",
+              display: "Latency",
+            },
+          ]}
+        />
       </div>
       <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
         <Flex w={1} justify={"center"}>
@@ -168,7 +187,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard"}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}
@@ -197,7 +216,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard"}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}
