@@ -78,7 +78,7 @@ function WipDashboard({
             },
             {
               key: "latency",
-              display: "Latency",
+              display: "Motion",
             },
           ]}
         />

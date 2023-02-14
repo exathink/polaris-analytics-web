@@ -302,7 +302,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 <div className="tw-relative tw-h-full">
                   <WorkItemsDetailHistogramChart
                     chartConfig={{
-                      title: `Age Distribution: Coding`,
+                      title: `Age Analysis: Coding`,
                       align: {align: "left"},
                       subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
                       xAxisTitle: "Age in Days",
