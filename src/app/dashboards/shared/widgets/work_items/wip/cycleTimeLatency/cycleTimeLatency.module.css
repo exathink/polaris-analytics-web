@@ -5,7 +5,7 @@
   grid-template-rows: 4% 50% 90px calc(47% - 90px);
   gap: 0.5rem 0.5rem;
   grid-template-areas:
-    "title ageLatency workItemScope resetAll"
+    "title workItemScope workItemScope resetAll"
     "engineering engineering engineering engineering"
     "issueTypeDropdown . . ."
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
@@ -43,7 +43,7 @@
 
 .workItemScope {
   grid-area: workItemScope;
-  justify-content: center;
+  justify-content: end;
   display: flex;
 }
 

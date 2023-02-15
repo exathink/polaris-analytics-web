@@ -403,9 +403,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Delay Analyzer</div>
       <div className={styles.workItemScope}>
-        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-      </div>
-      <div className={styles.ageLatency}>
+      <div className="tw-mr-8">
         <GroupingSelector
           label="Show"
           value={wipChartType}
@@ -422,6 +420,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
           ]}
         />
       </div>
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+      </div>
+      
       <div className={styles.resetAllButton}>
         {(tableFilteredWorkItems.length < initWorkItems.length ||
           chartFilteredWorkItems.length < initWorkItems.length ||
