@@ -165,7 +165,7 @@ export const WorkItemStateTypeDisplayName = {
   backlog: 'Define',
   open: 'Open',
   wip: 'Code',
-  complete: 'Deliver',
+  complete: 'Ship',
   closed: 'Closed'
 }
 
@@ -187,7 +187,7 @@ export const ReleaseStatus = {
 
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
-  backlog: '#65b59c',
+  backlog: 'rgba(218,115,4,0.75)',
   open: '#c4ab49',
   wip: 'rgba(47,154,50,0.75)',
   complete: '#90d53f',

@@ -27,7 +27,7 @@ export function ClosedPullRequestsCardView({
         displayProps={{className: "tw-p-2", onClick, showHighlighted: cardSelection === "closed"}}
       />
       <PullRequest
-        title={"Review Time"}
+        title={"Time to Merge"}
         displayType="card"
         currentMeasurement={currentTrend}
         previousMeasurement={previousTrend}
