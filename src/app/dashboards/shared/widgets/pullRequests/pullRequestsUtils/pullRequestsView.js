@@ -89,7 +89,7 @@ export function PullRequestsView({
 
   const histogramChart = (
     <PullRequestsDetailHistogramChart
-      title={pullRequestsType === "closed" ? `Closed Pull Requests: Review Time Distribution` : `Open Pull Requests: Age Distribution`}
+      title={pullRequestsType === "closed" ? `Closed Pull Requests: Merge Time Distribution` : `Open Pull Requests: Age Distribution`}
       chartSubTitle={
         pullRequestsType === "closed"
           ? getChartSubTitle({pullRequests, closedWithinDays, intl, before})

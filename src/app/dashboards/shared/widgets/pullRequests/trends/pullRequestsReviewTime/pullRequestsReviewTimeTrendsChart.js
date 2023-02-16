@@ -28,9 +28,9 @@ export const PullRequestsReviewTimeTrendsChart = ({
     measurementWindow={measurementWindow}
     onSelectionChange={onSelectionChange}
     config={{
-      title: "Closed Pull Requests: Avg. Review Time",
+      title: "Closed Pull Requests: Avg. Time to Merge",
       yAxisUom: "Days",
-      legendText: "Review Time",
+      legendText: "Time to Merge",
       tooltip: {
         formatter: (measurement, seriesKey, intl) => {
           return {

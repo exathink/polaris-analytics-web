@@ -251,7 +251,7 @@ class _CommitsTimelineChartView extends React.Component {
       <div style={{height: "100%"}}>
         <div
           style={{
-            height: "18%",
+            height: "22%",
             backgroundColor: "#f2f3f6",
             borderColor: "GhostWhite",
             borderStyle: "solid",
@@ -263,7 +263,7 @@ class _CommitsTimelineChartView extends React.Component {
             <Traceability current={model} previous={model} />
           </ComponentCarousel>
         </div>
-        <div className="tw-relative tw-h-[82%]">
+        <div className="tw-relative tw-h-[78%]">
           <div className="tw-absolute tw-inset-0" data-testid="commits_timeline_rollup">
             <CommitsTimelineRollupBarChart
               /* We cannot use the model on state here because this should include all the categories
