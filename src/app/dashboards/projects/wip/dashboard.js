@@ -6,7 +6,7 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
-import {Flex} from "reflexbox";
+
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
@@ -66,12 +66,10 @@ function WipDashboard({
         <div className="tw-flex tw-justify-start">Age Limit</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-col-start-5 tw-row-start-1 tw-text-base">
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
-      </div>
-      <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
+      <div className="tw-col-start-5 tw-col-span-2 tw-row-start-1 tw-text-base tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-mr-2">
+       
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+       
         <GroupingSelector
           label="Show"
           value={wipChartType}

@@ -44,7 +44,7 @@
 .rightControls {
   grid-area: rightControls;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: baseline;
   gap: 2rem;
   margin-right: 2rem;
