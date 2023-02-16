@@ -402,28 +402,29 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Delay Analyzer</div>
-      <div className={styles.workItemScope}>
-      <div className="tw-mr-8">
-        <GroupingSelector
-          label="Show"
-          value={wipChartType}
-          onGroupingChanged={setWipChartType}
-          groupings={[
-            {
-              key: "age",
-              display: "Age",
-            },
-            {
-              key: "latency",
-              display: "Motion",
-            },
-          ]}
-        />
-      </div>
+
+      <div className={styles.rightControls}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-      </div>
-      
-      <div className={styles.resetAllButton}>
+        
+        <div className="">
+          <GroupingSelector
+            label="Show"
+            value={wipChartType}
+            onGroupingChanged={setWipChartType}
+            groupings={[
+              {
+                key: "age",
+                display: "Age",
+              },
+              {
+                key: "latency",
+                display: "Motion",
+              },
+            ]}
+          />
+        </div>
+        
+        <div className="tw-w-20">
         {(tableFilteredWorkItems.length < initWorkItems.length ||
           chartFilteredWorkItems.length < initWorkItems.length ||
           selectedQuadrant !== undefined) && (
@@ -432,6 +433,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </Button>
         )}
       </div>
+      </div>
+
       <div className={styles.engineering}>
         <div
           className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[75%,25%] tw-gap-x-2"
@@ -463,7 +466,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   setCodingFilter(items);
 
                   // disallow compound selection
-                  setDeliveryFilter([])
+                  setDeliveryFilter([]);
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.engineering);
                 }
@@ -492,9 +495,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
                       quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
                   );
                   setDeliveryFilter(items);
-                  
+
                   // disallow compound selection
-                  setCodingFilter([])
+                  setCodingFilter([]);
                   setSelectedQuadrant(quadrant);
                   setQuadrantStateType(QuadrantStateTypes.delivery);
                 }
