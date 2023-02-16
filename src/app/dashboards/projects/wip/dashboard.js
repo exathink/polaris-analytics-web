@@ -67,6 +67,11 @@ function WipDashboard({
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
       <div className="tw-col-start-5 tw-row-start-1 tw-text-base">
+        <Flex w={1} justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
+      </div>
+      <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
         <GroupingSelector
           label="Show"
           value={wipChartType}
@@ -82,11 +87,6 @@ function WipDashboard({
             },
           ]}
         />
-      </div>
-      <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
       </div>
       <DashboardRow>
         <DashboardWidget
