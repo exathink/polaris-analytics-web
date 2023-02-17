@@ -11,5 +11,7 @@ export const metricsMapping = {
   DURATION: "avgDuration",
   EFFORT: "avgEffort",
   LATENCY: "avgLatency",
-  PULLREQUEST: "pullRequestAvgAge"
+  PULLREQUEST: "pullRequestAvgAge",
+  WIP_TOTAL: "wipTotal",
+  AVG_AGE: "avgAge"
 };

@@ -14,6 +14,7 @@ import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeL
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 import {getReferenceString} from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
+import { metricsMapping } from "../../shared/helpers/teamUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -36,6 +37,7 @@ function WipDashboard({
   const [workItemScope, setWorkItemScope] = useState("specs");
   const [wipChartType, setWipChartType] = useState("age");
   const specsOnly = workItemScope === "specs";
+  const [selectedMetric, setSelectedMetric] = useState(metricsMapping.WIP_TOTAL);
 
   const {
     cycleTimeTarget,
@@ -133,6 +135,10 @@ function WipDashboard({
               days={flowAnalysisPeriod}
               view={view}
               includeSubTasks={includeSubTasksWipInspector}
+              displayProps={{
+                initialSelection: selectedMetric,
+                onSelectionChanged: (metric) => setSelectedMetric(metric),
+              }}
             />
           )}
           showDetail={false}

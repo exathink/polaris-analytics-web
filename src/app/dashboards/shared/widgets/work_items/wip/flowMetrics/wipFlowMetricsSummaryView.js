@@ -24,6 +24,8 @@ import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
+import { useSelectWithDelegate } from "../../../../../../helpers/hooksUtil";
+import { metricsMapping } from "../../../../helpers/teamUtils";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -329,7 +331,11 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData}) {
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData,   displayProps: {
+  initialSelection,
+  onSelectionChanged
+}}) {
+  const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
   const intl = useIntl();
   const {pipelineCycleMetrics} = data[dimension];
 
@@ -341,19 +347,31 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
       <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
-      <Wip 
+      <Wip
         title={<span>Total</span>}
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
         displayType="card"
-        displayProps={{className: "tw-p-2", supportingMetric: <span>Limit {wipLimit}</span>, testId: "wip-total"}}
+        displayProps={{
+          className: "tw-p-2",
+          supportingMetric: <span>Limit {wipLimit}</span>,
+          testId: "wip-total",
+          showHighlighted: selectedMetric === metricsMapping.WIP_TOTAL,
+          onClick: () => setSelectedMetric(metricsMapping.WIP_TOTAL),
+        }}
       />
-      <AvgAge 
+      <AvgAge
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType="card"
-        displayProps={{className: "tw-p-2", supportingMetric: <span>Target {cycleTimeTarget} Days</span>, testId: "wip-age"}}
+        displayProps={{
+          className: "tw-p-2",
+          supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
+          testId: "wip-age",
+          showHighlighted: selectedMetric === metricsMapping.AVG_AGE,
+          onClick: () => setSelectedMetric(metricsMapping.AVG_AGE),
+        }}
       />
     </div>
   );
