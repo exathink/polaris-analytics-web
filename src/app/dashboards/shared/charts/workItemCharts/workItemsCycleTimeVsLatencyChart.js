@@ -99,16 +99,17 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
 
 export function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
   const count = workItems.length;
-
+  const prefix = `Motion Analysis`
   const countDisplay = `${count} ${count === 1 ? specsOnly ? AppTerms.spec.display : AppTerms.card.display : specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`;
+  let suffix =  stageName ? `${countDisplay} in ${stageName}` : countDisplay;
   if (selectedQuadrant) {
     if (stageName) {
-      return `${countDisplay} ${QuadrantNames[selectedQuadrant]} in ${stageName}`
+      suffix =  `${countDisplay} ${QuadrantNames[selectedQuadrant]} in ${stageName}`
     } else {
-      return `${countDisplay} ${QuadrantNames[selectedQuadrant]}`
+      suffix =  `${countDisplay} ${QuadrantNames[selectedQuadrant]}`
     }
   }
-  return stageName ? `${countDisplay} in ${stageName}` : countDisplay;
+  return `${prefix}: ${suffix}`
 }
 
 function getTeamEntry(teamNodeRefs) {
