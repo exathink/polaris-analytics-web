@@ -5,7 +5,7 @@
   grid-template-rows: 4% 50% 90px calc(47% - 90px);
   gap: 0.5rem 0.5rem;
   grid-template-areas:
-    "title workItemScope workItemScope resetAll"
+    "title rightControls rightControls rightControls"
     "engineering engineering engineering engineering"
     "issueTypeDropdown . . ."
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
@@ -35,10 +35,19 @@
   grid-area: cycleTimeLatencyTable;
 }
 
-.workItemScope {
-  grid-area: workItemScope;
+.ageLatency {
+  grid-area: ageLatency;
   justify-content: center;
   display: flex;
+}
+
+.rightControls {
+  grid-area: rightControls;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 2rem;
+  margin-right: 2rem;
 }
 
 .cardInspectorPanel {

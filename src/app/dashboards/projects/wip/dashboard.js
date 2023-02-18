@@ -6,13 +6,14 @@ import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
 import {ProjectDashboard} from "../projectDashboard";
 import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
-import {Flex} from "reflexbox";
+
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
 import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 import {getReferenceString} from "../../../helpers/utility";
+import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -33,6 +34,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("specs");
+  const [wipChartType, setWipChartType] = useState("age");
   const specsOnly = workItemScope === "specs";
 
   const {
@@ -57,17 +59,32 @@ function WipDashboard({
     >
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Wip Monitoring, {specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`}
+          Wip Monitoring, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Age Limit</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-col-start-6 tw-row-start-1 tw-text-base">
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        </Flex>
+      <div className="tw-col-start-5 tw-col-span-2 tw-row-start-1 tw-text-base tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-mr-2">
+       
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+       
+        <GroupingSelector
+          label="Show"
+          value={wipChartType}
+          onGroupingChanged={setWipChartType}
+          groupings={[
+            {
+              key: "age",
+              display: "Age",
+            },
+            {
+              key: "latency",
+              display: "Motion",
+            },
+          ]}
+        />
       </div>
       <DashboardRow>
         <DashboardWidget
@@ -168,7 +185,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard"}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}
@@ -197,7 +214,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard"}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}

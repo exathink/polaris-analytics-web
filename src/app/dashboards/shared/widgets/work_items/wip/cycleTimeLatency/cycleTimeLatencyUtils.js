@@ -126,7 +126,7 @@ export function getTitleForHistogram({workItems, specsOnly, stageName}) {
       : AppTerms.cards.display
   }`;
 
-  return `Age Distribution: ${countDisplay} in ${stageName}`;
+  return `Age Analysis: ${countDisplay} in ${stageName}`;
 }
 
 export function getTooltipForAgeLatency(tooltipObj, title, intl) {
