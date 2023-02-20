@@ -11,7 +11,7 @@ import {Colors} from "../../config";
 
 // Return an array of  HighChart series data structures from the
 // passed in props.
-function getSeries(intl, view) {
+function getSeries(items) {
   return []
 }
 
@@ -30,8 +30,8 @@ export const WipQueueSizeChart = Chart({
   // These are the minimal props passed by the Chart component. Add
   // all the additional domain props you will pass to React component here so that
   // you can use them in building the config.
-  getConfig: ({title, subtitle, intl, view}) => {
-    const series = getSeries(intl, view);
+  getConfig: ({title, subtitle, intl, view, items, stageName}) => {
+    const series = getSeries(items);
     return {
       chart: {
         // some default options we include on all charts, but might want to
@@ -43,11 +43,11 @@ export const WipQueueSizeChart = Chart({
 
       },
       title: {
-        text: title || 'Title',
+        text: `${items.length} Items in ${stageName}` || 'Title',
         align: 'left',
       },
       subtitle: {
-        text: subtitle || `Subtitle`,
+        text: ``,
         align: 'left',
       },
       xAxis: {
@@ -90,7 +90,7 @@ export const WipQueueSizeChart = Chart({
       },
       legend: {
         title: {
-          text: 'Legend',
+          text: '',
           style: {
             fontStyle: 'italic'
           }

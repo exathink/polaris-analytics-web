@@ -122,7 +122,7 @@ export const DimensionCycleTimeLatencyView = ({
     if (displayBag?.wipChartType === "latency") {
       chartElement = originalChartElement;
     } else if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
-      chartElement = <WipQueueSizeChart />
+      chartElement = <WipQueueSizeChart items = {workItemsWithAggregateDurations} stageName={stageName}/>
     } else {
       chartElement = (
         <>
