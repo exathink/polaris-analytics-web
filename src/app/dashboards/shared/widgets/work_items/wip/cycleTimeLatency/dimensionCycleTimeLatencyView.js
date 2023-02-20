@@ -24,6 +24,8 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_ite
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
+import { metricsMapping } from "../../../../helpers/teamUtils";
+import { WipQueueSizeChart } from "../../../../charts/workItemCharts/wipQueueSizeChart";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -119,6 +121,8 @@ export const DimensionCycleTimeLatencyView = ({
 
     if (displayBag?.wipChartType === "latency") {
       chartElement = originalChartElement;
+    } else if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
+      chartElement = <WipQueueSizeChart />
     } else {
       chartElement = (
         <>
