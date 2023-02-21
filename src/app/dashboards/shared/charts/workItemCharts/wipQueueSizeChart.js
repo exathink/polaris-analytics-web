@@ -1,7 +1,7 @@
 
 import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, itemsDesc, WorkItemStateTypeColor} from "../../config";
+import {assignWorkItemStateColor, Colors, itemsDesc} from "../../config";
 import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
 
 function getStateCounts(items) {
@@ -22,8 +22,8 @@ function getSeries(items) {
   return [{
     key: "wipQueSize",
     showInLegend: false,
-    data: Object.entries(getStateCounts(items)).map(e => {
-        return {name: e[0], y: e[1].count, color: WorkItemStateTypeColor[e[1].stateType]};
+    data: Object.entries(getStateCounts(items)).map((e, index) => {
+        return {name: e[0], y: e[1].count, color: assignWorkItemStateColor(e[1].stateType, index)};
     }),
   },]
 }
