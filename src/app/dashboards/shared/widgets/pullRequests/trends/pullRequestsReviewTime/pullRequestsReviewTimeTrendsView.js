@@ -30,7 +30,7 @@ export const PullRequestsReviewTimeTrendsView = ({
           <span className={classNames(fontStyles["text-xs"], "tw-ml-2")}>Last {measurementWindow} days</span>
         </div>
         <ClosedPullRequestCount title="Total" displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} />
-        <PullRequest title={"Review Time"} displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} metric="avgAge" />
+        <PullRequest title={"Time to Merge"} displayType="card" currentMeasurement={currentTrend} displayProps={{className: "tw-p-2"}} metric="avgAge" />
       </div>
     );
   }

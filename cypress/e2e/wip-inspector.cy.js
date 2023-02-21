@@ -134,7 +134,7 @@ describe("Wip Inspector", () => {
     .its("response.body.data.project.workItems.edges")
     .then(res => {
       cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Specs in Coding`)
-      cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Delivery`)
+      cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Shipping`)
     });
   });
 
@@ -200,7 +200,7 @@ describe("Wip Inspector", () => {
       .should("have.length", 4)
       .then(res => {
         cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `2 Specs in Coding`)
-        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `2 Specs in Delivery`)
+        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `2 Specs in Shipping`)
       });
 
     // TODO: Need to fix this test later, its failing on the cli run but passing on desktop app run

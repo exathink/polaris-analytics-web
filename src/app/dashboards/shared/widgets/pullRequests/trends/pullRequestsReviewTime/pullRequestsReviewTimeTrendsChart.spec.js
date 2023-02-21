@@ -83,7 +83,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Closed Pull Requests: Avg. Review Time",
+    text: "Closed Pull Requests: Avg. Time to Merge",
   },
   legend: {
     title: {

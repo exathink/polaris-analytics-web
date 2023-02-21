@@ -54,7 +54,7 @@ export const DimensionPullRequestsDetailDashboard = ({
     >
       <div className="tw-col-span-6 tw-col-start-1 tw-row-start-1  tw-flex tw-items-center tw-text-gray-300">
         <div className="tw-flex tw-flex-col tw-text-2xl">
-          <div className="tw-flex tw-justify-start">Code Review Monitoring</div>
+          <div className="tw-flex tw-justify-start">Code Flow Monitoring</div>
           <div className="tw-flex tw-justify-start tw-text-sm">
             {traceableOnly ? "Traceable" : "All"} Open and Closed Pull Requests, Last {measurementWindow} Days
           </div>
