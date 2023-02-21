@@ -68,7 +68,7 @@ function TrendsDashboard({
           className={styles.valueBookClosed}
           render={({view}) => (
             <ProjectValueBookWidget
-              title={`Roadmap Investments: Last ${daysRange} Days`}
+              title={`Roadmap Focus: Last ${daysRange} Days`}
               instanceKey={key}
               context={context}
               days={daysRange}
