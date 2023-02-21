@@ -32,7 +32,7 @@ export const WipQueueSizeChart = Chart({
   chartUpdateProps: (props) => props,
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
-  getConfig: ({title, subtitle, intl, view, items, stageName, specsOnly}) => {
+  getConfig: ({items, stageName, specsOnly}) => {
     const series = getSeries(items);
     return {
       chart: {
