@@ -21,6 +21,7 @@ function getStateCounts(items) {
 function getSeries(items) {
   return [{
     key: "wipQueSize",
+    showInLegend: false,
     data: Object.entries(getStateCounts(items)).map(e => {
         return {name: e[0], y: e[1].count, color: WorkItemStateTypeColor[e[1].stateType]};
     }),
