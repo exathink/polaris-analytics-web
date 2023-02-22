@@ -68,25 +68,26 @@ function WipDashboard({
         <div className="tw-flex tw-justify-start">Age Limit</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-col-start-5 tw-col-span-2 tw-row-start-1 tw-text-base tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-mr-2">
-       
+      <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-       
-        <GroupingSelector
-          label="Show"
-          value={wipChartType}
-          onGroupingChanged={setWipChartType}
-          groupings={[
-            {
-              key: "age",
-              display: "Age",
-            },
-            {
-              key: "latency",
-              display: "Motion",
-            },
-          ]}
-        />
+
+        {selectedMetric !== metricsMapping.WIP_TOTAL && (
+          <GroupingSelector
+            label="Show"
+            value={wipChartType}
+            onGroupingChanged={setWipChartType}
+            groupings={[
+              {
+                key: "age",
+                display: "Age",
+              },
+              {
+                key: "latency",
+                display: "Motion",
+              },
+            ]}
+          />
+        )}
       </div>
       <DashboardRow>
         <DashboardWidget

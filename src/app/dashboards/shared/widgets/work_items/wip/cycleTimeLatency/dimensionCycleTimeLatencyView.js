@@ -121,9 +121,7 @@ export const DimensionCycleTimeLatencyView = ({
 
     if (displayBag?.wipChartType === "latency") {
       chartElement = originalChartElement;
-    } else if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
-      chartElement = <WipQueueSizeChart items = {workItemsWithAggregateDurations} stageName={stageName} specsOnly={specsOnly}/>
-    } else {
+    }  else {
       chartElement = (
         <>
           {(selectedFilter !== undefined || displayBag?.wipChartType === "latency") && (
@@ -168,6 +166,10 @@ export const DimensionCycleTimeLatencyView = ({
           )}
         </>
       );
+    }
+
+    if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
+      chartElement = <WipQueueSizeChart items = {workItemsWithAggregateDurations} stageName={stageName} specsOnly={specsOnly}/>
     }
   }
 
