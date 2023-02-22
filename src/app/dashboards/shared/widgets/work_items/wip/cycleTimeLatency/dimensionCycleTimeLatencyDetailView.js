@@ -228,7 +228,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [selectedDeliveryFilter, setDeliveryFilter] = React.useState();
   const [selectedDeliveryCategory, setSelectedDeliveryCategory] = React.useState();
 
-  const [wipChartType, setWipChartType] = React.useState("age");
+  const [wipChartType, setWipChartType] = React.useState("queueSize");
 
   function handleClearClick() {
     setCodingFilter(undefined);
