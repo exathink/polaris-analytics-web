@@ -177,11 +177,11 @@ export const DimensionCycleTimeLatencyView = ({
     <VizRow h={1}>
       <VizItem w={1}>
         <div
-          className={displayBag?.selectedMetric !== metricsMapping.WIP_TOTAL ? "tw-relative tw-h-[77%]" : "tw-h-full"}
+          className={displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency" ? "tw-relative tw-h-[77%]" : "tw-h-full"}
         >
           {chartElement}
         </div>
-        {displayBag?.selectedMetric !== metricsMapping.WIP_TOTAL && (
+        {displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency" && (
           <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
             {displayBag?.displayType === "FlowEfficiencyCard" ? (
               <FlowEfficiencyQuadrantSummaryCard
