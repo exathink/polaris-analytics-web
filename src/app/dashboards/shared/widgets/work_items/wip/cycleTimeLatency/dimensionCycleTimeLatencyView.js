@@ -176,51 +176,57 @@ export const DimensionCycleTimeLatencyView = ({
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div className="tw-relative tw-h-[77%]">{chartElement}</div>
-        <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
-          {displayBag?.displayType === "FlowEfficiencyCard" ? (
-            <FlowEfficiencyQuadrantSummaryCard
-              workItems={workItems}
-              stateTypes={stateTypes}
-              specsOnly={specsOnly}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              className="tw-mx-auto tw-w-[98%]"
-              onQuadrantClick={(quadrant) => {
-                if (
-                  selectedQuadrant !== undefined &&
-                  selectedQuadrant === quadrant &&
-                  quadrantStateType === stageName
-                ) {
-                  handleResetAll();
-                } else {
-                  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
-                    .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
-                    .filter(
-                      (x) =>
-                        quadrant === undefined ||
-                        quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-                    );
-
-                  setFilter?.(workItemsWithAggregateDurations);
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(stageName);
-                }
-              }}
-              selectedQuadrant={selectedQuadrant}
-            />
-          ) : (
-            <QuadrantSummaryPanel
-              workItems={workItems}
-              stateTypes={stateTypes}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              className="tw-mx-auto tw-w-[98%]"
-              size={displayBag?.summaryPanelSize}
-              valueFontClass={displayBag?.summaryPanelValueFontSize}
-            />
-          )}
+        <div
+          className={displayBag?.selectedMetric !== metricsMapping.WIP_TOTAL ? "tw-relative tw-h-[77%]" : "tw-h-full"}
+        >
+          {chartElement}
         </div>
+        {displayBag?.selectedMetric !== metricsMapping.WIP_TOTAL && (
+          <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
+            {displayBag?.displayType === "FlowEfficiencyCard" ? (
+              <FlowEfficiencyQuadrantSummaryCard
+                workItems={workItems}
+                stateTypes={stateTypes}
+                specsOnly={specsOnly}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                className="tw-mx-auto tw-w-[98%]"
+                onQuadrantClick={(quadrant) => {
+                  if (
+                    selectedQuadrant !== undefined &&
+                    selectedQuadrant === quadrant &&
+                    quadrantStateType === stageName
+                  ) {
+                    handleResetAll();
+                  } else {
+                    const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+                      .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+                      .filter(
+                        (x) =>
+                          quadrant === undefined ||
+                          quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                      );
+
+                    setFilter?.(workItemsWithAggregateDurations);
+                    setSelectedQuadrant(quadrant);
+                    setQuadrantStateType(stageName);
+                  }
+                }}
+                selectedQuadrant={selectedQuadrant}
+              />
+            ) : (
+              <QuadrantSummaryPanel
+                workItems={workItems}
+                stateTypes={stateTypes}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                className="tw-mx-auto tw-w-[98%]"
+                size={displayBag?.summaryPanelSize}
+                valueFontClass={displayBag?.summaryPanelValueFontSize}
+              />
+            )}
+          </div>
+        )}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
