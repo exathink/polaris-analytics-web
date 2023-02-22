@@ -413,6 +413,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
             onGroupingChanged={setWipChartType}
             groupings={[
               {
+                key: "queueSize",
+                display: "Queue Size",
+              },
+              {
                 key: "age",
                 display: "Age",
               },
