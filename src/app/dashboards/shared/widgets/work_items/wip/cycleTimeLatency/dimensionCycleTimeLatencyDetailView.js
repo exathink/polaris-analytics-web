@@ -27,6 +27,7 @@ import {useCycleTimeLatencyHook, getSubTitleForHistogram, QuadrantNames} from ".
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
+import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -297,9 +298,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
     let latencyCodingChartElement = React.cloneElement(codingChartElement, {workItems: selectedCodingFilter});
     let latencyDeliveryChartElement = React.cloneElement(deliveryChartElement, {workItems: selectedDeliveryFilter});
 
-    if(wipChartType === "latency") {
+    if (wipChartType === "latency") {
       codingChartElement = originalCodingChartElement;
       deliveryChartElement = originalDeliveryChartElement;
+    } else if (wipChartType === "queueSize") {
+      codingChartElement = (
+        <WipQueueSizeChart items={workItemsEngineering} stageName={stageName} specsOnly={specsOnly} />
+      );
+      deliveryChartElement = (
+        <WipQueueSizeChart items={workItemsDelivery} stageName={stageName} specsOnly={specsOnly} />
+      );
     } else {
       codingChartElement = (
         <>
