@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -240,6 +240,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setSelectedCodingCategory(undefined);
     setSelectedDeliveryCategory(undefined);
 
+    setQueueSizeState(undefined);
+
     setTableFilteredWorkItems(initWorkItems)
   }
 
@@ -305,24 +307,38 @@ export const DimensionCycleTimeLatencyDetailView = ({
       deliveryChartElement = originalDeliveryChartElement;
     } else if (wipChartType === "queueSize") {
       codingChartElement = (
-        <WipQueueSizeChart
-          items={workItemsEngineering}
-          stageName={stageName}
-          specsOnly={specsOnly}
-          onPointClick={(obj) => {
-            setQueueSizeState(obj.options.name)
-          }}
-        />
+        <div className="tw-relative tw-h-full">
+          <WipQueueSizeChart
+            items={workItemsEngineering}
+            stageName={stageName}
+            specsOnly={specsOnly}
+            onPointClick={(obj) => {
+              setQueueSizeState(obj.options.name);
+              setSelectedCodingCategory("engineering");
+
+              setSelectedDeliveryCategory(undefined);
+            }}
+          />
+          {queueSizeState && selectedCodingCategory==="engineering" && <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />}
+        </div>
       );
       deliveryChartElement = (
-        <WipQueueSizeChart
-          items={workItemsDelivery}
-          stageName={stageName}
-          specsOnly={specsOnly}
-          onPointClick={(obj) => {
-            setQueueSizeState(obj.options.name)
-          }}
-        />
+        <div className="tw-relative tw-h-full">
+          <WipQueueSizeChart
+            items={workItemsDelivery}
+            stageName={stageName}
+            specsOnly={specsOnly}
+            onPointClick={(obj) => {
+              setQueueSizeState(obj.options.name);
+              setSelectedDeliveryCategory("delivery");
+
+              setSelectedCodingCategory(undefined);
+            }}
+          />
+          {queueSizeState && selectedDeliveryCategory==="delivery" && (
+            <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />
+          )}
+        </div>
       );
     } else {
       codingChartElement = (
