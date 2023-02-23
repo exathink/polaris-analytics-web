@@ -3,6 +3,7 @@ import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {assignWorkItemStateColor, Colors, itemsDesc} from "../../config";
 import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
+import { pick } from "../../../../helpers/utility";
 
 function getStateCounts(items) {
     const obj = items.reduce((acc, item) => {
@@ -29,10 +30,10 @@ function getSeries(items) {
 }
 
 export const WipQueueSizeChart = Chart({
-  chartUpdateProps: (props) => props,
+  chartUpdateProps: (props) => pick(props, "items", "specsOnly", "stageName"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
-  getConfig: ({items, stageName, specsOnly}) => {
+  getConfig: ({items, stageName, specsOnly, onPointClick}) => {
     const series = getSeries(items);
     return {
       chart: {
@@ -78,7 +79,22 @@ export const WipQueueSizeChart = Chart({
       ],
       plotOptions: {
         series: {
-          animation: false
+          animation: false,
+          allowPointSelect: true,
+          cursor: "pointer",
+          states: {
+            select: {
+              color: null,
+              opacity: 0.5
+            },
+          },
+          point: {
+            events: {
+              click: function () {
+                onPointClick?.(this);
+              },
+            },
+          },
         }
       },
       legend: {

@@ -212,11 +212,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
-  const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+  const workItemsEngineering = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
 
-  const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+  const workItemsDelivery = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
@@ -251,6 +251,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
       setTableFilteredWorkItems(selectedDeliveryFilter)
     } 
   }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
+
+  const [queueSizeState, setQueueSizeState] = React.useState();
 
   let codingChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
@@ -303,10 +305,24 @@ export const DimensionCycleTimeLatencyDetailView = ({
       deliveryChartElement = originalDeliveryChartElement;
     } else if (wipChartType === "queueSize") {
       codingChartElement = (
-        <WipQueueSizeChart items={workItemsEngineering} stageName={stageName} specsOnly={specsOnly} />
+        <WipQueueSizeChart
+          items={workItemsEngineering}
+          stageName={stageName}
+          specsOnly={specsOnly}
+          onPointClick={(obj) => {
+            setQueueSizeState(obj.options.name)
+          }}
+        />
       );
       deliveryChartElement = (
-        <WipQueueSizeChart items={workItemsDelivery} stageName={stageName} specsOnly={specsOnly} />
+        <WipQueueSizeChart
+          items={workItemsDelivery}
+          stageName={stageName}
+          specsOnly={specsOnly}
+          onPointClick={(obj) => {
+            setQueueSizeState(obj.options.name)
+          }}
+        />
       );
     } else {
       codingChartElement = (
@@ -562,6 +578,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 const _teams = w.teamNodeRefs.map((t) => t.teamKey);
                 return _teams.includes(selectedTeam);
               }
+            })
+            .filter(w => {
+              return queueSizeState === undefined || queueSizeState === w.state
             })}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
