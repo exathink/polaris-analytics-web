@@ -24,6 +24,7 @@ export const GET_ORGANIZATION_TEAMS_QUERY = gql`
               avg_latency,
               avg_effort,
               work_items_in_scope,
+              work_items_with_commits,
               total_effort
       ]
       specsOnly:$specsOnly,
@@ -47,6 +48,7 @@ export const GET_ORGANIZATION_TEAMS_QUERY = gql`
                 avgEffort
                 totalEffort
                 workItemsInScope
+                workItemsWithCommits
             }
           }
         }
