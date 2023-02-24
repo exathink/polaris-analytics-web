@@ -446,7 +446,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       <div className={styles.rightControls}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         
-        <div className="">
+        {ageLatencyFeatureFlag && <div className="">
           <GroupingSelector
             label="Show"
             value={wipChartType}
@@ -466,7 +466,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               },
             ]}
           />
-        </div>
+        </div>}
         
         <div className="tw-w-20">
         {(tableFilteredWorkItems.length < initWorkItems.length ||
