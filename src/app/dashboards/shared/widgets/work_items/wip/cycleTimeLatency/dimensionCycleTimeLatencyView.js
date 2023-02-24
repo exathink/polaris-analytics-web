@@ -115,6 +115,48 @@ export const DimensionCycleTimeLatencyView = ({
       }}
     />
   );
+  let quadrantSummaryElement = (
+    <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
+      {displayBag?.displayType === "FlowEfficiencyCard" ? (
+        <FlowEfficiencyQuadrantSummaryCard
+          workItems={workItems}
+          stateTypes={stateTypes}
+          specsOnly={specsOnly}
+          cycleTimeTarget={cycleTimeTarget}
+          latencyTarget={latencyTarget}
+          className="tw-mx-auto tw-w-[98%]"
+          onQuadrantClick={(quadrant) => {
+            if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && quadrantStateType === stageName) {
+              handleResetAll();
+            } else {
+              const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+                .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+                .filter(
+                  (x) =>
+                    quadrant === undefined ||
+                    quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+                );
+
+              setFilter?.(workItemsWithAggregateDurations);
+              setSelectedQuadrant(quadrant);
+              setQuadrantStateType(stageName);
+            }
+          }}
+          selectedQuadrant={selectedQuadrant}
+        />
+      ) : (
+        <QuadrantSummaryPanel
+          workItems={workItems}
+          stateTypes={stateTypes}
+          cycleTimeTarget={cycleTimeTarget}
+          latencyTarget={latencyTarget}
+          className="tw-mx-auto tw-w-[98%]"
+          size={displayBag?.summaryPanelSize}
+          valueFontClass={displayBag?.summaryPanelValueFontSize}
+        />
+      )}
+    </div>
+  );
   if (ageLatencyFeatureFlag) {
     const originalChartElement = chartElement;
     let latencyChartElement = React.cloneElement(chartElement, {workItems: selectedFilter});
@@ -171,62 +213,22 @@ export const DimensionCycleTimeLatencyView = ({
     if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
       chartElement = <WipQueueSizeChart items = {workItemsWithAggregateDurations} stageName={stageName} specsOnly={specsOnly}/>
     }
+
+    quadrantSummaryElement =
+      displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType === "latency"
+        ? quadrantSummaryElement
+        : null;
   }
 
   return (
     <VizRow h={1}>
       <VizItem w={1}>
         <div
-          className={displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency" ? "tw-relative tw-h-[77%]" : "tw-h-full"}
+          className={(displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency") || !ageLatencyFeatureFlag ? "tw-relative tw-h-[77%]" : "tw-h-full"}
         >
           {chartElement}
         </div>
-        {displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency" && (
-          <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
-            {displayBag?.displayType === "FlowEfficiencyCard" ? (
-              <FlowEfficiencyQuadrantSummaryCard
-                workItems={workItems}
-                stateTypes={stateTypes}
-                specsOnly={specsOnly}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                className="tw-mx-auto tw-w-[98%]"
-                onQuadrantClick={(quadrant) => {
-                  if (
-                    selectedQuadrant !== undefined &&
-                    selectedQuadrant === quadrant &&
-                    quadrantStateType === stageName
-                  ) {
-                    handleResetAll();
-                  } else {
-                    const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
-                      .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
-                      .filter(
-                        (x) =>
-                          quadrant === undefined ||
-                          quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-                      );
-
-                    setFilter?.(workItemsWithAggregateDurations);
-                    setSelectedQuadrant(quadrant);
-                    setQuadrantStateType(stageName);
-                  }
-                }}
-                selectedQuadrant={selectedQuadrant}
-              />
-            ) : (
-              <QuadrantSummaryPanel
-                workItems={workItems}
-                stateTypes={stateTypes}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                className="tw-mx-auto tw-w-[98%]"
-                size={displayBag?.summaryPanelSize}
-                valueFontClass={displayBag?.summaryPanelValueFontSize}
-              />
-            )}
-          </div>
-        )}
+        {quadrantSummaryElement}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
