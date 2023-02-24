@@ -99,9 +99,9 @@ const TopDashboard = ({ viewerContext }) => (
               render={({ view }) =>
                 <OrgTeamsTableWidget
                   organizationKey={organization.key}
-                  days={14}
-                  measurementWindow={14}
-                  samplingFrequency={14}
+                  days={30}
+                  measurementWindow={30}
+                  samplingFrequency={30}
                   specsOnly={true}
                   includeSubTasks={false}
                 />}
