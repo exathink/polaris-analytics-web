@@ -331,10 +331,9 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData,   displayProps: {
-  initialSelection,
-  onSelectionChanged
-}}) {
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData, displayProps={}}) {
+  const {initialSelection, onSelectionChanged} = displayProps;
+
   const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
   const intl = useIntl();
   const {pipelineCycleMetrics} = data[dimension];
@@ -358,7 +357,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
           supportingMetric: <span>Limit {wipLimit}</span>,
           testId: "wip-total",
           showHighlighted: selectedMetric === metricsMapping.WIP_TOTAL,
-          onClick: () => setSelectedMetric(metricsMapping.WIP_TOTAL),
+          onClick: initialSelection != null ? () => setSelectedMetric(metricsMapping.WIP_TOTAL) : null,
         }}
       />
       <AvgAge
@@ -370,7 +369,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
           supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
           testId: "wip-age",
           showHighlighted: selectedMetric === metricsMapping.AVG_AGE,
-          onClick: () => setSelectedMetric(metricsMapping.AVG_AGE),
+          onClick: initialSelection != null ? () => setSelectedMetric(metricsMapping.AVG_AGE) : null,
         }}
       />
     </div>
