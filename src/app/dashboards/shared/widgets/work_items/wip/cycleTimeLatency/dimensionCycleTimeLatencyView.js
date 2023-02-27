@@ -78,7 +78,9 @@ export const DimensionCycleTimeLatencyView = ({
 
   const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-  );
+  ).filter(workItem => {
+    return selectedQuadrant === undefined || selectedQuadrant === getQuadrant(workItem.cycleTime, workItem.latency, cycleTimeTarget, latencyTarget)
+  });
 
   function handleResetAll() {
     setSelectedQuadrant(undefined);
@@ -99,7 +101,7 @@ export const DimensionCycleTimeLatencyView = ({
       view={view}
       stageName={stageName}
       specsOnly={specsOnly}
-      workItems={workItems}
+      workItems={workItemsWithAggregateDurations}
       stateTypes={stateTypes}
       groupByState={groupByState}
       cycleTimeTarget={cycleTimeTarget}
@@ -162,7 +164,18 @@ export const DimensionCycleTimeLatencyView = ({
     let latencyChartElement = React.cloneElement(chartElement, {workItems: selectedFilter});
 
     if (displayBag?.wipChartType === "latency") {
-      chartElement = originalChartElement;
+      chartElement = (
+        <div className="tw-relative tw-h-full">
+          {originalChartElement}
+          {selectedQuadrant && (
+            <QuadrantFilterWrapper
+              selectedQuadrant={QuadrantNames[selectedQuadrant]}
+              selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+              handleClearClick={handleResetAll}
+            />
+          )}
+        </div>
+      );
     }  else {
       chartElement = (
         <>
