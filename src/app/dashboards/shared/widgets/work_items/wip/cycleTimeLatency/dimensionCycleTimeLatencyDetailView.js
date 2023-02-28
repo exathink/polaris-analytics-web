@@ -80,9 +80,7 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
-// function getTitle(stageName) {
-//   return `Delay Analyzer`;
-// }
+
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -441,7 +439,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-text-2xl")}>Delay Analyzer</div>
+      <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
