@@ -41,7 +41,7 @@ export const WipQueueSizeChart = Chart({
         panning: true,
         panKey: 'shift',
         zoomType: 'xy',
-        type: "column"
+        type: "bar"
       },
       title: {
         text: `${items.length} ${itemsDesc(specsOnly)} in ${stageName}` || 'Title',
@@ -57,6 +57,7 @@ export const WipQueueSizeChart = Chart({
       },
       yAxis: {
         type: 'linear',
+        allowDecimals: false,
         title: {
             text: itemsDesc(specsOnly)
         }
@@ -69,7 +70,7 @@ export const WipQueueSizeChart = Chart({
           return tooltipHtml_v2({
             header: `${this.point.category}`,
             body: [
-              [``, `${this.point.y}`],
+              [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`]
             ]
           })
         }
@@ -78,6 +79,9 @@ export const WipQueueSizeChart = Chart({
         ...series
       ],
       plotOptions: {
+        bar: {
+          maxPointWidth: 50
+        },
         series: {
           animation: false,
           allowPointSelect: true,
