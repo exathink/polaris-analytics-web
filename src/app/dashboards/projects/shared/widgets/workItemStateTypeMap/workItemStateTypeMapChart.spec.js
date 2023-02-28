@@ -166,7 +166,9 @@ const fixedChartConfig = {
     softMax: 20,
   },
   tooltip: {
-    enabled: false,
+    useHTML: true,
+    followPointer: false,
+    hideDelay: 0
   },
   time: {
     useUTC: false,

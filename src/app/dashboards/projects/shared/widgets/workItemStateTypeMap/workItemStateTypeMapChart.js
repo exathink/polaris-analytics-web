@@ -1,6 +1,12 @@
-import {Chart, Highcharts} from "../../../../../framework/viz/charts";
+import { Chart, Highcharts, tooltipHtml } from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import {Colors, sanitizeStateMappings, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {
+  Colors,
+  sanitizeStateMappings,
+  WorkItemStateTypeColor,
+  WorkItemStateTypeDisplayName,
+  WorkItemTypeDisplayName
+} from "../../../../shared/config";
 import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
@@ -158,7 +164,19 @@ export const WorkItemStateTypeMapChart = Chart({
         },
       },
       tooltip: {
-        enabled: false,
+        useHTML: true,
+        followPointer: false,
+        hideDelay: 0,
+        formatter: function () {
+          return tooltipHtml({
+            header: `Current Mapping`,
+            body: [
+              ['Workflow State: ',this.point.name],
+              ['Phase: ', this.point.category]
+
+            ],
+          })
+        }
       },
       series: series,
       time: {
