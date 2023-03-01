@@ -19,6 +19,7 @@ export function DimensionWipSummaryWidget({
   includeSubTasks,
   days,
   view,
+  displayProps
 }) {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
   const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
@@ -61,6 +62,7 @@ export function DimensionWipSummaryWidget({
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
       days={days}
+      displayProps={displayProps}
     />
   );
 }
