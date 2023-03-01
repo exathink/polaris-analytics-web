@@ -283,6 +283,14 @@ export const AppTerms = {
   },
 };
 
+export function itemsDesc(specsOnly){
+  if (specsOnly) {
+    return AppTerms.specs.display;
+  } else {
+    return AppTerms.cards.display;
+  }
+}
+
 export function sanitizeStateMappings(workItemStateMappings) {
   const {...legalStateTypes} = WorkItemStateTypeDisplayName;
 

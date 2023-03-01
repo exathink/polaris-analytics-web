@@ -161,3 +161,16 @@ export function QuadrantFilterWrapper({selectedFilter, selectedQuadrant, handleC
     </div>
   );
 }
+
+export function QueueSizeFilterWrapper({selectedFilter, handleClearClick}) {
+  return (
+    <div className="tw-absolute tw-right-12 tw-top-0">
+      <ClearFilters
+        selectedFilter={selectedFilter}
+        selectedMetric={"State"}
+        stateType={""}
+        handleClearClick={handleClearClick}
+      />
+    </div>
+  );
+}
