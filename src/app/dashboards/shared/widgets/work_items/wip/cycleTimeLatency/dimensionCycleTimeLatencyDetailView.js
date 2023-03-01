@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -27,6 +27,7 @@ import {useCycleTimeLatencyHook, getSubTitleForHistogram, QuadrantNames} from ".
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
+import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -79,9 +80,7 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
   return [filteredWorkItems, setFilteredWorkItems];
 }
 
-// function getTitle(stageName) {
-//   return `Delay Analyzer`;
-// }
+
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -211,11 +210,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
-  const workItemsEngineering = getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+  const workItemsEngineering = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
 
-  const workItemsDelivery = getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+  const workItemsDelivery = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
+    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
@@ -227,7 +226,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [selectedDeliveryFilter, setDeliveryFilter] = React.useState();
   const [selectedDeliveryCategory, setSelectedDeliveryCategory] = React.useState();
 
-  const [wipChartType, setWipChartType] = React.useState("age");
+  const [wipChartType, setWipChartType] = React.useState("queueSize");
 
   function handleClearClick() {
     setCodingFilter(undefined);
@@ -238,6 +237,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
     setSelectedCodingCategory(undefined);
     setSelectedDeliveryCategory(undefined);
+
+    setQueueSizeState(undefined);
 
     setTableFilteredWorkItems(initWorkItems)
   }
@@ -250,6 +251,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
       setTableFilteredWorkItems(selectedDeliveryFilter)
     } 
   }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
+
+  const [queueSizeState, setQueueSizeState] = React.useState();
 
   let codingChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
@@ -297,9 +300,44 @@ export const DimensionCycleTimeLatencyDetailView = ({
     let latencyCodingChartElement = React.cloneElement(codingChartElement, {workItems: selectedCodingFilter});
     let latencyDeliveryChartElement = React.cloneElement(deliveryChartElement, {workItems: selectedDeliveryFilter});
 
-    if(wipChartType === "latency") {
+    if (wipChartType === "latency") {
       codingChartElement = originalCodingChartElement;
       deliveryChartElement = originalDeliveryChartElement;
+    } else if (wipChartType === "queueSize") {
+      codingChartElement = (
+        <div className="tw-relative tw-h-full">
+          <WipQueueSizeChart
+            items={workItemsEngineering}
+            stageName={stageName}
+            specsOnly={specsOnly}
+            onPointClick={(obj) => {
+              setQueueSizeState(obj.options.name);
+              setSelectedCodingCategory("engineering");
+
+              setSelectedDeliveryCategory(undefined);
+            }}
+          />
+          {queueSizeState && selectedCodingCategory==="engineering" && <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />}
+        </div>
+      );
+      deliveryChartElement = (
+        <div className="tw-relative tw-h-full">
+          <WipQueueSizeChart
+            items={workItemsDelivery}
+            stageName={stageName}
+            specsOnly={specsOnly}
+            onPointClick={(obj) => {
+              setQueueSizeState(obj.options.name);
+              setSelectedDeliveryCategory("delivery");
+
+              setSelectedCodingCategory(undefined);
+            }}
+          />
+          {queueSizeState && selectedDeliveryCategory==="delivery" && (
+            <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />
+          )}
+        </div>
+      );
     } else {
       codingChartElement = (
         <>
@@ -401,17 +439,21 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   return (
     <div className={styles.cycleTimeLatencyDashboard}>
-      <div className={classNames(styles.title, "tw-text-2xl")}>Delay Analyzer</div>
+      <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         
-        <div className="">
+        {ageLatencyFeatureFlag && <div className="">
           <GroupingSelector
             label="Show"
             value={wipChartType}
             onGroupingChanged={setWipChartType}
             groupings={[
+              {
+                key: "queueSize",
+                display: "Queue Size",
+              },
               {
                 key: "age",
                 display: "Age",
@@ -422,7 +464,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               },
             ]}
           />
-        </div>
+        </div>}
         
         <div className="tw-w-20">
         {(tableFilteredWorkItems.length < initWorkItems.length ||
@@ -550,6 +592,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 const _teams = w.teamNodeRefs.map((t) => t.teamKey);
                 return _teams.includes(selectedTeam);
               }
+            })
+            .filter(w => {
+              return queueSizeState === undefined || queueSizeState === w.state
             })}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
