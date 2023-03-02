@@ -90,6 +90,7 @@ const TopbarWrapper = styled.div`
               font-style: normal;
               line-height: 1;
               margin-left: 0;
+              text-transform: none;
             }
           }
           span {
