@@ -33,7 +33,7 @@ export function PhaseDefinitions() {
         </div>
       </div>
       <div className={styles.phase}>
-        <div className={classNames(styles.title, styles.make)}>Make</div>
+        <div className={classNames(styles.title, styles.make)}>Code</div>
         <div className={styles.makeContent}>
           <p>This phase is meant for cards where implementation has begun.</p>
           <p>Cards that have been marked "in-progress" by developers belong here.</p>
@@ -45,7 +45,7 @@ export function PhaseDefinitions() {
         </div>
       </div>
       <div className={styles.phase}>
-        <div className={classNames(styles.title, styles.deliver)}>Deliver</div>
+        <div className={classNames(styles.title, styles.deliver)}>Ship</div>
         <div className={styles.deliverContent}>
           <p>This phase is meant for code-complete cards that are ready for QA and delivery to production.</p>
           <p>

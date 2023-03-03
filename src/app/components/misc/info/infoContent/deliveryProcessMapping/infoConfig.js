@@ -59,7 +59,7 @@ export function DeliveryProcessMappingSummary() {
         Drag and drop model configuration to specify
         <ul>
           <li>The definition of done.</li>
-          <li>The definition of response time.</li>
+          <li>The definition of Lead and Cycle Time.</li>
         </ul>
       </Section>
     </>
@@ -82,23 +82,23 @@ export function DeliveryProcessMappingDetails() {
         <SubSection heading={"Delivery Cycles and Response Time"}>
           <ul>
             <li>
-              A delivery cycle starts when a card transitions to a state mapped to one of the active phases. It ends
-              when it transitions to a state mapped to the terminal phase. When a card is initially created, it starts
+              A delivery cycle starts when a work item transitions to a state mapped to one of the active phases. It ends
+              when it transitions to a state mapped to the terminal phase. When a work item is initially created, it starts
               in the Define phase.
             </li>
             <li>
-              A card may require one <em>or more</em> delivery cycles through your process before it reaches a customer.
+              A work item may require one <em>or more</em> delivery cycles through your process before it reaches a customer.
             </li>
             <li>
               There are two key <em> Response Time </em> measurements that are defined on delivery cycles.
               <ul>
                 <li>
-                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a card spends in the active phases
+                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a work item spends in the active phases
                   during the cycle.
                 </li>
                 <li>
-                  <em> Cycle Time</em> is defined as the <em>cumulative</em> time the card spends in the Open, Make and
-                  Deliver phases during the cycle.
+                  <em> Work Cycle Time</em> is defined as the <em>cumulative</em> time the work item spends in the Open, Make and
+                  Deliver phases during the cycle. This is a <em>component</em> of development cycle time in Polaris.
                 </li>
               </ul>
             </li>
@@ -152,18 +152,18 @@ export function DeliveryProcessMappingDetails() {
       <SubSection heading={"Additional Notes"}>
         <ul>
           <li>
-            Polaris analyzes the complete state transition history for cards when a work stream is initially imported.
+            Polaris analyzes the complete state transition history for work items when a work stream is initially imported.
             So it will show you every state it has seen in the transition history, even ones you are not currently
             using. You should map all of them.
           </li>
           <li>
             You can update this mapping at any time. But note that when you do, Polaris recomputes response time metrics
             for
-            <em>both historical and future cards</em> using the new delivery process mapping. We currently dont have
+            <em>both historical and future work items</em> using the new delivery process mapping. We currently dont have
             support for mapping updates that preserve historical metrics that use a previous mapping.
           </li>
           <li>
-            A card may transition from one state in the Closed phase to another, but this has no impact on the delivery
+            A work item may transition from one state in the Closed phase to another, but this has no impact on the delivery
             cycle or response time metrics. Only the first transition into the terminal phase counts.
           </li>
         </ul>
