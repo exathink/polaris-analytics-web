@@ -1,8 +1,10 @@
+import React from "react";
 import {useHistory} from "react-router-dom";
 import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetCore";
 import {SelectDropdown, useSelect} from "../../../shared/components/select/selectDropdown";
 import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 
+const defaultItem = {key: "all", name: "All"};
 export function ValueStreamsDropdown() {
   const {
     data,
@@ -13,9 +15,8 @@ export function ValueStreamsDropdown() {
 
   const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
   const items = nodes.map((node) => ({key: node.key, name: node.name}));
-  const defaultItem = {key: "all", name: "All"};
   const uniqueItems = [defaultItem, ...items];
-  const {selectedVal, handleChange, valueIndex} = useSelect({uniqueItems, defaultVal: uniqueItems[0].name});
+  const {selectedVal, handleChange, valueIndex} = useSelect({uniqueItems, defaultVal: defaultItem});
 
   function handleChangeWrapper(index) {
     if (index===0) {
