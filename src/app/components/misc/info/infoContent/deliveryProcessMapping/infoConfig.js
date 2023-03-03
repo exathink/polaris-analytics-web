@@ -72,8 +72,8 @@ export function DeliveryProcessMappingDetails() {
       <Section heading={"Mapping a Delivery Process"}>
         <p>
           Polaris models a delivery process with a mapping of states in your workflow to one of five standard phases
-          that represent key stages in the software development lifecycle. There are four <em>active</em> phases:
-          Define, Open, Make and Deliver and one
+          that represent key stages in the software development lifecycle. There are four <em>work</em> phases:
+          Define, Open, Code and Ship and one
           <em> terminal</em> phase: Closed.
         </p>
         <p>
@@ -82,7 +82,7 @@ export function DeliveryProcessMappingDetails() {
         <SubSection heading={"Delivery Cycles and Response Time"}>
           <ul>
             <li>
-              A delivery cycle starts when a work item transitions to a state mapped to one of the active phases. It ends
+              A delivery cycle starts when a work item transitions to a state mapped to one of the work phases. It ends
               when it transitions to a state mapped to the terminal phase. When a work item is initially created, it starts
               in the Define phase.
             </li>
@@ -93,13 +93,23 @@ export function DeliveryProcessMappingDetails() {
               There are two key <em> Response Time </em> measurements that are defined on delivery cycles.
               <ul>
                 <li>
-                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a work item spends in the active phases
+                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a work item spends in all the work phases
                   during the cycle.
                 </li>
                 <li>
-                  <em> Work Cycle Time</em> is defined as the <em>cumulative</em> time the work item spends in the Open, Make and
-                  Deliver phases during the cycle. This is a <em>component</em> of development cycle time in Polaris.
+                  <em>Development Cycle Time</em> is defined as the time it takes for the work to be coded and shipped to customers.
+                  There are two components to this. The <em>cumulative</em> time the work item spends in the Open, Code and
+                  Ship phases during the cycle is called the <em>Work Cycle Time</em>. This is derived purely from the work tracking data.
+                  In general, timing data derived from work tracking systems relies on accurate recording of when things happened, and due
+                  to the reliance on manual updates, this data is generally less accurate than relying on measurements that more closely
+                  track wall clock time.
                 </li>
+                <li>
+                  Commit data associated with the work items is one such very accurate data stream. So, the other component of development cycle times
+                  comes from measuring the <em>flow of code</em> through the code promotion process that your engineering teams have in place.
+                  We configure the code flow model separately, and use the two models together to estimate development cycle time.
+                </li>
+                <li>Neither one on their own, is as powerful or accurate as what we can get when we combine the two models.</li>
               </ul>
             </li>
           </ul>
