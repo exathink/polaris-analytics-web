@@ -1,3 +1,4 @@
+import {capitalize} from "lodash";
 import React from "react";
 import {useHistory} from "react-router-dom";
 import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetCore";
@@ -6,20 +7,18 @@ import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 
 const defaultItem = {key: "all", name: "All"};
 export function ValueStreamsDropdown() {
-  const {
-    data,
-  } = useWidget();
+  const {data} = useWidget();
 
   let history = useHistory();
 
   const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
-  const items = nodes.map((node) => ({key: node.key, name: node.name}));
+  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name)}));
   const uniqueItems = [defaultItem, ...items];
   const {handleChange} = useSelect({uniqueItems, defaultVal: defaultItem});
 
   function handleChangeWrapper(index) {
-    if (index===0) {
-      history.push({search: ''})
+    if (index === 0) {
+      history.push({search: ""});
     } else {
       history.push({search: `?vs=${uniqueItems[index].key}`});
     }
