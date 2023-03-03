@@ -18,7 +18,11 @@ export function ValueStreamsDropdown() {
   const {selectedVal, handleChange, valueIndex} = useSelect({uniqueItems, defaultVal: uniqueItems[0].name});
 
   function handleChangeWrapper(index) {
-    history.push(`?vs=${uniqueItems[index].key}`, uniqueItems[index]);
+    if (index===0) {
+      history.push({search: ''})
+    } else {
+      history.push({search: `?vs=${uniqueItems[index].key}`});
+    }
     handleChange(index);
   }
 
