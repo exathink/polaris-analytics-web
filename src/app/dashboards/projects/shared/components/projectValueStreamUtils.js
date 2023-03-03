@@ -24,20 +24,11 @@ export function ValueStreamsDropdown() {
       history.push({search: `?vs=${uniqueItems[valueIndex].key}`});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
-
-  function handleChangeWrapper(index) {
-    if (index === 0) {
-      history.push({search: ""});
-    } else {
-      history.push({search: `?vs=${uniqueItems[index].key}`});
-    }
-    handleChange(index);
-  }
+  }, [location.pathname, valueIndex]);
 
   return (
     <div className="tw-ml-2">
-      <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChangeWrapper} />
+      <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} />
     </div>
   );
 }
