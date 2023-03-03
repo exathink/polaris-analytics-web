@@ -8,7 +8,6 @@ const defaultItem = {key: "all", name: "All"};
 export function ValueStreamsDropdown() {
   const {
     data,
-    variables: {specsOnly},
   } = useWidget();
 
   let history = useHistory();
@@ -16,7 +15,7 @@ export function ValueStreamsDropdown() {
   const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
   const items = nodes.map((node) => ({key: node.key, name: node.name}));
   const uniqueItems = [defaultItem, ...items];
-  const {selectedVal, handleChange, valueIndex} = useSelect({uniqueItems, defaultVal: defaultItem});
+  const {handleChange} = useSelect({uniqueItems, defaultVal: defaultItem});
 
   function handleChangeWrapper(index) {
     if (index===0) {
