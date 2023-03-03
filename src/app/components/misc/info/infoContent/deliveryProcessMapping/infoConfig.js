@@ -72,8 +72,8 @@ export function DeliveryProcessMappingDetails() {
       <Section heading={"Mapping a Delivery Process"}>
         <p>
           Polaris models a delivery process with a mapping of states in your workflow to one of five standard phases
-          that represent key stages in the software development lifecycle. There are four <em>active</em> phases:
-          Define, Open, Make and Deliver and one
+          that represent key stages in the software development lifecycle. There are four <em>work</em> phases:
+          Define, Open, Code and Ship and one
           <em> terminal</em> phase: Closed.
         </p>
         <p>
@@ -82,7 +82,7 @@ export function DeliveryProcessMappingDetails() {
         <SubSection heading={"Delivery Cycles and Response Time"}>
           <ul>
             <li>
-              A delivery cycle starts when a work item transitions to a state mapped to one of the active phases. It ends
+              A delivery cycle starts when a work item transitions to a state mapped to one of the work phases. It ends
               when it transitions to a state mapped to the terminal phase. When a work item is initially created, it starts
               in the Define phase.
             </li>
@@ -93,7 +93,7 @@ export function DeliveryProcessMappingDetails() {
               There are two key <em> Response Time </em> measurements that are defined on delivery cycles.
               <ul>
                 <li>
-                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a work item spends in the active phases
+                  <em>Lead Time</em> is defined as the <em>cumulative</em> time a work item spends in the work phases
                   during the cycle.
                 </li>
                 <li>
