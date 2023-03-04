@@ -92,7 +92,7 @@ describe("Metrics", () => {
         test("Delivery", () => {
           renderAndAssertMetricComponent(<AvgLatency displayType="statistic" {...emptyPropsFixture} />, "N/A", "");
           const {getByText: getByTextTitle} = within(screen.getByTestId("metricTitle"));
-          expect(getByTextTitle("Delivery")).toBeInTheDocument();
+          expect(getByTextTitle("Shipping")).toBeInTheDocument();
         });
 
         test("Avg Effort", () => {
