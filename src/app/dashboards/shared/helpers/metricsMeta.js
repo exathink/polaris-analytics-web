@@ -55,7 +55,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     uom: 'days',
   },
   delivery: {
-    display: "Delivery",
+    display: "Shipping",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
