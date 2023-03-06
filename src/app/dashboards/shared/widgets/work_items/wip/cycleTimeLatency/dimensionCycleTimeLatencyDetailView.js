@@ -294,6 +294,68 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
+  let codingQuadrantSummaryElement = (
+    <FlowEfficiencyQuadrantSummaryCard
+      workItems={chartFilteredWorkItems}
+      stateTypes={engineeringStateTypes}
+      specsOnly={specsOnly}
+      cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
+      onQuadrantClick={(quadrant) => {
+        if (
+          selectedQuadrant !== undefined &&
+          selectedQuadrant === quadrant &&
+          quadrantStateType === QuadrantStateTypes.engineering
+        ) {
+          handleResetAll();
+        } else {
+          const items = workItemsEngineering.filter(
+            (x) =>
+              quadrant === undefined || quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+          );
+          setCodingFilter(items);
+
+          // disallow compound selection
+          setDeliveryFilter([]);
+          setSelectedQuadrant(quadrant);
+          setQuadrantStateType(QuadrantStateTypes.engineering);
+        }
+      }}
+      selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+    />
+  );
+
+  let deliveryQuadrantSummaryElement = (
+    <FlowEfficiencyQuadrantSummaryCard
+      workItems={chartFilteredWorkItems}
+      stateTypes={deliveryStateTypes}
+      specsOnly={specsOnly}
+      cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
+      onQuadrantClick={(quadrant) => {
+        if (
+          selectedQuadrant !== undefined &&
+          selectedQuadrant === quadrant &&
+          quadrantStateType === QuadrantStateTypes.delivery
+        ) {
+          handleResetAll();
+        } else {
+          const items = workItemsDelivery.filter(
+            (x) =>
+              quadrant === undefined || quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+          );
+          setDeliveryFilter(items);
+
+          // disallow compound selection
+          setCodingFilter([]);
+          setSelectedQuadrant(quadrant);
+          setQuadrantStateType(QuadrantStateTypes.delivery);
+        }
+      }}
+      selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
+    />
+  );
+
   if(ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
@@ -435,6 +497,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
         </>
       );
     }
+
+    if (wipChartType !== "latency") {
+      codingQuadrantSummaryElement = null;
+      deliveryQuadrantSummaryElement = null;
+    }
+
   }
 
   return (
@@ -479,73 +547,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       <div className={styles.engineering}>
         <div
-          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[75%,25%] tw-gap-x-2"
+          className={classNames("tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2", wipChartType==="latency" || !ageLatencyFeatureFlag ? "tw-grid-rows-[75%,25%]": "tw-grid-rows-[100%]")}
           key={resetComponentStateKey}
           data-testid="wip-latency-chart-panels"
         >
           {codingChartElement}
           {deliveryChartElement}
           <div className="tw-bg-chart">
-            <FlowEfficiencyQuadrantSummaryCard
-              workItems={chartFilteredWorkItems}
-              stateTypes={engineeringStateTypes}
-              specsOnly={specsOnly}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              onQuadrantClick={(quadrant) => {
-                if (
-                  selectedQuadrant !== undefined &&
-                  selectedQuadrant === quadrant &&
-                  quadrantStateType === QuadrantStateTypes.engineering
-                ) {
-                  handleResetAll();
-                } else {
-                  const items = workItemsEngineering.filter(
-                    (x) =>
-                      quadrant === undefined ||
-                      quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-                  );
-                  setCodingFilter(items);
-
-                  // disallow compound selection
-                  setDeliveryFilter([]);
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(QuadrantStateTypes.engineering);
-                }
-              }}
-              selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
-            />
+            {codingQuadrantSummaryElement}
           </div>
           <div className="tw-bg-chart">
-            <FlowEfficiencyQuadrantSummaryCard
-              workItems={chartFilteredWorkItems}
-              stateTypes={deliveryStateTypes}
-              specsOnly={specsOnly}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              onQuadrantClick={(quadrant) => {
-                if (
-                  selectedQuadrant !== undefined &&
-                  selectedQuadrant === quadrant &&
-                  quadrantStateType === QuadrantStateTypes.delivery
-                ) {
-                  handleResetAll();
-                } else {
-                  const items = workItemsDelivery.filter(
-                    (x) =>
-                      quadrant === undefined ||
-                      quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-                  );
-                  setDeliveryFilter(items);
-
-                  // disallow compound selection
-                  setCodingFilter([]);
-                  setSelectedQuadrant(quadrant);
-                  setQuadrantStateType(QuadrantStateTypes.delivery);
-                }
-              }}
-              selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
-            />
+            {deliveryQuadrantSummaryElement}
           </div>
         </div>
       </div>
