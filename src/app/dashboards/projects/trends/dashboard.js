@@ -152,6 +152,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
