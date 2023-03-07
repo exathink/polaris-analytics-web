@@ -10,6 +10,7 @@ import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSl
 import styles from "../valueBook/dashboard.module.css";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
 import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
+import {useQueryParamState} from "../shared/helper/hooks";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -30,6 +31,9 @@ function TrendsDashboard({
   const [workItemScope, setWorkItemScope] = React.useState("specs");
   const specsOnly = workItemScope === "specs";
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
+
+  const {state} = useQueryParamState();
+  const {key: valueStreamKey, workItemSelectors} = state;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
