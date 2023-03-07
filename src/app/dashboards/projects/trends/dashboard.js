@@ -74,6 +74,7 @@ function TrendsDashboard({
             <ProjectValueBookWidget
               title={`Roadmap Focus: Last ${daysRange} Days`}
               instanceKey={key}
+              tags={workItemSelectors}
               context={context}
               days={daysRange}
               specsOnly={specsOnly}
