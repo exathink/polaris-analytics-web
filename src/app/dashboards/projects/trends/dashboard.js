@@ -125,6 +125,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               title={"Time to Market, All Dev Items"}
               instanceKey={key}
               measurementWindow={30}

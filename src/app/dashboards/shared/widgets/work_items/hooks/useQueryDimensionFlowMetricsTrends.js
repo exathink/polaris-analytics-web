@@ -4,7 +4,7 @@ import {analytics_service} from "../../../../../services/graphql";
 export const getFlowMetricsTrendsQuery = (dimension) => gql`
   query ${dimension}FlowMetricsTrends(
     $key: String!
-    tags: [String]
+    $tags: [String]
     $days: Int!
     $measurementWindow: Int!
     $samplingFrequency: Int!
