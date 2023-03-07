@@ -13,7 +13,7 @@ export function ValueStreamsDropdown() {
   let history = useHistory();
 
   const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
-  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name)}));
+  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name), workItemSelectors: node.workItemSelectors}));
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex} = useSelect({uniqueItems, defaultVal: defaultItem});
 
@@ -21,7 +21,7 @@ export function ValueStreamsDropdown() {
     if (valueIndex === 0) {
       history.push({search: ""});
     } else {
-      history.push({search: `?vs=${uniqueItems[valueIndex].key}`});
+      history.push({search: `?vs=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
