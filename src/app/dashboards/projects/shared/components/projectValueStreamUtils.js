@@ -5,7 +5,7 @@ import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetC
 import {SelectDropdown, useSelect} from "../../../shared/components/select/selectDropdown";
 import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 
-const defaultItem = {key: "all", name: "All"};
+const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 export function ValueStreamsDropdown() {
   const {data} = useWidget();
   const location = useLocation();
@@ -19,7 +19,7 @@ export function ValueStreamsDropdown() {
 
   React.useEffect(() => {
     if (valueIndex === 0) {
-      history.push({search: ""});
+      history.push({search: "", state: uniqueItems[valueIndex]});
     } else {
       history.push({search: `?vs=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
     }

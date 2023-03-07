@@ -93,6 +93,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               title={`Allocations: Last ${daysRange} Days`}
               subTitle={`% Capacity and % Volume`}
               instanceKey={key}
