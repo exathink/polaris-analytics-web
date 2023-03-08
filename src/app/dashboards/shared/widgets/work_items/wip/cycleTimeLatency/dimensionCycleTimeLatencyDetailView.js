@@ -277,7 +277,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let deliveryChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
-      stageName={"Delivery"}
+      stageName={"Shipping"}
       specsOnly={specsOnly}
       workItems={
         quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.delivery
@@ -370,7 +370,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <div className="tw-relative tw-h-full">
           <WipQueueSizeChart
             items={workItemsEngineering}
-            stageName={stageName}
+            stageName={"Coding"}
             specsOnly={specsOnly}
             onPointClick={(obj) => {
               setQueueSizeState(obj.options.name);
@@ -386,7 +386,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <div className="tw-relative tw-h-full">
           <WipQueueSizeChart
             items={workItemsDelivery}
-            stageName={stageName}
+            stageName={"Shipping"}
             specsOnly={specsOnly}
             onPointClick={(obj) => {
               setQueueSizeState(obj.options.name);
@@ -470,7 +470,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             <div className="tw-relative tw-h-full">
               <WorkItemsDetailHistogramChart
                 chartConfig={{
-                  title: `Age Distribution: Delivery`,
+                  title: `Age Analysis: Shipping`,
                   align: {align: "left"},
                   subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
                   xAxisTitle: "Age in Days",
