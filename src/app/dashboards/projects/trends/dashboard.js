@@ -33,7 +33,7 @@ function TrendsDashboard({
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
   const {state} = useQueryParamState();
-  const {key: valueStreamKey, workItemSelectors} = state;
+  const {workItemSelectors} = state;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>

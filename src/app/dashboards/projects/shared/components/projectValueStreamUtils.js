@@ -9,25 +9,18 @@ import {useQueryParamState} from "../helper/hooks";
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 let mountIndex = 0;
 
-export function ValueStreamsDropdown() {
-  const {data} = useWidget();
+export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam}) {
   const location = useLocation();
+  const history = useHistory();
 
-  let history = useHistory();
-
-  const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
-  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name), workItemSelectors: node.workItemSelectors}));
-  const uniqueItems = [defaultItem, ...items];
-  const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
-
-  let {queryParams} = useQueryParamState();
+  const {queryParams} = useQueryParamState();
   const valueStreamKey = queryParams.get('vs');
 
   React.useEffect(() => {
     if (mountIndex === 0) {
       const urlSyncedItem = uniqueItems.find(item => item.key === valueStreamKey);
       if (urlSyncedItem) {
-        setSelectedVal(urlSyncedItem);
+        updateFromQueryParam(urlSyncedItem);
       }
       return () => mountIndex = mountIndex + 1;
     }
@@ -41,6 +34,18 @@ export function ValueStreamsDropdown() {
     return () => mountIndex = mountIndex + 1;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
+}
+
+export function ValueStreamsDropdown() {
+  const {data} = useWidget();
+
+  const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
+  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name), workItemSelectors: node.workItemSelectors}));
+  const uniqueItems = [defaultItem, ...items];
+  const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
+
+  // sync dropdown value from url query-param
+  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal})
 
   return (
     <div className="tw-ml-2">
