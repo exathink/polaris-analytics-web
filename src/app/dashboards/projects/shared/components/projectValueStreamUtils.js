@@ -17,6 +17,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
   const valueStreamKey = queryParams.get('vs');
 
   React.useEffect(() => {
+    // check if we have refreshed the page, then update the dropdown from url query param.
     if (mountIndex === 0) {
       const urlSyncedItem = uniqueItems.find(item => item.key === valueStreamKey);
       if (urlSyncedItem) {
