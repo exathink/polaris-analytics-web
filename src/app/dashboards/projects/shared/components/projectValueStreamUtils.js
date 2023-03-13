@@ -7,7 +7,7 @@ import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 import {useQueryParamState} from "../helper/hooks";
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
-let mountIndex = 0;
+let firstRender = true
 
 export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam}) {
   const location = useLocation();
@@ -18,12 +18,12 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
 
   React.useEffect(() => {
     // check if we have refreshed the page, then update the dropdown from url query param.
-    if (mountIndex === 0) {
+    if (firstRender) {
       const urlSyncedItem = uniqueItems.find(item => item.key === valueStreamKey);
       if (urlSyncedItem) {
         updateFromQueryParam(urlSyncedItem);
+        return;
       }
-      return () => mountIndex = mountIndex + 1;
     }
 
     if (valueIndex === 0) {
@@ -31,10 +31,13 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
     } else {
       history.push({search: `?vs=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
     }
-
-    return () => mountIndex = mountIndex + 1;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
+
+  React.useEffect(() => {
+    firstRender = false
+  }, []);
+
 }
 
 export function ValueStreamsDropdown() {
