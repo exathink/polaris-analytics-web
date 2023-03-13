@@ -505,8 +505,37 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   }
 
+  let engineeringElement = (
+    <div
+      className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[100%] tw-gap-x-2"
+      key={resetComponentStateKey}
+      data-testid="wip-latency-chart-panels"
+    >
+      {codingChartElement}
+      {deliveryChartElement}
+      <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
+      <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
+    </div>
+  );
+  if (ageLatencyFeatureFlag) {
+    if (wipChartType === "latency") {
+      engineeringElement = (
+        <div
+          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[40%_60%] tw-gap-x-2"
+          key={resetComponentStateKey}
+          data-testid="wip-latency-chart-panels"
+        >
+          <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
+          <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
+          {codingChartElement}
+          {deliveryChartElement}
+        </div>
+      );
+    }
+  }
+
   return (
-<div className={classNames(styles.cycleTimeLatencyDashboard, wipChartType==="latency" || !ageLatencyFeatureFlag ? "tw-grid-rows-[4%_50%_90px_calc(47%-90px)]": "tw-grid-rows-[4%_50%_70px_calc(47%-70px)]")}>
+<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[4%_55%_50px_calc(42%-50px)]")}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
@@ -546,20 +575,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       </div>
 
       <div className={styles.engineering}>
-        <div
-          className={classNames("tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2", wipChartType==="latency" || !ageLatencyFeatureFlag ? "tw-grid-rows-[75%,25%]": "tw-grid-rows-[100%]")}
-          key={resetComponentStateKey}
-          data-testid="wip-latency-chart-panels"
-        >
-          {codingChartElement}
-          {deliveryChartElement}
-          <div className="tw-bg-chart">
-            {codingQuadrantSummaryElement}
-          </div>
-          <div className="tw-bg-chart">
-            {deliveryQuadrantSummaryElement}
-          </div>
-        </div>
+        {engineeringElement}
       </div>
       <div className={styles.issueTypeDropdown}>
         <SelectTeamDropdown
