@@ -507,7 +507,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let engineeringElement = (
     <div
-      className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[100%] tw-gap-x-2"
+      className={classNames("tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2", !ageLatencyFeatureFlag ? "tw-grid-rows-[75%,25%]": "tw-grid-rows-[100%]")}
       key={resetComponentStateKey}
       data-testid="wip-latency-chart-panels"
     >
@@ -535,7 +535,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }
 
   return (
-<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[4%_55%_65px_calc(42%-65px)]")}>
+<div className={classNames(styles.cycleTimeLatencyDashboard, !ageLatencyFeatureFlag ? "tw-grid-rows-[4%_55%_90px_calc(42%-90px)]" : "tw-grid-rows-[4%_55%_65px_calc(42%-65px)]")}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
