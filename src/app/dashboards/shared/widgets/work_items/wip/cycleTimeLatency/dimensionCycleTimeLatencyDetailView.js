@@ -535,7 +535,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }
 
   return (
-<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[4%_55%_50px_calc(42%-50px)]")}>
+<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[4%_55%_65px_calc(42%-65px)]")}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
