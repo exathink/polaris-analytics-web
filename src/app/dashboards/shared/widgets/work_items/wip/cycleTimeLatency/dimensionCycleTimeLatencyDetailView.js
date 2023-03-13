@@ -521,7 +521,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     if (wipChartType === "latency") {
       engineeringElement = (
         <div
-          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[40%_60%] tw-gap-x-2"
+          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
           key={resetComponentStateKey}
           data-testid="wip-latency-chart-panels"
         >
