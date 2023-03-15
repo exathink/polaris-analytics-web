@@ -19,14 +19,22 @@ function getStateCounts(items) {
 }
 // Return an array of  HighChart series data structures from the
 // passed in props.
-function getSeries(items) {
-  return [{
-    key: "wipQueSize",
-    showInLegend: false,
-    data: Object.entries(getStateCounts(items)).map((e, index) => {
+function getSeries(items, specsOnly) {
+  return [
+    {
+      key: "wipQueSize",
+      showInLegend: false,
+      dataLabels: [
+        {
+          align: "right",
+          format: `{y} ${itemsDesc(specsOnly)}`,
+        },
+      ],
+      data: Object.entries(getStateCounts(items)).map((e, index) => {
         return {name: e[0], y: e[1].count, color: assignWorkItemStateColor(e[1].stateType, index)};
-    }),
-  },]
+      }),
+    },
+  ];
 }
 
 export const WipQueueSizeChart = Chart({
@@ -34,7 +42,7 @@ export const WipQueueSizeChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
   getConfig: ({items, stageName, specsOnly, onPointClick}) => {
-    const series = getSeries(items);
+    const series = getSeries(items, specsOnly);
     return {
       chart: {
         backgroundColor: Colors.Chart.backgroundColor,
@@ -99,6 +107,10 @@ export const WipQueueSizeChart = Chart({
               },
             },
           },
+          dataLabels: {
+            enabled: true,
+            inside: true
+        }
         }
       },
       legend: {
