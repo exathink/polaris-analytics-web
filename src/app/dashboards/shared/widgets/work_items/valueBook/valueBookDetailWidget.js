@@ -5,10 +5,10 @@ import { getReferenceString } from "../../../../../helpers/utility";
 import { logGraphQlError } from "../../../../../components/graphql/utils";
 
 import { ValueBookDetailView } from "./valueBookDetailView";
-import { useQueryParamState } from "../../../../projects/shared/helper/hooks";
 
 export const ValueBookDetailWidget = ({
   instanceKey,
+  tags,
   closedWithinDays,
   activeOnly,
   latestCommit,
@@ -22,10 +22,10 @@ export const ValueBookDetailWidget = ({
   setWorkItemScope,
   setClosedWithinDays,
 }) => {
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
-    tags: workItemSelectors,
+    tags: tags,
     closedWithinDays: closedWithinDays,
     activeOnly: activeOnly,
     specsOnly: specsOnly,

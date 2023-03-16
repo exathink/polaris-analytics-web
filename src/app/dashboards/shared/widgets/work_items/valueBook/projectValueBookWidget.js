@@ -45,6 +45,7 @@ export const ProjectValueBookWidget = ({
   return (
     <ProjectValueBookView
       instanceKey={instanceKey}
+      tags={tags}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}
       workItems={workItemDeliveryCycles}

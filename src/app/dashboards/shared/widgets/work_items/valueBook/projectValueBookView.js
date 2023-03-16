@@ -4,6 +4,7 @@ import {ValueBookDetailWidget} from "./valueBookDetailWidget";
 
 export const ProjectValueBookView = ({
   instanceKey,
+  tags,
   latestWorkItemEvent,
   latestCommit,
   workItems,
@@ -24,6 +25,7 @@ export const ProjectValueBookView = ({
     return (
       <ValueBookDetailWidget
         instanceKey={instanceKey}
+        tags={tags}
         context={context}
         view={view}
         closedWithinDays={days}
