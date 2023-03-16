@@ -51,6 +51,11 @@ export function ValueStreamsDropdown() {
   // sync dropdown value from url query-param
   useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal})
 
+  // when there are no value streams under project, we don't show the dropdown for valuestream
+  if (items.length === 0) {
+    return null;
+  }
+  
   return (
     <div className="tw-ml-2">
       <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} value={valueIndex} />
