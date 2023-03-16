@@ -2,7 +2,6 @@ import React from "react";
 import { i18nDate, i18nNumber, percentileToText } from "../../../../../../helpers/utility";
 import { AppTerms, ResponseTimeMetricsColor } from "../../../../config";
 import { MeasurementTrendLineChart } from "../../../../views/measurementTrend/measurementTrendLineChart";
-import { getFlowEfficiency } from "../../../../helpers/statsUtils";
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
