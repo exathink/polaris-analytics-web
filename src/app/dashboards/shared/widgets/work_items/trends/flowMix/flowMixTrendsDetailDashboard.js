@@ -12,6 +12,7 @@ import {FlowTypeWorkItemType, WorkItemStateTypes, FlowTypeDisplayName, AppTerms}
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
+import { useQueryParamState } from "../../../../../projects/shared/helper/hooks";
 
 const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
@@ -34,7 +35,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
   const specsOnly = workItemScope === "specs";
   const [before, setBefore] = React.useState();
   const [workItemTypeFilter, setFilter] = React.useState(null);
-
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -82,6 +83,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
             <DimensionFlowMixTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              tags={workItemSelectors}
               measurementWindow={measurementWindowRange}
               days={daysRange}
               samplingFrequency={frequencyRange}
@@ -125,6 +127,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
             <CardDetailsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              tags={workItemSelectors}
               days={measurementWindowRange}
               specsOnly={specsOnly}
               before={before}

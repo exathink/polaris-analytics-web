@@ -4,6 +4,7 @@ import {analytics_service} from "../../../../services/graphql";
 export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
   query ${dimension}ClosedDeliveryCycleDetail(
     $key: String!
+    $tags: [String]
     $referenceString: String
     $days: Int
     $before: Date
@@ -15,6 +16,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
   ) {
     ${dimension}(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
+        tags: $tags
         closedBefore: $before
         closedWithinDays: $days
         defectsOnly: $defectsOnly
@@ -72,11 +74,12 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
   }
 `;
 
-export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks, first, after}) {
+export function useQueryProjectClosedDeliveryCycleDetail({dimension, instanceKey, tags, days, defectsOnly, specsOnly, referenceString, before, includeSubTasks, first, after}) {
   return useQuery(queryDimensionClosedDeliveryCycleDetail(dimension), {
     service: analytics_service,
     variables: {
       key: instanceKey,
+      tags: tags,
       days: days,
       defectsOnly: defectsOnly,
       specsOnly: specsOnly,
