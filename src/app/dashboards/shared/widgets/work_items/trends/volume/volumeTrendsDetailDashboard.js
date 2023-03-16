@@ -10,7 +10,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
-import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
+import {useQueryParamState, useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {useIntl} from "react-intl";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
@@ -50,7 +50,7 @@ export const VolumeTrendsDetailDashboard = ({
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const intl = useIntl()
-
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
   function handleClearClick() {
     setSeriesName("workItemsInScope")
     setBefore(undefined);
@@ -68,6 +68,7 @@ export const VolumeTrendsDetailDashboard = ({
     <DimensionDeliveryCycleFlowMetricsWidget
       dimension={dimension}
       instanceKey={instanceKey}
+      tags={workItemSelectors}
       specsOnly={specsOnly}
       view={view}
       context={context}
@@ -156,6 +157,7 @@ export const VolumeTrendsDetailDashboard = ({
               <DimensionVolumeTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tags={workItemSelectors}
                 view={view}
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
