@@ -16,6 +16,7 @@ import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 import { metricsMapping } from "../../shared/helpers/teamUtils";
 import { AGE_LATENCY_ENHANCEMENTS } from "../../../../config/featureFlags";
+import {useQueryParamState} from "../shared/helper/hooks";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -40,7 +41,7 @@ function WipDashboard({
   const specsOnly = workItemScope === "specs";
   const [selectedMetric, setSelectedMetric] = useState(metricsMapping.WIP_TOTAL);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
-
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
   const wipDisplayProps = ageLatencyFeatureFlag
     ? {
         initialSelection: selectedMetric,
@@ -107,6 +108,7 @@ function WipDashboard({
             <DimensionWipFlowMetricsWidget
               dimension={DIMENSION}
               instanceKey={key}
+              tags={workItemSelectors}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               latestPullRequestEvent={latestPullRequestEvent}
@@ -134,6 +136,7 @@ function WipDashboard({
             <DimensionWipSummaryWidget
               dimension={DIMENSION}
               instanceKey={key}
+              tags={workItemSelectors}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -160,6 +163,7 @@ function WipDashboard({
             <DimensionWipWidget
               dimension={DIMENSION}
               instanceKey={key}
+              tags={workItemSelectors}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
@@ -183,6 +187,7 @@ function WipDashboard({
               queryVars={{
                 dimension: DIMENSION,
                 instanceKey: key,
+                tags: workItemSelectors,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
@@ -212,6 +217,7 @@ function WipDashboard({
               queryVars={{
                 dimension: DIMENSION,
                 instanceKey: key,
+                tags: workItemSelectors,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,

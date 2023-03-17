@@ -7,6 +7,7 @@ import {WorkInProgressBaseView} from "../flowMetrics/wipFlowMetricsSummaryView";
 export function DimensionWipWidget({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   latestWorkItemEvent,
   latestCommit,
@@ -20,6 +21,7 @@ export function DimensionWipWidget({
   const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
     dimension,
     instanceKey,
+    tags,
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
