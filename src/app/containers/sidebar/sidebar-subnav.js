@@ -86,7 +86,12 @@ class SidebarSubnav extends Component {
                       className="ant-menu-item"
                       key={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}
                     >
-                      <Link to={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}>
+                      <Link
+                        to={(location) => ({
+                          ...location,
+                          pathname: `${currentContext.urlFor(selectedSubNavParent)}/${route.match}`,
+                        })}
+                      >
                         <span className="isoMenuHolder" style={submenuColor}>
                           <i className={classNames(route.topic.icon, "!tw-text-black")} />
                           <span className={classNames("nav-text !tw-text-black", mode === "vertical" ? "tw-ml-1" : "")}>

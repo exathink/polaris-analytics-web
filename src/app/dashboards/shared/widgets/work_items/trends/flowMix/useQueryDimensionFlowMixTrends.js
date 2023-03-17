@@ -4,6 +4,7 @@ import {analytics_service} from "../../../../../../services/graphql";
 export function useQueryDimensionFlowMixTrends(
   {
     dimension,
+    tags,
     instanceKey,
     before,
     days,
@@ -17,6 +18,7 @@ export function useQueryDimensionFlowMixTrends(
     gql`
      query ${dimension}FlowMixTrends(
           $key: String!, 
+          $tags: [String],
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
@@ -27,6 +29,7 @@ export function useQueryDimensionFlowMixTrends(
           ) {
       ${dimension}(
             key: $key, 
+            tags: $tags,
             interfaces: [FlowMixTrends],
              flowMixTrendsArgs: {
               before: $before,
@@ -53,6 +56,7 @@ export function useQueryDimensionFlowMixTrends(
       service: analytics_service,
       variables: {
         key: instanceKey,
+        tags: tags,
         days: days,
         before: before,
         measurementWindow: measurementWindow,

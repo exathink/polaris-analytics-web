@@ -4,6 +4,7 @@ import {analytics_service} from "../../../../../services/graphql";
 export const getFlowMetricsTrendsQuery = (dimension) => gql`
   query ${dimension}FlowMetricsTrends(
     $key: String!
+    $tags: [String]
     $days: Int!
     $measurementWindow: Int!
     $samplingFrequency: Int!
@@ -17,6 +18,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
   ) {
     ${dimension}(
       key: $key
+      tags: $tags
       interfaces: [CycleMetricsTrends]
       cycleMetricsTrendsArgs: {
         before: $before
@@ -95,6 +97,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
 
 export function useQueryDimensionFlowMetricsTrends({
   dimension,
+  tags,
   instanceKey,
   before,
   days,
@@ -112,6 +115,7 @@ export function useQueryDimensionFlowMetricsTrends({
     service: analytics_service,
     variables: {
       key: instanceKey,
+      tags,
       days: days,
       before: before,
       measurementWindow: measurementWindow,

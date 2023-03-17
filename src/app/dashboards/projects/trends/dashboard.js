@@ -10,6 +10,7 @@ import { DaysRangeSlider, SIX_MONTHS } from "../../shared/components/daysRangeSl
 import styles from "../valueBook/dashboard.module.css";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
 import {ProjectTraceabilityTrendsWidget} from "../../shared/widgets/commits/traceability";
+import {useQueryParamState} from "../shared/helper/hooks";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -30,6 +31,8 @@ function TrendsDashboard({
   const [workItemScope, setWorkItemScope] = React.useState("specs");
   const specsOnly = workItemScope === "specs";
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
+
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
@@ -70,6 +73,7 @@ function TrendsDashboard({
             <ProjectValueBookWidget
               title={`Roadmap Focus: Last ${daysRange} Days`}
               instanceKey={key}
+              tags={workItemSelectors}
               context={context}
               days={daysRange}
               specsOnly={specsOnly}
@@ -89,6 +93,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               title={`Allocations: Last ${daysRange} Days`}
               subTitle={`% Capacity and % Volume`}
               instanceKey={key}
@@ -120,6 +125,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               title={"Time to Market, All Dev Items"}
               instanceKey={key}
               measurementWindow={30}
@@ -146,6 +152,7 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionVolumeTrendsWidget
               dimension={"project"}
+              tags={workItemSelectors}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}

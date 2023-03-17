@@ -17,6 +17,7 @@ import {Contexts} from "../../meta/contexts";
 import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
+import {ProjectValueStreamsWidget} from "./shared/components/projectValueStreamUtils";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -37,6 +38,7 @@ const context : Context = {
       context: {
         ...Contexts.projects,
         display: match => messages.instanceDisplay(match.params.project),
+        ContextControl: ProjectValueStreamsWidget,
         routes: [
           {
 

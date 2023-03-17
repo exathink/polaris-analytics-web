@@ -10,6 +10,7 @@ import {CardDetailsView} from "./dimensionCardDetailsView";
 export function CardDetailsWidget({
   dimension,
   instanceKey,
+  tags,
   days,
   initialDays=days,
   specsOnly,
@@ -26,6 +27,7 @@ export function CardDetailsWidget({
   const isFeatureFlagActive = useFeatureFlag(TABLE_PAGINATION, true);
   const {loading, error, data, fetchMore} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
+    tags,
     instanceKey,
     days: _days,
     defectsOnly,
