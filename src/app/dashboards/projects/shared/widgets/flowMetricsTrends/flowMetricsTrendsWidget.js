@@ -8,6 +8,7 @@ import {FlowMetricsView} from "./flowMetricsView";
 export const FlowMetricsTrendsWidget = ({
   dimension,
   instanceKey,
+  tags,
   displayBag,
 
   days,
@@ -29,6 +30,7 @@ export const FlowMetricsTrendsWidget = ({
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
+    tags,
     days: days,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,

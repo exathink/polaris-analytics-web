@@ -4,7 +4,7 @@ import {analytics_service} from "../../../../../../services/graphql";
 
 export function useQueryDimensionFlowMetrics(
   {
-    dimension, instanceKey, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
+    dimension, instanceKey, tags, days, measurementWindow, samplingFrequency, leadTimeTarget, leadTimeTargetPercentile,
     cycleTimeTarget, cycleTimeTargetPercentile, specsOnly, includeSubTasks, referenceString
   }
 ) {
@@ -12,6 +12,7 @@ export function useQueryDimensionFlowMetrics(
     gql`
         query ${dimension}FlowMetrics(
             $key: String!,
+            $tags: [String],
             $days: Int!,
             $measurementWindow: Int!,
             $samplingFrequency: Int!,
@@ -24,6 +25,7 @@ export function useQueryDimensionFlowMetrics(
         ) {
             ${dimension}(
                 key: $key,
+                tags: $tags,
                 interfaces: [CycleMetricsTrends, ContributorCount],
                 cycleMetricsTrendsArgs: {
                     days: $days,
@@ -105,6 +107,7 @@ export function useQueryDimensionFlowMetrics(
       service: analytics_service,
       variables: {
         key: instanceKey,
+        tags: tags,
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,

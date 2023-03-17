@@ -9,7 +9,7 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
 
   function getWipLimit() {
     const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-    const flowItems = cycleMetricsTrend[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
+    const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
     const throughputRate = flowItems / days;
     return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
   }
