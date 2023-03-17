@@ -2,7 +2,6 @@ import React from "react";
 import { i18nDate, i18nNumber, percentileToText } from "../../../../../../helpers/utility";
 import { AppTerms, ResponseTimeMetricsColor } from "../../../../config";
 import { MeasurementTrendLineChart } from "../../../../views/measurementTrend/measurementTrendLineChart";
-import { getFlowEfficiency } from "../../../../helpers/statsUtils";
 
 function getSelectedMetricDisplay(measurement, targetPercentile, seriesKey, intl) {
   switch (seriesKey) {
@@ -181,7 +180,7 @@ export const ResponseTimeTrendsChart = (
         labels: [{
           seriesKey: "avgLeadTime",
           index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Days`,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index]?.[seriesKey], 1)} Days`,
           backgroundColor: ResponseTimeMetricsColor.leadTime,
           borderColor: ResponseTimeMetricsColor.leadTime,
           align: "center",
@@ -190,7 +189,7 @@ export const ResponseTimeTrendsChart = (
         }, {
           seriesKey: "avgCycleTime",
           index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} Days`,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index]?.[seriesKey], 1)} Days`,
           backgroundColor: ResponseTimeMetricsColor.cycleTime,
           borderColor: ResponseTimeMetricsColor.cycleTime,
           align: "center",
@@ -199,7 +198,7 @@ export const ResponseTimeTrendsChart = (
         }, {
           seriesKey: "avgEffort",
           index: 0,
-          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index][seriesKey], 1)} FTE Days`,
+          getText: (measurements, seriesKey, index, intl) => `${i18nNumber(intl, measurements[index]?.[seriesKey], 1)} FTE Days`,
           backgroundColor: ResponseTimeMetricsColor.effort,
           borderColor: ResponseTimeMetricsColor.effort,
           align: "center",

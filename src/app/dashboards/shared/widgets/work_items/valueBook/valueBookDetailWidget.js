@@ -8,6 +8,7 @@ import { ValueBookDetailView } from "./valueBookDetailView";
 
 export const ValueBookDetailWidget = ({
   instanceKey,
+  tags,
   closedWithinDays,
   activeOnly,
   latestCommit,
@@ -21,8 +22,10 @@ export const ValueBookDetailWidget = ({
   setWorkItemScope,
   setClosedWithinDays,
 }) => {
+
   const {loading, error, data, previousData} = useQueryImplementationCostTable({
     instanceKey,
+    tags: tags,
     closedWithinDays: closedWithinDays,
     activeOnly: activeOnly,
     specsOnly: specsOnly,

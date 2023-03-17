@@ -76,7 +76,7 @@ export const VolumeTrendsChart = ({
                 getText: (measurements, seriesKey, index, intl) =>
                   `${AppTerms.spec.display} Ratio: ${i18nNumber(
                     intl,
-                    measurements[0].workItemsInScope !== 0 ? (measurements[0].workItemsWithCommits / measurements[0].workItemsInScope) * 100.0 : 0
+                    measurements[0]?.workItemsInScope !== 0 && measurements[0]?.workItemsInScope != null && measurements[0]?.workItemsWithCommits != null ? (measurements[0]?.workItemsWithCommits / measurements[0]?.workItemsInScope) * 100.0 : 0
                   )} %`,
                 backgroundColor: ResponseTimeMetricsColor.specs,
                 borderColor: ResponseTimeMetricsColor.specs,
@@ -88,7 +88,7 @@ export const VolumeTrendsChart = ({
                 seriesKey: "workItemsWithCommits",
                 index: 0,
                 getText: (measurements, seriesKey, index, intl) =>
-                  `${i18nNumber(intl, measurements[index][seriesKey], 1)} ${AppTerms.specs.display}`,
+                  `${i18nNumber(intl, measurements[index]?.[seriesKey], 1)} ${AppTerms.specs.display}`,
                 backgroundColor: ResponseTimeMetricsColor.specs,
                 borderColor: ResponseTimeMetricsColor.specs,
                 align: "center",
