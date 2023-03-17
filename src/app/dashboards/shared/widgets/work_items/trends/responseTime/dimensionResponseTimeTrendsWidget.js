@@ -10,6 +10,7 @@ import {logGraphQlError} from "../../../../../../components/graphql/utils";
 export const DimensionResponseTimeTrendsWidget = React.memo((
   {
     dimension,
+    tags,
     instanceKey,
     title,
     view,
@@ -37,6 +38,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
     {
       dimension,
+      tags,
       instanceKey,
       days,
       measurementWindow,

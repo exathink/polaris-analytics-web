@@ -109,6 +109,15 @@ class WithProject extends React.Component {
               latestWorkItemEvent
               latestPullRequestEvent
               organizationKey
+              valueStreams {
+                edges {
+                   node {
+                    key
+                    name
+                    workItemSelectors
+                   }
+                }
+              }
               settings {
                 flowMetricsSettings {
                   cycleTimeTarget

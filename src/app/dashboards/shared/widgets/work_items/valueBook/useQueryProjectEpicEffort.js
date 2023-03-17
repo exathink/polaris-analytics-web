@@ -1,11 +1,12 @@
 import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
+export function useQueryProjectEpicEffort({instanceKey, tags, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(
             $projectKey: String!, 
+            $tags: [String],
             $activeOnly: Boolean,
             $specsOnly: Boolean,
             $days: Int,
@@ -16,6 +17,7 @@ export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, d
                 workItems(
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
+                    tags: $tags,
                     specsOnly: $specsOnly,
                     activeWithinDays: $days,
                     includeSubTasks: $includeSubTasks
@@ -40,6 +42,7 @@ export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, d
       service: analytics_service,
       variables: {
         projectKey: instanceKey,
+        tags,
         activeOnly: activeOnly,
         specsOnly: specsOnly,
         days: days,
@@ -52,11 +55,12 @@ export function useQueryProjectEpicEffort({instanceKey, activeOnly, specsOnly, d
 }
 
 export const GET_PROJECT_IMPLEMENTATION_COST_TABLE = gql`
-query getProjectImplementationCostTable($projectKey: String!, $closedWithinDays: Int, $includeSubTasks: Boolean, $referenceString: String, $specsOnly: Boolean, $activeOnly: Boolean) {
+query getProjectImplementationCostTable($projectKey: String!,$tags: [String] , $closedWithinDays: Int, $includeSubTasks: Boolean, $referenceString: String, $specsOnly: Boolean, $activeOnly: Boolean) {
   project(key: $projectKey, referenceString: $referenceString) {
     id
     workItems(
       interfaces: [ImplementationCost, EpicNodeRef, DevelopmentProgress]
+      tags: $tags,
       includeEpics: true
       specsOnly: $specsOnly
       activeOnly: $activeOnly
@@ -88,13 +92,14 @@ query getProjectImplementationCostTable($projectKey: String!, $closedWithinDays:
 }
 `;
 
-export function useQueryImplementationCostTable({instanceKey, closedWithinDays, specsOnly, activeOnly, includeSubTasks, referenceString}) {
+export function useQueryImplementationCostTable({instanceKey, tags, closedWithinDays, specsOnly, activeOnly, includeSubTasks, referenceString}) {
   return useQuery(
     GET_PROJECT_IMPLEMENTATION_COST_TABLE,
     {
       service: analytics_service,
       variables: {
         projectKey: instanceKey,
+        tags: tags,
         closedWithinDays: closedWithinDays,
         activeOnly: activeOnly,
         specsOnly: specsOnly,

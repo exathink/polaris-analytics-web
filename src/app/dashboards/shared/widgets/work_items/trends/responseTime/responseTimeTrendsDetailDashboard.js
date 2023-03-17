@@ -7,6 +7,7 @@ import {
 } from "../../../../components/trendingControlBar/trendingControlBar";
 import {DimensionDeliveryCycleFlowMetricsWidget} from '../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget';
 import {getTimePeriod} from "../../../../../projects/shared/helper/utils";
+import { useQueryParamState } from '../../../../../projects/shared/helper/hooks';
 
 const dashboard_id = 'dashboards.trends.projects.response-time.detail';
 
@@ -53,6 +54,7 @@ export const ResponseTimeTrendsDetailDashboard = (
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   return (
     <Dashboard
@@ -81,6 +83,7 @@ export const ResponseTimeTrendsDetailDashboard = (
               <DimensionResponseTimeTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tags={workItemSelectors}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
@@ -106,6 +109,7 @@ export const ResponseTimeTrendsDetailDashboard = (
             <DimensionDeliveryCycleFlowMetricsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              tags={workItemSelectors}
               specsOnly={true}
               view={view}
               context={context}

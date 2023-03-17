@@ -7,6 +7,7 @@ import {logGraphQlError} from "../../../../../../components/graphql/utils";
 export const DimensionDeliveryCycleFlowMetricsWidget = ({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   view,
   context,
@@ -33,6 +34,7 @@ export const DimensionDeliveryCycleFlowMetricsWidget = ({
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
+    tags,
     days: _days,
     defectsOnly,
     specsOnly,

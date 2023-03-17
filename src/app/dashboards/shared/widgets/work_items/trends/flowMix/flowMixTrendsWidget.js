@@ -9,6 +9,7 @@ import { getServerDate } from "../../../../../../helpers/utility";
 export const DimensionFlowMixTrendsWidget = (
   {
     dimension,
+    tags,
     instanceKey,
     title,
     subTitle,
@@ -38,6 +39,7 @@ export const DimensionFlowMixTrendsWidget = (
     const {loading, error, data} = useQueryDimensionFlowMixTrends(
       {
         dimension,
+        tags,
         instanceKey,
         days,
         measurementWindow,
