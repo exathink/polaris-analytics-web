@@ -59,6 +59,7 @@ export const ProjectPipelineFunnelWidget = ({
   ) : (
     <ProjectPipelineFunnelDetailDashboard
       instanceKey={instanceKey}
+      tags={tags}
       context={context}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}
