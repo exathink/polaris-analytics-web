@@ -15,6 +15,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
   {
     dimension,
     instanceKey,
+    tags,
     view: parentView,
     context,
     latestWorkItemEvent,
@@ -100,6 +101,7 @@ export const DimensionWorkBalanceTrendsDetailDashboard = (
                 context={context}
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tags={tags}
                 view={view}
                 showAllTrends={true}
                 latestWorkItemEvent={latestWorkItemEvent}
