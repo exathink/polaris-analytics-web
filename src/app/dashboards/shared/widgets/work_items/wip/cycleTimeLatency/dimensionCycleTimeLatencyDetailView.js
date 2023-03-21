@@ -254,6 +254,60 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const [queueSizeState, setQueueSizeState] = React.useState();
 
+  let codingHistogramElement = (
+    <WorkItemsDetailHistogramChart
+      chartConfig={{
+        title: `Age Analysis: Coding`,
+        align: {align: "left"},
+        subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
+        xAxisTitle: "Age in Days",
+        tooltip: getTooltipForAgeLatency,
+        legendItemClick: () => {},
+      }}
+      selectedMetric={"age"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"deliver"}
+      series={seriesDataEngineering}
+      onPointClick={({options, category}) => {
+        const bucket = options.bucket;
+        setCodingFilter?.(bucket);
+        setSelectedCodingCategory(category);
+
+        // disallow compound selection
+        setDeliveryFilter(undefined);
+        setSelectedDeliveryCategory(undefined);
+      }}
+    />
+  );
+
+  let deliveryHistogramElement = (
+    <WorkItemsDetailHistogramChart
+      chartConfig={{
+        title: `Age Analysis: Shipping`,
+        align: {align: "left"},
+        subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
+        xAxisTitle: "Age in Days",
+        tooltip: getTooltipForAgeLatency,
+        legendItemClick: () => {},
+      }}
+      selectedMetric={"age"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"deliver"}
+      series={seriesDataDelivery}
+      onPointClick={({options, category}) => {
+        const bucket = options.bucket;
+        setDeliveryFilter?.(bucket);
+        setSelectedDeliveryCategory(category);
+
+        // disallow compound selection
+        setCodingFilter(undefined);
+        setSelectedCodingCategory(undefined);
+      }}
+    />
+  );
+
   let codingChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
@@ -420,30 +474,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           )}
           {selectedCodingFilter === undefined && (
             <div className="tw-relative tw-h-full">
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Analysis: Coding`,
-                  align: {align: "left"},
-                  subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency,
-                  legendItemClick: () => {},
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataEngineering}
-                onPointClick={({options, category}) => {
-                  const bucket = options.bucket;
-                  setCodingFilter?.(bucket);
-                  setSelectedCodingCategory(category);
-
-                  // disallow compound selection
-                  setDeliveryFilter(undefined);
-                  setSelectedDeliveryCategory(undefined);
-                }}
-              />
+              {codingHistogramElement}
             </div>
           )}
         </>
@@ -468,30 +499,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           )}
           {selectedDeliveryFilter === undefined && (
             <div className="tw-relative tw-h-full">
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Analysis: Shipping`,
-                  align: {align: "left"},
-                  subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency,
-                  legendItemClick: () => {},
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataDelivery}
-                onPointClick={({options, category}) => {
-                  const bucket = options.bucket;
-                  setDeliveryFilter?.(bucket);
-                  setSelectedDeliveryCategory(category);
-
-                  // disallow compound selection
-                  setCodingFilter(undefined);
-                  setSelectedCodingCategory(undefined);
-                }}
-              />
+              {deliveryHistogramElement}
             </div>
           )}
         </>
