@@ -208,7 +208,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           (w) =>
             chartState.chartFilter == null ||
             chartState.chartClicked !== "queuesize" ||
-            (chartState.chartClicked === "queuesize" && chartState.chartFilter === w.state)
+            chartState.selectedCategory !== "engineering" ||
+            chartState.chartFilter === w.state
         ),
     [chartFilteredWorkItems, chartState]
   );
@@ -221,7 +222,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           (w) =>
             chartState.chartFilter == null ||
             chartState.chartClicked !== "queuesize" ||
-            (chartState.chartClicked === "queuesize" && chartState.chartFilter === w.state)
+            chartState.selectedCategory !== "delivery" ||
+            chartState.chartFilter === w.state
         ),
     [chartFilteredWorkItems, chartState]
   );
