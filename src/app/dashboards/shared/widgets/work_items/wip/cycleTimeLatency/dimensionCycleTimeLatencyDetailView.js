@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -23,7 +23,7 @@ import {defaultTeam, getAllUniqueTeams, SelectTeamDropdown} from "../../../../co
 import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {useIntl} from "react-intl";
-import {useCycleTimeLatencyHook, getSubTitleForHistogram, QuadrantNames} from "./cycleTimeLatencyUtils";
+import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
@@ -31,11 +31,6 @@ import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeC
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
-
-const QuadrantStateTypes = {
-  engineering: "engineering",
-  delivery: "delivery",
-};
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
