@@ -204,6 +204,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     () =>
       getWorkItemDurations(chartFilteredWorkItems)
         .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
         .filter(
           (w) =>
             chartState.chartFilter == null ||
@@ -211,13 +212,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
             chartState.selectedCategory !== "engineering" ||
             chartState.chartFilter === w.state
         ),
-    [chartFilteredWorkItems, chartState]
+    [chartFilteredWorkItems, chartState, selectedIssueType]
   );
 
   const workItemsDelivery = React.useMemo(
     () =>
       getWorkItemDurations(chartFilteredWorkItems)
         .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
         .filter(
           (w) =>
             chartState.chartFilter == null ||
@@ -225,7 +227,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             chartState.selectedCategory !== "delivery" ||
             chartState.chartFilter === w.state
         ),
-    [chartFilteredWorkItems, chartState]
+    [chartFilteredWorkItems, chartState, selectedIssueType]
   );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
@@ -315,7 +317,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       specsOnly={specsOnly}
       workItems={
         chartState.selectedCategory === undefined || chartState.selectedCategory === "engineering"
-          ? chartFilteredWorkItems
+          ? workItemsEngineering
           : []
       }
       stateTypes={engineeringStateTypes}
@@ -335,7 +337,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       specsOnly={specsOnly}
       workItems={
         chartState.selectedCategory === undefined || chartState.selectedCategory === "delivery"
-          ? chartFilteredWorkItems
+          ? workItemsDelivery
           : []
       }
       stateTypes={deliveryStateTypes}
