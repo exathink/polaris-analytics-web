@@ -205,6 +205,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
       getWorkItemDurations(chartFilteredWorkItems)
         .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
         .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        })
         .filter(
           (w) =>
             chartState.chartFilter == null ||
@@ -212,7 +220,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             chartState.selectedCategory !== "engineering" ||
             chartState.chartFilter === w.state
         ),
-    [chartFilteredWorkItems, chartState, selectedIssueType]
+    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
   );
 
   const workItemsDelivery = React.useMemo(
@@ -220,6 +228,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
       getWorkItemDurations(chartFilteredWorkItems)
         .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
         .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        })
         .filter(
           (w) =>
             chartState.chartFilter == null ||
@@ -227,7 +243,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             chartState.selectedCategory !== "delivery" ||
             chartState.chartFilter === w.state
         ),
-    [chartFilteredWorkItems, chartState, selectedIssueType]
+    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
   );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
