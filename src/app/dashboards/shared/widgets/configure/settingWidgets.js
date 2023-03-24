@@ -59,7 +59,7 @@ export function MeasurementSettingsDashboard({dimension}) {
   const Component = componentMap[dimension];
   return (
     <Component
-      render={({[dimension]: {key, settingsWithDefaults}, context}) => {
+      render={({[dimension]: {key, name, settingsWithDefaults}, context}) => {
         const {
           includeSubTasksFlowMetrics,
           includeSubTasksWipInspector,
@@ -79,6 +79,7 @@ export function MeasurementSettingsDashboard({dimension}) {
                     <ProjectAnalysisPeriodsWidget
                       instanceKey={key}
                       dimension={dimension}
+                      name={name}
                       wipAnalysisPeriod={wipAnalysisPeriod}
                       flowAnalysisPeriod={flowAnalysisPeriod}
                       trendsAnalysisPeriod={trendsAnalysisPeriod}
