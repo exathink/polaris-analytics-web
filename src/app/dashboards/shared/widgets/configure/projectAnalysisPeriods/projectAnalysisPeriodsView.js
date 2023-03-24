@@ -1,13 +1,14 @@
 import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
-import {Alert, Input} from "antd";
+import {Alert, Col, Form, Input, Row} from "antd";
 import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
 import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 import Button from "../../../../../../components/uielements/button";
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
+import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 
 export const ProjectAnalysisPeriodsView = ({
   dimension,
@@ -59,8 +60,8 @@ export const ProjectAnalysisPeriodsView = ({
   }, [wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod, name]);
 
 
-  const handleInputChange = (event) => {
-    dispatch({type: actionTypes.UPDATE_NAME, payload: event.target.value});
+  const handleInputChange = (values) => {
+    dispatch({type: actionTypes.UPDATE_NAME, payload: values.name});
   };
 
   function handleSaveClick() {
@@ -80,8 +81,12 @@ export const ProjectAnalysisPeriodsView = ({
     });
   }
 
+  // utilizing this trick to reset component (changing the key will remount the chart component with same props)
+  const [resetComponentStateKey, resetState] = useResetComponentState();
+
   function handleCancelClick() {
     dispatch({type: actionTypes.RESET_SLIDERS});
+    resetState();
   }
 
   function getButtonElements() {
@@ -162,15 +167,25 @@ export const ProjectAnalysisPeriodsView = ({
       </div>
 
       <div className="flex flex-col items-center justify-center tw-col-start-2 tw-col-end-3">
-        <label htmlFor="name-input" className="mb-2 font-medium text-gray-700">
-          Name:
-        </label>
-        <Input
-          id="name-input"
-          className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          value={state.name}
-          onChange={handleInputChange}
-        />
+        <Form
+          layout="horizontal"
+          requiredMark={false}
+          onValuesChange={handleInputChange}
+          initialValues={{name: name}}
+          key={resetComponentStateKey}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name={"name"}
+                label="Name"
+                rules={[{required: true, message: "Name is required"}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
       </div>
 
       <div className={styles["titleWrapper"]}>
