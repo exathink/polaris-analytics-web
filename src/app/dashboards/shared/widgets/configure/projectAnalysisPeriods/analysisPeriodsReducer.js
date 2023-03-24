@@ -72,6 +72,7 @@ export function analysisPeriodsReducer(state, action) {
         wipPeriod: state.initialAnalysisPeriods.wipAnalysisPeriod,
         flowPeriod: state.initialAnalysisPeriods.flowAnalysisPeriod,
         trendsPeriod: state.initialAnalysisPeriods.trendsAnalysisPeriod,
+        name: state.initialName,
         mode: mode.INIT,
       };
 
@@ -79,6 +80,17 @@ export function analysisPeriodsReducer(state, action) {
         ...state,
         ...updatedRecord,
       };
+    }
+    case actionTypes.UPDATE_NAME: {
+      const updatedRecord = {
+        name: action.payload,
+        mode: state.initialName !== action.payload ? mode.EDITING : mode.INIT,
+      };
+
+      return {
+        ...state,
+        ...updatedRecord
+      }
     }
     case actionTypes.MUTATION_SUCCESS: {
       return {
@@ -99,6 +111,8 @@ export function analysisPeriodsReducer(state, action) {
         wipPeriod: action.payload.wipAnalysisPeriod,
         flowPeriod: action.payload.flowAnalysisPeriod,
         trendsPeriod: action.payload.trendsAnalysisPeriod,
+        initialName: action.payload.name,
+        name: action.payload.name,
         initialAnalysisPeriods: {
           wipAnalysisPeriod: action.payload.wipAnalysisPeriod,
           flowAnalysisPeriod: action.payload.flowAnalysisPeriod,
