@@ -166,7 +166,7 @@ export const ProjectAnalysisPeriodsView = ({
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center tw-col-start-2 tw-col-end-3">
+      <div className="flex flex-col items-center justify-center tw-col-start-2 tw-col-end-3 tw-pl-8">
         <Form
           layout="horizontal"
           requiredMark={false}
