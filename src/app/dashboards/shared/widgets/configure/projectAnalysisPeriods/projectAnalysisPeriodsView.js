@@ -1,7 +1,7 @@
 import React from "react";
 import {actionTypes, mode} from "./constants";
 import {analysisPeriodsReducer} from "./analysisPeriodsReducer";
-import {Alert} from "antd";
+import {Alert, Input} from "antd";
 import {useDimensionUpdateSettings} from "../../../hooks/useQueryProjectUpdateSettings";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import styles from "./projectAnalysisPeriods.module.css";
@@ -9,11 +9,10 @@ import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 import Button from "../../../../../../components/uielements/button";
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 
-
-
 export const ProjectAnalysisPeriodsView = ({
   dimension,
   instanceKey,
+  name,
   wipAnalysisPeriod,
   flowAnalysisPeriod,
   trendsAnalysisPeriod,
@@ -23,6 +22,8 @@ export const ProjectAnalysisPeriodsView = ({
     flowPeriod: flowAnalysisPeriod,
     trendsPeriod: trendsAnalysisPeriod,
     initialAnalysisPeriods: {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod},
+    initialName: name,
+    name: name,
     mode: mode.INIT,
     errorMessage: "",
   };
@@ -53,10 +54,14 @@ export const ProjectAnalysisPeriodsView = ({
   React.useEffect(() => {
     dispatch({
       type: actionTypes.UPDATE_DEFAULTS,
-      payload: {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod},
+      payload: {wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod, name},
     });
-  }, [wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod]);
+  }, [wipAnalysisPeriod, flowAnalysisPeriod, trendsAnalysisPeriod, name]);
 
+
+  const handleInputChange = (event) => {
+    dispatch({type: actionTypes.UPDATE_NAME, payload: event.target.value});
+  };
 
   function handleSaveClick() {
     const payload = {
@@ -69,6 +74,7 @@ export const ProjectAnalysisPeriodsView = ({
     mutate({
       variables: {
         instanceKey: instanceKey,
+        name: state.name,
         analysisPeriods: payload,
       },
     });
@@ -91,7 +97,13 @@ export const ProjectAnalysisPeriodsView = ({
     if (state.mode === mode.EDITING) {
       return (
         <>
-          <Button onClick={handleSaveClick} className={styles["analysisSave"]} type="primary" size="small" shape="round">
+          <Button
+            onClick={handleSaveClick}
+            className={styles["analysisSave"]}
+            type="primary"
+            size="small"
+            shape="round"
+          >
             Save
           </Button>
           <Button onClick={handleCancelClick} type="default" size="small" shape="round">
@@ -139,22 +151,32 @@ export const ProjectAnalysisPeriodsView = ({
         />
       );
     }
-
   }
-
-
 
   return (
     <div className={styles["analysisPeriodControlsWrapper"]} data-testid="analysis-periods-view">
       <div className={styles["analysisPeriodTopBar"]}>
-        <div className={styles["analysisPeriodsButtons"]} data-testid="analysis-period-buttons">{getButtonElements()}</div>
+        <div className={styles["analysisPeriodsButtons"]} data-testid="analysis-period-buttons">
+          {getButtonElements()}
+        </div>
       </div>
-      <div className={styles["titleWrapper"]}>
-         <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
 
+      <div className="flex flex-col items-center justify-center tw-col-start-2 tw-col-end-3">
+        <label htmlFor="name-input" className="mb-2 font-medium text-gray-700">
+          Name:
+        </label>
+        <Input
+          id="name-input"
+          className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          value={state.name}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <div className={styles["titleWrapper"]}>
+        <div className={styles["analysisPeriodTitle"]}>Analysis Periods</div>
       </div>
       <AnalysisPeriodsSliders {...sliderProps} />
-      
     </div>
   );
 };
