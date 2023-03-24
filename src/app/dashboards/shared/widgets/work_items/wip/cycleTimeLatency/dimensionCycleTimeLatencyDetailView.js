@@ -366,9 +366,24 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
+  const quadrantSummaryWorkItems = React.useMemo(
+    () =>
+      getWorkItemDurations(chartFilteredWorkItems)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        }),
+    [chartFilteredWorkItems, selectedIssueType, selectedTeam]
+  );
+
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={chartFilteredWorkItems}
+      workItems={quadrantSummaryWorkItems}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -395,7 +410,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let deliveryQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={chartFilteredWorkItems}
+      workItems={quadrantSummaryWorkItems}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
