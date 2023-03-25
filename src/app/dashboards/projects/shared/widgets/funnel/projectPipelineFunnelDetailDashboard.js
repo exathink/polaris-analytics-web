@@ -11,6 +11,7 @@ const dashboard_id = "dashboards.project.pipeline.detail";
 
 export const ProjectPipelineFunnelDetailDashboard = ({
                                                        instanceKey,
+                                                       tags,
                                                        latestWorkItemEvent,
                                                        latestCommit,
                                                        days,
@@ -55,6 +56,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
             <DimensionValueStreamPhaseDetailWidget
               dimension={"project"}
               instanceKey={instanceKey}
+              tags={tags}
               context={context}
               funnelView={true}
               specsOnly={specsOnly}

@@ -9,6 +9,7 @@ import {VolumeTrendsTableView} from "./volumeTrendsTableView";
 export function VolumeTrendsTableWidget({
   dimension,
   instanceKey,
+  tags,
   days,
   measurementWindow,
   samplingFrequency,
@@ -25,6 +26,7 @@ export function VolumeTrendsTableWidget({
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
+    tags,
     days,
     measurementWindow,
     samplingFrequency,
@@ -43,6 +45,7 @@ export function VolumeTrendsTableWidget({
     <CardDetailsWidget
       dimension={dimension}
       instanceKey={instanceKey}
+      tags={tags}
       days={measurementWindow}
       initialDays={days}
       specsOnly={specsOnly}

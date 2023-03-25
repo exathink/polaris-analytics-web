@@ -4,6 +4,7 @@ import {analytics_service} from "../../../../../services/graphql";
 export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
   query ${dimension}PipelineStateDetails(
     $key: String!
+    $tags: [String]
     $specsOnly: Boolean
     $referenceString: String
     $closedWithinDays: Int
@@ -17,6 +18,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
       id
       workItems(
         activeOnly: $activeOnly
+        tags: $tags
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs, EpicNodeRef]
         specsOnly: $specsOnly
@@ -73,6 +75,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
 export function useQueryDimensionPipelineStateDetails({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   referenceString,
   closedWithinDays,
@@ -91,6 +94,7 @@ export function useQueryDimensionPipelineStateDetails({
       service: analytics_service,
       variables: {
         key: instanceKey,
+        tags: tags,
         specsOnly: specsOnly,
         referenceString: referenceString,
         closedWithinDays: closedWithinDays,

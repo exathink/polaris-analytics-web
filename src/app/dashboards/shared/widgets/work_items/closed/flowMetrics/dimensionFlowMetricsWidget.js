@@ -10,6 +10,7 @@ export const DimensionFlowMetricsWidget = (
   {
     dimension,
     instanceKey,
+    tags,
     specsOnly,
     view,
     context,
@@ -33,6 +34,7 @@ export const DimensionFlowMetricsWidget = (
   const {loading, error, data} = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
+    tags,
     leadTimeTarget,
     cycleTimeTarget,
     leadTimeTargetPercentile: leadTimeConfidenceTarget,
@@ -85,6 +87,7 @@ export const DimensionFlowMetricsWidget = (
       <DimensionFlowMetricsDetailDashboard
         dimension={dimension}
         instanceKey={instanceKey}
+        tags={tags}
         specsOnly={limitToSpecsOnly}
         view={view}
         context={context}

@@ -9,6 +9,7 @@ import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
+import {useQueryParamState} from "../../shared/helper/hooks";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -19,6 +20,8 @@ export function NewFlowDashboard({
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
+
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {
@@ -99,6 +102,7 @@ export function NewFlowDashboard({
               <DimensionWipMetricsWidget
                 dimension="project"
                 instanceKey={key}
+                tags={workItemSelectors}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -127,6 +131,7 @@ export function NewFlowDashboard({
             <DimensionPipelineQuadrantSummaryWidget
               dimension={"project"}
               instanceKey={key}
+              tags={workItemSelectors}
               display={"commonWipSummary"}
               days={flowAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
@@ -160,6 +165,7 @@ export function NewFlowDashboard({
               <DimensionWipMetricsWidget
                 dimension="project"
                 instanceKey={key}
+                tags={workItemSelectors}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -185,6 +191,7 @@ export function NewFlowDashboard({
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
+              tags={workItemSelectors}
               context={context}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
@@ -223,6 +230,7 @@ export function NewFlowDashboard({
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
+                tags={workItemSelectors}
                 // Summary Card Data
                 // Throughput for a single measurement period
                 // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
@@ -255,6 +263,7 @@ export function NewFlowDashboard({
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
+                tags={workItemSelectors}
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
