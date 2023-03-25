@@ -7,7 +7,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, QuadrantFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, getQuadrantDescription, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -23,7 +23,7 @@ import {defaultTeam, getAllUniqueTeams, SelectTeamDropdown} from "../../../../co
 import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {useIntl} from "react-intl";
-import {useCycleTimeLatencyHook, getSubTitleForHistogram, QuadrantNames} from "./cycleTimeLatencyUtils";
+import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
@@ -31,11 +31,6 @@ import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeC
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
-
-const QuadrantStateTypes = {
-  engineering: "engineering",
-  delivery: "delivery",
-};
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -105,7 +100,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
   const [selectedQuadrant, setSelectedQuadrant] = React.useState();
-  const [quadrantStateType, setQuadrantStateType] = React.useState();
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
@@ -171,20 +165,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     }
   }
 
-  function handleResetAll() {
-    // reset table component state
-    setTableFilteredWorkItems(initWorkItems);
-    setAppliedFilters(EmptyObj);
-    setSelectedQuadrant(undefined);
 
-    setQuadrantStateType(undefined);
-
-    setDeliveryFilter(undefined);
-    setCodingFilter(undefined);
-    
-    // reset chart components state
-    resetComponentState();
-  }
 
   const {
     selectedVal: {key: selectedIssueType},
@@ -210,49 +191,140 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
-  const workItemsEngineering = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
+  const [chartState, updateChartState] = React.useReducer((data, partialData) => {
+    const nextState = {
+        ...data,
+        ...partialData
+    }
 
-  const workItemsDelivery = React.useMemo(() => getWorkItemDurations(chartFilteredWorkItems)
-    .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1), [chartFilteredWorkItems]);
+    return nextState;
+  },{chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined});
+
+  const workItemsEngineering = React.useMemo(
+    () =>
+      getWorkItemDurations(chartFilteredWorkItems)
+        .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        })
+        .filter(
+          (w) =>
+            chartState.chartFilter == null ||
+            chartState.chartClicked !== "queuesize" ||
+            chartState.selectedCategory !== "engineering" ||
+            chartState.chartFilter === w.state
+        ),
+    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
+  );
+
+  const workItemsDelivery = React.useMemo(
+    () =>
+      getWorkItemDurations(chartFilteredWorkItems)
+        .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        })
+        .filter(
+          (w) =>
+            chartState.chartFilter == null ||
+            chartState.chartClicked !== "queuesize" ||
+            chartState.selectedCategory !== "delivery" ||
+            chartState.chartFilter === w.state
+        ),
+    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
+  );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
   const seriesDataDelivery = useCycleTimeLatencyHook(workItemsDelivery);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
 
-  const [selectedCodingFilter, setCodingFilter] = React.useState();
-  const [selectedCodingCategory, setSelectedCodingCategory] = React.useState();
+  const [wipChartType, setWipChartType] = React.useState("queue");
 
-  const [selectedDeliveryFilter, setDeliveryFilter] = React.useState();
-  const [selectedDeliveryCategory, setSelectedDeliveryCategory] = React.useState();
+  const [histogramBucket, setHistogramBucket] = React.useState();
 
-  const [wipChartType, setWipChartType] = React.useState("queueSize");
+  function handleResetAll() {
+    // reset table component state
+    setTableFilteredWorkItems(initWorkItems);
+    setAppliedFilters(EmptyObj);
+    setSelectedQuadrant(undefined);
+
+    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined})
+    
+    // reset chart components state
+    resetComponentState();
+  }
 
   function handleClearClick() {
-    setCodingFilter(undefined);
-    setDeliveryFilter(undefined);
+    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined})
 
     setSelectedQuadrant(undefined);
-    setQuadrantStateType(undefined);
-
-    setSelectedCodingCategory(undefined);
-    setSelectedDeliveryCategory(undefined);
-
-    setQueueSizeState(undefined);
 
     setTableFilteredWorkItems(initWorkItems)
   }
 
   React.useEffect(() => {
-    if (selectedCodingFilter && selectedCodingFilter.length > 0) {
-      setTableFilteredWorkItems(selectedCodingFilter)
+    if (chartState.chartClicked==="histogram" && chartState.chartFilter && chartState.chartFilter.length > 0) {
+      setTableFilteredWorkItems(chartState.chartFilter)
     }
-    if (selectedDeliveryFilter && selectedDeliveryFilter.length > 0) {
-      setTableFilteredWorkItems(selectedDeliveryFilter)
-    } 
-  }, [selectedCodingFilter, selectedDeliveryFilter, setTableFilteredWorkItems]);
+  }, [chartState, setTableFilteredWorkItems]);
 
-  const [queueSizeState, setQueueSizeState] = React.useState();
+  let codingHistogramElement = (
+    <WorkItemsDetailHistogramChart
+      chartConfig={{
+        title: `Age Analysis: Coding`,
+        align: {align: "left"},
+        subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
+        xAxisTitle: "Age in Days",
+        tooltip: getTooltipForAgeLatency,
+        legendItemClick: () => {},
+      }}
+      selectedMetric={"age"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"deliver"}
+      series={seriesDataEngineering}
+      onPointClick={({options, category}) => {
+        const bucket = options.bucket;
+        setHistogramBucket(category);
+        updateChartState?.({chartFilter: bucket, selectedCategory: "engineering", chartClicked: "histogram"});
+      }}
+    />
+  );
+
+  let deliveryHistogramElement = (
+    <WorkItemsDetailHistogramChart
+      chartConfig={{
+        title: `Age Analysis: Shipping`,
+        align: {align: "left"},
+        subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
+        xAxisTitle: "Age in Days",
+        tooltip: getTooltipForAgeLatency,
+        legendItemClick: () => {},
+      }}
+      selectedMetric={"age"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"deliver"}
+      series={seriesDataDelivery}
+      onPointClick={({options, category}) => {
+        const bucket = options.bucket;
+        setHistogramBucket(category);
+        updateChartState?.({chartFilter: bucket, selectedCategory: "delivery", chartClicked: "histogram"});
+      }}
+    />
+  );
 
   let codingChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
@@ -260,8 +332,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stageName={"Coding"}
       specsOnly={specsOnly}
       workItems={
-        quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.engineering
-          ? chartFilteredWorkItems
+        chartState.selectedCategory === undefined || chartState.selectedCategory === "engineering"
+          ? workItemsEngineering
           : []
       }
       stateTypes={engineeringStateTypes}
@@ -270,7 +342,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       latencyTarget={latencyTarget}
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
-      selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+      selectedQuadrant={chartState.selectedCategory === "engineering" ? selectedQuadrant : undefined}
     />
   );
 
@@ -280,8 +352,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stageName={"Shipping"}
       specsOnly={specsOnly}
       workItems={
-        quadrantStateType === undefined || quadrantStateType === QuadrantStateTypes.delivery
-          ? chartFilteredWorkItems
+        chartState.selectedCategory === undefined || chartState.selectedCategory === "delivery"
+          ? workItemsDelivery
           : []
       }
       stateTypes={deliveryStateTypes}
@@ -290,13 +362,28 @@ export const DimensionCycleTimeLatencyDetailView = ({
       latencyTarget={latencyTarget}
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
-      selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
+      selectedQuadrant={chartState.selectedCategory === "delivery" ? selectedQuadrant : undefined}
     />
+  );
+
+  const quadrantSummaryWorkItems = React.useMemo(
+    () =>
+      getWorkItemDurations(chartFilteredWorkItems)
+        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
+        .filter((w) => {
+          if (selectedTeam === "all") {
+            return true;
+          } else {
+            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+            return _teams.includes(selectedTeam);
+          }
+        }),
+    [chartFilteredWorkItems, selectedIssueType, selectedTeam]
   );
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={chartFilteredWorkItems}
+      workItems={quadrantSummaryWorkItems}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -305,7 +392,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         if (
           selectedQuadrant !== undefined &&
           selectedQuadrant === quadrant &&
-          quadrantStateType === QuadrantStateTypes.engineering
+          chartState.selectedCategory === "engineering"
         ) {
           handleResetAll();
         } else {
@@ -313,21 +400,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
             (x) =>
               quadrant === undefined || quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
           );
-          setCodingFilter(items);
-
-          // disallow compound selection
-          setDeliveryFilter([]);
+          updateChartState?.({chartFilter: items, selectedCategory: "engineering", chartClicked: "quadrant"});
           setSelectedQuadrant(quadrant);
-          setQuadrantStateType(QuadrantStateTypes.engineering);
         }
       }}
-      selectedQuadrant={quadrantStateType === QuadrantStateTypes.engineering ? selectedQuadrant : undefined}
+      selectedQuadrant={chartState.selectedCategory === "engineering" ? selectedQuadrant : undefined}
     />
   );
 
   let deliveryQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={chartFilteredWorkItems}
+      workItems={quadrantSummaryWorkItems}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -336,7 +419,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         if (
           selectedQuadrant !== undefined &&
           selectedQuadrant === quadrant &&
-          quadrantStateType === QuadrantStateTypes.delivery
+          chartState.selectedCategory === "delivery"
         ) {
           handleResetAll();
         } else {
@@ -344,161 +427,112 @@ export const DimensionCycleTimeLatencyDetailView = ({
             (x) =>
               quadrant === undefined || quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
           );
-          setDeliveryFilter(items);
+          updateChartState?.({chartFilter: items, selectedCategory: "delivery", chartClicked: "quadrant"});
 
-          // disallow compound selection
-          setCodingFilter([]);
           setSelectedQuadrant(quadrant);
-          setQuadrantStateType(QuadrantStateTypes.delivery);
         }
       }}
-      selectedQuadrant={quadrantStateType === QuadrantStateTypes.delivery ? selectedQuadrant : undefined}
+      selectedQuadrant={chartState.selectedCategory === "delivery" ? selectedQuadrant : undefined}
     />
   );
 
   if(ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
-    let latencyCodingChartElement = React.cloneElement(codingChartElement, {workItems: selectedCodingFilter});
-    let latencyDeliveryChartElement = React.cloneElement(deliveryChartElement, {workItems: selectedDeliveryFilter});
+    let latencyCodingChartElement = React.cloneElement(codingChartElement, {workItems: chartState.chartFilter});
+    let latencyDeliveryChartElement = React.cloneElement(deliveryChartElement, {workItems: chartState.chartFilter});
 
-    if (wipChartType === "latency") {
-      codingChartElement = originalCodingChartElement;
-      deliveryChartElement = originalDeliveryChartElement;
-    } else if (wipChartType === "queueSize") {
-      codingChartElement = (
-        <div className="tw-relative tw-h-full">
-          <WipQueueSizeChart
-            items={workItemsEngineering}
-            stageName={"Coding"}
-            specsOnly={specsOnly}
-            onPointClick={(obj) => {
-              setQueueSizeState(obj.options.name);
-              setSelectedCodingCategory("engineering");
-
-              setSelectedDeliveryCategory(undefined);
-            }}
-          />
-          {queueSizeState && selectedCodingCategory==="engineering" && <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />}
-        </div>
+    const ageFilterElement = (
+        <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />
       );
-      deliveryChartElement = (
-        <div className="tw-relative tw-h-full">
-          <WipQueueSizeChart
-            items={workItemsDelivery}
-            stageName={"Shipping"}
-            specsOnly={specsOnly}
-            onPointClick={(obj) => {
-              setQueueSizeState(obj.options.name);
-              setSelectedDeliveryCategory("delivery");
 
-              setSelectedCodingCategory(undefined);
-            }}
-          />
-          {queueSizeState && selectedDeliveryCategory==="delivery" && (
-            <QueueSizeFilterWrapper selectedFilter={queueSizeState} handleClearClick={handleClearClick} />
-          )}
-        </div>
+    // wipChartType 'queue', 'age', 'motion'
+    if (wipChartType === "queue") {
+      // show 3 modes
+      const codingQueueSizeElement = (
+        <WipQueueSizeChart
+          items={workItemsEngineering}
+          stageName={"Coding"}
+          specsOnly={specsOnly}
+          onPointClick={(obj) => {
+            updateChartState({
+              chartFilter: obj.options.name,
+              selectedCategory: "engineering",
+              chartClicked: "queuesize",
+            });
+          }}
+        />
       );
-    } else {
-      codingChartElement = (
-        <>
-          {selectedCodingFilter !== undefined && (
-            <div className="tw-relative tw-h-full">
-              {latencyCodingChartElement}
-              {!selectedQuadrant && (
-                <AgeFilterWrapper selectedFilter={selectedCodingCategory} handleClearClick={handleClearClick} />
-              )}
-              {selectedQuadrant && quadrantStateType === QuadrantStateTypes.engineering && (
-                <QuadrantFilterWrapper
-                  selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                  selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                  handleClearClick={handleClearClick}
-                />
-              )}
-            </div>
-          )}
-          {selectedCodingFilter === undefined && (
-            <div className="tw-relative tw-h-full">
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Analysis: Coding`,
-                  align: {align: "left"},
-                  subtitle: getSubTitleForHistogram({workItems: workItemsEngineering, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency,
-                  legendItemClick: () => {},
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataEngineering}
-                onPointClick={({options, category}) => {
-                  const bucket = options.bucket;
-                  setCodingFilter?.(bucket);
-                  setSelectedCodingCategory(category);
+      const deliveryQueueSizeElement = (
+        <WipQueueSizeChart
+          items={workItemsDelivery}
+          stageName={"Shipping"}
+          specsOnly={specsOnly}
+          onPointClick={(obj) => {
+            updateChartState({chartFilter: obj.options.name, selectedCategory: "delivery", chartClicked: "queuesize"});
+          }}
+        />
+      );
+      const queueSizeFilterElement = (
+        <QueueSizeFilterWrapper selectedFilter={chartState.chartFilter} handleClearClick={handleClearClick} />
+      );
 
-                  // disallow compound selection
-                  setDeliveryFilter(undefined);
-                  setSelectedDeliveryCategory(undefined);
-                }}
-              />
-            </div>
-          )}
-        </>
-      );
-    
-      deliveryChartElement = (
-        <>
-          {selectedDeliveryFilter !== undefined && (
-            <div className="tw-relative tw-h-full">
-              {latencyDeliveryChartElement}
-              {!selectedQuadrant && (
-                <AgeFilterWrapper selectedFilter={selectedDeliveryCategory} handleClearClick={handleClearClick} />
-              )}
-              {selectedQuadrant && quadrantStateType === QuadrantStateTypes.delivery && (
-                <QuadrantFilterWrapper
-                  selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                  selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                  handleClearClick={handleClearClick}
-                />
-              )}
-            </div>
-          )}
-          {selectedDeliveryFilter === undefined && (
-            <div className="tw-relative tw-h-full">
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: `Age Analysis: Shipping`,
-                  align: {align: "left"},
-                  subtitle: getSubTitleForHistogram({workItems: workItemsDelivery, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  tooltip: getTooltipForAgeLatency,
-                  legendItemClick: () => {},
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesDataDelivery}
-                onPointClick={({options, category}) => {
-                  const bucket = options.bucket;
-                  setDeliveryFilter?.(bucket);
-                  setSelectedDeliveryCategory(category);
+      // chartState.chartClicked === null && chartState.selectedCategory == null
+      codingChartElement = <div className="tw-relative tw-h-full">{codingQueueSizeElement}</div>;
+      deliveryChartElement = <div className="tw-relative tw-h-full">{deliveryQueueSizeElement}</div>;
 
-                  // disallow compound selection
-                  setCodingFilter(undefined);
-                  setSelectedCodingCategory(undefined);
-                }}
-              />
-            </div>
-          )}
-        </>
-      );
+      // if queuesize chart is clicked, then selectedCategory must be present
+      if (chartState.chartClicked === "queuesize") {
+        if (chartState.selectedCategory === "engineering") {
+          codingChartElement = <div className="tw-relative tw-h-full">{codingHistogramElement} {queueSizeFilterElement}</div>;
+        }
+        if (chartState.selectedCategory === "delivery") {
+          deliveryChartElement = <div className="tw-relative tw-h-full">{deliveryHistogramElement} {queueSizeFilterElement}</div>;
+        }
+      }
+      // if histogram is clicked, then selectedCategory must be present
+      if (chartState.chartClicked === "histogram") {
+        if (chartState.selectedCategory === "engineering") {
+          codingChartElement = <div className="tw-relative tw-h-full">{latencyCodingChartElement} {ageFilterElement}</div>;
+        }
+        if (chartState.selectedCategory === "delivery") {
+          deliveryChartElement = <div className="tw-relative tw-h-full">{latencyDeliveryChartElement} {ageFilterElement}</div>;
+        }
+      }
     }
 
-    if (wipChartType !== "latency") {
+    if (wipChartType === "age") {
+      // show 2 modes
+      // chartState.chartClicked === null && chartState.selectedCategory == null
+      codingChartElement = <div className="tw-relative tw-h-full">{codingHistogramElement}</div>;
+      deliveryChartElement = <div className="tw-relative tw-h-full">{deliveryHistogramElement}</div>;
+
+      // show 2 modes
+      // if histogram chart is clicked, then selectedCategory must be present
+      if (chartState.chartClicked === "histogram") {
+        if (chartState.selectedCategory === "engineering") {
+          codingChartElement = (
+            <div className="tw-relative tw-h-full">
+              {latencyCodingChartElement} {ageFilterElement}
+            </div>
+          );
+        }
+        if (chartState.selectedCategory === "delivery") {
+          deliveryChartElement = (
+            <div className="tw-relative tw-h-full">
+              {latencyDeliveryChartElement} {ageFilterElement}
+            </div>
+          );
+        }
+      }
+    }
+
+    if (wipChartType === "motion") {
+      codingChartElement = originalCodingChartElement;
+      deliveryChartElement = originalDeliveryChartElement;
+    }
+
+    if (wipChartType !== "motion") {
       codingQuadrantSummaryElement = null;
       deliveryQuadrantSummaryElement = null;
     }
@@ -518,7 +552,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     </div>
   );
   if (ageLatencyFeatureFlag) {
-    if (wipChartType === "latency") {
+    if (wipChartType === "motion") {
       engineeringElement = (
         <div
           className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
@@ -548,7 +582,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             onGroupingChanged={setWipChartType}
             groupings={[
               {
-                key: "queueSize",
+                key: "queue",
                 display: "Queue Size",
               },
               {
@@ -556,7 +590,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 display: "Age",
               },
               {
-                key: "latency",
+                key: "motion",
                 display: "Motion",
               },
             ]}
@@ -596,8 +630,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           tableData={getWorkItemDurations(tableFilteredWorkItems)
             .filter(
               (workItem) =>
-                quadrantStateType === undefined ||
-                (quadrantStateType === QuadrantStateTypes.engineering
+                chartState.selectedCategory === undefined ||
+                (chartState.selectedCategory === "engineering"
                   ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
                   : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
             )
@@ -622,7 +656,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
               }
             })
             .filter(w => {
-              return queueSizeState === undefined || queueSizeState === w.state
+              return (
+                chartState.chartFilter == null ||
+                chartState.chartClicked !== "queuesize" ||
+                (chartState.chartClicked === "queuesize" && chartState.chartFilter === w.state)
+              );
             })}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
