@@ -9,6 +9,7 @@ import { getReferenceString } from "../../../../../helpers/utility";
 export const DimensionValueStreamPhaseDetailWidget = ({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   latestWorkItemEvent,
   latestCommit,
@@ -34,6 +35,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
+    tags,
     activeOnly,
     funnelView,
     closedWithinDays,

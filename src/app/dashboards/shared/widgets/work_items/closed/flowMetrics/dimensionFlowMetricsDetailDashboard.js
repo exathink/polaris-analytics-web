@@ -14,6 +14,7 @@ export const DimensionFlowMetricsDetailDashboard = (
   {
     dimension,
     instanceKey,
+    tags,
     context,
     latestWorkItemEvent,
     latestCommit,
@@ -65,6 +66,7 @@ export const DimensionFlowMetricsDetailDashboard = (
               <DimensionFlowMetricsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tag={tags}
                 specsOnly={specsOnly}
                 display={'all'}
                 view={view}
@@ -91,6 +93,7 @@ export const DimensionFlowMetricsDetailDashboard = (
               <DimensionDeliveryCycleFlowMetricsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tags={tags}
                 specsOnly={specsOnly}
                 view={view}
                 context={context}

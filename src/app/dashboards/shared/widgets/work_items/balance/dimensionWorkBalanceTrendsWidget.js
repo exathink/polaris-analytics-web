@@ -17,6 +17,7 @@ export const DimensionWorkBalanceTrendsWidget = (
   {
     dimension,
     instanceKey,
+    tags,
     view,
     display,
     context,
@@ -51,6 +52,7 @@ export const DimensionWorkBalanceTrendsWidget = (
     {
       dimension: dimension,
       instanceKey: instanceKey,
+      tags,
       days: days,
       measurementWindow: measurementWindow,
       samplingFrequency: samplingFrequency,
@@ -93,6 +95,7 @@ export const DimensionWorkBalanceTrendsWidget = (
           key={resetComponentStateKey}
           dimension={dimension}
           instanceKey={instanceKey}
+          tags={tags}
           specsOnly={true}
           view={view}
           context={context}
@@ -155,6 +158,7 @@ export const DimensionWorkBalanceTrendsWidget = (
       {...{
         dimension,
         instanceKey,
+        tags,
         days,
         measurementWindow,
         samplingFrequency: 1,

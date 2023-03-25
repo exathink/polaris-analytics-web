@@ -4,6 +4,7 @@ import {analytics_service} from "../../../../services/graphql";
 export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
   query projectPipelineSummary(
     $key: String!
+    $tags: [String]
     $defectsOnly: Boolean
     $closedWithinDays: Int
     $specsOnly: Boolean
@@ -13,6 +14,7 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
   ) {
     project(
       key: $key
+      tags: $tags
       interfaces: [FunnelViewAggregateMetrics]
       funnelViewArgs: {
           includeSubTasksInClosedState: $includeSubTasksInClosedState,
@@ -43,11 +45,12 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
   }
 `;
 
-export function useQueryProjectPipelineSummary({instanceKey, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}}) {
+export function useQueryProjectPipelineSummary({instanceKey, tags, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}}) {
   return useQuery(PROJECT_PIPELINE_SUMMARY_QUERY, {
       service: analytics_service,
       variables: {
         key: instanceKey,
+        tags: tags,
         referenceString: referenceString,
         defectsOnly: defectsOnly,
         closedWithinDays: closedWithinDays,
