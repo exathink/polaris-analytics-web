@@ -8,7 +8,7 @@ import {DimensionWipMetricsView} from "./dimensionWipMetricsView";
 export function DimensionWipMetricsWidget({
   dimension,
   instanceKey,
-
+  tags,
   displayBag,
 
   targetPercentile,
@@ -28,6 +28,7 @@ export function DimensionWipMetricsWidget({
   const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
     dimension,
     instanceKey,
+    tags,
     targetPercentile,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
@@ -43,6 +44,7 @@ export function DimensionWipMetricsWidget({
   } = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
+    tags,
     leadTimeTarget,
     cycleTimeTarget,
     leadTimeTargetPercentile,

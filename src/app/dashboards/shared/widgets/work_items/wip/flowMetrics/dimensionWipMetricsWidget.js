@@ -7,6 +7,7 @@ import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDim
 export const DimensionWipFlowMetricsWidget = ({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   days,
   latestCommit,
@@ -21,6 +22,7 @@ export const DimensionWipFlowMetricsWidget = ({
   const {loading, error, data} = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
+    tags,
     leadTimeTarget,
     cycleTimeTarget,
     leadTimeTargetPercentile,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
+import {useQueryParamState} from "../../../../projects/shared/helper/hooks";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
@@ -41,6 +42,7 @@ export function DimensionResponseTimeDetailDashboard({
 
   const limitToSpecsOnly = workItemScope === 'specs';
   const [tabSelection, setTab] = React.useState("histogram");
+  const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   return (
     <Dashboard
@@ -68,6 +70,7 @@ export function DimensionResponseTimeDetailDashboard({
             <DimensionFlowMetricsWidget
               dimension={dimension}
               instanceKey={key}
+              tags={workItemSelectors}
               view={view}
               display={"responseTimeDetail"}
               displayProps={{
@@ -103,6 +106,7 @@ export function DimensionResponseTimeDetailDashboard({
               <DimensionDeliveryCycleFlowMetricsWidget
                 dimension={dimension}
                 instanceKey={key}
+                tags={workItemSelectors}
                 specsOnly={limitToSpecsOnly}
                 view={view}
                 context={context}

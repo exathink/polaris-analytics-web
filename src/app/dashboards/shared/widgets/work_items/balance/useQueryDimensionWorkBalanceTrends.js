@@ -5,6 +5,7 @@ export function useQueryDimensionWorkBalanceTrends(
   {
     dimension,
     instanceKey,
+    tags,
     before,
     days,
     measurementWindow,
@@ -17,6 +18,7 @@ export function useQueryDimensionWorkBalanceTrends(
     gql`
      query ${dimension}CapacityTrends(
           $key: String!, 
+          $tags: [String],
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
@@ -72,6 +74,7 @@ export function useQueryDimensionWorkBalanceTrends(
       service: analytics_service,
       variables: {
         key: instanceKey,
+        tags: tags,
         days: days,
         before: before,
         showContributorDetail: showContributorDetail,

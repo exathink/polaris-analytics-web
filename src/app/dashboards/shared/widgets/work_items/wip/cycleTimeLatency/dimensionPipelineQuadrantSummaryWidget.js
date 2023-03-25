@@ -11,6 +11,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
   {
     dimension,
     instanceKey,
+    tags,
     specsOnly,
     workItemScope,
     setWorkItemScope,
@@ -36,6 +37,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
   const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
+    tags,
     specsOnly,
     activeOnly: true,
     includeSubTasks: includeSubTasks,
