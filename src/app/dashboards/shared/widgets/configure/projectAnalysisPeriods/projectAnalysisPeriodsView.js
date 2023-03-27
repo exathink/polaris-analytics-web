@@ -9,6 +9,24 @@ import {AnalysisPeriodsSliders} from "./analysisPeriodsSliders";
 import Button from "../../../../../../components/uielements/button";
 import {capitalizeFirstLetter} from "../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+
+function updateUrl({oldPath, oldToken, newToken}) {
+    // Extract the path from the old URL (excluding the domain and protocol)
+    const path = oldPath;
+
+    // Decode the path to make it more readable, replacing encoded characters with their original form
+    const decodedPath = decodeURIComponent(path);
+
+    // Replace the team name oldToken with newToken in the decoded path
+    const updatedPath = decodedPath.replace(oldToken, newToken);
+
+    // Encode the updated path back to its original form, preserving special characters such as slashes and spaces
+    const encodedPath = encodeURIComponent(updatedPath).replace(/%2F/g, '/').replace(/%20/g, ' ');
+
+
+  return encodedPath;
+}
 
 export const ProjectAnalysisPeriodsView = ({
   dimension,
@@ -29,6 +47,10 @@ export const ProjectAnalysisPeriodsView = ({
     errorMessage: "",
   };
 
+  const history = useHistory();
+  const location = useLocation();
+  let params = useParams();
+
   const [state, dispatch] = React.useReducer(analysisPeriodsReducer, initialState);
   const sliderProps = {...state, dispatch};
 
@@ -39,6 +61,8 @@ export const ProjectAnalysisPeriodsView = ({
       if (success) {
         dispatch({type: actionTypes.MUTATION_SUCCESS});
         client.resetStore();
+        const encodedPath = updateUrl({oldPath: location.pathname, oldToken: params[dimension], newToken: state.name})
+        history.push(encodedPath);
       } else {
         logGraphQlError("ProjectAnalysisPeriodsView.useProjectUpdateSettings", errorMessage);
         dispatch({type: actionTypes.MUTATION_FAILURE, payload: errorMessage});
