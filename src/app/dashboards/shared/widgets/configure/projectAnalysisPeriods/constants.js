@@ -16,5 +16,6 @@ export const mode = {
   EDITING: "EDITING",
   SUCCESS: "SUCCESS",
   ERROR: "ERROR",
+  DISABLED: "DISABLED",
   ALERT: "ALERT"
 };

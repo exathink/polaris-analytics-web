@@ -118,6 +118,26 @@ export const ProjectAnalysisPeriodsView = ({
       );
     }
 
+    if (state.mode === mode.DISABLED) {
+      return (
+        <>
+          <Button
+            onClick={() => {}}
+            className={styles["analysisSave"]}
+            type="primary"
+            size="small"
+            disabled
+            shape="round"
+          >
+            Save
+          </Button>
+          <Button onClick={handleCancelClick} type="default" size="small" shape="round">
+            Cancel
+          </Button>
+        </>
+      );
+    }
+
     if (state.mode === mode.SUCCESS) {
       return (
         <Alert

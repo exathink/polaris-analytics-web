@@ -84,7 +84,8 @@ export function analysisPeriodsReducer(state, action) {
     case actionTypes.UPDATE_NAME: {
       const updatedRecord = {
         name: action.payload,
-        mode: state.initialName !== action.payload ? mode.EDITING : mode.INIT,
+        mode:
+          state.initialName === action.payload ? mode.INIT : action.payload.trim() === "" ? mode.DISABLED : mode.EDITING,
       };
 
       return {
