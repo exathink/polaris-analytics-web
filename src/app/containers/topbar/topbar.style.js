@@ -81,19 +81,8 @@ const TopbarWrapper = styled.div`
             font-size: 28px;
             color: ${palette('text', 3)};
           }
-          .ant-select-single .ant-select-selector {
-            display: block;
-          }
-          .ant-select {
-            span {
-              font-size: 16px;
-              font-style: normal;
-              line-height: 1;
-              margin-left: 0;
-              text-transform: none;
-            }
-          }
-          span {
+
+          .topBarLabel {
             font-size: 16px;
             line-height: 19px;
             @media only screen and (min-width: 768px) {
