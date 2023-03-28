@@ -43,8 +43,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
 export function ValueStreamsDropdown() {
   const {data} = useWidget();
 
-  const nodes = data.project.valueStreams.edges.map((edge) => edge.node);
-  const items = nodes.map((node) => ({key: node.key, name: capitalize(node.name), workItemSelectors: node.workItemSelectors}));
+  const items = data.project.valueStreams.edges.map((edge) => edge.node);
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
