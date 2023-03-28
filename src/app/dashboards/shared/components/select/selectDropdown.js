@@ -22,7 +22,7 @@ export function SelectDropdown({
   testId,
   handleChange,
   wrapperClassName,
-  className="tw-w-36",
+  className = "tw-w-36",
   value,
   layout = "col",
 }) {
@@ -36,9 +36,15 @@ export function SelectDropdown({
       )}
     >
       {title && <div>{title}</div>}
-      <Select defaultValue={0} value={value} onChange={handleChange} className={className}>
+      <Select
+        defaultValue={0}
+        value={value}
+        onChange={handleChange}
+        className={className}
+        title={uniqueItems[value].name}
+      >
         {uniqueItems.map((item, index) => (
-          <Option key={item.key} value={index}>
+          <Option key={item.key} value={index} title={item.name}>
             {item.icon} {item.name}
           </Option>
         ))}
