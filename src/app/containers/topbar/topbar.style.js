@@ -93,7 +93,7 @@ const TopbarWrapper = styled.div`
               text-transform: none;
             }
           }
-          span {
+          .topBarLabel {
             font-size: 16px;
             line-height: 19px;
             @media only screen and (min-width: 768px) {
