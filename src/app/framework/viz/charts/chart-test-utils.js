@@ -1,6 +1,6 @@
 import React from "react";
 import {render, waitFor} from "@testing-library/react";
-import {AppProviders, getAppProviders, getContextProviders, getMockContextProviders} from "../../../../test/providers";
+import {AppProviders, getAppProviders, getContextProviders, getMockContextProviders, AppRouterProviders} from "../../../../test/providers";
 import * as tooltipUtil from "./tooltip";
 import {TestDataContext} from "./TestDataContext";
 
@@ -47,7 +47,7 @@ export function renderWithProviders(component, ...rest) {
   function getProviders() {
     if (rest.length === 0) {
       // when (component), render with intl provider only.
-      return AppProviders;
+      return AppRouterProviders;
     }
 
     if (rest.length === 1) {

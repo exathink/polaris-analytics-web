@@ -4,9 +4,6 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/vi
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
-import styles from "./settingWidgets.module.css";
-import classNames from "classnames";
-import dashboardItemStyles from "../../../../framework/viz/dashboard/dashboardItem.module.css";
 import {TeamDashboard} from "../../../teams/teamDashboard";
 
 const componentMap = {
@@ -31,7 +28,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
               <DashboardWidget
                 w={1}
                 name="flow-metrics-setting-widget"
-                className={dashboardItemStyles.dashboardItem}
+                className="tw-bg-white"
                 render={({view}) => {
                   return (
                     <ProjectResponseTimeSLASettingsWidget
@@ -62,7 +59,7 @@ export function MeasurementSettingsDashboard({dimension}) {
   const Component = componentMap[dimension];
   return (
     <Component
-      render={({[dimension]: {key, settingsWithDefaults}, context}) => {
+      render={({[dimension]: {key, name, settingsWithDefaults}, context}) => {
         const {
           includeSubTasksFlowMetrics,
           includeSubTasksWipInspector,
@@ -71,17 +68,18 @@ export function MeasurementSettingsDashboard({dimension}) {
           trendsAnalysisPeriod,
         } = settingsWithDefaults;
         return (
-          <Dashboard gridLayout={true} className={styles.measurementSettingsDashboard}>
+          <Dashboard gridLayout={true} className="tw-grid tw-grid-cols-2 tw-gap-1">
             <DashboardRow>
               <DashboardWidget
                 w={1}
                 name="analysis-periods-widget"
-                className={classNames(dashboardItemStyles.dashboardItem, styles.analysisPeriodsWidget)}
+                className="tw-bg-white tw-p-4"
                 render={({view}) => {
                   return (
                     <ProjectAnalysisPeriodsWidget
                       instanceKey={key}
                       dimension={dimension}
+                      name={name}
                       wipAnalysisPeriod={wipAnalysisPeriod}
                       flowAnalysisPeriod={flowAnalysisPeriod}
                       trendsAnalysisPeriod={trendsAnalysisPeriod}
@@ -93,7 +91,7 @@ export function MeasurementSettingsDashboard({dimension}) {
               <DashboardWidget
                 w={1}
                 name="measurement-settings-widget"
-                className={classNames(dashboardItemStyles.dashboardItem, styles.settingsWidget)}
+                className="tw-bg-white tw-p-4"
                 render={({view}) => {
                   return (
                     <MeasurementSettingsWidget

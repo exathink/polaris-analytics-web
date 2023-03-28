@@ -180,7 +180,7 @@ export default withViewerContext(({viewerContext}) => {
               title={""}
               className={styles.configTab}
               controls={[
-                () => <ConfigSelector dimension={"project"} configTab={configTab} setConfigTab={setConfigTab} />,
+                () => <ConfigSelector dimension={"project"} configTab={configTab} setConfigTab={setConfigTab} settingsName={"Value Stream Settings"}/>,
               ]}
             >
               {configTab === CONFIG_TABS.VALUE_STREAM ? (

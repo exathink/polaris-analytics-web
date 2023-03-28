@@ -6,7 +6,7 @@ export const CONFIG_TABS = {
   MEASUREMENT_SETTINGS: "measurement-settings",
 };
 
-export const ConfigSelector = ({dimension, configTab, setConfigTab}) => {
+export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName="Measurement Settings"}) => {
   const valueStreamGrouping =
     dimension === "project"
       ? [
@@ -22,7 +22,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab}) => {
 
     {
       key: CONFIG_TABS.MEASUREMENT_SETTINGS,
-      display: "Measurement Settings",
+      display: settingsName,
     },
     {
       key: CONFIG_TABS.RESPONSE_TIME_SLA,
