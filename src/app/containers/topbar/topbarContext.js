@@ -29,10 +29,9 @@ export default withNavigationContext(({context}) => {
   const Comp = context.context.ContextControl;
   return (
     <div className="topBarContext" data-testid="topBarContext">
-      <i className={context.icon()} style={contextStyle}/>
-      {
-        element
-      }
+      <i className={context.icon()} style={contextStyle} />
+      <span className="topBarLabel">{element}</span>
+
       {Comp && <Comp context={context} />}
     </div>
   );

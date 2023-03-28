@@ -26,7 +26,7 @@ export const ConfigSelector = (
         },
         {
           key: CONFIG_TABS.MEASUREMENT_SETTINGS,
-          display: 'Measurement Settings'
+          display: 'Value Stream Settings'
         },
       ]
     }

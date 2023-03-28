@@ -8,6 +8,7 @@ export const actionTypes = {
   UPDATE_DEFAULTS: "UPDATE_DEFAULTS",
   CLOSE_SUCCESS_MODAL: "CLOSE_SUCCESS_MODAL",
   CLOSE_ALERT_MODAL: "CLOSE_ALERT_MODAL",
+  UPDATE_NAME: "UPDATE_NAME",
 };
 
 export const mode = {
@@ -15,5 +16,6 @@ export const mode = {
   EDITING: "EDITING",
   SUCCESS: "SUCCESS",
   ERROR: "ERROR",
+  DISABLED: "DISABLED",
   ALERT: "ALERT"
 };

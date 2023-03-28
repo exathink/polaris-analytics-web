@@ -15,7 +15,8 @@ export default withViewerContext(({viewerContext}) => {
         h={"100%"}
         title={""}
         className={styles.configTab}
-        controls={[() => <ConfigSelector dimension={"team"} configTab={configTab} setConfigTab={setConfigTab} />]}
+        controls={[() => <ConfigSelector dimension={"team"} configTab={configTab} setConfigTab={setConfigTab} settingsName={"Team Settings"}/>]}
+        Team
       >
         {configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
           <ResponseTimeSLASettingsDashboard dimension={"team"} />
