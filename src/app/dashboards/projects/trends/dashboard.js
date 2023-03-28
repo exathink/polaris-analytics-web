@@ -40,29 +40,30 @@ function TrendsDashboard({
         h={"50%"}
         title={"Investments"}
         controls={[
-
           () => (
             <div style={{minWidth: "500px"}}>
               <DaysRangeSlider initialDays={daysRange} setDaysRange={setDaysRange} range={SIX_MONTHS} />
             </div>
           ),
-          (view) => (
-            <div style={{minWidth: "150px", marginLeft: "60px", backgroundColor: '#f5f5f5' }}>
-              <ProjectTraceabilityTrendsWidget
-              instanceKey={key}
-              measurementWindow={daysRange}
-              days={daysRange}
-              samplingFrequency={daysRange}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              asStatistic={{title: "Traceability"}}
-              primaryStatOnly={true}
-              target={0.9}
-            />
-            </div>
-          ),
+          workItemSelectors.length === 0
+            ? (view) => (
+                <div style={{minWidth: "150px", marginLeft: "60px", backgroundColor: "#f5f5f5"}}>
+                  <ProjectTraceabilityTrendsWidget
+                    instanceKey={key}
+                    measurementWindow={daysRange}
+                    days={daysRange}
+                    samplingFrequency={daysRange}
+                    context={context}
+                    view={view}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                    asStatistic={{title: "Traceability"}}
+                    primaryStatOnly={true}
+                    target={0.9}
+                  />
+                </div>
+              )
+            : () => null,
         ]}
       >
         <DashboardWidget
@@ -112,13 +113,8 @@ function TrendsDashboard({
           )}
           showDetail={true}
         />
-
       </DashboardRow>
-      <DashboardRow
-        h="38%"
-        title={`Flow Metrics`}
-
-      >
+      <DashboardRow h="38%" title={`Flow Metrics`}>
         <DashboardWidget
           w={1 / 2}
           name="cycle-time"
@@ -140,7 +136,7 @@ function TrendsDashboard({
               view={view}
               showAnnotations={true}
               latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime", 'effort']}
+              defaultSeries={["leadTime", "cycleTime", "effort"]}
               includeSubTasks={includeSubTasksFlowMetrics}
             />
           )}
@@ -171,9 +167,6 @@ function TrendsDashboard({
           showDetail={true}
         />
       </DashboardRow>
-
-
-
     </Dashboard>
   );
 }
