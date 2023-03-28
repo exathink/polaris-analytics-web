@@ -131,6 +131,7 @@ export function WorkItemStateTypeMapView({
   function selectDropdown() {
     return workItemSources.length > 1 ? (
       <div>
+        <span className={"tw-text-base"}>Work Stream: </span>
         <Select
           defaultValue={0}
           style={{ width: 200 }}
