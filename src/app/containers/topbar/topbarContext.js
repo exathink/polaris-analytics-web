@@ -26,7 +26,13 @@ export default withNavigationContext(({context}) => {
     ) : null;
   }
 
-  const Comp = context.context.ContextControl;
+  let Comp;
+  if (context?.selectedRoute?.topic?.ContextControl !== undefined) {
+    Comp = context.selectedRoute.topic.ContextControl;
+  } else {
+    Comp = context.context.ContextControl;
+  }
+
   return (
     <div className="topBarContext" data-testid="topBarContext">
       <i className={context.icon()} style={contextStyle} />
