@@ -3,6 +3,7 @@ import {Topics} from "../../../meta/topics";
 
 const topic = {
   ...Topics.quality,
+  ContextControl: false,
   routes: [
     {
       match: '',

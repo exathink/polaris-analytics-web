@@ -10,6 +10,7 @@ import { UI_NEW_CARD_DESIGN } from "../../../../config/featureFlags";
 
 const topic =  {
   ...Topics.repositories,
+  ContextControl: false,
   routes: [
     {
       requiredFeatures: [UI_NEW_CARD_DESIGN],
