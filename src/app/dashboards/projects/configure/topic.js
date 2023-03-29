@@ -5,6 +5,7 @@ import ConfigureDashboard, {ValueStreamMappingDashboard} from "./dashboard";
 
 const topic =  {
   ...Topics.configure,
+  ContextControl: false,
   routes: [
     {
       match: 'value-stream',
