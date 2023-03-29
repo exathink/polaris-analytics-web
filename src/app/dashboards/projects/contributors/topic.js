@@ -4,6 +4,7 @@ import {Topics} from "../../../meta/topics";
 
 const topic =  {
   ...Topics.contributors,
+  ContextControl: false,
   routes: [
     {
       match: '',
