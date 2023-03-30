@@ -51,7 +51,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
       <div className="tw-col-start-1 tw-row-start-1 tw-col-span-4 tw-flex tw-items-center tw-gap-2">
         <div className="tw-text-2xl tw-text-gray-300 tw-shrink-0 tw-mr-8">
           <div className="tw-flex tw-justify-start">
-            {specsOnly ? `Cost Analysis, ${AppTerms.specs.display}` : `Allocations, All ${AppTerms.cards.display}`}
+            {specsOnly ? `Allocations, ${AppTerms.specs.display}` : `Allocations, All ${AppTerms.cards.display}`}
           </div>
           <div className="tw-flex tw-justify-start tw-text-sm">Closed, Last {daysRange} Days</div>
         </div>
@@ -68,7 +68,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
 
         <div className="tw-shrink-0 tw-text-base tw-mr-12">
           <WorkItemScopeSelector
-            display={["Dev-Items", "All"]}
+            display={["Dev Items", "All"]}
             workItemScope={workItemScope}
             setWorkItemScope={setWorkItemScope}
           />
