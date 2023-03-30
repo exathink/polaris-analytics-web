@@ -28,6 +28,7 @@ import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
+import {SelectStateDropdown, defaultState, uniqueStates} from "../../../../components/select/selectStateDropdown";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -174,6 +175,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
   } = useSelect({
     uniqueItems: uniqueIssueTypes,
     defaultVal: defaultIssueType,
+  });
+
+  const {
+    selectedVal: {key: selectedState},
+    valueIndex: stateValueIndex,
+    handleChange: handleStateChange,
+  } = useSelect({
+    uniqueItems: uniqueStates,
+    defaultVal: defaultState,
   });
 
   const uniqueTeams = getAllUniqueTeams(
@@ -569,62 +579,68 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }
 
   return (
-<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
-      <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
-
-      <div className={styles.rightControls}>
-        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
-        
-        {ageLatencyFeatureFlag && <div className="">
-          <GroupingSelector
-            label="Show"
-            value={wipChartType}
-            onGroupingChanged={setWipChartType}
-            groupings={[
-              {
-                key: "queue",
-                display: "Queue Size",
-              },
-              {
-                key: "age",
-                display: "Age",
-              },
-              {
-                key: "motion",
-                display: "Motion",
-              },
-            ]}
+    <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
+      <div className={styles.topControls}>
+        <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
+        <div className={styles.filters}>
+          <SelectTeamDropdown
+            uniqueTeams={uniqueTeams}
+            valueIndex={teamValueIndex}
+            handleTeamChange={handleTeamChange}
+            className="tw-w-36"
           />
-        </div>}
-        
-        <div className="tw-w-20">
-        {(tableFilteredWorkItems.length < initWorkItems.length ||
-          chartFilteredWorkItems.length < initWorkItems.length ||
-          selectedQuadrant !== undefined) && (
-          <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
-            Clear Filters
-          </Button>
+          <SelectIssueTypeDropdown
+            valueIndex={issueTypeValueIndex}
+            handleIssueTypeChange={handleIssueTypeChange}
+            wrapperClassName="tw-ml-2"
+            className="tw-w-36"
+          />
+          <SelectStateDropdown
+            valueIndex={stateValueIndex}
+            handleIssueTypeChange={handleStateChange}
+            wrapperClassName="tw-ml-2"
+            className="tw-w-36"
+          />
+        </div>
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} className="tw-ml-auto"/>
+
+        {ageLatencyFeatureFlag && (
+          <div className="">
+            <GroupingSelector
+              label="Show"
+              value={wipChartType}
+              onGroupingChanged={setWipChartType}
+              groupings={[
+                {
+                  key: "queue",
+                  display: "Queue Size",
+                },
+                {
+                  key: "age",
+                  display: "Age",
+                },
+                {
+                  key: "motion",
+                  display: "Motion",
+                },
+              ]}
+            />
+          </div>
         )}
-      </div>
+
+        <div className="tw-w-20">
+          {(tableFilteredWorkItems.length < initWorkItems.length ||
+            chartFilteredWorkItems.length < initWorkItems.length ||
+            selectedQuadrant !== undefined) && (
+            <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
+              Clear Filters
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className={styles.engineering}>
-        {engineeringElement}
-      </div>
-      <div className={styles.issueTypeDropdown}>
-        <SelectTeamDropdown
-          uniqueTeams={uniqueTeams}
-          valueIndex={teamValueIndex}
-          handleTeamChange={handleTeamChange}
-          className="tw-w-36"
-        />
-        <SelectIssueTypeDropdown
-          valueIndex={issueTypeValueIndex}
-          handleIssueTypeChange={handleIssueTypeChange}
-          wrapperClassName="tw-ml-2"
-          className="tw-w-36"
-        />
-      </div>
+      <div className={styles.engineering}>{engineeringElement}</div>
+
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
           tableData={getWorkItemDurations(tableFilteredWorkItems)
@@ -655,7 +671,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 return _teams.includes(selectedTeam);
               }
             })
-            .filter(w => {
+            .filter((w) => {
               return (
                 chartState.chartFilter == null ||
                 chartState.chartClicked !== "queuesize" ||
