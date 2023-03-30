@@ -28,7 +28,8 @@ export function useQueryDimensionWorkBalanceTrends(
           $referenceString: String,
           ) {
       ${dimension}(
-            key: $key, 
+            key: $key,
+            tags: $tags,
             interfaces: [CapacityTrends, CycleMetricsTrends],
              capacityTrendsArgs: {
               before: $before,
