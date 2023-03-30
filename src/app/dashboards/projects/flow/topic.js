@@ -24,12 +24,6 @@ const topic = {
     },
     {
       requiredFeatures: ['ui.new-card-design'],
-      match: "pullRequests",
-      subnav: true,
-      topic: PullRequests,
-    },
-    {
-      requiredFeatures: ['ui.new-card-design'],
       match: "responseTime",
       subnav: true,
       topic: ResponseTime,

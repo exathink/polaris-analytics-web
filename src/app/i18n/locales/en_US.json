@@ -56,7 +56,7 @@
   "topics.valueMix": "Cost Analysis",
   "topics.contributors": "Teams",
   "topics.projects": "Value Streams",
-  "topics.pull_requests": "Code Flow Monitoring",
+  "topics.pull_requests": "Pull Requests Monitoring",
   "topics.first": "First",
   "topics.second": "Second",
   "topics.repositories": "Code",

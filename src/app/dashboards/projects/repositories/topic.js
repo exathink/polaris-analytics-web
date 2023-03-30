@@ -14,21 +14,9 @@ const topic =  {
   routes: [
     {
       requiredFeatures: [UI_NEW_CARD_DESIGN],
-      match: 'summary',
-      subnav: true,
-      topic: Repositories,
-    },
-    {
-      requiredFeatures: [UI_NEW_CARD_DESIGN],
       match: 'activity',
       subnav: true,
       topic: Activity,
-    },
-    {
-      requiredFeatures: [UI_NEW_CARD_DESIGN],
-      match: 'shadow-work',
-      subnav: true,
-      topic: Traceability,
     },
     {
       requiredFeatures: [UI_NEW_CARD_DESIGN],
@@ -36,14 +24,16 @@ const topic =  {
       subnav: true,
       topic: PullRequests,
     },
+
     {
       requiredFeatures: [UI_NEW_CARD_DESIGN],
-      match: '',
-      redirect: 'summary'
+      match: 'repositories',
+      subnav: true,
+      topic: Repositories,
     },
     {
       match: '',
-      component: React.lazy(() => import('./dashboard'))
+      redirect: 'activity'
     }
   ]
 };
