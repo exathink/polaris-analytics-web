@@ -36,7 +36,7 @@ function WipDashboard({
   context,
   viewerContext,
 }) {
-  const [workItemScope, setWorkItemScope] = useState("specs");
+  const [workItemScope, setWorkItemScope] = useState("all");
   const [wipChartType, setWipChartType] = useState("age");
   const specsOnly = workItemScope === "specs";
   const [selectedMetric, setSelectedMetric] = useState(metricsMapping.WIP_TOTAL);
