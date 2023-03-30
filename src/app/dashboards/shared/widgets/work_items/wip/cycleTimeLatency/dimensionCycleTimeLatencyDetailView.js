@@ -569,7 +569,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   }
 
   return (
-<div className={classNames(styles.cycleTimeLatencyDashboard, !ageLatencyFeatureFlag ? "tw-grid-rows-[4%_55%_90px_calc(42%-90px)]" : "tw-grid-rows-[4%_55%_65px_calc(42%-65px)]")}>
+<div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
       <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
 
       <div className={styles.rightControls}>
