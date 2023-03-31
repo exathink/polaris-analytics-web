@@ -2,13 +2,11 @@ import {SelectDropdown} from "./selectDropdown";
 
 export const defaultState = {key: "all", name: "All"};
 
-export const uniqueStates = [defaultState, {key: "one", name: "One"}]
-
-export function SelectStateDropdown({valueIndex, handleStateChange, className, wrapperClassName}) {
+export function SelectStateDropdown({uniqueItems, valueIndex, handleStateChange, className, wrapperClassName}) {
   return (
     <SelectDropdown
       title={"State"}
-      uniqueItems={uniqueStates}
+      uniqueItems={[defaultState, ...uniqueItems]}
       testId="state-dropdown"
       value={valueIndex}
       handleChange={handleStateChange}
