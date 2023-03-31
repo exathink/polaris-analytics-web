@@ -7,7 +7,13 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency, QueueSizeFilterWrapper} from "./cycleTimeLatencyUtils";
+import {
+  AgeFilterWrapper,
+  COL_WIDTH_BOUNDARIES,
+  getQuadrant,
+  getTooltipForAgeLatency,
+  QueueSizeFilterWrapper,
+} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {joinTeams} from "../../../../helpers/teamUtils";
@@ -28,7 +34,7 @@ import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
-import {SelectStateDropdown, defaultState, uniqueStates} from "../../../../components/select/selectStateDropdown";
+import {SelectStateDropdown, defaultState} from "../../../../components/select/selectStateDropdown";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -75,8 +81,6 @@ function useChartFilteredWorkItems(initWorkItems, tableFilteredWorkItems, applyF
 
   return [filteredWorkItems, setFilteredWorkItems];
 }
-
-
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -166,8 +170,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
     }
   }
 
-
-
   const {
     selectedVal: {key: selectedIssueType},
     valueIndex: issueTypeValueIndex,
@@ -175,15 +177,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
   } = useSelect({
     uniqueItems: uniqueIssueTypes,
     defaultVal: defaultIssueType,
-  });
-
-  const {
-    selectedVal: {key: selectedState},
-    valueIndex: stateValueIndex,
-    handleChange: handleStateChange,
-  } = useSelect({
-    uniqueItems: uniqueStates,
-    defaultVal: defaultState,
   });
 
   const uniqueTeams = getAllUniqueTeams(
@@ -201,59 +194,71 @@ export const DimensionCycleTimeLatencyDetailView = ({
     defaultVal: defaultTeam,
   });
 
-  const [chartState, updateChartState] = React.useReducer((data, partialData) => {
-    const nextState = {
+  const [chartState, updateChartState] = React.useReducer(
+    (data, partialData) => {
+      const nextState = {
         ...data,
-        ...partialData
-    }
+        ...partialData,
+      };
 
-    return nextState;
-  },{chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined});
-
-  const workItemsEngineering = React.useMemo(
-    () =>
-      getWorkItemDurations(chartFilteredWorkItems)
-        .filter((workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1)
-        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
-        .filter((w) => {
-          if (selectedTeam === "all") {
-            return true;
-          } else {
-            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
-            return _teams.includes(selectedTeam);
-          }
-        })
-        .filter(
-          (w) =>
-            chartState.chartFilter == null ||
-            chartState.chartClicked !== "queuesize" ||
-            chartState.selectedCategory !== "engineering" ||
-            chartState.chartFilter === w.state
-        ),
-    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
+      return nextState;
+    },
+    {chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined}
   );
 
-  const workItemsDelivery = React.useMemo(
-    () =>
-      getWorkItemDurations(chartFilteredWorkItems)
-        .filter((workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
-        .filter((w) => {
-          if (selectedTeam === "all") {
-            return true;
-          } else {
-            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
-            return _teams.includes(selectedTeam);
-          }
-        })
-        .filter(
-          (w) =>
-            chartState.chartFilter == null ||
-            chartState.chartClicked !== "queuesize" ||
-            chartState.selectedCategory !== "delivery" ||
-            chartState.chartFilter === w.state
-        ),
-    [chartFilteredWorkItems, chartState, selectedIssueType, selectedTeam]
+  let filterFns = {
+    issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
+    team: (w) => {
+      const _teams = w.teamNodeRefs.map((t) => t.teamKey);
+      return selectedTeam === "all" || _teams.includes(selectedTeam);
+    },
+    quadrant: (w) =>
+      selectedQuadrant === undefined ||
+      selectedQuadrant === getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+    queuesize: (w) => {
+      return (
+        chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
+      );
+    },
+    state: (w) => selectedState === "all" || w.state === selectedState,
+  };
+
+  const tableData = getWorkItemDurations(tableFilteredWorkItems)
+    .filter(
+      (workItem) =>
+        chartState.selectedCategory === undefined ||
+        (chartState.selectedCategory === "engineering"
+          ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
+          : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
+    )
+    .filter(filterFns.quadrant)
+    .filter(filterFns.team)
+    .filter(filterFns.issueType)
+    .filter(filterFns.queuesize);
+
+  const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({key: x, name: x}));
+  const {
+    selectedVal: {key: selectedState},
+    valueIndex: stateValueIndex,
+    handleChange: handleStateChange,
+  } = useSelect({
+    uniqueItems: [defaultState, ...states],
+    defaultVal: defaultState,
+  });
+
+  const coreChartWorkItems = getWorkItemDurations(chartFilteredWorkItems)
+    .filter(filterFns.quadrant)
+    .filter(filterFns.issueType)
+    .filter(filterFns.team)
+    .filter(filterFns.queuesize)
+    .filter(filterFns.state)
+
+  const workItemsEngineering = coreChartWorkItems.filter(
+    (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
+  );
+
+  const workItemsDelivery = coreChartWorkItems.filter(
+    (workItem) => deliveryStateTypes.indexOf(workItem.stateType) !== -1
   );
 
   const seriesDataEngineering = useCycleTimeLatencyHook(workItemsEngineering);
@@ -270,23 +275,23 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setAppliedFilters(EmptyObj);
     setSelectedQuadrant(undefined);
 
-    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined})
-    
+    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined});
+
     // reset chart components state
     resetComponentState();
   }
 
   function handleClearClick() {
-    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined})
+    updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined});
 
     setSelectedQuadrant(undefined);
 
-    setTableFilteredWorkItems(initWorkItems)
+    setTableFilteredWorkItems(initWorkItems);
   }
 
   React.useEffect(() => {
-    if (chartState.chartClicked==="histogram" && chartState.chartFilter && chartState.chartFilter.length > 0) {
-      setTableFilteredWorkItems(chartState.chartFilter)
+    if (chartState.chartClicked === "histogram" && chartState.chartFilter && chartState.chartFilter.length > 0) {
+      setTableFilteredWorkItems(chartState.chartFilter);
     }
   }, [chartState, setTableFilteredWorkItems]);
 
@@ -362,9 +367,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stageName={"Shipping"}
       specsOnly={specsOnly}
       workItems={
-        chartState.selectedCategory === undefined || chartState.selectedCategory === "delivery"
-          ? workItemsDelivery
-          : []
+        chartState.selectedCategory === undefined || chartState.selectedCategory === "delivery" ? workItemsDelivery : []
       }
       stateTypes={deliveryStateTypes}
       groupByState={groupByState}
@@ -376,20 +379,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
-  const quadrantSummaryWorkItems = React.useMemo(
-    () =>
-      getWorkItemDurations(chartFilteredWorkItems)
-        .filter(w => selectedIssueType === "all" || w.workItemType === selectedIssueType)
-        .filter((w) => {
-          if (selectedTeam === "all") {
-            return true;
-          } else {
-            const _teams = w.teamNodeRefs.map((t) => t.teamKey);
-            return _teams.includes(selectedTeam);
-          }
-        }),
-    [chartFilteredWorkItems, selectedIssueType, selectedTeam]
-  );
+  const quadrantSummaryWorkItems = getWorkItemDurations(chartFilteredWorkItems)
+    .filter(filterFns.issueType)
+    .filter(filterFns.team)
+    .filter(filterFns.state);
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
@@ -446,15 +439,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
-  if(ageLatencyFeatureFlag) {
+  if (ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
     let latencyCodingChartElement = React.cloneElement(codingChartElement, {workItems: chartState.chartFilter});
     let latencyDeliveryChartElement = React.cloneElement(deliveryChartElement, {workItems: chartState.chartFilter});
 
-    const ageFilterElement = (
-        <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />
-      );
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />;
 
     // wipChartType 'queue', 'age', 'motion'
     if (wipChartType === "queue") {
@@ -494,19 +485,35 @@ export const DimensionCycleTimeLatencyDetailView = ({
       // if queuesize chart is clicked, then selectedCategory must be present
       if (chartState.chartClicked === "queuesize") {
         if (chartState.selectedCategory === "engineering") {
-          codingChartElement = <div className="tw-relative tw-h-full">{codingHistogramElement} {queueSizeFilterElement}</div>;
+          codingChartElement = (
+            <div className="tw-relative tw-h-full">
+              {codingHistogramElement} {queueSizeFilterElement}
+            </div>
+          );
         }
         if (chartState.selectedCategory === "delivery") {
-          deliveryChartElement = <div className="tw-relative tw-h-full">{deliveryHistogramElement} {queueSizeFilterElement}</div>;
+          deliveryChartElement = (
+            <div className="tw-relative tw-h-full">
+              {deliveryHistogramElement} {queueSizeFilterElement}
+            </div>
+          );
         }
       }
       // if histogram is clicked, then selectedCategory must be present
       if (chartState.chartClicked === "histogram") {
         if (chartState.selectedCategory === "engineering") {
-          codingChartElement = <div className="tw-relative tw-h-full">{latencyCodingChartElement} {ageFilterElement}</div>;
+          codingChartElement = (
+            <div className="tw-relative tw-h-full">
+              {latencyCodingChartElement} {ageFilterElement}
+            </div>
+          );
         }
         if (chartState.selectedCategory === "delivery") {
-          deliveryChartElement = <div className="tw-relative tw-h-full">{latencyDeliveryChartElement} {ageFilterElement}</div>;
+          deliveryChartElement = (
+            <div className="tw-relative tw-h-full">
+              {latencyDeliveryChartElement} {ageFilterElement}
+            </div>
+          );
         }
       }
     }
@@ -546,12 +553,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
       codingQuadrantSummaryElement = null;
       deliveryQuadrantSummaryElement = null;
     }
-
   }
 
   let engineeringElement = (
     <div
-      className={classNames("tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2", !ageLatencyFeatureFlag ? "tw-grid-rows-[75%,25%]": "tw-grid-rows-[100%]")}
+      className={classNames(
+        "tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2",
+        !ageLatencyFeatureFlag ? "tw-grid-rows-[75%,25%]" : "tw-grid-rows-[100%]"
+      )}
       key={resetComponentStateKey}
       data-testid="wip-latency-chart-panels"
     >
@@ -596,13 +605,18 @@ export const DimensionCycleTimeLatencyDetailView = ({
             className="tw-w-36"
           />
           <SelectStateDropdown
+            uniqueItems={states}
             valueIndex={stateValueIndex}
-            handleIssueTypeChange={handleStateChange}
+            handleStateChange={handleStateChange}
             wrapperClassName="tw-ml-2"
             className="tw-w-36"
           />
         </div>
-        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} className="tw-ml-auto"/>
+        <WorkItemScopeSelector
+          workItemScope={workItemScope}
+          setWorkItemScope={setWorkItemScope}
+          className="tw-ml-auto"
+        />
 
         {ageLatencyFeatureFlag && (
           <div className="">
@@ -643,41 +657,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
-          tableData={getWorkItemDurations(tableFilteredWorkItems)
-            .filter(
-              (workItem) =>
-                chartState.selectedCategory === undefined ||
-                (chartState.selectedCategory === "engineering"
-                  ? engineeringStateTypes.indexOf(workItem.stateType) !== -1
-                  : deliveryStateTypes.indexOf(workItem.stateType) !== -1)
-            )
-            .filter(
-              (x) =>
-                selectedQuadrant === undefined ||
-                selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-            )
-            .filter((w) => {
-              if (selectedIssueType === "all") {
-                return true;
-              } else {
-                return w.workItemType === selectedIssueType;
-              }
-            })
-            .filter((w) => {
-              if (selectedTeam === "all") {
-                return true;
-              } else {
-                const _teams = w.teamNodeRefs.map((t) => t.teamKey);
-                return _teams.includes(selectedTeam);
-              }
-            })
-            .filter((w) => {
-              return (
-                chartState.chartFilter == null ||
-                chartState.chartClicked !== "queuesize" ||
-                (chartState.chartClicked === "queuesize" && chartState.chartFilter === w.state)
-              );
-            })}
+          tableData={tableData.filter(filterFns.state)}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
