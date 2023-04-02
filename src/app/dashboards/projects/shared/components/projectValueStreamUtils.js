@@ -38,6 +38,13 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
     firstRender = false
   }, []);
 
+  // clear url on unmount of this component
+  React.useEffect(() => {
+    return () => {
+      history.push({search: ""});
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }
 
 export function ValueStreamsDropdown() {
