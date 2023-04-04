@@ -66,6 +66,7 @@ export function SelectDropdown({
           handleChange(option);
         }}
         title={selectedValue?.label}
+        getPopupContainer={(node) => node.parentNode}
       >
         {uniqueItems.map((item) => (
           <Option key={item.value} {...item} title={item.label}>
@@ -133,12 +134,13 @@ export function SelectDropdownMultiple({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValues}
-        style={{width: 200}}
+        style={{minWidth: 200}}
         className={className}
         onChange={(_values, options) => {
           handleChange(options);
         }}
         mode="multiple"
+        getPopupContainer={(node) => node.parentNode}
       >
         {uniqueItems.map((item) => (
           <Option key={item.value} {...item}>
