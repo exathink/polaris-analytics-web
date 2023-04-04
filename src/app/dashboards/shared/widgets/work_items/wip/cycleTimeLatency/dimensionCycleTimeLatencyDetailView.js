@@ -34,7 +34,7 @@ import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
-import {SelectStateDropdown, defaultState} from "../../../../components/select/selectStateDropdown";
+import {SelectDropdownMultiple, useSelectMultiple} from "../../../../components/select/selectUtils";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -220,7 +220,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
       );
     },
-    state: (w) => selectedState === "all" || w.state === selectedState,
+    state: (w) => selectedValues.length === 0 || selectedValues.map(x => x.value).includes(w.state),
   };
 
   const tableData = getWorkItemDurations(tableFilteredWorkItems)
@@ -236,22 +236,17 @@ export const DimensionCycleTimeLatencyDetailView = ({
     .filter(filterFns.issueType)
     .filter(filterFns.queuesize);
 
-  const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({key: x, name: x}));
-  const {
-    selectedVal: {key: selectedState},
-    valueIndex: stateValueIndex,
-    handleChange: handleStateChange,
-  } = useSelect({
-    uniqueItems: [defaultState, ...states],
-    defaultVal: defaultState,
-  });
+  const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({value: x, label: x}));
+
+
+  const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple();
 
   const coreChartWorkItems = getWorkItemDurations(chartFilteredWorkItems)
     .filter(filterFns.quadrant)
     .filter(filterFns.issueType)
     .filter(filterFns.team)
     .filter(filterFns.queuesize)
-    .filter(filterFns.state)
+    .filter(filterFns.state);
 
   const workItemsEngineering = coreChartWorkItems.filter(
     (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
@@ -604,12 +599,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
             wrapperClassName="tw-ml-2"
             className="tw-w-36"
           />
-          <SelectStateDropdown
+          <SelectDropdownMultiple
+            title="State"
+            selectedValues={selectedValues}
+            defaultValueIndexes={[0]}
             uniqueItems={states}
-            valueIndex={stateValueIndex}
-            handleStateChange={handleStateChange}
-            wrapperClassName="tw-ml-2"
-            className="tw-w-36"
+            handleChange={handleStateMultipleChange}
           />
         </div>
         <WorkItemScopeSelector
