@@ -238,8 +238,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({value: x, label: x}));
 
-
-  const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple();
+  const defaultValueIndex = 0;
+  const defaultValue = states[defaultValueIndex];
+  const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([defaultValue]);
 
   const coreChartWorkItems = getWorkItemDurations(chartFilteredWorkItems)
     .filter(filterFns.quadrant)
@@ -602,7 +603,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <SelectDropdownMultiple
             title="State"
             selectedValues={selectedValues}
-            defaultValueIndexes={[0]}
             uniqueItems={states}
             handleChange={handleStateMultipleChange}
           />
