@@ -16,7 +16,7 @@ export function useSelect(defaultValue) {
  *
  * @typedef {Object} Props
  * @property {DefaultOptionType[]} uniqueItems - The unique items.
- * @property {DefaultOptionType} [selectedValue] - control value prop
+ * @property {DefaultOptionType} selectedValue - control value prop
  * @property {(value?: DefaultOptionType) => void} handleChange - The change handler.
  * @property {'row' | 'col'} [layout] - row or column layout
  * @property {string} [wrapperClassName] - class for parent wrapper div
