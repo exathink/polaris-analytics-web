@@ -3,8 +3,8 @@ import classNames from "classnames";
 import React from "react";
 const {Option} = Select;
 
-export function useSelect() {
-  const [selectedValue, setSelectedValue] = React.useState();
+export function useSelect(defaultValue) {
+  const [selectedValue, setSelectedValue] = React.useState(defaultValue);
   function handleChange(item) {
     setSelectedValue(item);
   }
@@ -16,14 +16,13 @@ export function useSelect() {
  *
  * @typedef {Object} Props
  * @property {DefaultOptionType[]} uniqueItems - The unique items.
- * @property {(value?: DefaultOptionType) => void} handleChange - The change handler.
- * @property {number} [defaultValueIndex] - The default value index.
  * @property {DefaultOptionType} [selectedValue] - control value prop
- * @property {string} testId - testId for select dropdown
+ * @property {(value?: DefaultOptionType) => void} handleChange - The change handler.
  * @property {'row' | 'col'} [layout] - row or column layout
  * @property {string} [wrapperClassName] - class for parent wrapper div
- * @property {string} [title] - tooltip for select
  * @property {string} [className] - class for select
+ * @property {string} [title] - tooltip for select
+ * @property {string} [testId] - testId for select dropdown
  */
 
 /**
@@ -42,14 +41,13 @@ export function useSelect() {
  */
 export function SelectDropdown({
   uniqueItems,
-  handleChange,
-  defaultValueIndex = 0,
   selectedValue,
-  testId,
+  handleChange,
   layout = "col",
   wrapperClassName,
-  title,
   className,
+  testId,
+  title,
 }) {
   const selectClassName = classNames(
     "tw-flex",
@@ -61,16 +59,16 @@ export function SelectDropdown({
     <div data-testid={testId} className={selectClassName}>
       {title && <div>{title}</div>}
       <Select
-        defaultValue={uniqueItems[defaultValueIndex].value}
+        defaultValue={selectedValue}
         style={{width: 200}}
         className={className}
         onChange={(_value, option) => {
           handleChange(option);
         }}
-        title={selectedValue?.label ?? uniqueItems[defaultValueIndex].label}
+        title={selectedValue?.label}
       >
         {uniqueItems.map((item) => (
-          <Option key={item.value} value={item.value} title={item.label}>
+          <Option key={item.value} {...item} title={item.label}>
             {item.label}
           </Option>
         ))}
