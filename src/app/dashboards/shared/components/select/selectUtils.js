@@ -79,8 +79,8 @@ export function SelectDropdown({
   );
 }
 
-export function useSelectMultiple() {
-  const [selectedValues, setSelectedValues] = React.useState([]);
+export function useSelectMultiple(defaultValues = []) {
+  const [selectedValues, setSelectedValues] = React.useState(defaultValues);
   function handleChange(values) {
     setSelectedValues(values);
   }
@@ -92,37 +92,37 @@ export function useSelectMultiple() {
  *
  * @typedef {Object} PropsMultiple
  * @property {DefaultOptionType[]} uniqueItems - The unique items.
+ * @property {DefaultOptionType[]} selectedValues - control value prop
  * @property {(values?: [DefaultOptionType]) => void} handleChange - The change handler.
- * @property {number[]} [defaultValueIndexes] - default value indexes
- * @property {string} testId - testId for select dropdown
  * @property {'row' | 'col'} [layout] - row or column layout
  * @property {string} [wrapperClassName] - class for parent wrapper div
- * @property {string} [title] - tooltip for select
  * @property {string} [className] - class for select
+ * @property {string} [title] - tooltip for select
+ * @property {string} testId - testId for select dropdown
  */
 
 /**
  * A Custom Select component
  * @param {PropsMultiple} {
  *   uniqueItems,
+ *   selectedValues,
  *   handleChange,
- *   defaultValueIndexes
- *   testId,
  *   layout="col",
  *   wrapperClassName,
- *   title,
  *   className,
+ *   title,
+ *   testId,
  * }
  */
 export function SelectDropdownMultiple({
   uniqueItems,
+  selectedValues,
   handleChange,
-  defaultValueIndexes,
-  testId,
   layout = "col",
   wrapperClassName,
+  className,
   title,
-  className
+  testId,
 }) {
   const selectClassName = classNames(
     "tw-flex",
@@ -134,7 +134,7 @@ export function SelectDropdownMultiple({
     <div data-testid={testId} className={selectClassName}>
       {title && <div>{title}</div>}
       <Select
-        defaultValue={defaultValueIndexes.map(i => uniqueItems[i].value)}
+        defaultValue={selectedValues}
         style={{width: 200}}
         className={className}
         onChange={(_values, options) => {
@@ -143,7 +143,7 @@ export function SelectDropdownMultiple({
         mode="multiple"
       >
         {uniqueItems.map((item) => (
-          <Option key={item.value} value={item.value}>
+          <Option key={item.value} {...item}>
             {item.label}
           </Option>
         ))}
