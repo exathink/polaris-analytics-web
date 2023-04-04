@@ -605,6 +605,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedValues={selectedValues}
             uniqueItems={states}
             handleChange={handleStateMultipleChange}
+            wrapperClassName="tw-ml-2"
           />
         </div>
         <WorkItemScopeSelector
