@@ -143,6 +143,7 @@ export function SelectDropdownMultiple({
         }}
         mode="multiple"
         getPopupContainer={(node) => node.parentNode}
+        showArrow
       >
         {uniqueItems.map((item) => (
           <Option key={item.value} {...item}>
