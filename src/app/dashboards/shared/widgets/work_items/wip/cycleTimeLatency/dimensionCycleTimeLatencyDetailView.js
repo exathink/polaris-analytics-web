@@ -206,6 +206,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     {chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined}
   );
 
+  const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([]);
+  
   let filterFns = {
     issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
     team: (w) => {
@@ -238,7 +240,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({value: x, label: x}));
 
-  const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([]);
+
 
   const coreChartWorkItems = getWorkItemDurations(chartFilteredWorkItems)
     .filter(filterFns.quadrant)
