@@ -63,7 +63,7 @@ export function SelectDropdown({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValue}
-        style={{width: 200}}
+        style={{minWidth: 144}}
         className={className}
         onChange={(_value, option) => {
           handleChange(option);
@@ -136,7 +136,7 @@ export function SelectDropdownMultiple({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValues}
-        style={{minWidth: 200}}
+        style={{minWidth: 144}}
         className={className}
         onChange={(_values, options) => {
           handleChange(options);
@@ -154,4 +154,15 @@ export function SelectDropdownMultiple({
   );
 }
 
+/**
+ * @typedef {Object} DefaultOption
+ * @property {'All'} label - The label of the object.
+ * @property {'all'} value - The value of the object.
+ */
+
+/**
+ * @type {DefaultOption}
+ * @constant
+ * @default
+ */
 export const defaultOptionType = { label: "All", value: "all" };
