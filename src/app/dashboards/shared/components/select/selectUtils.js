@@ -65,7 +65,6 @@ export function SelectDropdown({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValue}
-        style={{minWidth: 144}}
         className={className}
         onChange={(_value, option) => {
           handleChange(option);
