@@ -1,4 +1,4 @@
-import {Select} from "antd";
+import {Select, Tooltip, Tag} from "antd";
 import classNames from "classnames";
 import React from "react";
 const {Option} = Select;
@@ -131,6 +131,32 @@ export function SelectDropdownMultiple({
     wrapperClassName
   );
 
+  const tagRender = ({label, value, closable, onClose}) => {
+    const index = selectedValues.findIndex((item) => item.value === value);
+    if (index < 1) {
+      return (
+        <Tag closable={closable} onClose={onClose} key={value}>
+          {label}
+        </Tag>
+      );
+    }
+    if (index === 1) {
+      const remainingCount = selectedValues.length - 1;
+      const remainingLabels = selectedValues
+        .slice(1)
+        .map((item) => item.label)
+        .join(", ");
+
+      return (
+        <Tooltip title={remainingLabels} key="remaining-tooltip">
+          <span className="tw-ml-2 tw-cursor-pointer">+{remainingCount} more</span>
+        </Tooltip>
+      );
+    }
+    return null;
+  };
+
+
   return (
     <div data-testid={testId} className={selectClassName}>
       {title && <div>{title}</div>}
@@ -144,6 +170,7 @@ export function SelectDropdownMultiple({
         mode="multiple"
         getPopupContainer={(node) => node.parentNode}
         showArrow
+        tagRender={tagRender}
       >
         {uniqueItems.map((item) => (
           <Option key={item.value} {...item}>
