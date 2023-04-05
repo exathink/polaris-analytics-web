@@ -211,6 +211,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let filterFns = {
     issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
+    workStream: (w) => workstreamSelectedValue.value === "all" || w.workItemsSourceName === workstreamSelectedValue.value,
     team: (w) => {
       const _teams = w.teamNodeRefs.map((t) => t.teamKey);
       return selectedTeam === "all" || _teams.includes(selectedTeam);
@@ -237,7 +238,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     .filter(filterFns.quadrant)
     .filter(filterFns.team)
     .filter(filterFns.issueType)
-    .filter(filterFns.queuesize);
+    .filter(filterFns.queuesize)
+    .filter(filterFns.workStream);
 
   const states = [...new Set(tableData.map((x) => x.state))].map((x) => ({value: x, label: x}));
 
@@ -248,7 +250,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     .filter(filterFns.issueType)
     .filter(filterFns.team)
     .filter(filterFns.queuesize)
-    .filter(filterFns.state);
+    .filter(filterFns.state)
+    .filter(filterFns.workStream);
 
   const workItemsEngineering = coreChartWorkItems.filter(
     (workItem) => engineeringStateTypes.indexOf(workItem.stateType) !== -1
@@ -379,7 +382,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const quadrantSummaryWorkItems = getWorkItemDurations(chartFilteredWorkItems)
     .filter(filterFns.issueType)
     .filter(filterFns.team)
-    .filter(filterFns.state);
+    .filter(filterFns.state)
+    .filter(filterFns.workStream);
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
