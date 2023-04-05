@@ -1,3 +1,4 @@
+import {Tag} from "antd";
 import classNames from "classnames";
 
 export function LabelValue({label, value, uom, className, labelClassName, valueClassName}) {
@@ -12,4 +13,13 @@ export function LabelValue({label, value, uom, className, labelClassName, valueC
 
 export function Label({label, className}) {
   return <div className={classNames("tw-text-lg tw-tracking-wide tw-text-gray-300", className)}>{label}</div>;
+}
+
+const TAG_COLOR = "#108ee9";
+export function CustomTag({children}) {
+  return (
+    <Tag color={TAG_COLOR}>
+      {children}
+    </Tag>
+  );
 }
