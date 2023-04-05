@@ -1,6 +1,8 @@
 import {Select, Tooltip, Tag} from "antd";
 import classNames from "classnames";
 import React from "react";
+import {TOOLTIP_COLOR} from "../../../../helpers/utility";
+import {CustomTag} from "../../../../helpers/components";
 const {Option} = Select;
 
 export function useSelect(defaultValue) {
@@ -145,10 +147,18 @@ export function SelectDropdownMultiple({
       const remainingLabels = selectedValues
         .slice(1)
         .map((item) => item.label)
-        .join(", ");
 
+      const remainingElements = (
+        <div className="tw-p-1">
+          {remainingLabels.map((x) => (
+            <CustomTag key={x}>{x}</CustomTag>
+          ))}
+        </div>
+      );
+        
+      
       return (
-        <Tooltip title={remainingLabels} key="remaining-tooltip">
+        <Tooltip title={remainingElements} key="remaining-tooltip" color={TOOLTIP_COLOR}>
           <span className="tw-ml-2 tw-cursor-pointer">+{remainingCount} more</span>
         </Tooltip>
       );
