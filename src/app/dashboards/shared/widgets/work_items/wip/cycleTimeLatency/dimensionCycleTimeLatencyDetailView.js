@@ -603,20 +603,20 @@ export const DimensionCycleTimeLatencyDetailView = ({
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
             handleChange={handleWorkstreamChange}
             selectedValue={workstreamSelectedValue}
-            className="tw-w-36"
+            className="tw-w-28"
            />
           <SelectTeamDropdown
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}
             handleTeamChange={handleTeamChange}
-            className="tw-w-36"
+            className="tw-w-28"
             wrapperClassName="tw-ml-2"
           />
           <SelectIssueTypeDropdown
             valueIndex={issueTypeValueIndex}
             handleIssueTypeChange={handleIssueTypeChange}
             wrapperClassName="tw-ml-2"
-            className="tw-w-36"
+            className="tw-w-28"
           />
           <SelectDropdownMultiple
             title="State"
