@@ -34,7 +34,7 @@ import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
-import {SelectDropdownMultiple, useSelectMultiple} from "../../../../components/select/selectUtils";
+import {SelectDropdown, SelectDropdownMultiple, defaultOptionType, useSelectMultiple, useSelect as useSelectNew} from "../../../../components/select/selectUtils";
 
 // list of columns having search feature
 const SEARCH_COLUMNS = ["name", "displayId", "teams"];
@@ -207,7 +207,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   );
 
   const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([]);
-  
+  const {handleChange: handleWorkstreamChange, selectedValue: workstreamSelectedValue} = useSelectNew(defaultOptionType);
+
   let filterFns = {
     issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
     team: (w) => {
@@ -583,16 +584,29 @@ export const DimensionCycleTimeLatencyDetailView = ({
     }
   }
 
+  const uniqueWorkStreams = getUniqItems(
+    initWorkItems,
+    (x) => x.workItemsSourceName
+  ).map(x => ({value: x.workItemsSourceName, label: x.workItemsSourceName}));
+
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
       <div className={styles.topControls}>
         <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
         <div className={styles.filters}>
+          <SelectDropdown
+            title="WorkStream"
+            uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
+            handleChange={handleWorkstreamChange}
+            selectedValue={workstreamSelectedValue}
+            className="tw-w-36"
+           />
           <SelectTeamDropdown
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}
             handleTeamChange={handleTeamChange}
             className="tw-w-36"
+            wrapperClassName="tw-ml-2"
           />
           <SelectIssueTypeDropdown
             valueIndex={issueTypeValueIndex}
