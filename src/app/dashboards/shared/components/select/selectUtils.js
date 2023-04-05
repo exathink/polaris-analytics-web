@@ -13,6 +13,9 @@ export function useSelect(defaultValue) {
 
 /**
  * @typedef {import("antd/lib/select").DefaultOptionType} DefaultOptionType
+ */
+
+/**
  *
  * @typedef {Object} Props
  * @property {DefaultOptionType[]} uniqueItems - The unique items.
@@ -87,7 +90,6 @@ export function useSelectMultiple(defaultValues = []) {
 }
 
 /**
- * @typedef {import("antd/lib/select").DefaultOptionType} DefaultOptionType
  *
  * @typedef {Object} PropsMultiple
  * @property {DefaultOptionType[]} uniqueItems - The unique items.
@@ -151,3 +153,5 @@ export function SelectDropdownMultiple({
     </div>
   );
 }
+
+export const defaultOptionType = { label: "All", value: "all" };
