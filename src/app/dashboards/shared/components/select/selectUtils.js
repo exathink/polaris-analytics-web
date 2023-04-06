@@ -173,6 +173,7 @@ export function SelectDropdownMultiple({
       <Select
         defaultValue={selectedValues}
         value={selectedValues}
+        placeholder={defaultOptionType.label}
         style={{minWidth: 144}}
         className={className}
         onChange={(_values, options) => {
