@@ -65,6 +65,7 @@ export function SelectDropdown({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValue}
+        value={selectedValue}
         className={className}
         onChange={(_value, option) => {
           handleChange(option);
@@ -171,6 +172,7 @@ export function SelectDropdownMultiple({
       {title && <div>{title}</div>}
       <Select
         defaultValue={selectedValues}
+        value={selectedValues}
         style={{minWidth: 144}}
         className={className}
         onChange={(_values, options) => {
