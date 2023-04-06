@@ -631,6 +631,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           workItemScope={workItemScope}
           setWorkItemScope={setWorkItemScope}
           className="tw-ml-auto"
+          layout="col"
         />
 
         {ageLatencyFeatureFlag && (
@@ -653,6 +654,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   display: "Motion",
                 },
               ]}
+              layout="col"
             />
           </div>
         )}
