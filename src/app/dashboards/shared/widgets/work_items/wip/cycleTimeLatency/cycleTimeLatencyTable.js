@@ -120,24 +120,6 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
 //   };
 // }
 
-function renderWorkItemsSourceCol({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => {
-    return (
-      text && (
-        <span
-          onClick={() => {
-            setPlacement("top");
-            setShowPanel(true);
-            setWorkItemKey(record.key);
-          }}
-          style={{cursor: "pointer"}}
-        >
-          {text}
-        </span>
-      )
-    );
-  };
-}
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const blurClass = useBlurClass("tw-blur-[2px]");
@@ -150,16 +132,6 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   // const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
   const columns = [
-    {
-      title: "WorkStream",
-      dataIndex: "workItemsSourceName",
-      key: "workItemsSourceName",
-      width: "6%",
-      filteredValue: appliedFilters.workItemsSourceName || null,
-      filters: filters.workItemsSources.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
-      render: renderWorkItemsSourceCol(callBacks),
-    },
     // {
     //   title: "Team",
     //   dataIndex: "teams",
@@ -226,9 +198,6 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       key: "state",
       width: "7%",
       sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      filteredValue: appliedFilters.state || null,
-      filters: filters.states.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
     },
     // {
@@ -292,14 +261,13 @@ export const CycleTimeLatencyTable = injectIntl(
     // get unique workItem types
     const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
     const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
-    const states = [...new Set(tableData.map((x) => x.state))];
-    const workItemsSources = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+
     const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columns = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, states, quadrants, teams, workItemsSources},
+      filters: {workItemTypes, stateTypes, quadrants, teams},
       appliedFilters,
       callBacks,
     });
