@@ -5,22 +5,19 @@
   /* grid-template-rows: 4% 50% 90px calc(47% - 90px); */
   gap: 0.5rem 0.5rem;
   grid-template-areas:
-    "title rightControls rightControls rightControls"
+    "topControls topControls topControls topControls"
     "engineering engineering engineering engineering"
-    "issueTypeDropdown . . ."
     "cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable cycleTimeLatencyTable";
 }
 
 .title {
-  grid-area: title;
   align-self: center;
 }
 
-.issueTypeDropdown {
-  grid-area: issueTypeDropdown;
+.filters {
+  display: flex;
   align-self: flex-end;
   margin-left: theme("spacing.2");
-  display: flex;
 }
 
 .engineering {
@@ -41,11 +38,10 @@
   display: flex;
 }
 
-.rightControls {
-  grid-area: rightControls;
+.topControls {
+  grid-area: topControls;
   display: flex;
-  justify-content: flex-end;
-  align-items: baseline;
+  align-items: center;
   gap: 2rem;
   margin-right: 2rem;
 }
