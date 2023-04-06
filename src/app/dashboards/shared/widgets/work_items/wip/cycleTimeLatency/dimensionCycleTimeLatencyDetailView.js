@@ -275,6 +275,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
     setAppliedFilters(EmptyObj);
     setSelectedQuadrant(undefined);
 
+    handleWorkstreamChange(defaultOptionType);
+    handleTeamChange(0);
+    handleIssueTypeChange(0);
+    handleStateMultipleChange([]);
+
     updateChartState({chartFilter: undefined, selectedCategory: undefined, chartClicked: undefined});
 
     // reset chart components state
@@ -660,9 +665,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
         )}
 
         <div className="tw-w-20">
-          {(tableFilteredWorkItems.length < initWorkItems.length ||
-            chartFilteredWorkItems.length < initWorkItems.length ||
-            selectedQuadrant !== undefined) && (
+          {(tableData.length < initWorkItems.length ||
+            coreChartWorkItems.length < initWorkItems.length ||
+            selectedQuadrant !== undefined || selectedValues.length > 0 || workstreamSelectedValue?.value !== "all") && (
             <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
               Clear Filters
             </Button>
