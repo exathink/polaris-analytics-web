@@ -17,7 +17,6 @@
 .filters {
   display: flex;
   align-self: flex-end;
-  margin-left: theme("spacing.2");
 }
 
 .engineering {
