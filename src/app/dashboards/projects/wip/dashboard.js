@@ -14,7 +14,7 @@ import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeL
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
-import { metricsMapping } from "../../shared/helpers/teamUtils";
+
 import { AGE_LATENCY_ENHANCEMENTS } from "../../../../config/featureFlags";
 import {useQueryParamState} from "../shared/helper/hooks";
 
@@ -37,17 +37,11 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
-  const [wipChartType, setWipChartType] = useState("age");
+  const [wipChartType, setWipChartType] = useState("queue");
   const specsOnly = workItemScope === "specs";
-  const [selectedMetric, setSelectedMetric] = useState(metricsMapping.WIP_TOTAL);
+
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   const {state: {workItemSelectors=[]}} = useQueryParamState();
-  const wipDisplayProps = ageLatencyFeatureFlag
-    ? {
-        initialSelection: selectedMetric,
-        onSelectionChanged: (metric) => setSelectedMetric(metric),
-      }
-    : {};
 
   const {
     cycleTimeTarget,
@@ -79,24 +73,29 @@ function WipDashboard({
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
       <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
-        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col"/>
 
-        {ageLatencyFeatureFlag && selectedMetric === metricsMapping.AVG_AGE && (
+        {ageLatencyFeatureFlag && (
           <GroupingSelector
-            label="Show"
-            value={wipChartType}
-            onGroupingChanged={setWipChartType}
-            groupings={[
-              {
-                key: "age",
-                display: "Age",
-              },
-              {
-                key: "latency",
-                display: "Motion",
-              },
-            ]}
-          />
+              label="Show"
+              value={wipChartType}
+              onGroupingChanged={setWipChartType}
+              groupings={[
+                {
+                  key: "queue",
+                  display: "Queue Size",
+                },
+                {
+                  key: "age",
+                  display: "Age",
+                },
+                {
+                  key: "motion",
+                  display: "Motion",
+                },
+              ]}
+              layout="col"
+            />
         )}
       </div>
       <DashboardRow>
@@ -148,7 +147,6 @@ function WipDashboard({
               days={flowAnalysisPeriod}
               view={view}
               includeSubTasks={includeSubTasksWipInspector}
-              displayProps={wipDisplayProps}
             />
           )}
           showDetail={false}
@@ -203,7 +201,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, selectedMetric}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}
@@ -233,7 +231,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, selectedMetric}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
             />
           )}
           showDetail={true}
