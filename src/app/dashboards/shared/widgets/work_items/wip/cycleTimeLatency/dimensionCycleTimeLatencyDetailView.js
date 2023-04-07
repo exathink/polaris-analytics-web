@@ -635,12 +635,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <WorkItemScopeSelector
           workItemScope={workItemScope}
           setWorkItemScope={setWorkItemScope}
-          className="tw-ml-auto"
           layout="col"
+          className="tw-ml-auto"
         />
 
         {ageLatencyFeatureFlag && (
-          <div className="">
+          <div>
             <GroupingSelector
               label="Show"
               value={wipChartType}
@@ -664,7 +664,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </div>
         )}
 
-        <div className="tw-w-20">
+        <div className="tw-w-8 tw-mr-14">
+          <div className="tw-invisible">dummy</div>
           {(tableData.length < initWorkItems.length ||
             coreChartWorkItems.length < initWorkItems.length ||
             selectedQuadrant !== undefined || selectedValues.length > 0 || workstreamSelectedValue?.value !== "all") && (
