@@ -635,7 +635,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
         <WorkItemScopeSelector
           workItemScope={workItemScope}
           setWorkItemScope={setWorkItemScope}
-          className="tw-ml-auto"
           layout="col"
         />
 
@@ -664,7 +663,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </div>
         )}
 
-        <div className="tw-w-20">
+        <div>
+          <div className="tw-invisible">dummy</div>
           {(tableData.length < initWorkItems.length ||
             coreChartWorkItems.length < initWorkItems.length ||
             selectedQuadrant !== undefined || selectedValues.length > 0 || workstreamSelectedValue?.value !== "all") && (
