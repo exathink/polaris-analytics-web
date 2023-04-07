@@ -19,12 +19,12 @@ import {
   QuadrantFilterWrapper,
   QuadrantNames,
   getQuadrantDescription,
+  QueueSizeFilterWrapper,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
-import { metricsMapping } from "../../../../helpers/teamUtils";
 import { WipQueueSizeChart } from "../../../../charts/workItemCharts/wipQueueSizeChart";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
@@ -60,8 +60,6 @@ export const DimensionCycleTimeLatencyView = ({
     data,
     variables: {specsOnly},
   } = useWidget();
-  const [selectedFilter, setFilter] = React.useState();
-  const [selectedCategory, setSelectedCategory] = React.useState();
 
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
@@ -75,27 +73,73 @@ export const DimensionCycleTimeLatencyView = ({
 
   const [selectedQuadrant, setSelectedQuadrant] = React.useState();
   const [quadrantStateType, setQuadrantStateType] = React.useState();
+  const [histogramBucket, setHistogramBucket] = React.useState();
 
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
-    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-  ).filter(workItem => {
-    return selectedQuadrant === undefined || selectedQuadrant === getQuadrant(workItem.cycleTime, workItem.latency, cycleTimeTarget, latencyTarget)
-  });
+  const [chartState, updateChartState] = React.useReducer(
+    (data, partialData) => {
+      const nextState = {
+        ...data,
+        ...partialData,
+      };
+
+      return nextState;
+    },
+    {chartFilter: undefined, chartClicked: undefined}
+  );
+
+  let filterFns = {
+    quadrant: (w) =>
+      selectedQuadrant === undefined ||
+      selectedQuadrant === getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+    queuesize: (w) => {
+      return (
+        chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
+      );
+    }
+  };
+
+  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+    .filter((workItem) => stateTypes == null || stateTypes.indexOf(workItem.stateType) !== -1)
+    .filter(filterFns.quadrant)
+    .filter(filterFns.queuesize);
 
   function handleResetAll() {
     setSelectedQuadrant(undefined);
     setQuadrantStateType(undefined);
-    setFilter(undefined);
+
+    updateChartState({chartFilter: undefined, chartClicked: undefined});
   }
 
   function handleClearClick() {
-    setFilter(undefined);
-    setSelectedCategory(undefined);
+    updateChartState({chartFilter: undefined, chartClicked: undefined});
   }
 
   const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
 
+  let histogramElement = (
+    <WorkItemsDetailHistogramChart
+      chartConfig={{
+        title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
+        align: {align: "left"},
+        subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
+        xAxisTitle: "Age in Days",
+        legendItemClick: () => {},
+        tooltip: getTooltipForAgeLatency,
+      }}
+      selectedMetric={"age"}
+      specsOnly={specsOnly}
+      colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+      stateType={"deliver"}
+      series={seriesData}
+      onPointClick={({options, category}) => {
+        const bucket = options.bucket;
+        setHistogramBucket(category);
+        updateChartState?.({chartFilter: bucket, chartClicked: "histogram"});
+      }}
+    />
+  );
+  
   let chartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
@@ -117,6 +161,7 @@ export const DimensionCycleTimeLatencyView = ({
       }}
     />
   );
+
   let quadrantSummaryElement = (
     <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
       {displayBag?.displayType === "FlowEfficiencyCard" ? (
@@ -139,9 +184,9 @@ export const DimensionCycleTimeLatencyView = ({
                     quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
                 );
 
-              setFilter?.(workItemsWithAggregateDurations);
               setSelectedQuadrant(quadrant);
               setQuadrantStateType(stageName);
+              updateChartState?.({chartFilter: workItemsWithAggregateDurations, chartClicked: "quadrant"});
             }
           }}
           selectedQuadrant={selectedQuadrant}
@@ -159,85 +204,96 @@ export const DimensionCycleTimeLatencyView = ({
       )}
     </div>
   );
+
   if (ageLatencyFeatureFlag) {
     const originalChartElement = chartElement;
-    let latencyChartElement = React.cloneElement(chartElement, {workItems: selectedFilter});
+    let latencyChartElement = React.cloneElement(chartElement, {workItems: chartState.chartFilter});
 
-    if (displayBag?.wipChartType === "latency") {
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />;
+    const quadrantFilterElement = selectedQuadrant && (
+      <QuadrantFilterWrapper
+        selectedQuadrant={QuadrantNames[selectedQuadrant]}
+        selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
+        handleClearClick={handleResetAll}
+      />
+    );
+
+    // wipChartType 'queue', 'age', 'motion'
+    if (displayBag?.wipChartType === "queue") {
+      const queueSizeElement = (
+        <WipQueueSizeChart
+          items={workItemsWithAggregateDurations}
+          stageName={stageName}
+          specsOnly={specsOnly}
+          onPointClick={(obj) => {
+            updateChartState({
+              chartFilter: obj.options.name,
+              chartClicked: "queuesize",
+            });
+          }}
+        />
+      );
+      const queueSizeFilterElement = (
+        <QueueSizeFilterWrapper selectedFilter={chartState.chartFilter} handleClearClick={handleClearClick} />
+      );
+
+      // chartState.chartClicked === null && chartState.selectedCategory == null
+      chartElement = <div className="tw-relative tw-h-full">{queueSizeElement}</div>;
+
+      // if queuesize chart is clicked
+      if (chartState.chartClicked === "queuesize") {
+        chartElement = (
+          <div className="tw-relative tw-h-full">
+            {histogramElement} {queueSizeFilterElement}
+          </div>
+        );
+      }
+      // if histogram is clicked
+      if (chartState.chartClicked === "histogram") {
+        chartElement = (
+          <div className="tw-relative tw-h-full">
+            {latencyChartElement} {ageFilterElement}
+          </div>
+        );
+      }
+    }
+
+    if (displayBag?.wipChartType === "age") {
+      // show 2 modes
+      // chartState.chartClicked === null
+      chartElement = <div className="tw-relative tw-h-full">{histogramElement}</div>;
+
+      // show 2 modes
+      // if histogram chart is clicked
+      if (chartState.chartClicked === "histogram") {
+        chartElement = (
+          <div className="tw-relative tw-h-full">
+            {latencyChartElement} {ageFilterElement}
+          </div>
+        );
+      }
+    }
+
+    if (displayBag?.wipChartType === "motion") {
       chartElement = (
         <div className="tw-relative tw-h-full">
           {originalChartElement}
-          {selectedQuadrant && (
-            <QuadrantFilterWrapper
-              selectedQuadrant={QuadrantNames[selectedQuadrant]}
-              selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-              handleClearClick={handleResetAll}
-            />
-          )}
+          {quadrantFilterElement}
         </div>
       );
-    }  else {
-      chartElement = (
-        <>
-          {(selectedFilter !== undefined || displayBag?.wipChartType === "latency") && (
-            <>
-              {latencyChartElement}
-              {!selectedQuadrant && (
-                <AgeFilterWrapper selectedFilter={selectedCategory} handleClearClick={handleClearClick} />
-              )}
-              {selectedQuadrant && (
-                <QuadrantFilterWrapper
-                  selectedQuadrant={QuadrantNames[selectedQuadrant]}
-                  selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
-                  handleClearClick={handleResetAll}
-                />
-              )}
-            </>
-          )}
 
-          {selectedFilter === undefined && (
-            <div className="tw-relative tw-h-full">
-              <WorkItemsDetailHistogramChart
-                chartConfig={{
-                  title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
-                  align: {align: "left"},
-                  subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
-                  xAxisTitle: "Age in Days",
-                  legendItemClick: () => {},
-                  tooltip: getTooltipForAgeLatency,
-                }}
-                selectedMetric={"age"}
-                specsOnly={specsOnly}
-                colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-                stateType={"deliver"}
-                series={seriesData}
-                onPointClick={({options, category}) => {
-                  const bucket = options.bucket;
-                  setFilter?.(bucket);
-                  setSelectedCategory(category);
-                }}
-              />
-            </div>
-          )}
-        </>
-      );
     }
 
-    if(displayBag?.selectedMetric === metricsMapping.WIP_TOTAL) {
-      chartElement = <WipQueueSizeChart items = {workItemsWithAggregateDurations} stageName={stageName} specsOnly={specsOnly}/>
-    }
-
-    quadrantSummaryElement =
-      displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType === "latency"
-        ? quadrantSummaryElement
-        : null;
+    if (displayBag?.wipChartType !== "motion") {
+      quadrantSummaryElement = null;
+    }  
   }
 
   return (
     <VizRow h={1}>
       <VizItem w={1}>
         <div
-          className={(displayBag?.selectedMetric === metricsMapping.AVG_AGE && displayBag?.wipChartType==="latency") || !ageLatencyFeatureFlag ? "tw-relative tw-h-[77%]" : "tw-h-full"}
+          className={(displayBag?.wipChartType==="motion") || !ageLatencyFeatureFlag ? "tw-relative tw-h-[77%]" : "tw-h-full"}
         >
           {chartElement}
         </div>
