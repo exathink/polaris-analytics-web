@@ -628,7 +628,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             wrapperClassName="tw-ml-2"
             className="tw-w-28"
           />
-          <div className="tw-flex tw-gap-4">
+          <div className="tw-flex tw-gap-2">
             <SelectDropdownMultiple
               title="State"
               selectedValues={selectedValues}
