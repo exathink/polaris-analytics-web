@@ -205,13 +205,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
     },
     {chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined}
   );
+  const [exclude, setExclude] = React.useState(false);
 
   const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([]);
   const {handleChange: handleWorkstreamChange, selectedValue: workstreamSelectedValue} = useSelectNew(defaultOptionType);
 
   let filterFns = {
     issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
-    workStream: (w) => workstreamSelectedValue.value === "all" || w.workItemsSourceName === workstreamSelectedValue.value,
+    workStream: (w) =>
+      workstreamSelectedValue.value === "all" || w.workItemsSourceName === workstreamSelectedValue.value,
     team: (w) => {
       const _teams = w.teamNodeRefs.map((t) => t.teamKey);
       return selectedTeam === "all" || _teams.includes(selectedTeam);
@@ -224,7 +226,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
         chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
       );
     },
-    state: (w) => selectedValues.length === 0 || selectedValues.map(x => x.value).includes(w.state),
+    state: exclude
+      ? (w) => selectedValues.length === 0 || selectedValues.map((x) => x.value).includes(w.state) === false
+      : (w) => selectedValues.length === 0 || selectedValues.map((x) => x.value).includes(w.state),
   };
 
   const tableData = getWorkItemDurations(tableFilteredWorkItems)
@@ -269,7 +273,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const [histogramBucket, setHistogramBucket] = React.useState();
 
-  const [exclude, setExclude] = React.useState(false);
 
   function handleResetAll() {
     // reset table component state
