@@ -5,7 +5,7 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../conf
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {Button} from "antd";
+import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {
   AgeFilterWrapper,
@@ -268,6 +268,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [wipChartType, setWipChartType] = React.useState("queue");
 
   const [histogramBucket, setHistogramBucket] = React.useState();
+
+  const [exclude, setExclude] = React.useState(false);
 
   function handleResetAll() {
     // reset table component state
@@ -609,7 +611,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             handleChange={handleWorkstreamChange}
             selectedValue={workstreamSelectedValue}
             className="tw-w-28"
-           />
+          />
           <SelectTeamDropdown
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}
@@ -623,14 +625,24 @@ export const DimensionCycleTimeLatencyDetailView = ({
             wrapperClassName="tw-ml-2"
             className="tw-w-28"
           />
-          <SelectDropdownMultiple
-            title="State"
-            selectedValues={selectedValues}
-            uniqueItems={states}
-            handleChange={handleStateMultipleChange}
-            wrapperClassName="tw-ml-2"
-            className="tw-w-[13rem]"
-          />
+          <div className="tw-flex tw-gap-4">
+            <SelectDropdownMultiple
+              title="State"
+              selectedValues={selectedValues}
+              uniqueItems={states}
+              handleChange={handleStateMultipleChange}
+              wrapperClassName="tw-ml-2"
+              className="tw-w-[13rem]"
+            />
+            <Checkbox
+              onChange={(e) => setExclude(e.target.checked)}
+              name="state-exclude"
+              checked={exclude}
+              className="tw-self-end"
+            >
+              Exclude
+            </Checkbox>
+          </div>
         </div>
         <WorkItemScopeSelector
           workItemScope={workItemScope}
@@ -664,11 +676,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </div>
         )}
 
-        <div className="tw-w-8 tw-mr-14">
+        <div className="tw-mr-14 tw-w-8">
           <div className="tw-invisible">dummy</div>
           {(tableData.length < initWorkItems.length ||
             coreChartWorkItems.length < initWorkItems.length ||
-            selectedQuadrant !== undefined || selectedValues.length > 0 || workstreamSelectedValue?.value !== "all") && (
+            selectedQuadrant !== undefined ||
+            selectedValues.length > 0 ||
+            workstreamSelectedValue?.value !== "all") && (
             <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
               Clear Filters
             </Button>
