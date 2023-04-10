@@ -17,6 +17,7 @@
 .filters {
   display: flex;
   align-self: flex-end;
+  gap: 0.5rem;
 }
 
 .engineering {

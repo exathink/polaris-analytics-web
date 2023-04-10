@@ -604,7 +604,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   ).map(x => ({value: x.workItemsSourceName, label: x.workItemsSourceName}));
 
   return (
-    <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
+    <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
         <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
         <div className={styles.filters}>
@@ -620,28 +620,27 @@ export const DimensionCycleTimeLatencyDetailView = ({
             valueIndex={teamValueIndex}
             handleTeamChange={handleTeamChange}
             className="tw-w-28"
-            wrapperClassName="tw-ml-2"
           />
           <SelectIssueTypeDropdown
             valueIndex={issueTypeValueIndex}
             handleIssueTypeChange={handleIssueTypeChange}
-            wrapperClassName="tw-ml-2"
             className="tw-w-28"
           />
+          <div className="tw-h-14 tw-bg-gray-200 tw-w-[1px] tw-pt-2"></div>
           <div className="tw-flex tw-gap-2">
             <SelectDropdownMultiple
               title="State"
               selectedValues={selectedValues}
               uniqueItems={states}
               handleChange={handleStateMultipleChange}
-              wrapperClassName="tw-ml-2"
+
               className="tw-w-[13rem]"
             />
             <Checkbox
               onChange={(e) => setExclude(e.target.checked)}
               name="state-exclude"
               checked={exclude}
-              className="tw-self-end"
+              className="tw-self-center"
             >
               Exclude
             </Checkbox>
