@@ -516,3 +516,17 @@ export function useFeatureFlag(feature_flag, value) {
   const context = useViewerContext();
   return context.isFeatureFlagActive(feature_flag) ? value : undefined;
 }
+
+/**
+ * 
+ * @param {number} count 
+ * @param {string} unit 
+ * @returns string
+ */
+export function getSingularPlural(count, unit) {
+  if (count === 1) {
+    return unit;
+  } else {
+    return `${unit}s`
+  }
+}
