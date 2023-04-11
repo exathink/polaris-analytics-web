@@ -626,7 +626,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             handleIssueTypeChange={handleIssueTypeChange}
             className="tw-w-28"
           />
-          <div className="tw-h-14 tw-bg-gray-200 tw-w-[1px] tw-pt-2"></div>
+          <div className="tw-h-8 tw-bg-gray-200 tw-w-[1px] tw-pt-2 tw-self-end"></div>
           <div className="tw-flex tw-gap-2">
             <SelectDropdownMultiple
               title="State"
@@ -640,7 +640,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               onChange={(e) => setExclude(e.target.checked)}
               name="state-exclude"
               checked={exclude}
-              className="tw-self-center"
+              className="tw-self-end !tw-mb-1"
             >
               Exclude
             </Checkbox>
