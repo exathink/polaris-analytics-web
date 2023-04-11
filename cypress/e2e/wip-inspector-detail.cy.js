@@ -48,7 +48,7 @@ describe("Wip Inspector Detail Dashboard", () => {
     cy.location("pathname").should("include", "/wip/engineering");
   });
 
-  it("Wip Monitoring charts, when there is no data", () => {
+  it("Queue Monitoring charts, when there is no data", () => {
     cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineStateDetails,
       body: {data: {project: {workItems: {edges: []}}}},
@@ -78,7 +78,7 @@ describe("Wip Inspector Detail Dashboard", () => {
     });
   });
 
-  it("Wip Monitoring charts, when there is data", () => {
+  it("Queue Monitoring charts, when there is data", () => {
     cy.fixture(`${WIP_INSPECTOR.projectPipelineStateDetails}.json`).then((fixture) => {
       fixture.data.project.workItems.edges[0].node.workItemStateDetails.latestCommit = getNHoursAgo(10);
       fixture.data.project.workItems.edges[0].node.workItemStateDetails.currentStateTransition.eventDate =
