@@ -3,19 +3,19 @@ import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {assignWorkItemStateColor, Colors, itemsDesc} from "../../config";
 import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
-import { pick } from "../../../../helpers/utility";
+import { getSingularPlural, i18nNumber, pick } from "../../../../helpers/utility";
 
 function getStateCounts(items) {
-    const obj = items.reduce((acc, item) => {
-        if (acc[item.state]!=null) {
-            acc[item.state].count += 1;
-        }else {
-            acc[item.state] = {count: 1, stateType: item.stateType};
-        }
-        return acc;
-    }, {});
-    return obj;
-
+  const obj = items.reduce((acc, item) => {
+    if (acc[item.state] != null) {
+      acc[item.state].count += 1;
+      acc[item.state].totalAge += item.cycleTime;
+    } else {
+      acc[item.state] = {count: 1, totalAge: item.cycleTime, stateType: item.stateType};
+    }
+    return acc;
+  }, {});
+  return obj;
 }
 // Return an array of  HighChart series data structures from the
 // passed in props.
@@ -31,7 +31,7 @@ function getSeries(items, specsOnly) {
         },
       ],
       data: Object.entries(getStateCounts(items)).map((e, index) => {
-        return {name: e[0], y: e[1].count, color: assignWorkItemStateColor(e[1].stateType, index)};
+        return {name: e[0], y: e[1].count, color: assignWorkItemStateColor(e[1].stateType, index), totalAge: e[1].totalAge};
       }),
     },
   ];
@@ -41,7 +41,7 @@ export const WipQueueSizeChart = Chart({
   chartUpdateProps: (props) => pick(props, "items", "specsOnly", "stageName"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
-  getConfig: ({items, stageName, specsOnly, onPointClick}) => {
+  getConfig: ({items, stageName, specsOnly, onPointClick, intl}) => {
     const series = getSeries(items, specsOnly);
     return {
       chart: {
@@ -75,10 +75,16 @@ export const WipQueueSizeChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
+          let avgAge = 0;
+          if (this.point.totalAge != null && this.point.totalAge > 0 && this.point.y > 0) {
+             avgAge = i18nNumber(intl, this.point.totalAge/this.point.y, 1);
+          }
+          
           return tooltipHtml_v2({
             header: `${this.point.category}`,
             body: [
-              [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`]
+              [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`],
+              [`Avg. Age: `, `${avgAge} ${getSingularPlural(avgAge, "Day")}`]
             ]
           })
         }
