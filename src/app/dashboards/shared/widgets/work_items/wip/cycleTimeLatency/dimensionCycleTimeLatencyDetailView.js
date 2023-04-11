@@ -5,7 +5,7 @@ import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../conf
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {Button} from "antd";
+import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {
   AgeFilterWrapper,
@@ -205,13 +205,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
     },
     {chartFilter: undefined, chartClicked: undefined, selectedCategory: undefined}
   );
+  const [exclude, setExclude] = React.useState(false);
 
   const {handleChange: handleStateMultipleChange, selectedValues} = useSelectMultiple([]);
   const {handleChange: handleWorkstreamChange, selectedValue: workstreamSelectedValue} = useSelectNew(defaultOptionType);
 
   let filterFns = {
     issueType: (w) => selectedIssueType === "all" || w.workItemType === selectedIssueType,
-    workStream: (w) => workstreamSelectedValue.value === "all" || w.workItemsSourceName === workstreamSelectedValue.value,
+    workStream: (w) =>
+      workstreamSelectedValue.value === "all" || w.workItemsSourceName === workstreamSelectedValue.value,
     team: (w) => {
       const _teams = w.teamNodeRefs.map((t) => t.teamKey);
       return selectedTeam === "all" || _teams.includes(selectedTeam);
@@ -224,7 +226,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
         chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
       );
     },
-    state: (w) => selectedValues.length === 0 || selectedValues.map(x => x.value).includes(w.state),
+    state: exclude
+      ? (w) => selectedValues.length === 0 || selectedValues.map((x) => x.value).includes(w.state) === false
+      : (w) => selectedValues.length === 0 || selectedValues.map((x) => x.value).includes(w.state),
   };
 
   const tableData = getWorkItemDurations(tableFilteredWorkItems)
@@ -268,6 +272,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [wipChartType, setWipChartType] = React.useState("queue");
 
   const [histogramBucket, setHistogramBucket] = React.useState();
+
 
   function handleResetAll() {
     // reset table component state
@@ -599,7 +604,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   ).map(x => ({value: x.workItemsSourceName, label: x.workItemsSourceName}));
 
   return (
-    <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[8%_52%_40%]")}>
+    <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
         <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
         <div className={styles.filters}>
@@ -609,28 +614,37 @@ export const DimensionCycleTimeLatencyDetailView = ({
             handleChange={handleWorkstreamChange}
             selectedValue={workstreamSelectedValue}
             className="tw-w-28"
-           />
+          />
           <SelectTeamDropdown
             uniqueTeams={uniqueTeams}
             valueIndex={teamValueIndex}
             handleTeamChange={handleTeamChange}
             className="tw-w-28"
-            wrapperClassName="tw-ml-2"
           />
           <SelectIssueTypeDropdown
             valueIndex={issueTypeValueIndex}
             handleIssueTypeChange={handleIssueTypeChange}
-            wrapperClassName="tw-ml-2"
             className="tw-w-28"
           />
-          <SelectDropdownMultiple
-            title="State"
-            selectedValues={selectedValues}
-            uniqueItems={states}
-            handleChange={handleStateMultipleChange}
-            wrapperClassName="tw-ml-2"
-            className="tw-w-[13rem]"
-          />
+          <div className="tw-h-8 tw-bg-gray-200 tw-w-[1px] tw-pt-2 tw-self-end"></div>
+          <div className="tw-flex tw-gap-2">
+            <SelectDropdownMultiple
+              title="State"
+              selectedValues={selectedValues}
+              uniqueItems={states}
+              handleChange={handleStateMultipleChange}
+
+              className="tw-w-[13rem]"
+            />
+            <Checkbox
+              onChange={(e) => setExclude(e.target.checked)}
+              name="state-exclude"
+              checked={exclude}
+              className="tw-self-end !tw-mb-1"
+            >
+              Exclude
+            </Checkbox>
+          </div>
         </div>
         <WorkItemScopeSelector
           workItemScope={workItemScope}
@@ -664,11 +678,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </div>
         )}
 
-        <div className="tw-w-8 tw-mr-14">
+        <div className="tw-mr-14 tw-w-8">
           <div className="tw-invisible">dummy</div>
           {(tableData.length < initWorkItems.length ||
             coreChartWorkItems.length < initWorkItems.length ||
-            selectedQuadrant !== undefined || selectedValues.length > 0 || workstreamSelectedValue?.value !== "all") && (
+            selectedQuadrant !== undefined ||
+            selectedValues.length > 0 ||
+            workstreamSelectedValue?.value !== "all") && (
             <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
               Clear Filters
             </Button>
