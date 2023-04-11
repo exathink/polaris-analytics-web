@@ -98,6 +98,10 @@ export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
   return getPercentage(flowEfficiencyFraction, intl);
 }
 
+function getCurrentFlowType(workItemStateDetails, currentState) {
+  return workItemStateDetails.currentDeliveryCycleDurations.find(d => d.state === currentState)?.flowType
+}
+
 export function getWorkItemDurations(workItems) {
   return workItems.map(workItem => {
 
@@ -105,12 +109,13 @@ export function getWorkItemDurations(workItems) {
     const workItemStateDetails = workItem.workItemStateDetails;
     const latestTransitionDate = workItemStateDetails.currentStateTransition.eventDate;
     const timeSinceLatestCommit = workItemStateDetails.commitCount != null  ? Math.max(daysFromNow(toMoment(workItemStateDetails.latestCommit)), 0) : null;
-
+    const flowType = getCurrentFlowType(workItemStateDetails, workItem.state)
     // This is the version of latency that records the time since the most recent progress event.
     const internalLatency = timeSinceLatestCommit != null ? Math.min(timeInCurrentState, timeSinceLatestCommit) : timeInCurrentState;
 
     return {
       ...workItem,
+      flowType:flowType,
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
