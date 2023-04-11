@@ -445,6 +445,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
+  let codingQuadElement = codingQuadrantSummaryElement;
+  let deliveryQuadElement = deliveryQuadrantSummaryElement;
+
   if (ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
@@ -588,6 +591,32 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
           {codingChartElement}
           {deliveryChartElement}
+        </div>
+      );
+    }
+
+    if (chartState.chartClicked === "histogram") {
+      codingQuadrantSummaryElement =
+        chartState.selectedCategory === "engineering"
+          ? React.cloneElement(codingQuadElement, {workItems: chartState.chartFilter, onQuadrantClick: undefined})
+          : null;
+      deliveryQuadrantSummaryElement =
+        chartState.selectedCategory === "delivery"
+          ? React.cloneElement(deliveryQuadElement, {workItems: chartState.chartFilter, onQuadrantClick: undefined})
+          : null;
+
+      engineeringElement = (
+        <div
+          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
+          key={resetComponentStateKey}
+          data-testid="wip-latency-chart-panels"
+        >
+          <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
+          <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
+          <div className="">{codingChartElement}</div>
+          <div className="">
+            {deliveryChartElement}
+          </div>
         </div>
       );
     }
