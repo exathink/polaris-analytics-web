@@ -458,7 +458,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       // show 3 modes
       const codingQueueSizeElement = (
         <WipQueueSizeChart
-          items={workItemsEngineering}
+          items={chartState.selectedCategory==="delivery" && chartState.chartClicked==="histogram" ? [] : workItemsEngineering}
           stageName={"Coding"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
@@ -472,7 +472,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       );
       const deliveryQueueSizeElement = (
         <WipQueueSizeChart
-          items={workItemsDelivery}
+          items={chartState.selectedCategory==="engineering" && chartState.chartClicked==="histogram" ? [] : workItemsDelivery}
           stageName={"Shipping"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
