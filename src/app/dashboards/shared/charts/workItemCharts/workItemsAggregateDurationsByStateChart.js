@@ -3,7 +3,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 
-import {Colors, WorkItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
+import {Colors, workItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
 import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
 
 function getAverageTimeInState(workItems, aggregateDurations, state) {
@@ -35,7 +35,7 @@ export const WorkItemsAggregateDurationsByStateChart = Chart({
       state => ({
         name: state,
         y: getAverageTimeInState(workItems, aggregateDurations, state),
-        color: WorkItemFlowTypeColor[aggregateDurations[state].flowType],
+        color: workItemFlowTypeColor(aggregateDurations[state].flowType),
         phase: WorkItemStateTypeDisplayName[aggregateDurations[state].stateType],
         label: aggregateDurations[state].flowType,
       })
