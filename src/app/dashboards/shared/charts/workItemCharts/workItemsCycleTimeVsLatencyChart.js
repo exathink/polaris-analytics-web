@@ -6,7 +6,7 @@ import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMet
 import {
   AppTerms,
   Colors,
-  Symbols, WorkItemFlowTypeColor,
+  Symbols, workItemFlowTypeColor,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
@@ -73,7 +73,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
           symbol: "circle"
         },
         allowPointSelect: true,
-        color: WorkItemFlowTypeColor[workItemsByState[state][0]?.flowType],
+        color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
         data: workItemsByState[state].map(
           workItem => (
             {

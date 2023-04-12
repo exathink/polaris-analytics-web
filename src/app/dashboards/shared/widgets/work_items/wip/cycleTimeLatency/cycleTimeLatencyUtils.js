@@ -4,7 +4,7 @@ import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import { getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, assignWorkItemStateColor, WorkItemFlowTypeColor } from "../../../../config";
+import { AppTerms, assignWorkItemStateColor, workItemFlowTypeColor } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -109,7 +109,7 @@ export function useCycleTimeLatencyHook(workItems) {
         name: String(state).toLowerCase(),
         points: points.map(x => x.ageVal),
         originalData: points,
-        color: WorkItemFlowTypeColor[points[0].flowType]
+        color: workItemFlowTypeColor(points[0].flowType)
       });
     });
 

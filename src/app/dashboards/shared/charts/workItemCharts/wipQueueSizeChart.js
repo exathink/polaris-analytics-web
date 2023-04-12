@@ -1,7 +1,7 @@
 
 import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { assignWorkItemStateColor, Colors, itemsDesc, WorkItemFlowTypeColor } from "../../config";
+import { assignWorkItemStateColor, Colors, itemsDesc, workItemFlowTypeColor } from "../../config";
 import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
 import { getSingularPlural, i18nNumber, pick } from "../../../../helpers/utility";
 
@@ -31,7 +31,7 @@ function getSeries(items, specsOnly) {
         },
       ],
       data: Object.entries(getStateCounts(items)).map((e, index) => {
-        return {name: e[0], y: e[1].count, color: WorkItemFlowTypeColor[e[1].flowType], totalAge: e[1].totalAge};
+        return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
       }),
     },
   ];
