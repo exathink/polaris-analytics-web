@@ -1,19 +1,20 @@
 import React from "react";
-import {useIntl} from "react-intl";
+import { useIntl } from "react-intl";
 import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
-import {getHistogramSeries} from "../../../../../projects/shared/helper/utils";
+import { getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, assignWorkItemStateColor } from "../../../../config";
-import {projectDeliveryCycleFlowMetricsMeta} from "../../../../helpers/metricsMeta";
+import { AppTerms, assignWorkItemStateColor, workItemFlowTypeColor } from "../../../../config";
+import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
+
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const Quadrants = {
-  ok: 'ok',
-  latency: 'latency',
-  age: 'age',
-  critical: 'critical'
-}
+  ok: "ok",
+  latency: "latency",
+  age: "age",
+  critical: "critical"
+};
 
 export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
   if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
@@ -34,7 +35,6 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
 };
 
 
-
 export const QuadrantColors = {
   [Quadrants.ok]: "#4ade80",
   [Quadrants.latency]: "#facc15",
@@ -42,8 +42,8 @@ export const QuadrantColors = {
   [Quadrants.critical]: "#f87171"
 };
 
-export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget){
-  return QuadrantColors[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)]
+export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget) {
+  return QuadrantColors[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)];
 }
 
 export const QuadrantNames = {
@@ -52,17 +52,26 @@ export const QuadrantNames = {
   [Quadrants.age]: "Delayed",
   [Quadrants.critical]: "Stalled"
 };
-export const getQuadrantDescription = ({intl, cycleTimeTarget, latencyTarget}) => ({
+export const getQuadrantDescription = ({ intl, cycleTimeTarget, latencyTarget }) => ({
   [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
   [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
   [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime <= ${i18nNumber(intl, latencyTarget, 1)} days`,
-  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, IdleTime > ${i18nNumber(intl, latencyTarget, 1)} days`
 });
 
 export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget) {
-  return QuadrantNames[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)]
+  return QuadrantNames[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)];
 }
 
+function sortByFlowType([state_a, [point_a]], [state_b, [point_b]]) {
+  if (point_a.flowType === "waiting" && point_b.flowType !== "waiting") {
+    return 1;
+  } else if (point_a.flowType === point_b.flowType) {
+    return 0;
+  } else {
+    return -1;
+  }
+}
 
 export function useCycleTimeLatencyHook(workItems) {
   const intl = useIntl();
@@ -72,14 +81,27 @@ export function useCycleTimeLatencyHook(workItems) {
       .reduce((acc, item, index) => {
         const ageVal = projectDeliveryCycleFlowMetricsMeta["age"].value(item);
         if (acc[item.state] == null) {
-          acc[item.state] = [{ageVal, ...item}];
+          acc[item.state] = [{ ageVal, ...item }];
         } else {
-          acc[item.state] = [...acc[item.state], {ageVal, ...item}];
+          acc[item.state] = [...acc[item.state], { ageVal, ...item }];
         }
         return acc;
       }, {});
 
-    const seriesArr = Object.entries(pointsByState).map(([state, points], index) => {
+    // Sort pointsByState so that the items with flowType waiting are at the beginning of the array
+
+    const seriesArr = Object.entries(pointsByState).sort(
+      // sort by flow type with waiting at the beginning
+      ([state_a, [point_a]], [state_b, [point_b]]) => {
+        if (point_a.flowType === "waiting" && point_b.flowType !== "waiting") {
+          return 1;
+        } else if (point_a.flowType === point_b.flowType) {
+          return 0;
+        } else {
+          return -1;
+        }
+      }
+    ).map(([state, points], index) => {
       return getHistogramSeries({
         id: state,
         intl,
@@ -87,7 +109,7 @@ export function useCycleTimeLatencyHook(workItems) {
         name: String(state).toLowerCase(),
         points: points.map(x => x.ageVal),
         originalData: points,
-        color: assignWorkItemStateColor(points[0].stateType, index)
+        color: workItemFlowTypeColor(points[0].flowType)
       });
     });
 
@@ -97,7 +119,7 @@ export function useCycleTimeLatencyHook(workItems) {
   return seriesData;
 }
 
-export function getSubTitleForHistogram({workItems, specsOnly, intl}) {
+export function getSubTitleForHistogram({ workItems, specsOnly, intl }) {
   const count = workItems.length;
 
   const countDisplay = `${count} ${
@@ -106,14 +128,14 @@ export function getSubTitleForHistogram({workItems, specsOnly, intl}) {
         ? AppTerms.spec.display
         : AppTerms.card.display
       : specsOnly
-      ? AppTerms.specs.display
-      : AppTerms.cards.display
+        ? AppTerms.specs.display
+        : AppTerms.cards.display
   }`;
 
   return `${countDisplay} as of ${localNow(intl)}`;
 }
 
-export function getTitleForHistogram({workItems, specsOnly, stageName}) {
+export function getTitleForHistogram({ workItems, specsOnly, stageName }) {
   const count = workItems.length;
 
   const countDisplay = `${count} ${
@@ -122,8 +144,8 @@ export function getTitleForHistogram({workItems, specsOnly, stageName}) {
         ? AppTerms.spec.display
         : AppTerms.card.display
       : specsOnly
-      ? AppTerms.specs.display
-      : AppTerms.cards.display
+        ? AppTerms.specs.display
+        : AppTerms.cards.display
   }`;
 
   return `Age Analysis: ${countDisplay} in ${stageName}`;
@@ -132,11 +154,11 @@ export function getTitleForHistogram({workItems, specsOnly, stageName}) {
 export function getTooltipForAgeLatency(tooltipObj, title, intl) {
   return tooltipHtml_v2({
     header: `${capitalizeFirstLetter(tooltipObj.series.name)}: ${tooltipObj.point.category} <br/> ${tooltipObj.point.y} ${title}`,
-    body: [[`Average age: `, `${i18nNumber(intl, tooltipObj.point.options.total / tooltipObj.point.y, 2)} days`]],
+    body: [[`Average age: `, `${i18nNumber(intl, tooltipObj.point.options.total / tooltipObj.point.y, 2)} days`]]
   });
 }
 
-export function AgeFilterWrapper({selectedFilter, handleClearClick}) {
+export function AgeFilterWrapper({ selectedFilter, handleClearClick }) {
   return (
     <div className="tw-absolute tw-right-12 tw-top-0">
       <ClearFilters
@@ -149,7 +171,7 @@ export function AgeFilterWrapper({selectedFilter, handleClearClick}) {
   );
 }
 
-export function QuadrantFilterWrapper({selectedFilter, selectedQuadrant, handleClearClick}) {
+export function QuadrantFilterWrapper({ selectedFilter, selectedQuadrant, handleClearClick }) {
   return (
     <div className="tw-absolute tw-right-12 tw-top-0">
       <ClearFilters
@@ -162,7 +184,7 @@ export function QuadrantFilterWrapper({selectedFilter, selectedQuadrant, handleC
   );
 }
 
-export function QueueSizeFilterWrapper({selectedFilter, handleClearClick}) {
+export function QueueSizeFilterWrapper({ selectedFilter, handleClearClick }) {
   return (
     <div className="tw-absolute tw-right-12 tw-top-0">
       <ClearFilters

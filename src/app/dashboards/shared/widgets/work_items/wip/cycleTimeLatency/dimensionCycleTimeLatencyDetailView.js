@@ -450,6 +450,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
     />
   );
 
+  let codingQuadElement = codingQuadrantSummaryElement;
+  let deliveryQuadElement = deliveryQuadrantSummaryElement;
+
   if (ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
@@ -463,7 +466,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       // show 3 modes
       const codingQueueSizeElement = (
         <WipQueueSizeChart
-          items={workItemsEngineering}
+          items={chartState.selectedCategory==="delivery" && chartState.chartClicked==="histogram" ? [] : workItemsEngineering}
           stageName={"Coding"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
@@ -477,7 +480,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       );
       const deliveryQueueSizeElement = (
         <WipQueueSizeChart
-          items={workItemsDelivery}
+          items={chartState.selectedCategory==="engineering" && chartState.chartClicked==="histogram" ? [] : workItemsDelivery}
           stageName={"Shipping"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
@@ -596,6 +599,28 @@ export const DimensionCycleTimeLatencyDetailView = ({
         </div>
       );
     }
+
+    if (chartState.chartClicked === "histogram") {
+      codingQuadrantSummaryElement =
+        chartState.selectedCategory === "engineering"
+          ? React.cloneElement(codingQuadElement, {workItems: chartState.chartFilter, onQuadrantClick: undefined})
+          : null;
+      deliveryQuadrantSummaryElement =
+        chartState.selectedCategory === "delivery"
+          ? React.cloneElement(deliveryQuadElement, {workItems: chartState.chartFilter, onQuadrantClick: undefined})
+          : null;
+
+      engineeringElement = (
+        <div
+          className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2"
+          key={resetComponentStateKey}
+          data-testid="wip-latency-chart-panels"
+        >
+          <div className="tw-bg-chart tw-flex tw-flex-col tw-gap-1">{codingQuadrantSummaryElement} {codingChartElement}</div>
+          <div className="tw-bg-chart tw-flex tw-flex-col tw-gap-1">{deliveryQuadrantSummaryElement} {deliveryChartElement}</div>
+        </div>
+      );
+    }
   }
 
   const uniqueWorkStreams = getUniqItems(
@@ -606,7 +631,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
-        <div className={classNames(styles.title, "tw-text-2xl")}>Wip Monitoring</div>
+        <div className={classNames(styles.title, "tw-text-2xl")}>Queue Monitoring</div>
         <div className={styles.filters}>
           <SelectDropdown
             title="WorkStream"
