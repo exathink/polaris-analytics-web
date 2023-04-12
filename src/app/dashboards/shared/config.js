@@ -194,10 +194,14 @@ export const WorkItemStateTypeColor = {
   closed: '#7824b5'
 }
 
+export function workItemFlowTypeColor(flowType) {
+  return flowType != null ? WorkItemFlowTypeColor[flowType] : WorkItemFlowTypeColor['unassigned']
+}
+
 export const WorkItemFlowTypeColor = {
-  unassigned: "rgb(229,231,235)",
-  active: "rgb(134,239,172)",
-  waiting: "rgb(156,163,175)",
+  unassigned: "rgb(192,179,124)",
+  active: "rgb(77,182,115)",
+  waiting: "rgb(88,108,140)",
 };
 
 export const WorkItemStateTypeColorClass = {
