@@ -162,35 +162,37 @@ export const DimensionCycleTimeLatencyView = ({
     />
   );
 
+  const flowEfficiencyQuadrantSummaryElement = <FlowEfficiencyQuadrantSummaryCard
+  workItems={workItems}
+  stateTypes={stateTypes}
+  specsOnly={specsOnly}
+  cycleTimeTarget={cycleTimeTarget}
+  latencyTarget={latencyTarget}
+  className="tw-mx-auto tw-w-[98%]"
+  onQuadrantClick={(quadrant) => {
+    if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && quadrantStateType === stageName) {
+      handleResetAll();
+    } else {
+      const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+        .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
+        .filter(
+          (x) =>
+            quadrant === undefined ||
+            quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
+        );
+
+      setSelectedQuadrant(quadrant);
+      setQuadrantStateType(stageName);
+      updateChartState?.({chartFilter: workItemsWithAggregateDurations, chartClicked: "quadrant"});
+    }
+  }}
+  selectedQuadrant={selectedQuadrant}
+/>;
+
   let quadrantSummaryElement = (
     <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
       {displayBag?.displayType === "FlowEfficiencyCard" ? (
-        <FlowEfficiencyQuadrantSummaryCard
-          workItems={workItems}
-          stateTypes={stateTypes}
-          specsOnly={specsOnly}
-          cycleTimeTarget={cycleTimeTarget}
-          latencyTarget={latencyTarget}
-          className="tw-mx-auto tw-w-[98%]"
-          onQuadrantClick={(quadrant) => {
-            if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && quadrantStateType === stageName) {
-              handleResetAll();
-            } else {
-              const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
-                .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
-                .filter(
-                  (x) =>
-                    quadrant === undefined ||
-                    quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-                );
-
-              setSelectedQuadrant(quadrant);
-              setQuadrantStateType(stageName);
-              updateChartState?.({chartFilter: workItemsWithAggregateDurations, chartClicked: "quadrant"});
-            }
-          }}
-          selectedQuadrant={selectedQuadrant}
-        />
+        flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
           workItems={workItems}
@@ -208,6 +210,10 @@ export const DimensionCycleTimeLatencyView = ({
   if (ageLatencyFeatureFlag) {
     const originalChartElement = chartElement;
     let latencyChartElement = React.cloneElement(chartElement, {workItems: chartState.chartFilter});
+    const flowEfficiencyElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {
+      workItems: chartState.chartFilter,
+      onQuadrantClick: undefined,
+    });
 
     const ageFilterElement = <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />;
     const quadrantFilterElement = selectedQuadrant && (
@@ -252,7 +258,7 @@ export const DimensionCycleTimeLatencyView = ({
       if (chartState.chartClicked === "histogram") {
         chartElement = (
           <div className="tw-relative tw-h-full">
-            {latencyChartElement} {ageFilterElement}
+            {latencyChartElement} {flowEfficiencyElement} {ageFilterElement}
           </div>
         );
       }
@@ -268,7 +274,7 @@ export const DimensionCycleTimeLatencyView = ({
       if (chartState.chartClicked === "histogram") {
         chartElement = (
           <div className="tw-relative tw-h-full">
-            {latencyChartElement} {ageFilterElement}
+            {latencyChartElement} {flowEfficiencyElement} {ageFilterElement}
           </div>
         );
       }
@@ -293,7 +299,11 @@ export const DimensionCycleTimeLatencyView = ({
     <VizRow h={1}>
       <VizItem w={1}>
         <div
-          className={(displayBag?.wipChartType==="motion") || !ageLatencyFeatureFlag ? "tw-relative tw-h-[77%]" : "tw-h-full"}
+          className={
+            displayBag?.wipChartType === "motion" || !ageLatencyFeatureFlag || chartState.chartClicked === "histogram"
+              ? "tw-relative tw-h-[77%]"
+              : "tw-h-full"
+          }
         >
           {chartElement}
         </div>
