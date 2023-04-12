@@ -607,16 +607,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       engineeringElement = (
         <div
-          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
+          className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-x-2"
           key={resetComponentStateKey}
           data-testid="wip-latency-chart-panels"
         >
-          <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
-          <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
-          <div className="">{codingChartElement}</div>
-          <div className="">
-            {deliveryChartElement}
-          </div>
+          <div className="tw-bg-chart tw-flex tw-flex-col tw-gap-1">{codingQuadrantSummaryElement} {codingChartElement}</div>
+          <div className="tw-bg-chart tw-flex tw-flex-col tw-gap-1">{deliveryQuadrantSummaryElement} {deliveryChartElement}</div>
         </div>
       );
     }
