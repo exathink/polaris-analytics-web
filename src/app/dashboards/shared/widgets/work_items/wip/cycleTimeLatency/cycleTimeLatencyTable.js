@@ -273,7 +273,15 @@ export const CycleTimeLatencyTable = injectIntl(
     });
 
     const handleChange = (p, f, s, e) => {
-      callBacks.setAppliedFilters(f);
+      // remove keys which have null values (eg: {filterKey1: null})
+      const cleanFilters = Object.entries(f).reduce((acc, [itemKey, itemVal]) => {
+        if (itemVal != null) {
+          acc[itemKey] = itemVal;
+        }
+        return acc;
+      }, {});
+
+      callBacks.setAppliedFilters(cleanFilters);
 
       setAppliedSorter(s?.column?.dataIndex);
       setAppliedName(s?.column?.dataIndex==="latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
