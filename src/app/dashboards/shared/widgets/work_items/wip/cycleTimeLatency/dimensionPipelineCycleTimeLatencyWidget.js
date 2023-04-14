@@ -1,7 +1,7 @@
 import React from "react";
 import {WidgetCore} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
-import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
+import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView2";
 import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
 
 export const DimensionPipelineCycleTimeLatencyWidget = ({

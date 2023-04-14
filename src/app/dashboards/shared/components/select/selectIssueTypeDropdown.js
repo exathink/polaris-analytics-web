@@ -1,14 +1,14 @@
 import {workItemTypeImageMap} from "../../../projects/shared/helper/renderers";
 import {SelectDropdown} from "./selectDropdown";
 
-export const defaultIssueType = {key: "all", name: "All"};
+export const defaultIssueType = {value: "all", label: "All"};
 
 export const uniqueIssueTypes = [
   defaultIssueType,
-  {key: "story", name: "Story", icon: workItemTypeImageMap.story},
-  {key: "task", name: "Task", icon: workItemTypeImageMap.task},
-  {key: "bug", name: "Bug", icon: workItemTypeImageMap.bug},
-  {key: "subtask", name: "Sub Task", icon: workItemTypeImageMap.subtask},
+  {value: "story", label: "Story", icon: workItemTypeImageMap.story},
+  {value: "task", label: "Task", icon: workItemTypeImageMap.task},
+  {value: "bug", label: "Bug", icon: workItemTypeImageMap.bug},
+  {value: "subtask", label: "Sub Task", icon: workItemTypeImageMap.subtask},
 ];
 
 export function SelectIssueTypeDropdown({valueIndex, handleIssueTypeChange, className, wrapperClassName}) {
