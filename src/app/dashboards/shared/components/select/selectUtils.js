@@ -75,7 +75,7 @@ export function SelectDropdown({
       >
         {uniqueItems.map((item) => (
           <Option key={item.value} {...item} title={item.label}>
-            {item.label}
+            {item.icon} {item.label}
           </Option>
         ))}
       </Select>
@@ -144,9 +144,7 @@ export function SelectDropdownMultiple({
     }
     if (index === 1) {
       const remainingCount = selectedValues.length - 1;
-      const remainingLabels = selectedValues
-        .slice(1)
-        .map((item) => item.label)
+      const remainingLabels = selectedValues.slice(1).map((item) => item.label);
 
       const remainingElements = (
         <div className="tw-p-1">
@@ -155,8 +153,7 @@ export function SelectDropdownMultiple({
           ))}
         </div>
       );
-        
-      
+
       return (
         <Tooltip title={remainingElements} key="remaining-tooltip" color={TOOLTIP_COLOR}>
           <span className="tw-ml-2 tw-cursor-pointer">+{remainingCount} more</span>
@@ -165,7 +162,6 @@ export function SelectDropdownMultiple({
     }
     return null;
   };
-
 
   return (
     <div data-testid={testId} className={selectClassName}>
@@ -205,4 +201,4 @@ export function SelectDropdownMultiple({
  * @constant
  * @default
  */
-export const defaultOptionType = { label: "All", value: "all" };
+export const defaultOptionType = {label: "All", value: "all"};
