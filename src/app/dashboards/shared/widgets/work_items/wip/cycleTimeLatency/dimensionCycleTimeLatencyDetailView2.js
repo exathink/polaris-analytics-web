@@ -83,7 +83,7 @@ let filterFns = {
  */
 export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
-  const {currentInteraction: [interaction, secondaryData] = [], category, ...remainingFilters} = appliedFilters;
+  const {currentInteraction: [interaction, secondaryData] = [], ...remainingFilters} = appliedFilters;
 
   if (interaction === "histogram" || interaction === "zoom_selection") {
     return secondaryData.selectedChartData;
@@ -193,12 +193,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
     : (w, selectedStateValues) =>
         selectedStateValues.length === 0 || selectedStateValues.map((x) => x.value).includes(w.state);
 
+  const initTransformedData = getWorkItemDurations(initWorkItems).map((w) => ({
+    ...w,
+    quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+  }));
+
   // this data is always up-to-date with all the applied filters
   const latestData = getFilteredData({
-    initData: getWorkItemDurations(initWorkItems).map((w) => ({
-      ...w,
-      quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
-    })),
+    initData: initTransformedData,
     appliedFilters,
     filterFns,
   });
@@ -296,7 +298,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={latestData}
+      workItems={initTransformedData}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -319,7 +321,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let deliveryQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={latestData}
+      workItems={initTransformedData}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -339,9 +341,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
     />
   );
-
-  let codingQuadElement = codingQuadrantSummaryElement;
-  let deliveryQuadElement = deliveryQuadrantSummaryElement;
 
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   if (ageLatencyFeatureFlag) {
@@ -469,8 +468,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
   if (ageLatencyFeatureFlag) {
     if (wipChartType === "motion") {
       if (currentInteraction === "histogram") {
-        codingQuadrantSummaryElement = React.cloneElement(codingQuadElement, {onQuadrantClick: undefined});
-        deliveryQuadrantSummaryElement = React.cloneElement(deliveryQuadElement, {onQuadrantClick: undefined});
+        codingQuadrantSummaryElement = React.cloneElement(codingQuadrantSummaryElement, {
+          workItems: latestData,
+          onQuadrantClick: undefined,
+        });
+        deliveryQuadrantSummaryElement = React.cloneElement(deliveryQuadrantSummaryElement, {
+          workItems: latestData,
+          onQuadrantClick: undefined,
+        });
       }
 
       engineeringElement = (
