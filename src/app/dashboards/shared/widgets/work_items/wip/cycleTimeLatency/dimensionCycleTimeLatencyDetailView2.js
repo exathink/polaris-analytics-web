@@ -131,16 +131,25 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
+
+  // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
+  // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, "quadrant");
   const [chartCategory] = getFilterValue(appliedFilters, "category");
   const [currentInteraction, secondaryData] = getFilterValue(appliedFilters, "currentInteraction");
   const [selectedQueueName] = getFilterValue(appliedFilters, "queuesize");
-  const [selectedIssueType = defaultOptionType] = getFilterValue(appliedFilters, "issuetype");
-  const [selectedTeam = defaultOptionType] = getFilterValue(appliedFilters, "team");
-  const selectedStateValues = getFilterValue(appliedFilters, "state");
+
+  // dropdown filters state
   const [selectedWorkStream = defaultOptionType] = getFilterValue(appliedFilters, "workstream");
+  const [selectedTeam = defaultOptionType] = getFilterValue(appliedFilters, "team");
+  const [selectedIssueType = defaultOptionType] = getFilterValue(appliedFilters, "issuetype");
+  const selectedStateValues = getFilterValue(appliedFilters, "state");
+
+  // other states
+  const [exclude, setExclude] = React.useState(false);
+  const [wipChartType, setWipChartType] = React.useState("queue");
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
 
@@ -149,6 +158,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
+  //TODO:
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
       setPlacement("bottom");
@@ -162,17 +172,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
       setAppliedFilters((prev) => ({...prev, zoom_reset_selection: items}));
     }
   }
-
-  const uniqueTeams = getUniqItems(
-    initWorkItems.flatMap((x) => x.teamNodeRefs),
-    (x) => x.teamKey
-  ).map((x) => ({value: x.teamKey, label: x.teamName}));
-
-  const [exclude, setExclude] = React.useState(false);
-
-  const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
-
-  const [wipChartType, setWipChartType] = React.useState("queue");
 
   function handleResetAll() {
     setAppliedFilters(EmptyObj);
@@ -195,8 +194,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const latestData = getWorkItemDurations(getFilteredData({initData: initWorkItems, appliedFilters, filterFns}));
   const engineeringWorkItems = latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1);
   const deliveryWorkItems = latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1);
-
-  const states = [...new Set(initWorkItems.map((x) => x.state))].map((x) => ({value: x, label: x}));
 
   const engineeringSeriesData = useCycleTimeLatencyHook(engineeringWorkItems);
   const deliverySeriesData = useCycleTimeLatencyHook(deliveryWorkItems);
@@ -336,6 +333,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let codingQuadElement = codingQuadrantSummaryElement;
   let deliveryQuadElement = deliveryQuadrantSummaryElement;
 
+  const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   if (ageLatencyFeatureFlag) {
     const originalCodingChartElement = codingChartElement;
     const originalDeliveryChartElement = deliveryChartElement;
@@ -480,10 +478,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
     }
   }
 
+  // uniqueItems for all dropdowns
   const uniqueWorkStreams = getUniqItems(initWorkItems, (x) => x.workItemsSourceName).map((x) => ({
     value: x.workItemsSourceName,
     label: x.workItemsSourceName,
   }));
+
+  const uniqueTeams = getUniqItems(
+    initWorkItems.flatMap((x) => x.teamNodeRefs),
+    (x) => x.teamKey
+  ).map((x) => ({value: x.teamKey, label: x.teamName}));
 
   const uniqueIssueTypes = [
     defaultOptionType,
@@ -492,6 +496,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     {value: "bug", label: "Bug", icon: workItemTypeImageMap.bug},
     {value: "subtask", label: "Sub Task", icon: workItemTypeImageMap.subtask},
   ];
+
+  const states = [...new Set(initWorkItems.map((x) => x.state))].map((x) => ({value: x, label: x}));
 
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
