@@ -21,7 +21,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
-import { allPairs, getHistogramCategories } from "../../../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -140,7 +140,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
 
   // chart related state
-  const [selectedQuadrant] = getFilterValue(appliedFilters, "quadrant");
+  const [selectedQuadrant] = getFilterValue(appliedFilters, "quadrantpanel");
   const [chartCategory] = getFilterValue(appliedFilters, "category");
   const [currentInteraction, secondaryData] = getFilterValue(appliedFilters, "currentInteraction");
   const [selectedQueueName] = getFilterValue(appliedFilters, "queuesize");
@@ -161,7 +161,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
@@ -519,7 +518,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
             title="WorkStream"
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
             handleChange={(item) => {
-              setAppliedFilters((prev) => ({...prev, workstream: [item], currentInteraction: ["dropdown"]}));
+              setAppliedFilters((prev) => {
+                const {workstream, currentInteraction, ...newPrev} = prev;
+                if (item.value === defaultOptionType.value) {
+                  return newPrev;
+                }
+                return {...prev, workstream: [item], currentInteraction: ["dropdown"]};
+              });
             }}
             selectedValue={selectedWorkStream}
             testId="workstream-dropdown"
@@ -531,7 +536,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedValue={selectedTeam}
             testId="team-dropdown"
             handleChange={(item) => {
-              setAppliedFilters((prev) => ({...prev, team: [item], currentInteraction: ["dropdown"]}));
+              setAppliedFilters((prev) => {
+                const {team, currentInteraction, ...newPrev} = prev;
+                if (item.value === defaultOptionType.value) {
+                  return newPrev;
+                }
+                return {...prev, team: [item], currentInteraction: ["dropdown"]};
+              });
             }}
             className="tw-w-28"
           />
@@ -541,7 +552,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
             uniqueItems={uniqueIssueTypes}
             selectedValue={selectedIssueType}
             handleChange={(item) => {
-              setAppliedFilters((prev) => ({...prev, issuetype: [item], currentInteraction: ["dropdown"]}));
+              setAppliedFilters((prev) => {
+                const {issuetype, currentInteraction, ...newPrev} = prev;
+                if (item.value === defaultOptionType.value) {
+                  return newPrev;
+                }
+                return {...prev, issuetype: [item], currentInteraction: ["dropdown"]};
+              });
             }}
             className="tw-w-28"
           />
@@ -552,12 +569,22 @@ export const DimensionCycleTimeLatencyDetailView = ({
               uniqueItems={states}
               selectedValues={selectedStateValues}
               handleChange={(values) => {
-                setAppliedFilters((prev) => ({
-                  ...prev,
-                  state: values,
-                  category: [], // Need to remove category filter when applying this filter
-                  currentInteraction: ["dropdown"],
-                }));
+                setAppliedFilters((prev) => {
+                  const {category: category1, ...newPrev} = prev;
+                  const {state, category, currentInteraction, ...newPrev2} = prev;
+
+                  if (values.length > 0) {
+                    // remove category filter from here
+                    return {
+                      ...newPrev,
+                      state: values,
+                      currentInteraction: ["dropdown"],
+                    };
+                  } else {
+                    // remove category, state, currentInteraction filter from here
+                    return newPrev2;
+                  }
+                });
               }}
               className="tw-w-[13rem]"
             />
