@@ -75,8 +75,11 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
   const {currentInteraction: [interaction, secondaryData] = [], category, ...remainingFilters} = appliedFilters;
 
-  if (interaction === "histogram") {
+  if (interaction === "histogram" || interaction === "zoom_selection") {
     return secondaryData.selectedChartData;
+  }
+  if (interaction === "zoom_reset_selection") {
+    return initData;
   }
 
   initData.forEach((item) => {
@@ -149,7 +152,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  //TODO:
+
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {
       setPlacement("bottom");
@@ -157,10 +160,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
       setShowPanel(true);
     }
     if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
-      setAppliedFilters((prev) => ({...prev, zoom_selection: items}));
+      setAppliedFilters((prev) => ({...prev, currentInteraction: ["zoom_selection", {selectedChartData: items}]}));
     }
     if (eventType === EVENT_TYPES.RESET_ZOOM_SELECTION) {
-      setAppliedFilters((prev) => ({...prev, zoom_reset_selection: items}));
+      setAppliedFilters((prev) => ({...prev, currentInteraction: ["zoom_reset_selection"]}));
     }
   }
 
