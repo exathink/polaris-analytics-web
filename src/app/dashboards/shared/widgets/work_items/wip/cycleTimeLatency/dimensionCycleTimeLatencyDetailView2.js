@@ -21,6 +21,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
+import { allPairs, getHistogramCategories } from "../../../../../projects/shared/helper/utils";
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -39,6 +40,15 @@ let filterFns = {
   quadrantpanel: (w, [selectedQuadrant]) => selectedQuadrant === undefined || selectedQuadrant === w.quadrant,
   quadrant: (w, filterVals) => {
     return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
+  },
+  cycleTime: (w, filterVals) => {
+    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
+
+    return filterVals.some((filterVal) => {
+      const [part1, part2] = allPairsData[categories.indexOf(filterVal)];
+      return Number(w["cycleTime"]) >= part1 && Number(w["cycleTime"]) < part2;
+    });
   },
   name: (w, [filterVal]) => {
     const re = new RegExp(filterVal, "i");

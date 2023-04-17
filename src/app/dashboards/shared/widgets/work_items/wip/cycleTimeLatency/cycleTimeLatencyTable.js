@@ -14,6 +14,8 @@ import {
 import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
 import {LabelValue} from "../../../../../../helpers/components";
 import { getMetricsMetaKey } from "../../../../helpers/metricsMeta";
+import { allPairs, getHistogramCategories } from "../../../../../projects/shared/helper/utils";
+import {COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
@@ -131,6 +133,11 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   // const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
+  function testMetric(value, record, metric) {
+    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
+    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  }
+
   const columns = [
     // {
     //   title: "Team",
@@ -213,6 +220,9 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
+      filteredValue: appliedFilters.cycleTime || null,
+      filters: filters.categories.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => testMetric(value, record, "cycleTime"),
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
       ...metricRenderState,
     },
@@ -264,10 +274,13 @@ export const CycleTimeLatencyTable = injectIntl(
 
     const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
+    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
+
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columns = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams},
+      filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
       appliedFilters,
       callBacks,
     });
