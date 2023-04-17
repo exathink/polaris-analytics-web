@@ -1,18 +1,12 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../../../config";
+import {WorkItemStateTypes} from "../../../../config";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {
-  AgeFilterWrapper,
-  COL_WIDTH_BOUNDARIES,
-  getQuadrant,
-  getTooltipForAgeLatency,
-  QueueSizeFilterWrapper,
-} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -25,16 +19,8 @@ import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
-import {
-  SelectDropdown,
-  SelectDropdownMultiple,
-  defaultOptionType,
-  useSelect as useSelectNew,
-} from "../../../../components/select/selectUtils";
+import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
-
-// list of columns having search feature
-const SEARCH_COLUMNS = ["name", "displayId"];
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
@@ -50,9 +36,14 @@ let filterFns = {
     const _teams = w.teamNodeRefs.map((t) => t.teamKey);
     return selectedTeam.value === "all" || _teams.includes(selectedTeam.value);
   },
-  quadrant: (w, [selectedQuadrant, {cycleTimeTarget, latencyTarget}]) =>
-    selectedQuadrant === undefined ||
-    selectedQuadrant === getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+  quadrantpanel: (w, [selectedQuadrant]) => selectedQuadrant === undefined || selectedQuadrant === w.quadrant,
+  quadrant: (w, filterVals) => {
+    return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
+  },
+  name: (w, [filterVal]) => {
+    const re = new RegExp(filterVal, "i");
+    return w.name.match(re);
+  },
   // would be replaced at runtime, based on exclude value
   state: (w) => {},
   category: (w, [chartCategory]) =>
@@ -71,7 +62,7 @@ let filterFns = {
  */
 
 // appliedFilters: {filterKey1: [], filterKey2: [], filterKey3: []}; => can keep them in a Map
-// filterFns: {filterKey1: item => boolean, filterKey2: item => boolean, filterKey3: item => boolean}
+// filterFns: {filterKey1: (item, filterVals) => boolean, filterKey2: (item, filterVals) => boolean, filterKey3: (item, filterVals) => boolean}
 // initData: [{}, {}, {}...]
 /**
  * @param {Props} {
@@ -191,7 +182,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
         selectedStateValues.length === 0 || selectedStateValues.map((x) => x.value).includes(w.state);
 
   // this data is always up-to-date with all the applied filters
-  const latestData = getWorkItemDurations(getFilteredData({initData: initWorkItems, appliedFilters, filterFns}));
+  const latestData = getFilteredData({
+    initData: getWorkItemDurations(initWorkItems).map((w) => ({
+      ...w,
+      quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+    })),
+    appliedFilters,
+    filterFns,
+  });
   const engineeringWorkItems = latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1);
   const deliveryWorkItems = latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1);
 
@@ -297,7 +295,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         } else {
           setAppliedFilters((prev) => ({
             ...prev,
-            quadrant: [quadrant, {cycleTimeTarget, latencyTarget}],
+            quadrantpanel: [quadrant],
             category: ["engineering"],
             currentInteraction: ["quadrant"],
           }));
@@ -320,7 +318,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         } else {
           setAppliedFilters((prev) => ({
             ...prev,
-            quadrant: [quadrant, {cycleTimeTarget, latencyTarget}],
+            quadrantpanel: [quadrant],
             category: ["delivery"],
             currentInteraction: ["quadrant"],
           }));
