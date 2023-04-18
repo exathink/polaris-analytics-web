@@ -148,11 +148,9 @@ export function DimensionThroughputDetailDashboard({
               latestWorkItemEvent={latestWorkItemEvent}
               latestCommit={latestCommit}
               days={daysRange}
-              // Using this scheme here, since a weekly non-overlapping rollup is the
-              // the most sensible way to show the effort out. It also matches what we see
-              // in the detail dashboard when we first launch it.
-              measurementWindow={1}
-              samplingFrequency={1}
+
+              measurementWindow={7}
+              samplingFrequency={7}
               showContributorDetail={false}
               showEffort={true}
               chartConfig={{totalEffortDisplayType: "column"}}
