@@ -196,3 +196,16 @@ export function QueueSizeFilterWrapper({ selectedFilter, handleClearClick }) {
     </div>
   );
 }
+
+export const FILTERS = {
+  ISSUE_TYPE: "issuetype",
+  WORK_STREAM: "workstream",
+  TEAM: "team",
+  QUADRANT_PANEL: "quadrantpanel",
+  QUADRANT: "quadrant",
+  CYCLETIME: "cycleTime",
+  NAME: "name",
+  STATE: "state",
+  CATEGORY: "category",
+  CURRENT_INTERACTION: "currentInteraction",
+};

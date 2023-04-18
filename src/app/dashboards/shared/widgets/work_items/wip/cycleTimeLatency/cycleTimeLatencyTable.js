@@ -15,7 +15,7 @@ import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../..
 import {LabelValue} from "../../../../../../helpers/components";
 import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
-import {COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
+import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
@@ -153,7 +153,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "quadrant",
       key: "quadrant",
       width: "5%",
-      filteredValue: appliedFilters.get("quadrant") || null,
+      filteredValue: appliedFilters.get(FILTERS.QUADRANT) || null,
       filters: filters.quadrants
         .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
         .map((b) => ({
@@ -164,7 +164,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
           ),
           value: b,
         })),
-      onFilter: (value, record) => record.quadrant.indexOf(value) === 0,
+      onFilter: (value, record) => {
+        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
+        return record.quadrant.indexOf(value) === 0
+      },
       ...renderQuadrantState,
     },
     {
@@ -175,6 +178,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filteredValue: appliedFilters.get("name") || null,
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
+      onFilter: (value, record) => {
+        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["name"]);
+        return titleSearchState.onFilter(value, record);
+      }
     },
     // {
     //   title: "Type",
@@ -221,7 +228,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       width: "5%",
       filteredValue: appliedFilters.get("cycleTime") || null,
       filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "cycleTime"),
+      onFilter: (value, record) => {
+        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+        return testMetric(value, record, "cycleTime")
+      },
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
       ...metricRenderState,
     },
@@ -297,11 +307,17 @@ export const CycleTimeLatencyTable = injectIntl(
 
       callBacks.setAppliedFilters((prev) => {
         if (filtersMap.size === 0) {
-          prev.delete("quadrant");
-          prev.delete("name");
-          prev.delete("cycleTime");
+          prev.delete(FILTERS.QUADRANT);
+          prev.delete(FILTERS.NAME);
+          prev.delete(FILTERS.CYCLETIME);
           return new Map(prev);
         }
+
+        const [currentInteraction] = prev.get(FILTERS.CURRENT_INTERACTION);
+        if (currentInteraction==="cycleTime") {
+          callBacks.setWipChartType("age");
+        }
+
         return new Map([...prev, ...filtersMap]);
       });
 

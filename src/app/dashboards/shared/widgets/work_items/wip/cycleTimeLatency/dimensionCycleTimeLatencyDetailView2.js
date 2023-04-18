@@ -6,7 +6,7 @@ import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
+import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, FILTERS, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -25,19 +25,6 @@ import {allPairs, getHistogramCategories} from "../../../../../projects/shared/h
 
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
-
-const FILTERS = {
-  ISSUE_TYPE: "issuetype",
-  WORK_STREAM: "workstream",
-  TEAM: "team",
-  QUADRANT_PANEL: "quadrantpanel",
-  QUADRANT: "quadrant",
-  CYCLETIME: "cycleTime",
-  NAME: "name",
-  STATE: "state",
-  CATEGORY: "category",
-  CURRENT_INTERACTION: "currentInteraction",
-};
 
 let filterFns = {
   [FILTERS.ISSUE_TYPE]: (w, [selectedIssueType]) =>
