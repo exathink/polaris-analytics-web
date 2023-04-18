@@ -126,7 +126,7 @@ function TrendsDashboard({
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={30}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
@@ -152,7 +152,7 @@ function TrendsDashboard({
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={30}
               targetPercentile={0.7}
               context={context}
               view={view}

@@ -33,7 +33,8 @@ export const DimensionVolumeTrendsWidget = React.memo((
     includeSubTasks,
     detailDashboardInitialMetric,
     tabSelection,
-    setTab
+    setTab,
+    effortOnly
   }) => {
     const displayProps = React.useMemo(() => ({chartOrTable: "table", tabSelection, setTab}), [tabSelection, setTab])
     const {loading, error, data} = useQueryDimensionFlowMetricsTrends(
@@ -84,6 +85,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
           measurementWindow={measurementWindow}
           measurementPeriod={days}
           view={view}
+          effortOnly={effortOnly}
           onSelectionChange={(workItems) => {
             if (workItems.length === 1) {
               const [{measurementDate, key}] = workItems;

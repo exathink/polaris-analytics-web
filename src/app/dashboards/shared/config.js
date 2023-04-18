@@ -279,6 +279,9 @@ export const AppTerms = {
   cards: {
     display: "Work Items",
   },
+  allCards: {
+    display: "All Work Items",
+  },
   spec: {
     display: "Dev Item",
   },

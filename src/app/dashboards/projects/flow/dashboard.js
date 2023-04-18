@@ -163,7 +163,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
               instanceKey={key}
               measurementWindow={flowAnalysisPeriod}
               days={flowAnalysisPeriod}
-              samplingFrequency={7}
+              samplingFrequency={30}
               targetPercentile={0.7}
               context={context}
               view={view}
