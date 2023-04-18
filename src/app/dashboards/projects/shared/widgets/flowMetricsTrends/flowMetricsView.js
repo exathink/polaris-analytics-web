@@ -56,7 +56,7 @@ export function FlowMetricsView({
       ),
     volumeWithThroughput: (
       <VolumeWithThroughput
-        title={"Volume"}
+        title={"Flow Velocity"}
         displayType={displayType}
         displayProps={{
           info: {title: "title"},
@@ -64,7 +64,7 @@ export function FlowMetricsView({
           detailsView: {
             title: (
               <div className="tw-text-lg tw-text-gray-300">
-                Volume Details{" "}
+                Flow Velocity Details{" "}
                 <span className="tw-text-base tw-italic">
                   {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last {flowAnalysisPeriod} Days
                 </span>
