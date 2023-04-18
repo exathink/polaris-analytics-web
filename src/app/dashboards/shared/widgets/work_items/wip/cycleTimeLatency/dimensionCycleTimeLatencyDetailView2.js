@@ -192,7 +192,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     resetComponentState();
   }
 
-  function handleClearClick() {
+  function handleAgeClearClick() {
     appliedFilters.delete(FILTERS.CYCLETIME);
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
     appliedFilters.delete(FILTERS.CATEGORY);
@@ -375,7 +375,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       selectedFilter = secondaryData.histogramBucket;
     }
 
-    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleClearClick} />;
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeClearClick} />;
 
     let engineeringFilterElement, deliveryFilterElement;
 
