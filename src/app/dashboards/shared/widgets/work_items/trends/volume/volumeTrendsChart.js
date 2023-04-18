@@ -57,7 +57,7 @@ export const VolumeTrendsChart = ({
       config={{
         title: chartConfig?.title || "Throughput",
         subTitle: chartConfig?.subTitle,
-        yAxisUom: chartConfig?.yAxisUom || "Cards",
+        yAxisUom: chartConfig?.yAxisUom || "Work Items",
         xAxisUom: chartConfig?.xAxisUom,
         plotBands: {
           metric: "workItemsWithCommits",
@@ -107,6 +107,7 @@ export const VolumeTrendsChart = ({
                     [`${AppTerms.specs.display} Closed: `, `${i18nNumber(intl, measurement.workItemsWithCommits)} ${String(AppTerms.specs.display).toLowerCase()}`],
                     ["Earliest Closed: ", `${i18nDate(intl, measurement.earliestClosedDate)}`],
                     ["Latest Closed: ", `${i18nDate(intl, measurement.latestClosedDate)}`],
+                    ["Total Effort: ", `${i18nNumber(intl, measurement.totalEffort)} FTE Days`]
                   ]
                 : [
                     ["Total Closed: ", `${i18nNumber(intl, measurement.workItemsInScope)} ${String(AppTerms.cards.display).toLowerCase()}`],
