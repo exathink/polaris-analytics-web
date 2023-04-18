@@ -197,6 +197,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
     appliedFilters.delete(FILTERS.CATEGORY);
 
+    setWipChartType("age");
+
     // remove age, currentInteraction, category filter
     setAppliedFilters(new Map(appliedFilters));
   }
