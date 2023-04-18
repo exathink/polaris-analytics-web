@@ -26,8 +26,6 @@ import {allPairs, getHistogramCategories} from "../../../../../projects/shared/h
 const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
 const deliveryStateTypes = [WorkItemStateTypes.deliver];
 
-const EmptyObj = {}; // using the module level global variable to keep the identity of object same
-
 let filterFns = {
   issuetype: (w, [selectedIssueType]) =>
     selectedIssueType.value === "all" || w.workItemType === selectedIssueType.value,
@@ -67,7 +65,7 @@ let filterFns = {
  *
  * @typedef {Object} Props
  * @property {any[]} initData - data from the widget
- * @property {object} appliedFilters - all applied filters
+ * @property {Map} appliedFilters - all applied filters
  * @property {object} filterFns - all filter conditions callback
  */
 
@@ -83,7 +81,7 @@ let filterFns = {
  */
 export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
-  const {currentInteraction: [interaction, secondaryData] = [], ...remainingFilters} = appliedFilters;
+  const [interaction, secondaryData] = appliedFilters.get("currentInteraction") ?? [];
 
   if (interaction === "histogram" || interaction === "zoom_selection") {
     return secondaryData.selectedChartData;
@@ -92,10 +90,13 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
     return initData;
   }
 
+  // remove currentInteraction
+  const remainingFilters = [...appliedFilters.keys()].filter(k => k !== "currentInteraction");
+
   initData.forEach((item) => {
     // apply all filters
-    const allFiltersPassed = Object.keys(remainingFilters).every((filterKey) => {
-      const filterValues = remainingFilters[filterKey];
+    const allFiltersPassed = remainingFilters.every((filterKey) => {
+      const filterValues = appliedFilters.get(filterKey);
       return filterFns[filterKey](item, filterValues);
     });
 
@@ -108,8 +109,14 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   return result;
 }
 
+/**
+ *
+ * @param {Map} appliedFilters
+ * @param {string} filterKey
+ * @returns any
+ */
 function getFilterValue(appliedFilters, filterKey) {
-  const filterValues = appliedFilters[filterKey] ?? [];
+  const filterValues = appliedFilters.get(filterKey) ?? [];
   return filterValues;
 }
 
@@ -137,7 +144,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [placement, setPlacement] = React.useState("top");
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(EmptyObj);
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
 
   // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, "quadrantpanel");
@@ -155,7 +162,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [exclude, setExclude] = React.useState(false);
   const [wipChartType, setWipChartType] = React.useState("queue");
 
-  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters};
+  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType};
 
   const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -169,21 +176,29 @@ export const DimensionCycleTimeLatencyDetailView = ({
       setShowPanel(true);
     }
     if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
-      setAppliedFilters((prev) => ({...prev, currentInteraction: ["zoom_selection", {selectedChartData: items}]}));
+      setAppliedFilters(
+        (prev) => new Map(prev.set("currentInteraction", ["zoom_selection", {selectedChartData: items}]))
+      );
     }
     if (eventType === EVENT_TYPES.RESET_ZOOM_SELECTION) {
-      setAppliedFilters((prev) => ({...prev, currentInteraction: ["zoom_reset_selection"]}));
+      setAppliedFilters((prev) => new Map(prev.set("currentInteraction", ["zoom_reset_selection"])));
     }
   }
 
   function handleResetAll() {
-    setAppliedFilters(EmptyObj);
+    setAppliedFilters(new Map());
+    setWipChartType("queue");
     // reset chart components state
     resetComponentState();
   }
 
   function handleClearClick() {
-    setAppliedFilters(EmptyObj);
+    appliedFilters.delete("cycleTime");
+    appliedFilters.delete("currentInteraction");
+    appliedFilters.delete("category");
+
+    // remove age, currentInteraction, category filter
+    setAppliedFilters(new Map(appliedFilters));
   }
 
   // Update the state filter based on exclude flag
@@ -227,11 +242,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
       series={engineeringSeriesData}
       onPointClick={({options, category}) => {
         const bucket = options.bucket;
-        setAppliedFilters((prev) => ({
-          ...prev,
-          category: ["engineering"],
-          currentInteraction: ["histogram", {histogramBucket: category, selectedChartData: bucket}],
-        }));
+        setAppliedFilters((prev) => {
+          return new Map(
+            prev
+              .set("category", ["engineering"])
+              .set("currentInteraction", ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+          );
+        });
         setWipChartType("motion");
       }}
     />
@@ -254,11 +271,13 @@ export const DimensionCycleTimeLatencyDetailView = ({
       series={deliverySeriesData}
       onPointClick={({options, category}) => {
         const bucket = options.bucket;
-        setAppliedFilters((prev) => ({
-          ...prev,
-          category: ["delivery"],
-          currentInteraction: ["histogram", {histogramBucket: category, selectedChartData: bucket}],
-        }));
+        setAppliedFilters((prev) => {
+          return new Map(
+            prev
+              .set("category", ["delivery"])
+              .set("currentInteraction", ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+          );
+        });
         setWipChartType("motion");
       }}
     />
@@ -307,12 +326,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "engineering") {
           handleResetAll();
         } else {
-          setAppliedFilters((prev) => ({
-            ...prev,
-            quadrantpanel: [quadrant],
-            category: ["engineering"],
-            currentInteraction: ["quadrant"],
-          }));
+          setAppliedFilters((prev) => {
+            return new Map(
+              prev
+                .set("quadrantpanel", [quadrant])
+                .set("category", ["engineering"])
+                .set("currentInteraction", ["quadrant"])
+            );
+          });
         }
       }}
       selectedQuadrant={chartCategory === "engineering" ? selectedQuadrant : undefined}
@@ -330,12 +351,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "delivery") {
           handleResetAll();
         } else {
-          setAppliedFilters((prev) => ({
-            ...prev,
-            quadrantpanel: [quadrant],
-            category: ["delivery"],
-            currentInteraction: ["quadrant"],
-          }));
+          setAppliedFilters((prev) => {
+            return new Map(
+              prev
+                .set("quadrantpanel", [quadrant])
+                .set("category", ["delivery"])
+                .set("currentInteraction", ["quadrant"])
+            );
+          });
         }
       }}
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
@@ -376,12 +399,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
           stageName={"Coding"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
-            setAppliedFilters((prev) => ({
-              ...prev,
-              category: ["engineering"],
-              currentInteraction: ["queuesize"],
-              state: [{value: obj.options.name, label: obj.options.name}],
-            }));
+            setAppliedFilters((prev) => {
+              return new Map(
+                prev
+                  .set("category", ["engineering"])
+                  .set("currentInteraction", ["queuesize"])
+                  .set("state", [{value: obj.options.name, label: obj.options.name}])
+              );
+            });
             setWipChartType("age");
           }}
         />
@@ -392,12 +417,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
           stageName={"Shipping"}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
-            setAppliedFilters((prev) => ({
-              ...prev,
-              category: ["delivery"],
-              currentInteraction: ["queuesize"],
-              state: [{value: obj.options.name, label: obj.options.name}],
-            }));
+            setAppliedFilters((prev) => {
+              return new Map(
+                prev
+                  .set("category", ["delivery"])
+                  .set("currentInteraction", ["queuesize"])
+                  .set("state", [{value: obj.options.name, label: obj.options.name}])
+              );
+            });
             setWipChartType("age");
           }}
         />
@@ -524,11 +551,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
             handleChange={(item) => {
               setAppliedFilters((prev) => {
-                const {workstream, currentInteraction, ...newPrev} = prev;
                 if (item.value === defaultOptionType.value) {
-                  return newPrev;
+                  prev.delete("workstream");
+                  prev.delete("currentInteraction");
+                  return new Map(prev);
                 }
-                return {...prev, workstream: [item], currentInteraction: ["dropdown"]};
+                return new Map(prev.set("workstream", [item]).set("currentInteraction", ["dropdown"]));
               });
             }}
             selectedValue={selectedWorkStream}
@@ -542,11 +570,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
             testId="team-dropdown"
             handleChange={(item) => {
               setAppliedFilters((prev) => {
-                const {team, currentInteraction, ...newPrev} = prev;
                 if (item.value === defaultOptionType.value) {
-                  return newPrev;
+                  prev.delete("team");
+                  prev.delete("currentInteraction");
+                  return new Map(prev);
                 }
-                return {...prev, team: [item], currentInteraction: ["dropdown"]};
+                return new Map(prev.set("team", [item]).set("currentInteraction", ["dropdown"]));
               });
             }}
             className="tw-w-28"
@@ -558,11 +587,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedValue={selectedIssueType}
             handleChange={(item) => {
               setAppliedFilters((prev) => {
-                const {issuetype, currentInteraction, ...newPrev} = prev;
                 if (item.value === defaultOptionType.value) {
-                  return newPrev;
+                  prev.delete("issuetype");
+                  prev.delete("currentInteraction");
+                  return new Map(prev);
                 }
-                return {...prev, issuetype: [item], currentInteraction: ["dropdown"]};
+                return new Map(prev.set("issuetype", [item]).set("currentInteraction", ["dropdown"]));
               });
             }}
             className="tw-w-28"
@@ -575,19 +605,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
               selectedValues={selectedStateValues}
               handleChange={(values) => {
                 setAppliedFilters((prev) => {
-                  const {category: category1, ...newPrev} = prev;
-                  const {state, category, currentInteraction, ...newPrev2} = prev;
-
                   if (values.length > 0) {
-                    // remove category filter from here
-                    return {
-                      ...newPrev,
-                      state: values,
-                      currentInteraction: ["dropdown"],
-                    };
+                    prev.delete("category");
+                    return new Map(prev.set("state", values).set("currentInteraction", ["dropdown"]));
                   } else {
-                    // remove category, state, currentInteraction filter from here
-                    return newPrev2;
+                    prev.delete("state");
+                    prev.delete("category");
+                    prev.delete("currentInteraction");
+                    return new Map(prev);
                   }
                 });
               }}
@@ -637,7 +662,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
         <div className="tw-mr-14 tw-w-8">
           <div className="tw-invisible">dummy</div>
-          {Object.keys(appliedFilters).length > 0 && (
+          {appliedFilters.size > 0 && (
             <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
               Clear Filters
             </Button>

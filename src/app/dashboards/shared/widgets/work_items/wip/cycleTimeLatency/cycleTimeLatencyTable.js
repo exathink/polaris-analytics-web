@@ -1,20 +1,20 @@
 import React from "react";
-import { useSearchMultiCol } from "../../../../../../components/tables/hooks";
-import { injectIntl } from "react-intl";
-import { SORTER, StripeTable } from "../../../../../../components/tables/tableUtils";
-import { AppTerms, WorkItemStateTypeDisplayName } from "../../../../config";
-import { getQuadrant, QuadrantColors, QuadrantNames, Quadrants } from "./cycleTimeLatencyUtils";
-import { InfoCircleFilled } from "@ant-design/icons";
-import { joinTeams } from "../../../../helpers/teamUtils";
+import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
+import {injectIntl} from "react-intl";
+import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
+import {AppTerms, WorkItemStateTypeDisplayName} from "../../../../config";
+import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {InfoCircleFilled} from "@ant-design/icons";
+import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
-  customColumnRender
+  customColumnRender,
 } from "../../../../../projects/shared/helper/renderers";
 import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
 import {LabelValue} from "../../../../../../helpers/components";
-import { getMetricsMetaKey } from "../../../../helpers/metricsMeta";
-import { allPairs, getHistogramCategories } from "../../../../../projects/shared/helper/utils";
+import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
+import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
 
 const summaryStatsColumns = {
@@ -25,8 +25,8 @@ const summaryStatsColumns = {
   Age: "Days",
   leadTime: "Days",
   effort: "FTE Days",
-  latestCommitDisplay: "Days"
-}
+  latestCommitDisplay: "Days",
+};
 
 const QuadrantSort = {
   ok: 0,
@@ -77,7 +77,6 @@ function getQuadrantIcon(quadrant) {
     );
   }
 }
-
 
 function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
   return (text, record, searchText) => (
@@ -154,7 +153,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "quadrant",
       key: "quadrant",
       width: "5%",
-      filteredValue: appliedFilters.quadrant || null,
+      filteredValue: appliedFilters.get("quadrant") || null,
       filters: filters.quadrants
         .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
         .map((b) => ({
@@ -173,7 +172,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "name",
       key: "name",
       width: "12%",
-      filteredValue: appliedFilters.name || null,
+      filteredValue: appliedFilters.get("name") || null,
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...titleSearchState,
     },
@@ -220,7 +219,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       dataIndex: "cycleTime",
       key: "cycleTime",
       width: "5%",
-      filteredValue: appliedFilters.cycleTime || null,
+      filteredValue: appliedFilters.get("cycleTime") || null,
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTime"),
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
@@ -294,10 +293,20 @@ export const CycleTimeLatencyTable = injectIntl(
         return acc;
       }, {});
 
-      callBacks.setAppliedFilters(cleanFilters);
+      const filtersMap = new Map(Object.entries(cleanFilters));
+
+      callBacks.setAppliedFilters((prev) => {
+        if (filtersMap.size === 0) {
+          prev.delete("quadrant");
+          prev.delete("name");
+          prev.delete("cycleTime");
+          return new Map(prev);
+        }
+        return new Map([...prev, ...filtersMap]);
+      });
 
       setAppliedSorter(s?.column?.dataIndex);
-      setAppliedName(s?.column?.dataIndex==="latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
+      setAppliedName(s?.column?.dataIndex === "latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
     };
 
     return (
@@ -308,22 +317,24 @@ export const CycleTimeLatencyTable = injectIntl(
         onChange={handleChange}
         rowKey={(record) => record.key}
         renderTableSummary={(pageData) => {
-                    // calculate avg for summary stats columns
-        
-        let avgData;
-         if(appliedSorter === "latestCommitDisplay") {
-          avgData = averageOfDurations(pageData.map(item => item.latestCommit))
-         } else {
-          avgData =
-           appliedSorter && summaryStatsColumns[appliedSorter]
-             ? average(pageData, (item) => +item[appliedSorter])
-             : undefined;
-         }
+          // calculate avg for summary stats columns
 
+          let avgData;
+          if (appliedSorter === "latestCommitDisplay") {
+            avgData = averageOfDurations(pageData.map((item) => item.latestCommit));
+          } else {
+            avgData =
+              appliedSorter && summaryStatsColumns[appliedSorter]
+                ? average(pageData, (item) => +item[appliedSorter])
+                : undefined;
+          }
 
           return (
             <>
-              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={pageData?.length} />
+              <LabelValue
+                label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display}
+                value={pageData?.length}
+              />
               {avgData !== 0 && avgData && (
                 <LabelValue
                   key={getMetricsMetaKey(appliedSorter, "stateType")}
