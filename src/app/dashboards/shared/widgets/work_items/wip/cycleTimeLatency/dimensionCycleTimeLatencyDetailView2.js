@@ -376,7 +376,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
     if (currentInteraction === "histogram") {
       selectedFilter = secondaryData.histogramBucket;
     }
-
+    if (currentInteraction === "cycleTime") {
+      selectedFilter = appliedFilters.get(FILTERS.CYCLETIME);
+    }
     const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeClearClick} />;
 
     let engineeringFilterElement, deliveryFilterElement;
@@ -388,6 +390,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
       if (chartCategory === "delivery") {
         deliveryFilterElement = ageFilterElement;
       }
+    }
+
+    if (currentInteraction === "cycleTime") {
+      engineeringFilterElement = ageFilterElement;
+      deliveryFilterElement = ageFilterElement;
     }
 
     // wipChartType 'queue', 'age', 'motion'

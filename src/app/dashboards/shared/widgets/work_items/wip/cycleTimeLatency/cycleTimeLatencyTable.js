@@ -310,6 +310,7 @@ export const CycleTimeLatencyTable = injectIntl(
           prev.delete(FILTERS.QUADRANT);
           prev.delete(FILTERS.NAME);
           prev.delete(FILTERS.CYCLETIME);
+          prev.delete(FILTERS.CURRENT_INTERACTION);
           return new Map(prev);
         }
 
