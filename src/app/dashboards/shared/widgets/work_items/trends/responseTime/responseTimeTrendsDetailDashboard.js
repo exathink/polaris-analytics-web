@@ -63,7 +63,7 @@ export const ResponseTimeTrendsDetailDashboard = (
       className="tw-grid tw-grid-rows-[10%,37%,6%,43%] tw-grid-cols-1"
     >
       <DashboardRow
-        title={`Response Time Trends`}
+        title={`Flow Time Trends`}
         subTitle={`Last ${daysRange} days`}
         controls={
           getTrendsControlBarControls(

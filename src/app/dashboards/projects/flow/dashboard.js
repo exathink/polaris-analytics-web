@@ -39,7 +39,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
       <DashboardRow h="12%">
         <DashboardWidget
           name="response-time-flow"
-          title={"Response Time"}
+          title={"Flow Time"}
           className={styles.leadAndCycleTime}
           subtitle={`${AppTerms.specs.display}, Last ${flowAnalysisPeriod} days`}
           hideTitlesInDetailView={true}

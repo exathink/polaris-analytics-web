@@ -122,7 +122,7 @@ function TrendsDashboard({
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
               tags={workItemSelectors}
-              title={"Time to Market, All Dev Items"}
+              title={"Flow Time, All Dev Items"}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
