@@ -9,6 +9,7 @@ export const VolumeTrendsChart = ({
   measurementWindow,
   onSelectionChange,
   chartConfig,
+  effortOnly,
   specsOnly,
   view,
 }) => {
@@ -33,19 +34,30 @@ export const VolumeTrendsChart = ({
     };
     const cardMetric = {
       key: "workItemsInScope",
-      displayName: AppTerms.cards.display,
+      displayName: AppTerms.allCards.display,
       visible: cards.visible,
       type: cards.type || "column",
     };
-    if (specsOnly !== undefined) {
-      if (specsOnly) {
-        return [specMetric];
-      } else {
-        return [cardMetric];
+    const effortMetric = {
+      key: "totalEffort",
+      displayName: "Total Effort",
+      visible: true,
+      type: "column",
+      color: ResponseTimeMetricsColor.effort
+    };
+    if (effortOnly){
+      return [effortMetric]
+    } else {
+      if (specsOnly !== undefined) {
+        if (specsOnly) {
+          return [specMetric];
+        } else {
+          return [cardMetric];
+        }
       }
     }
     return [cardMetric, specMetric];
-  }, [chartConfig, specsOnly]);
+  }, [chartConfig, specsOnly, effortOnly]);
 
   return (
     <MeasurementTrendLineChart
@@ -55,17 +67,16 @@ export const VolumeTrendsChart = ({
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
       config={{
-        title: chartConfig?.title || "Throughput",
+        title: effortOnly? "Effort Throughput" : (chartConfig?.title || "Flow Velocity"),
         subTitle: chartConfig?.subTitle,
-        yAxisUom: chartConfig?.yAxisUom || "Work Items",
+        yAxisUom: (effortOnly? "FTE Days" : chartConfig?.yAxisUom || "Work Items"),
         xAxisUom: chartConfig?.xAxisUom,
         plotBands: {
           metric: "workItemsWithCommits",
         },
         yAxisNormalization: {
           metric: "workItemsInScope",
-          minScale: 0,
-          maxScale: 1.25,
+
         },
         annotations: chartConfig?.annotations ?? [
           {
@@ -102,7 +113,7 @@ export const VolumeTrendsChart = ({
           formatter: (measurement, seriesKey, intl) => ({
             header: `${measurementWindow} days ending ${i18nDate(intl, measurement.measurementDate)}`,
             body:
-              seriesKey === "workItemsWithCommits"
+              seriesKey === "workItemsWithCommits" || seriesKey === "totalEffort"
                 ? [
                     [`${AppTerms.specs.display} Closed: `, `${i18nNumber(intl, measurement.workItemsWithCommits)} ${String(AppTerms.specs.display).toLowerCase()}`],
                     ["Earliest Closed: ", `${i18nDate(intl, measurement.earliestClosedDate)}`],

@@ -8,6 +8,7 @@ export const VolumeTrendsView = ({
     measurementPeriod,
     measurementWindow,
     chartConfig,
+    effortOnly,
     onSelectionChange,
     view
   }) => (
@@ -18,6 +19,7 @@ export const VolumeTrendsView = ({
           measurementPeriod={measurementPeriod}
           measurementWindow={measurementWindow}
           chartConfig={chartConfig}
+          effortOnly={effortOnly}
           view={view}
           onSelectionChange={onSelectionChange}
         />

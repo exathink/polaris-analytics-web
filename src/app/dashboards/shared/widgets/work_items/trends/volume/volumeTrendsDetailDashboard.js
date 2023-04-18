@@ -1,17 +1,21 @@
 import React from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../../framework/viz/dashboard";
-import {DimensionVolumeTrendsWidget} from "./dimensionVolumeTrendsWidget";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../../../../framework/viz/dashboard";
+import { DimensionVolumeTrendsWidget } from "./dimensionVolumeTrendsWidget";
 import {
   getTrendsControlBarControls,
-  useTrendsControlBarState,
+  useTrendsControlBarState
 } from "../../../../components/trendingControlBar/trendingControlBar";
-import {DimensionDeliveryCycleFlowMetricsWidget} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
-import {GroupingSelector} from "../../../../components/groupingSelector/groupingSelector";
-import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
-import {AppTerms, WorkItemStateTypes} from "../../../../config";
-import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
-import {useQueryParamState, useResetComponentState} from "../../../../../projects/shared/helper/hooks";
-import {useIntl} from "react-intl";
+import {
+  DimensionDeliveryCycleFlowMetricsWidget
+} from "../../closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
+import { GroupingSelector } from "../../../../components/groupingSelector/groupingSelector";
+import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
+import { AppTerms, WorkItemStateTypes } from "../../../../config";
+import { getServerDate, i18nDate } from "../../../../../../helpers/utility";
+import { useQueryParamState, useResetComponentState } from "../../../../../projects/shared/helper/hooks";
+import { useIntl } from "react-intl";
+import { Box, Flex } from "reflexbox";
+import { Checkbox } from "antd";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -25,34 +29,35 @@ function getSeriesName(seriesName) {
 }
 
 export const VolumeTrendsDetailDashboard = ({
-  dimension,
-  instanceKey,
-  view,
-  context,
-  showAll,
-  latestWorkItemEvent,
-  days,
-  measurementWindow,
-  samplingFrequency,
-  targetPercentile,
-  leadTimeTarget,
-  cycleTimeTarget,
-  leadTimeConfidenceTarget,
-  cycleTimeConfidenceTarget,
-  pollInterval,
-  includeSubTasks,
-  detailDashboardInitialMetric,
-  displayProps = {},
-}) => {
+                                              dimension,
+                                              instanceKey,
+                                              view,
+                                              context,
+                                              showAll,
+                                              latestWorkItemEvent,
+                                              days,
+                                              measurementWindow,
+                                              samplingFrequency,
+                                              targetPercentile,
+                                              leadTimeTarget,
+                                              cycleTimeTarget,
+                                              leadTimeConfidenceTarget,
+                                              cycleTimeConfidenceTarget,
+                                              pollInterval,
+                                              includeSubTasks,
+                                              detailDashboardInitialMetric,
+                                              displayProps = {}
+                                            }) => {
   const [before, setBefore] = React.useState();
   const [seriesName, setSeriesName] = React.useState("workItemsInScope");
   const selectedPointSeries = getSeriesName(seriesName);
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
-  const intl = useIntl()
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const intl = useIntl();
+  const { state: { workItemSelectors = [] } } = useQueryParamState();
+
   function handleClearClick() {
-    setSeriesName("workItemsInScope")
+    setSeriesName("workItemsInScope");
     setBefore(undefined);
     resetComponentState();
   }
@@ -60,11 +65,13 @@ export const VolumeTrendsDetailDashboard = ({
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
-    [frequencyRange, setFrequencyRange],
+    [frequencyRange, setFrequencyRange]
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
 
-  const specsOnly = selectedPointSeries === AppTerms.specs.display;
-  const renderDeliveryCycleFlowMetricsWidget = ({view}) => (
+  const [effortOnly, setEffortOnly] = React.useState(false);
+
+  const specsOnly = (selectedPointSeries === AppTerms.specs.display || effortOnly);
+  const renderDeliveryCycleFlowMetricsWidget = ({ view }) => (
     <DimensionDeliveryCycleFlowMetricsWidget
       dimension={dimension}
       instanceKey={instanceKey}
@@ -94,11 +101,11 @@ export const VolumeTrendsDetailDashboard = ({
   );
 
   function getClearFilter() {
-    const preFilterText = measurementWindowRange===1 ? "on" : `${measurementWindowRange} days ending`;
+    const preFilterText = measurementWindowRange === 1 ? "on" : `${measurementWindowRange} days ending`;
     return before != null ? (
       <div className="tw-mr-8">
         <ClearFilters
-          selectedFilter={ `${preFilterText} ${i18nDate(intl, getServerDate(before))}`}
+          selectedFilter={`${preFilterText} ${i18nDate(intl, getServerDate(before))}`}
           selectedMetric={`${specsOnly ? AppTerms.specs.display : AppTerms.cards.display} Closed`}
           stateType={WorkItemStateTypes.closed}
           handleClearClick={handleClearClick}
@@ -111,41 +118,58 @@ export const VolumeTrendsDetailDashboard = ({
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? "100%" : "40%"}
-        title={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? ` ` : `Volume Trends`}
+        title={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? ` ` : `Velocity Trends`}
         subTitle={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
             ? ` `
             : `Last ${
-                displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? daysRange : days
-              } days`
+              displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? daysRange : days
+            } days`
         }
         controls={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
             ? [getClearFilter,
-                () => (
-                  <GroupingSelector
-                    label={"View"}
-                    value={displayProps.tabSelection}
-                    groupings={[
-                      {
-                        key: "volume",
-                        display: "Volume",
-                      },
-                      {
-                        key: "table",
-                        display: "Card Detail",
-                      },
-                    ]}
-                    initialValue={displayProps.tabSelection}
-                    onGroupingChanged={displayProps.setTab}
-                  />
-                ),
-              ]
-            : getTrendsControlBarControls([
+              () => (
+                <GroupingSelector
+                  label={"View"}
+                  value={displayProps.tabSelection}
+                  groupings={[
+                    {
+                      key: "volume",
+                      display: "Volume"
+                    },
+                    {
+                      key: "table",
+                      display: "Card Detail"
+                    }
+                  ]}
+                  initialValue={displayProps.tabSelection}
+                  onGroupingChanged={displayProps.setTab}
+                />
+              )
+            ]
+            : [
+              ...getTrendsControlBarControls([
                 [daysRange, setDaysRange],
                 [measurementWindowRange, setMeasurementWindowRange],
-                [frequencyRange, setFrequencyRange],
-              ])
+                [frequencyRange, setFrequencyRange]
+              ]),
+              () => (
+                <div style={{ minWidth: "100px" }}>
+                  <Flex align={"right"}>
+                    <Box pr={1} w={"100%"}>
+                      <Checkbox
+                        enabled={true}
+                        checked={effortOnly}
+                        onChange={e => setEffortOnly(e.target.checked)}
+                      >
+                        Show Effort
+                      </Checkbox>
+                    </Box>
+                  </Flex>
+                </div>
+              )
+            ]
         }
       >
         {displayProps.tabSelection === undefined || displayProps.tabSelection === "volume" ? (
@@ -153,7 +177,7 @@ export const VolumeTrendsDetailDashboard = ({
             key={resetComponentStateKey}
             w={1}
             name="cycle-metrics-summary-detailed"
-            render={({view}) => (
+            render={({ view }) => (
               <DimensionVolumeTrendsWidget
                 dimension={dimension}
                 instanceKey={instanceKey}
@@ -162,6 +186,7 @@ export const VolumeTrendsDetailDashboard = ({
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}
                 latestWorkItemEvent={latestWorkItemEvent}
+                effortOnly={effortOnly}
                 days={
                   displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? days : daysRange
                 }
