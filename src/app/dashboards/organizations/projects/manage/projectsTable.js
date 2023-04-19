@@ -127,7 +127,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
     {
       title: (
         <span>
-          Response Time <sup>Last {samplingFrequency} Days</sup>
+          Flow Time <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
       children: [
@@ -170,7 +170,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
     {
       title: (
         <span>
-          Throughput <sup>Last {samplingFrequency} Days</sup>
+          Flow Velocity <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
       children: [
