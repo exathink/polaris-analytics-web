@@ -327,7 +327,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={initTransformedData}
+      workItems={latestData}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -352,7 +352,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let deliveryQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={initTransformedData}
+      workItems={latestData}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
