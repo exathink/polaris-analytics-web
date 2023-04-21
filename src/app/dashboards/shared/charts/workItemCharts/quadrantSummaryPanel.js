@@ -62,8 +62,9 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
 function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId, size}) {
   const intl = useIntl();
 
-  const percentageCount = (val/total)*100;
-  const percentageCountDisplay = total > 0 ? `${i18nNumber(intl,percentageCount, 0 ) } %` : <span className="tw-text-base">N/A</span>;
+  const percentageCount = total === 0 ? 0 : (val / total) * 100;
+  const percentageCountDisplay =
+    total >= 0 ? `${i18nNumber(intl, percentageCount, 0)} %` : <span className="tw-text-base">N/A</span>;
 
   const averageAge = totalAge/val;
   const averageAgeDisplay = val > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)}`: '';
