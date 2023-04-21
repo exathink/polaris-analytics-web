@@ -192,6 +192,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
     resetComponentState();
   }
 
+  function handleQuadrantClear() {
+    appliedFilters.delete(FILTERS.QUADRANT_PANEL);
+    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    appliedFilters.delete(FILTERS.CATEGORY);
+
+    setAppliedFilters(new Map(appliedFilters));
+  }
+
   function handleAgeClearClick() {
     appliedFilters.delete(FILTERS.CYCLETIME);
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
@@ -319,14 +327,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let codingQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={initTransformedData}
+      workItems={latestData}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "engineering") {
-          handleResetAll();
+          handleQuadrantClear();
         } else {
           setAppliedFilters((prev) => {
             return new Map(
@@ -344,14 +352,14 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   let deliveryQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={initTransformedData}
+      workItems={latestData}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "delivery") {
-          handleResetAll();
+          handleQuadrantClear();
         } else {
           setAppliedFilters((prev) => {
             return new Map(
