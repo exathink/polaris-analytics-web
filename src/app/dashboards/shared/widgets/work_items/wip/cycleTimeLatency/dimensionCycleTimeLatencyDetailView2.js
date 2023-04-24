@@ -1,12 +1,22 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
-import {WorkItemStateTypes} from "../../../../config";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
 import {Button, Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
-import {AgeFilterWrapper, COL_WIDTH_BOUNDARIES, FILTERS, getQuadrant, getTooltipForAgeLatency} from "./cycleTimeLatencyUtils";
+import {
+  AgeFilterWrapper,
+  COL_WIDTH_BOUNDARIES,
+  FILTERS,
+  filterFns,
+  getFilterValue,
+  getFilteredData,
+  getQuadrant,
+  getTooltipForAgeLatency,
+  engineeringStateTypes,
+  deliveryStateTypes,
+} from "./cycleTimeLatencyUtils";
 import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
@@ -21,105 +31,6 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
-import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
-
-const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
-const deliveryStateTypes = [WorkItemStateTypes.deliver];
-
-let filterFns = {
-  [FILTERS.ISSUE_TYPE]: (w, [selectedIssueType]) =>
-    selectedIssueType.value === "all" || w.workItemType === selectedIssueType.value,
-  [FILTERS.WORK_STREAM]: (w, [selectedWorkStream]) =>
-    selectedWorkStream.value === "all" || w.workItemsSourceName === selectedWorkStream.value,
-  [FILTERS.TEAM]: (w, [selectedTeam]) => {
-    const _teams = w.teamNodeRefs.map((t) => t.teamKey);
-    return selectedTeam.value === "all" || _teams.includes(selectedTeam.value);
-  },
-  [FILTERS.QUADRANT_PANEL]: (w, [selectedQuadrant]) =>
-    selectedQuadrant === undefined || selectedQuadrant === w.quadrant,
-  [FILTERS.QUADRANT]: (w, filterVals) => {
-    return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
-  },
-  [FILTERS.CYCLETIME]: (w, filterVals) => {
-    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
-    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
-
-    return filterVals.some((filterVal) => {
-      const [part1, part2] = allPairsData[categories.indexOf(filterVal)];
-      return Number(w["cycleTime"]) >= part1 && Number(w["cycleTime"]) < part2;
-    });
-  },
-  [FILTERS.NAME]: (w, [filterVal]) => {
-    const re = new RegExp(filterVal, "i");
-    return w.name.match(re);
-  },
-  // would be replaced at runtime, based on exclude value
-  [FILTERS.STATE]: (w) => {},
-  [FILTERS.CATEGORY]: (w, [chartCategory]) =>
-    chartCategory === undefined ||
-    (chartCategory === "engineering"
-      ? engineeringStateTypes.indexOf(w.stateType) !== -1
-      : deliveryStateTypes.indexOf(w.stateType) !== -1),
-};
-
-/**
- *
- * @typedef {Object} Props
- * @property {any[]} initData - data from the widget
- * @property {Map} appliedFilters - all applied filters
- * @property {object} filterFns - all filter conditions callback
- */
-
-// appliedFilters: {filterKey1: [], filterKey2: [], filterKey3: []}; => can keep them in a Map
-// filterFns: {filterKey1: (item, filterVals) => boolean, filterKey2: (item, filterVals) => boolean, filterKey3: (item, filterVals) => boolean}
-// initData: [{}, {}, {}...]
-/**
- * @param {Props} {
- * initData,
- * appliedFilters
- * filterFns
- * }
- */
-export function getFilteredData({initData, appliedFilters, filterFns}) {
-  let result = [];
-  const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION) ?? [];
-
-  if (interaction === "histogram" || interaction === "zoom_selection") {
-    return secondaryData.selectedChartData;
-  }
-  if (interaction === "zoom_reset_selection") {
-    return initData;
-  }
-
-  // remove currentInteraction
-  const remainingFilters = [...appliedFilters.keys()].filter((k) => k !== FILTERS.CURRENT_INTERACTION);
-
-  initData.forEach((item) => {
-    // apply all filters
-    const allFiltersPassed = remainingFilters.every((filterKey) => {
-      const filterValues = appliedFilters.get(filterKey);
-      return filterFns[filterKey](item, filterValues);
-    });
-
-    // add the item if all filters are passed
-    if (allFiltersPassed) {
-      result.push(item);
-    }
-  });
-
-  return result;
-}
-
-/**
- *
- * @param {Map} appliedFilters
- * @param {string} filterKey
- * @returns any
- */
-function getFilterValue(appliedFilters, filterKey) {
-  const filterValues = appliedFilters.get(filterKey) ?? [];
-  return filterValues;
-}
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
