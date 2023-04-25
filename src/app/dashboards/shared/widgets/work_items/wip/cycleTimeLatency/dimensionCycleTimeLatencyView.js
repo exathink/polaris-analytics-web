@@ -64,7 +64,7 @@ export const DimensionCycleTimeLatencyView = ({
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 
-  const workItems = React.useMemo(() => {
+  const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
@@ -98,7 +98,7 @@ export const DimensionCycleTimeLatencyView = ({
     }
   };
 
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+  const workItemsWithAggregateDurations = getWorkItemDurations(initWorkItems)
     .filter((workItem) => stateTypes == null || stateTypes.indexOf(workItem.stateType) !== -1)
     .filter(filterFns.quadrant)
     .filter(filterFns.queuesize);
@@ -163,7 +163,7 @@ export const DimensionCycleTimeLatencyView = ({
   );
 
   const flowEfficiencyQuadrantSummaryElement = <FlowEfficiencyQuadrantSummaryCard
-  workItems={workItems}
+  workItems={initWorkItems}
   stateTypes={stateTypes}
   specsOnly={specsOnly}
   cycleTimeTarget={cycleTimeTarget}
@@ -173,7 +173,7 @@ export const DimensionCycleTimeLatencyView = ({
     if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && quadrantStateType === stageName) {
       handleResetAll();
     } else {
-      const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
+      const workItemsWithAggregateDurations = getWorkItemDurations(initWorkItems)
         .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
         .filter(
           (x) =>
@@ -195,7 +195,7 @@ export const DimensionCycleTimeLatencyView = ({
         flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
-          workItems={workItems}
+          workItems={initWorkItems}
           stateTypes={stateTypes}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
