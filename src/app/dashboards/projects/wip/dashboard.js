@@ -201,7 +201,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType}}
             />
           )}
           showDetail={true}
@@ -231,7 +231,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType}}
             />
           )}
           showDetail={true}
