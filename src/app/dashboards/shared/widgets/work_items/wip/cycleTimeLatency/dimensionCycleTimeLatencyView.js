@@ -198,7 +198,9 @@ export const DimensionCycleTimeLatencyView = ({
 
   if (displayBag?.wipChartType === "motion") {
     if (currentInteraction === "histogram") {
-      flowEfficiencyQuadrantSummaryElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {onQuadrantClick: undefined});
+      flowEfficiencyQuadrantSummaryElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {
+        onQuadrantClick: undefined,
+      });
     }
   }
 
@@ -302,21 +304,17 @@ export const DimensionCycleTimeLatencyView = ({
     if (displayBag?.wipChartType !== "motion") {
       quadrantSummaryElement = null;
     }
+
+    if (chartCategory != null && chartCategory !== chart_category) {
+      quadrantSummaryElement = null;
+    }
   }
 
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div
-          className={
-            displayBag?.wipChartType === "motion" || !ageLatencyFeatureFlag || currentInteraction === "histogram"
-              ? "tw-relative tw-h-[77%]"
-              : "tw-h-full"
-          }
-        >
-          {chartElement}
-        </div>
-        {(chartCategory == null || chartCategory === chart_category) && quadrantSummaryElement}
+        <div className={quadrantSummaryElement ? "tw-relative tw-h-[77%]" : "tw-h-full"}>{chartElement}</div>
+        {quadrantSummaryElement}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
