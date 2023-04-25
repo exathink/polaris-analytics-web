@@ -102,31 +102,12 @@ export const DimensionCycleTimeLatencyView = ({
     setAppliedFilters(new Map(appliedFilters));
   }
 
-  function handleQueueClearClick() {
-    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
-    appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
-    appliedFilters.delete(FILTERS.STATE);
-    setAppliedFilters(new Map(appliedFilters));
+  const initialData = getWorkItemDurations(initWorkItems).map((w) => ({
+    ...w,
+    quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+  }));
 
-    displayBag?.setWipChartType("queue");
-  }
-
-  function handleAgeClearClick() {
-    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
-    appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
-
-    displayBag?.setWipChartType("age");
-
-    // remove age, currentInteraction, category filter
-    setAppliedFilters(new Map(appliedFilters));
-  }
-
-  const initTransformedData = getWorkItemDurations(initWorkItems)
-    .map((w) => ({
-      ...w,
-      quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
-    }))
-    .filter((w) => stateTypes.indexOf(w.stateType) !== -1);
+  const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
 
   // this data is always up-to-date with all the applied filters
   const latestData =
@@ -192,24 +173,21 @@ export const DimensionCycleTimeLatencyView = ({
     />
   );
 
-  const flowEfficiencyQuadrantSummaryElement = (
+  let flowEfficiencyQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={latestData}
+      workItems={appliedFilters.size === 0 ? initialData : latestData}
       stateTypes={stateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       className="tw-mx-auto tw-w-[98%]"
       onQuadrantClick={(quadrant) => {
-        if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === stageName) {
+        if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === chart_category) {
           handleQuadrantClear();
         } else {
           setAppliedFilters((prev) => {
             return new Map(
-              prev
-                .set(FILTERS.QUADRANT_PANEL, [quadrant])
-                .set(FILTERS.PRIMARY_CATEGORY, [chart_category])
-                .set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
+              prev.set(FILTERS.QUADRANT_PANEL, [quadrant]).set(FILTERS.PRIMARY_CATEGORY, [chart_category])
             );
           });
         }
@@ -217,6 +195,12 @@ export const DimensionCycleTimeLatencyView = ({
       selectedQuadrant={selectedQuadrant}
     />
   );
+
+  if (displayBag?.wipChartType === "motion") {
+    if (currentInteraction === "histogram") {
+      flowEfficiencyQuadrantSummaryElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {onQuadrantClick: undefined});
+    }
+  }
 
   let quadrantSummaryElement = (
     <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
@@ -247,9 +231,7 @@ export const DimensionCycleTimeLatencyView = ({
       selectedFilter = appliedFilters.get(FILTERS.STATE)[0].value;
     }
 
-    const ageFilterElement = (
-      <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeClearClick} />
-    );
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />;
     const quadrantFilterElement = selectedQuadrant && chartCategory === chart_category && (
       <QuadrantFilterWrapper
         selectedQuadrant={QuadrantNames[selectedQuadrant]}
@@ -258,7 +240,7 @@ export const DimensionCycleTimeLatencyView = ({
       />
     );
     const queueSizeFilterElement = (
-      <QueueSizeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleQueueClearClick} />
+      <QueueSizeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />
     );
 
     let filterElement;
@@ -334,7 +316,7 @@ export const DimensionCycleTimeLatencyView = ({
         >
           {chartElement}
         </div>
-        {quadrantSummaryElement}
+        {(chartCategory == null || chartCategory === chart_category) && quadrantSummaryElement}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           context={context}
