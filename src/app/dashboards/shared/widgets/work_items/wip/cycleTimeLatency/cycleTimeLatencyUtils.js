@@ -4,7 +4,7 @@ import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, WorkItemStateTypes, assignWorkItemStateColor, workItemFlowTypeColor } from "../../../../config";
+import { AppTerms, WorkItemStateTypes, workItemFlowTypeColor } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -207,6 +207,7 @@ export const FILTERS = {
   NAME: "name",
   STATE: "state",
   CATEGORY: "category",
+  PRIMARY_CATEGORY: "primary_category",
   CURRENT_INTERACTION: "currentInteraction",
 };
 
@@ -242,6 +243,7 @@ export let filterFns = {
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
+  [FILTERS.PRIMARY_CATEGORY]: () => {},
   [FILTERS.CATEGORY]: (w, [chartCategory]) =>
     chartCategory === undefined ||
     (chartCategory === "engineering"
@@ -279,7 +281,7 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   }
 
   // remove currentInteraction
-  const remainingFilters = [...appliedFilters.keys()].filter((k) => k !== FILTERS.CURRENT_INTERACTION);
+  const remainingFilters = [...appliedFilters.keys()].filter((k) => k !== FILTERS.CURRENT_INTERACTION).filter((k) => k !== FILTERS.PRIMARY_CATEGORY);
 
   initData.forEach((item) => {
     // apply all filters
