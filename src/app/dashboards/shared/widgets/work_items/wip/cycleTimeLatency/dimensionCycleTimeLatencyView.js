@@ -23,7 +23,7 @@ import {
   getFilterValue,
   FILTERS,
   filterFns,
-  getFilteredData
+  getFilteredData,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -69,7 +69,7 @@ export const DimensionCycleTimeLatencyView = ({
   const tick = useGenerateTicks(2, 60000);
 
   // maintain all filters state over here
-  const {appliedFilters, setAppliedFilters} = displayBag;
+  const {appliedFilters = new Map(), setAppliedFilters} = displayBag;
   const chart_category = stateTypes.includes(WorkItemStateTypes.deliver) ? "delivery" : "engineering";
 
   // chart related state
@@ -129,11 +129,14 @@ export const DimensionCycleTimeLatencyView = ({
     .filter((w) => stateTypes.indexOf(w.stateType) !== -1);
 
   // this data is always up-to-date with all the applied filters
-  const latestData = chartCategory==null || chartCategory === chart_category ? getFilteredData({
-    initData: initTransformedData,
-    appliedFilters,
-    filterFns,
-  }): [];
+  const latestData =
+    chartCategory == null || chartCategory === chart_category
+      ? getFilteredData({
+          initData: initTransformedData,
+          appliedFilters,
+          filterFns,
+        })
+      : [];
 
   const seriesData = useCycleTimeLatencyHook(latestData);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
