@@ -250,7 +250,7 @@ export const DimensionCycleTimeLatencyView = ({
     const ageFilterElement = (
       <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeClearClick} />
     );
-    const quadrantFilterElement = selectedQuadrant && (
+    const quadrantFilterElement = selectedQuadrant && chartCategory === chart_category && (
       <QuadrantFilterWrapper
         selectedQuadrant={QuadrantNames[selectedQuadrant]}
         selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
