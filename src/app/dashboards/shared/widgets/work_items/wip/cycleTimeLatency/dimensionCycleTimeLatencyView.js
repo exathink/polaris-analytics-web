@@ -191,7 +191,7 @@ export const DimensionCycleTimeLatencyView = ({
 
   const flowEfficiencyQuadrantSummaryElement = (
     <FlowEfficiencyQuadrantSummaryCard
-      workItems={initWorkItems}
+      workItems={latestData}
       stateTypes={stateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -235,9 +235,6 @@ export const DimensionCycleTimeLatencyView = ({
 
   if (ageLatencyFeatureFlag) {
     const originalChartElement = chartElement;
-    const flowEfficiencyElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {
-      onQuadrantClick: undefined,
-    });
 
     let selectedFilter = "";
     if (currentInteraction === "histogram") {
