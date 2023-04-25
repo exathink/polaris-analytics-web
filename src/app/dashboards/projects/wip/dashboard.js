@@ -43,6 +43,9 @@ function WipDashboard({
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   const {state: {workItemSelectors=[]}} = useQueryParamState();
 
+  // maintain all filters state over here
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
+
   const {
     cycleTimeTarget,
     leadTimeTarget,
@@ -201,7 +204,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType, appliedFilters, setAppliedFilters}}
             />
           )}
           showDetail={true}
@@ -231,7 +234,7 @@ function WipDashboard({
               tooltipType="small"
               view={view}
               context={context}
-              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType}}
+              displayBag={{displayType: "FlowEfficiencyCard", wipChartType, setWipChartType, appliedFilters, setAppliedFilters}}
             />
           )}
           showDetail={true}

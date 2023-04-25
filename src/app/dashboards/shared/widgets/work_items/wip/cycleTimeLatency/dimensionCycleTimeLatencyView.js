@@ -69,7 +69,7 @@ export const DimensionCycleTimeLatencyView = ({
   const tick = useGenerateTicks(2, 60000);
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
+  const {appliedFilters, setAppliedFilters} = displayBag;
   const chart_category = stateTypes.includes(WorkItemStateTypes.deliver) ? "delivery" : "engineering";
 
   // chart related state
@@ -129,11 +129,11 @@ export const DimensionCycleTimeLatencyView = ({
     .filter((w) => stateTypes.indexOf(w.stateType) !== -1);
 
   // this data is always up-to-date with all the applied filters
-  const latestData = getFilteredData({
+  const latestData = chartCategory==null || chartCategory === chart_category ? getFilteredData({
     initData: initTransformedData,
     appliedFilters,
     filterFns,
-  });
+  }): [];
 
   const seriesData = useCycleTimeLatencyHook(latestData);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
@@ -259,11 +259,11 @@ export const DimensionCycleTimeLatencyView = ({
     );
 
     let filterElement;
-    if (currentInteraction === "histogram") {
+    if (currentInteraction === "histogram" && chartCategory === chart_category) {
       filterElement = ageFilterElement;
     }
 
-    if (currentInteraction === "queuesize") {
+    if (currentInteraction === "queuesize" && chartCategory === chart_category) {
       filterElement = queueSizeFilterElement;
     }
 
