@@ -25,3 +25,41 @@ export function useSelectWithDelegate(initialSelection, onSelectionChanged) {
   // the caller. This ensures the delegate is called whenever the selection changes.
   return [selectedValue, setSelection];
 }
+
+/**
+ * 
+ * @param {string} key 
+ * @param {string} initialValue 
+ */
+export function useLocalStorage(key, initialValue) {
+  const readValue = () => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+
+    const item = window.localStorage.getItem(key);
+    return item || initialValue;
+  };
+
+  const [storedValue, setStoredValue] = React.useState(readValue);
+
+  const setValue = (value) => {
+    if (typeof window === 'undefined') {
+      console.warn(`Tried setting localStorage key “${key}” even though environment is not a client`);
+    }
+
+    try {
+      window.localStorage.setItem(key, value);
+      setStoredValue(value);
+    } catch (error) {
+      console.warn(`Error setting localStorage key “${key}”:`, error);
+    }
+  };
+
+  React.useEffect(() => {
+    setStoredValue(readValue());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
+  return [storedValue, setValue];
+}
