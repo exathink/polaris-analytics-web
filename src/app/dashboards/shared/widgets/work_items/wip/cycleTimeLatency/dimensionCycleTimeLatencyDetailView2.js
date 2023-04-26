@@ -31,6 +31,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
+import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -71,9 +72,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   // other states
   const [exclude, setExclude] = React.useState(false);
-  const [wipChartType, setWipChartType] = React.useState("queue");
 
-  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType};
+  const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage("wip_chart_type");
+  const [wipChartType, setWipChartType] = React.useState(wip_chart_type_localstorage || "queue");
+
+  const updateWipChartType = (value) => {
+    setValueToLocalStorage(value);
+    setWipChartType(value);
+  }
+
+  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType};
 
   const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -98,7 +106,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   function handleResetAll() {
     setAppliedFilters(new Map());
-    setWipChartType("queue");
+    updateWipChartType("queue");
     // reset chart components state
     resetComponentState();
   }
@@ -116,7 +124,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
     appliedFilters.delete(FILTERS.CATEGORY);
 
-    setWipChartType("age");
+    updateWipChartType("age");
 
     // remove age, currentInteraction, category filter
     setAppliedFilters(new Map(appliedFilters));
@@ -170,7 +178,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
           );
         });
-        setWipChartType("motion");
+        updateWipChartType("motion");
       }}
     />
   );
@@ -199,7 +207,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
           );
         });
-        setWipChartType("motion");
+        updateWipChartType("motion");
       }}
     />
   );
@@ -333,7 +341,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
               );
             });
-            setWipChartType("age");
+            updateWipChartType("age");
           }}
         />
       );
@@ -351,7 +359,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
               );
             });
-            setWipChartType("age");
+            updateWipChartType("age");
           }}
         />
       );
@@ -566,7 +574,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             <GroupingSelector
               label="Show"
               value={wipChartType}
-              onGroupingChanged={setWipChartType}
+              onGroupingChanged={updateWipChartType}
               groupings={[
                 {
                   key: "queue",
