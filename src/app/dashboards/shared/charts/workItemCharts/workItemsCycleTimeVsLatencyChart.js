@@ -60,7 +60,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   const workItemsByState = buildIndex(workItems, workItem => workItem.state);
 
   return Object.keys(workItemsByState).sort(
-    (stateTypeA, stateTypeB) => workItemsByState[stateTypeA].length - workItemsByState[stateTypeB].length
+    (stateTypeA, stateTypeB) => workItemsByState[stateTypeA][0]?.flowType - workItemsByState[stateTypeB][0]?.flowType
   ).map(
     state => (
       {
