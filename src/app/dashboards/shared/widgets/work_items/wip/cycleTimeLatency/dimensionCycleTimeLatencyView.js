@@ -5,7 +5,7 @@ import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummary
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
-import {AppTerms} from "../../../../config";
+import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {useIntl} from "react-intl";
 import {EVENT_TYPES, localNow, useBlurClass, useFeatureFlag} from "../../../../../../helpers/utility";
 import {
@@ -20,12 +20,16 @@ import {
   QuadrantNames,
   getQuadrantDescription,
   QueueSizeFilterWrapper,
+  getFilterValue,
+  FILTERS,
+  filterFns,
+  getFilteredData,
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
-import { WipQueueSizeChart } from "../../../../charts/workItemCharts/wipQueueSizeChart";
+import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -64,65 +68,66 @@ export const DimensionCycleTimeLatencyView = ({
   const blurClass = useBlurClass();
   const tick = useGenerateTicks(2, 60000);
 
-  const workItems = React.useMemo(() => {
+  // maintain all filters state over here
+  const {appliedFilters = new Map(), setAppliedFilters} = displayBag;
+  const chart_category = stateTypes.includes(WorkItemStateTypes.deliver) ? "delivery" : "engineering";
+
+  // chart related state
+  const [selectedQuadrant] = getFilterValue(appliedFilters, FILTERS.QUADRANT_PANEL);
+  const [chartCategory] = getFilterValue(appliedFilters, FILTERS.PRIMARY_CATEGORY);
+  const [currentInteraction, secondaryData] = getFilterValue(appliedFilters, FILTERS.CURRENT_INTERACTION);
+
+  // Update the state filter based on exclude flag
+  filterFns[FILTERS.STATE] = (w, [selectedState]) => {
+    return selectedState.value === undefined || selectedState.value === w.state;
+  };
+
+  const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
-  const [selectedQuadrant, setSelectedQuadrant] = React.useState();
-  const [quadrantStateType, setQuadrantStateType] = React.useState();
-  const [histogramBucket, setHistogramBucket] = React.useState();
-
-  const [chartState, updateChartState] = React.useReducer(
-    (data, partialData) => {
-      const nextState = {
-        ...data,
-        ...partialData,
-      };
-
-      return nextState;
-    },
-    {chartFilter: undefined, chartClicked: undefined}
-  );
-
-  let filterFns = {
-    quadrant: (w) =>
-      selectedQuadrant === undefined ||
-      selectedQuadrant === getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
-    queuesize: (w) => {
-      return (
-        chartState.chartFilter == null || chartState.chartClicked !== "queuesize" || chartState.chartFilter === w.state
-      );
-    }
-  };
-
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
-    .filter((workItem) => stateTypes == null || stateTypes.indexOf(workItem.stateType) !== -1)
-    .filter(filterFns.quadrant)
-    .filter(filterFns.queuesize);
-
   function handleResetAll() {
-    setSelectedQuadrant(undefined);
-    setQuadrantStateType(undefined);
-
-    updateChartState({chartFilter: undefined, chartClicked: undefined});
+    setAppliedFilters(new Map());
+    displayBag?.setWipChartType("queue");
   }
 
-  function handleClearClick() {
-    updateChartState({chartFilter: undefined, chartClicked: undefined});
+  function handleQuadrantClear() {
+    appliedFilters.delete(FILTERS.QUADRANT_PANEL);
+    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
+
+    setAppliedFilters(new Map(appliedFilters));
   }
 
-  const seriesData = useCycleTimeLatencyHook(workItemsWithAggregateDurations);
+  const initialData = getWorkItemDurations(initWorkItems).map((w) => ({
+    ...w,
+    quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
+  }));
+
+  const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
+
+  // this data is always up-to-date with all the applied filters
+  const latestData =
+    chartCategory == null || chartCategory === chart_category
+      ? getFilteredData({
+          initData: initTransformedData,
+          appliedFilters,
+          filterFns,
+        })
+      : [];
+
+  const seriesData = useCycleTimeLatencyHook(latestData);
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
 
   let histogramElement = (
     <WorkItemsDetailHistogramChart
       chartConfig={{
-        title: getTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, stageName}),
+        title: getTitleForHistogram({workItems: latestData, specsOnly, stageName}),
         align: {align: "left"},
-        subtitle: getSubTitleForHistogram({workItems: workItemsWithAggregateDurations, specsOnly, intl}),
+        subtitle: getSubTitleForHistogram({workItems: latestData, specsOnly, intl}),
         xAxisTitle: "Age in Days",
         legendItemClick: () => {},
         tooltip: getTooltipForAgeLatency,
@@ -134,18 +139,24 @@ export const DimensionCycleTimeLatencyView = ({
       series={seriesData}
       onPointClick={({options, category}) => {
         const bucket = options.bucket;
-        setHistogramBucket(category);
-        updateChartState?.({chartFilter: bucket, chartClicked: "histogram"});
+        setAppliedFilters((prev) => {
+          return new Map(
+            prev
+              .set(FILTERS.PRIMARY_CATEGORY, [chart_category])
+              .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+          );
+        });
+        displayBag?.setWipChartType("motion");
       }}
     />
   );
-  
+
   let chartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
       stageName={stageName}
       specsOnly={specsOnly}
-      workItems={workItemsWithAggregateDurations}
+      workItems={latestData}
       stateTypes={stateTypes}
       groupByState={groupByState}
       cycleTimeTarget={cycleTimeTarget}
@@ -162,32 +173,36 @@ export const DimensionCycleTimeLatencyView = ({
     />
   );
 
-  const flowEfficiencyQuadrantSummaryElement = <FlowEfficiencyQuadrantSummaryCard
-  workItems={workItems}
-  stateTypes={stateTypes}
-  specsOnly={specsOnly}
-  cycleTimeTarget={cycleTimeTarget}
-  latencyTarget={latencyTarget}
-  className="tw-mx-auto tw-w-[98%]"
-  onQuadrantClick={(quadrant) => {
-    if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && quadrantStateType === stageName) {
-      handleResetAll();
-    } else {
-      const workItemsWithAggregateDurations = getWorkItemDurations(workItems)
-        .filter((workItem) => (stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true))
-        .filter(
-          (x) =>
-            quadrant === undefined ||
-            quadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget)
-        );
+  let flowEfficiencyQuadrantSummaryElement = (
+    <FlowEfficiencyQuadrantSummaryCard
+      workItems={appliedFilters.size === 0 ? initialData : latestData}
+      stateTypes={stateTypes}
+      specsOnly={specsOnly}
+      cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
+      className="tw-mx-auto tw-w-[98%]"
+      onQuadrantClick={(quadrant) => {
+        if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === chart_category) {
+          handleQuadrantClear();
+        } else {
+          setAppliedFilters((prev) => {
+            return new Map(
+              prev.set(FILTERS.QUADRANT_PANEL, [quadrant]).set(FILTERS.PRIMARY_CATEGORY, [chart_category])
+            );
+          });
+        }
+      }}
+      selectedQuadrant={selectedQuadrant}
+    />
+  );
 
-      setSelectedQuadrant(quadrant);
-      setQuadrantStateType(stageName);
-      updateChartState?.({chartFilter: workItemsWithAggregateDurations, chartClicked: "quadrant"});
+  if (displayBag?.wipChartType === "motion") {
+    if (currentInteraction === "histogram") {
+      flowEfficiencyQuadrantSummaryElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {
+        onQuadrantClick: undefined,
+      });
     }
-  }}
-  selectedQuadrant={selectedQuadrant}
-/>;
+  }
 
   let quadrantSummaryElement = (
     <div className={`tw-flex tw-h-[23%] tw-items-center tw-bg-chart`}>
@@ -195,7 +210,7 @@ export const DimensionCycleTimeLatencyView = ({
         flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
-          workItems={workItems}
+          workItems={initWorkItems}
           stateTypes={stateTypes}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
@@ -209,75 +224,71 @@ export const DimensionCycleTimeLatencyView = ({
 
   if (ageLatencyFeatureFlag) {
     const originalChartElement = chartElement;
-    let latencyChartElement = React.cloneElement(chartElement, {workItems: chartState.chartFilter});
-    const flowEfficiencyElement = React.cloneElement(flowEfficiencyQuadrantSummaryElement, {
-      workItems: chartState.chartFilter,
-      onQuadrantClick: undefined,
-    });
 
-    const ageFilterElement = <AgeFilterWrapper selectedFilter={histogramBucket} handleClearClick={handleClearClick} />;
-    const quadrantFilterElement = selectedQuadrant && (
+    let selectedFilter = "";
+    if (currentInteraction === "histogram") {
+      selectedFilter = secondaryData.histogramBucket;
+    }
+    if (currentInteraction === "queuesize") {
+      selectedFilter = appliedFilters.get(FILTERS.STATE)[0].value;
+    }
+
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />;
+    const quadrantFilterElement = selectedQuadrant && chartCategory === chart_category && (
       <QuadrantFilterWrapper
         selectedQuadrant={QuadrantNames[selectedQuadrant]}
         selectedFilter={getQuadrantDescription({intl, cycleTimeTarget, latencyTarget})[selectedQuadrant]}
         handleClearClick={handleResetAll}
       />
     );
+    const queueSizeFilterElement = (
+      <QueueSizeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />
+    );
+
+    let filterElement;
+    if (currentInteraction === "histogram" && chartCategory === chart_category) {
+      filterElement = ageFilterElement;
+    }
+
+    if (currentInteraction === "queuesize" && chartCategory === chart_category) {
+      filterElement = queueSizeFilterElement;
+    }
 
     // wipChartType 'queue', 'age', 'motion'
     if (displayBag?.wipChartType === "queue") {
       const queueSizeElement = (
         <WipQueueSizeChart
-          items={workItemsWithAggregateDurations}
+          items={latestData}
           stageName={stageName}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
-            updateChartState({
-              chartFilter: obj.options.name,
-              chartClicked: "queuesize",
+            setAppliedFilters((prev) => {
+              return new Map(
+                prev
+                  .set(FILTERS.PRIMARY_CATEGORY, [chart_category])
+                  .set(FILTERS.CURRENT_INTERACTION, ["queuesize"])
+                  .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
+              );
             });
+            displayBag?.setWipChartType("age");
           }}
         />
       );
-      const queueSizeFilterElement = (
-        <QueueSizeFilterWrapper selectedFilter={chartState.chartFilter} handleClearClick={handleClearClick} />
-      );
 
       // chartState.chartClicked === null && chartState.selectedCategory == null
-      chartElement = <div className="tw-relative tw-h-full">{queueSizeElement}</div>;
-
-      // if queuesize chart is clicked
-      if (chartState.chartClicked === "queuesize") {
-        chartElement = (
-          <div className="tw-relative tw-h-full">
-            {histogramElement} {queueSizeFilterElement}
-          </div>
-        );
-      }
-      // if histogram is clicked
-      if (chartState.chartClicked === "histogram") {
-        chartElement = (
-          <div className="tw-relative tw-h-full">
-            {latencyChartElement} {flowEfficiencyElement} {ageFilterElement}
-          </div>
-        );
-      }
+      chartElement = (
+        <div className="tw-relative tw-h-full">
+          {queueSizeElement} {filterElement}
+        </div>
+      );
     }
 
     if (displayBag?.wipChartType === "age") {
-      // show 2 modes
-      // chartState.chartClicked === null
-      chartElement = <div className="tw-relative tw-h-full">{histogramElement}</div>;
-
-      // show 2 modes
-      // if histogram chart is clicked
-      if (chartState.chartClicked === "histogram") {
-        chartElement = (
-          <div className="tw-relative tw-h-full">
-            {latencyChartElement} {flowEfficiencyElement} {ageFilterElement}
-          </div>
-        );
-      }
+      chartElement = (
+        <div className="tw-relative tw-h-full">
+          {histogramElement} {filterElement}
+        </div>
+      );
     }
 
     if (displayBag?.wipChartType === "motion") {
@@ -285,28 +296,24 @@ export const DimensionCycleTimeLatencyView = ({
         <div className="tw-relative tw-h-full">
           {originalChartElement}
           {quadrantFilterElement}
+          {filterElement}
         </div>
       );
-
     }
 
     if (displayBag?.wipChartType !== "motion") {
       quadrantSummaryElement = null;
-    }  
+    }
+
+    if (chartCategory != null && chartCategory !== chart_category) {
+      quadrantSummaryElement = null;
+    }
   }
 
   return (
     <VizRow h={1}>
       <VizItem w={1}>
-        <div
-          className={
-            displayBag?.wipChartType === "motion" || !ageLatencyFeatureFlag || chartState.chartClicked === "histogram"
-              ? "tw-relative tw-h-[77%]"
-              : "tw-h-full"
-          }
-        >
-          {chartElement}
-        </div>
+        <div className={quadrantSummaryElement ? "tw-relative tw-h-[77%]" : "tw-h-full"}>{chartElement}</div>
         {quadrantSummaryElement}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
