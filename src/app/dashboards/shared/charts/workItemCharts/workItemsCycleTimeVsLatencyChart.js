@@ -59,38 +59,33 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
   // We group the work items into series by state.
   const workItemsByState = buildIndex(workItems, workItem => workItem.state);
 
-  return Object.keys(workItemsByState).sort(
-    (stateTypeA, stateTypeB) => workItemsByState[stateTypeA][0]?.flowType - workItemsByState[stateTypeB][0]?.flowType
-  ).map(
-    state => (
-      {
-        type: "scatter",
-        key: `${state}`,
-        id: `${state}`,
-        name: view === "primary" ? elide(state.toLowerCase(), 10) : state.toLowerCase(),
+  return Object.keys(workItemsByState)
+    .sort((stateTypeA, stateTypeB) => {
+      if (workItemsByState[stateTypeA][0]?.flowType < workItemsByState[stateTypeB][0]?.flowType) return -1;
+      if (workItemsByState[stateTypeA][0]?.flowType > workItemsByState[stateTypeB][0]?.flowType) return 1;
+      return 0;
+    })
+    .map((state) => ({
+      type: "scatter",
+      key: `${state}`,
+      id: `${state}`,
+      name: view === "primary" ? elide(state.toLowerCase(), 10) : state.toLowerCase(),
+      marker: {
+        symbol: "circle",
+      },
+      allowPointSelect: true,
+      color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
+      data: workItemsByState[state].map((workItem) => ({
+        x: workItem.cycleTime,
+        y: workItem.latency || workItem.cycleTime,
+
         marker: {
-
-          symbol: "circle"
+          symbol: Symbols.WorkItemType[workItem.workItemType],
         },
-        allowPointSelect: true,
-        color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
-        data: workItemsByState[state].map(
-          workItem => (
-            {
-              x: workItem.cycleTime,
-              y: workItem.latency || workItem.cycleTime,
-
-              marker: {
-                symbol: Symbols.WorkItemType[workItem.workItemType]
-              },
-              workItem: workItem
-            }
-          )
-        ),
-        cursor: "pointer"
-      }
-    )
-  );
+        workItem: workItem,
+      })),
+      cursor: "pointer",
+    }));
 }
 
 export function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
