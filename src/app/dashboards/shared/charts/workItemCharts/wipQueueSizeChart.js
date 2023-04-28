@@ -17,6 +17,17 @@ function getStateCounts(items) {
   }, {});
   return obj;
 }
+
+function compare(a, b) {
+  if (a[1].flowType < b[1].flowType) {
+    return -1;
+  }
+  if (a[1].flowType > b[1].flowType) {
+    return 1;
+  }
+  return 0;
+}
+
 // Return an array of  HighChart series data structures from the
 // passed in props.
 function getSeries(items, specsOnly) {
@@ -30,9 +41,11 @@ function getSeries(items, specsOnly) {
           format: `{y} ${itemsDesc(specsOnly)}`,
         },
       ],
-      data: Object.entries(getStateCounts(items)).map((e, index) => {
-        return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
-      }),
+      data: Object.entries(getStateCounts(items))
+        .sort(compare)
+        .map((e, index) => {
+          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
+        }),
     },
   ];
 }
@@ -61,7 +74,7 @@ export const WipQueueSizeChart = Chart({
       },
       xAxis: {
         type: 'linear',
-        categories: Object.keys(getStateCounts(items))
+        categories: Object.entries(getStateCounts(items)).sort(compare).flatMap(e => e[0])
       },
       yAxis: {
         type: 'linear',
@@ -89,9 +102,7 @@ export const WipQueueSizeChart = Chart({
           })
         }
       },
-      series: [
-        ...series
-      ],
+      series: series,
       plotOptions: {
         bar: {
           maxPointWidth: 50
