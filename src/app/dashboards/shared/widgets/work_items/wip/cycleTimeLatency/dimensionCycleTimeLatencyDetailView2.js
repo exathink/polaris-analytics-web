@@ -404,11 +404,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
         </div>
       );
     }
-
-    if (wipChartType !== "motion") {
-      codingQuadrantSummaryElement = null;
-      deliveryQuadrantSummaryElement = null;
-    }
   }
 
   let engineeringElement = (
@@ -427,31 +422,29 @@ export const DimensionCycleTimeLatencyDetailView = ({
     </div>
   );
   if (ageLatencyFeatureFlag) {
-    if (wipChartType === "motion") {
-      if (currentInteraction === "histogram") {
-        codingQuadrantSummaryElement = React.cloneElement(codingQuadrantSummaryElement, {
-          workItems: latestData,
-          onQuadrantClick: undefined,
-        });
-        deliveryQuadrantSummaryElement = React.cloneElement(deliveryQuadrantSummaryElement, {
-          workItems: latestData,
-          onQuadrantClick: undefined,
-        });
-      }
-
-      engineeringElement = (
-        <div
-          className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
-          key={resetComponentStateKey}
-          data-testid="wip-latency-chart-panels"
-        >
-          <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
-          <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
-          {codingChartElement}
-          {deliveryChartElement}
-        </div>
-      );
+    if (currentInteraction === "histogram") {
+      codingQuadrantSummaryElement = React.cloneElement(codingQuadrantSummaryElement, {
+        workItems: latestData,
+        onQuadrantClick: undefined,
+      });
+      deliveryQuadrantSummaryElement = React.cloneElement(deliveryQuadrantSummaryElement, {
+        workItems: latestData,
+        onQuadrantClick: undefined,
+      });
     }
+
+    engineeringElement = (
+      <div
+        className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[34%_66%] tw-gap-x-2"
+        key={resetComponentStateKey}
+        data-testid="wip-latency-chart-panels"
+      >
+        <div className="tw-bg-chart">{codingQuadrantSummaryElement}</div>
+        <div className="tw-bg-chart">{deliveryQuadrantSummaryElement}</div>
+        {codingChartElement}
+        {deliveryChartElement}
+      </div>
+    );
   }
 
   // uniqueItems for all dropdowns
