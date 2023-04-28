@@ -301,9 +301,9 @@ export const DimensionCycleTimeLatencyView = ({
       );
     }
 
-    if (displayBag?.wipChartType !== "motion") {
-      quadrantSummaryElement = null;
-    }
+    // if (displayBag?.wipChartType !== "motion") {
+    //   quadrantSummaryElement = null;
+    // }
 
     if (chartCategory != null && chartCategory !== chart_category) {
       quadrantSummaryElement = null;
