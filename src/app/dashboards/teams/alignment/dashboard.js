@@ -86,7 +86,7 @@ function DimensionThroughputDashboard({
         />
         <DashboardWidget
           name="flow-type-flow-mix"
-          title={`${selectedMetric === 'workItemsWithCommits' ? 'Allocations by Volume' : 'Cost Analysis'}`}
+          title={`${selectedMetric === 'workItemsWithCommits' ? 'Allocations by Volume' : 'Allocations by Effort'}`}
           className={styles.valueMix}
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
