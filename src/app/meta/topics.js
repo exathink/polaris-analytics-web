@@ -69,7 +69,7 @@ export const Topics = {
   },
   valueMix: {
     name: 'valueMix',
-    display: () => (<FormattedMessage id='topics.valueMix' defaultMessage="Cost Analysis"/>),
+    display: () => (<FormattedMessage id='topics.valueMix' defaultMessage="Allocations"/>),
     icon: 'ion-android-options'
   },
   alignment: {

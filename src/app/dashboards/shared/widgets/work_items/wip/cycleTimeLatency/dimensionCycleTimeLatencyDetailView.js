@@ -631,8 +631,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
-        <div className={classNames(styles.title, "tw-text-2xl")}>Queue Monitoring</div>
-        <div className={styles.filters}>
+        <div className={classNames(styles.title, "tw-text-2xl")}>Flow Efficiency</div>
+        <div className={classNames(styles.filters)}>
           <SelectDropdown
             title="WorkStream"
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
