@@ -140,7 +140,7 @@ function WipDashboard({
 
         <DashboardWidget
           name="summary-wip"
-          className="tw-col-span-2 tw-col-start-3"
+          className="tw-col-span-3 tw-col-start-4"
           title={""}
           render={({view}) => (
             <DimensionWipSummaryWidget
