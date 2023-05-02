@@ -351,7 +351,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
-        displayType="card"
+        displayType="cardAdvanced"
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
@@ -363,7 +363,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
       <AvgAge
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
-        displayType="card"
+        displayType="cardAdvanced"
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
