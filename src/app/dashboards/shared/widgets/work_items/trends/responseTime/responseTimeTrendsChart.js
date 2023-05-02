@@ -115,7 +115,7 @@ export const ResponseTimeTrendsChart = (
 
     {
       key: "avgLatency",
-      displayName: `Delivery`,
+      displayName: `Shipping`,
       visible: isVisibleByDefault(defaultSeries, "latency"),
       type: "areaspline",
       stacked: true,
@@ -131,7 +131,7 @@ export const ResponseTimeTrendsChart = (
     },
     {
       key: "avgEffort",
-      displayName: `Cost of Change`,
+      displayName: `Effort`,
       visible: isVisibleByDefault(defaultSeries, "effort"),
       type: "spline",
       color: ResponseTimeMetricsColor.effort
