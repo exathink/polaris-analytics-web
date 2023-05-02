@@ -131,7 +131,7 @@ export const ResponseTimeTrendsChart = (
     },
     {
       key: "avgEffort",
-      displayName: `Avg. Effort`,
+      displayName: `Effort`,
       visible: isVisibleByDefault(defaultSeries, "effort"),
       type: "spline",
       color: ResponseTimeMetricsColor.effort
