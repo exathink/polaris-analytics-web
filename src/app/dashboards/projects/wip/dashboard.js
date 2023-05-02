@@ -164,28 +164,6 @@ function WipDashboard({
           hideTitlesInDetailView={true}
         />
 
-        <DashboardWidget
-          name="base-wip"
-          className="tw-col-span-2 tw-col-start-5"
-          title={""}
-          render={({view}) => (
-            <DimensionWipWidget
-              dimension={DIMENSION}
-              instanceKey={key}
-              tags={workItemSelectors}
-              specsOnly={specsOnly}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTargetPercentile={leadTimeConfidenceTarget}
-              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-              view={view}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-          showDetail={false}
-          hideTitlesInDetailView={true}
-        />
       </DashboardRow>
       <DashboardRow title={" "}>
         <DashboardWidget
