@@ -9,15 +9,16 @@ import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work
 
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
-import {DimensionWipFlowMetricsWidget} from "../../shared/widgets/work_items/wip/flowMetrics/dimensionWipMetricsWidget";
-import {DimensionWipWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipWidget";
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
 import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
-import { AGE_LATENCY_ENHANCEMENTS } from "../../../../config/featureFlags";
+import {AGE_LATENCY_ENHANCEMENTS} from "../../../../config/featureFlags";
 import {useQueryParamState} from "../shared/helper/hooks";
 import {useLocalStorage} from "../../../helpers/hooksUtil";
+import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
+import classNames from "classnames";
+import fontStyles from "../../../framework/styles/fonts.module.css";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -63,6 +64,7 @@ function WipDashboard({
     flowAnalysisPeriod,
     includeSubTasksWipInspector,
     latencyTarget,
+    trendsAnalysisPeriod,
   } = settingsWithDefaults;
 
   const DIMENSION = "project";
@@ -110,33 +112,77 @@ function WipDashboard({
         )}
       </div>
       <DashboardRow>
-        <DashboardWidget
-          name="pipeline"
-          className="tw-col-span-2 tw-col-start-1"
-          title={""}
-          render={({view}) => (
-            <DimensionWipFlowMetricsWidget
-              dimension={DIMENSION}
-              instanceKey={key}
-              tags={workItemSelectors}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestPullRequestEvent={latestPullRequestEvent}
-              days={flowAnalysisPeriod}
-              leadTimeTarget={leadTimeTarget}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTargetPercentile={leadTimeConfidenceTarget}
-              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              view={view}
-              specsOnly={specsOnly}
-              context={context}
-              includeSubTasks={includeSubTasksWipInspector}
+        <div className="tw-col-span-3 tw-col-start-1 tw-h-full tw-bg-ghostwhite">
+          <div className="tw-grid tw-grid-cols-2 tw-gap-1">
+            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Flow</div>
+
+            <DashboardWidget
+              name="throughput-summary-card"
+              title=""
+              className=""
+              render={({view}) => {
+                return (
+                  <FlowMetricsTrendsWidget
+                    dimension="project"
+                    instanceKey={key}
+                    tags={workItemSelectors}
+                    // Summary Card Data
+                    // Throughput for a single measurement period
+                    // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
+                    // days = measurementWindow = samplingFrequency
+                    // days is set to flowAnalysisPeriod by default
+                    days={flowAnalysisPeriod}
+                    measurementWindow={flowAnalysisPeriod}
+                    samplingFrequency={flowAnalysisPeriod}
+                    trendAnalysisPeriod={trendsAnalysisPeriod}
+                    flowAnalysisPeriod={flowAnalysisPeriod}
+                    targetPercentile={responseTimeConfidenceTarget}
+                    specsOnly={specsOnly}
+                    latestCommit={latestCommit}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    includeSubTasks={includeSubTasksWipInspector}
+                    view={view}
+                    displayBag={{
+                      metric: "volumeWithThroughput",
+                      displayType: "cardAdvanced",
+                      iconsShiftLeft: false,
+                      trendValueClass: "tw-text-2xl",
+                    }}
+                  />
+                );
+              }}
             />
-          )}
-          showDetail={false}
-          hideTitlesInDetailView={true}
-        />
+
+            <DashboardWidget
+              name="cycletime-summary"
+              title=""
+              className=""
+              render={({view}) => {
+                return (
+                  <FlowMetricsTrendsWidget
+                    key={specsOnly}
+                    dimension="project"
+                    instanceKey={key}
+                    tags={workItemSelectors}
+                    days={flowAnalysisPeriod}
+                    measurementWindow={flowAnalysisPeriod}
+                    samplingFrequency={flowAnalysisPeriod}
+                    trendAnalysisPeriod={trendsAnalysisPeriod}
+                    flowAnalysisPeriod={flowAnalysisPeriod}
+                    targetPercentile={responseTimeConfidenceTarget}
+                    specsOnly={specsOnly}
+                    latestCommit={latestCommit}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    includeSubTasks={includeSubTasksWipInspector}
+                    cycleTimeTarget={cycleTimeTarget}
+                    displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                  />
+                );
+              }}
+              showDetail={false}
+            />
+          </div>
+        </div>
 
         <DashboardWidget
           name="summary-wip"
@@ -163,7 +209,6 @@ function WipDashboard({
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-
       </DashboardRow>
       <DashboardRow title={" "}>
         <DashboardWidget

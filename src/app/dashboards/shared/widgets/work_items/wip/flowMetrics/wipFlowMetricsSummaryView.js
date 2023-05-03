@@ -344,7 +344,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
   const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
 
   return (
-    <div className="tw-grid tw-h-full tw-grid-cols-2 tw-gap-1">
+    <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-h-full tw-grid-rows-[auto_1fr]">
       <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
       <Wip
         title={<span>Total</span>}
