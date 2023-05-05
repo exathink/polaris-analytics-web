@@ -430,7 +430,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
     return null;
   }
   return (
-    <div className="tw-grid tw-grid-flow-col tw-grid-cols-3 tw-gap-2">
+    <div className="tw-grid tw-grid-flow-col tw-grid-cols-3 tw-grid-rows-[auto_1fr_1fr] tw-gap-2 tw-h-full">
       <div className="tw-row-span-3">
         <AvgCycleTime
           displayType="cardAdvanced"
@@ -455,7 +455,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
           target={cycleTimeTarget}
         />
       </div>
-      <div className="">
+      <div className="tw-self-end">
         <span className={"tw-textXs tw-grey tw-italic"}>Value Added</span>
       </div>
       <div className="">
@@ -504,7 +504,7 @@ export const CycleTimeDetailView = ({cycleMetricsTrends, cycleTimeTarget, measur
           target={cycleTimeTarget}
         />
       </div>
-      <div className="">
+      <div className="tw-self-end">
         <span className={"tw-textXs tw-grey tw-italic"}>Non Value-Added</span>
       </div>
       <div className="">
