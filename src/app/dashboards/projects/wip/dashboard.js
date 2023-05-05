@@ -112,7 +112,32 @@ function WipDashboard({
         )}
       </div>
       <DashboardRow>
-        <div className="tw-col-span-3 tw-col-start-1 tw-h-full tw-bg-ghostwhite">
+      <DashboardWidget
+          name="summary-wip"
+          className="tw-col-span-3 tw-col-start-1"
+          title={""}
+          render={({view}) => (
+            <DimensionWipSummaryWidget
+              dimension={DIMENSION}
+              instanceKey={key}
+              tags={workItemSelectors}
+              specsOnly={specsOnly}
+              latestCommit={latestCommit}
+              latestWorkItemEvent={latestWorkItemEvent}
+              cycleTimeTarget={cycleTimeTarget}
+              targetPercentile={responseTimeConfidenceTarget}
+              leadTimeTargetPercentile={leadTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
+              days={flowAnalysisPeriod}
+              view={view}
+              includeSubTasks={includeSubTasksWipInspector}
+            />
+          )}
+          showDetail={false}
+          hideTitlesInDetailView={true}
+        />
+        <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite">
           <div className="tw-grid tw-grid-cols-2 tw-gap-1">
             <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Flow</div>
 
@@ -184,31 +209,7 @@ function WipDashboard({
           </div>
         </div>
 
-        <DashboardWidget
-          name="summary-wip"
-          className="tw-col-span-3 tw-col-start-4"
-          title={""}
-          render={({view}) => (
-            <DimensionWipSummaryWidget
-              dimension={DIMENSION}
-              instanceKey={key}
-              tags={workItemSelectors}
-              specsOnly={specsOnly}
-              latestCommit={latestCommit}
-              latestWorkItemEvent={latestWorkItemEvent}
-              cycleTimeTarget={cycleTimeTarget}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTargetPercentile={leadTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-              days={flowAnalysisPeriod}
-              view={view}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-          showDetail={false}
-          hideTitlesInDetailView={true}
-        />
+
       </DashboardRow>
       <DashboardRow title={" "}>
         <DashboardWidget
