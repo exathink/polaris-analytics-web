@@ -125,6 +125,7 @@ export function WorkItemStateTypeMapView({
   function handleChange(index) {
     const workItemSource = workItemSources[index];
     dispatch({ type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource });
+    dispatch({ type: actionTypes.RESET_RELEASE_STATUS_RECORDS, payload: workItemSource });
     dispatch({ type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: { ...workItemSource, mode: mode.INIT } });
   }
 
