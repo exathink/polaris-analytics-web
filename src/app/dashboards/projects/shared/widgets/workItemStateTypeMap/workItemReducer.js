@@ -84,7 +84,7 @@ export function workItemReducer(state, action) {
     case actionTypes.RESET_RELEASE_STATUS_RECORDS: {
       return {
         ...state,
-        flowTypeRecords: getInitialMapping(action.payload, "releaseStatus"),
+        releaseStatusRecords: getInitialMapping(action.payload, "releaseStatus"),
       }
     }
     case actionTypes.UPDATE_WORKITEM_SOURCE: {

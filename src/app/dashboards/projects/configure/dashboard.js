@@ -39,14 +39,14 @@ export function ValueStreamMappingInitialDashboard() {
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
 
-          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}>
-            <DashboardRow h={"10%"}>
+          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-[auto_1fr_1fr_1fr_1fr_1fr] tw-gap-x-2">
+            <DashboardRow>
               <DashboardWidget
-                w={0.96}
+                className="tw-col-span-2 tw-row-start-1 tw-col-start-1"
                 render={() => (
-                  <div className={styles.stateTypeMappingWrapper}>
-                    <div className={styles.stateTypeTitleWrapper} id="state-type-mapping">
-                      <div className={classNames(fontStyles["text-lg"], fontStyles["font-normal"], styles.title1)}>
+                  <div className="tw-flex tw-flex-col tw-items-center tw-bg-white tw-p-2">
+                    <div className="tw-flex tw-flex-col tw-items-center" id="state-type-mapping">
+                      <div className={classNames(fontStyles["text-lg"], fontStyles["font-normal"])}>
                         Configure the delivery process mapping for this value stream
                       </div>
                       <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
@@ -59,11 +59,10 @@ export function ValueStreamMappingInitialDashboard() {
                 )}
               />
             </DashboardRow>
-            <DashboardRow h={"65%"} title={" "}>
+            <DashboardRow>
               <DashboardWidget
-                w={0.35}
+                className="tw-row-start-2 tw-col-start-1 tw-row-span-4"
                 name="project-pipeline-detailed"
-                title={" "}
                 infoConfig={PipelineFunnelWidgetInitialInfoConfig}
                 render={({ view }) => (
                   <ProjectPipelineFunnelWidget
@@ -81,8 +80,7 @@ export function ValueStreamMappingInitialDashboard() {
                 showDetail={false}
               />
               <DashboardWidget
-                w={0.6}
-                title={" "}
+                className="tw-row-start-2 tw-col-start-2 tw-row-span-5"
                 infoConfig={DeliveryProcessMappingInitialInfoConfig}
                 name="workitem-statetype-map"
                 render={({view}) => {

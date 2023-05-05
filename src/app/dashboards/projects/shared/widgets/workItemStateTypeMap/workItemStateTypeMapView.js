@@ -125,6 +125,7 @@ export function WorkItemStateTypeMapView({
   function handleChange(index) {
     const workItemSource = workItemSources[index];
     dispatch({ type: actionTypes.RESET_FLOW_TYPE_RECORDS, payload: workItemSource });
+    dispatch({ type: actionTypes.RESET_RELEASE_STATUS_RECORDS, payload: workItemSource });
     dispatch({ type: actionTypes.REPLACE_WORKITEM_SOURCE, payload: { ...workItemSource, mode: mode.INIT } });
   }
 
@@ -249,11 +250,19 @@ export function WorkItemStateTypeMapView({
           <WorkItemStateTypeMapTable
             testId="workitem-state-type-table"
             key={currentWorkItemSource?.key}
-            tableData={stateMappings.sort(
-              (a, b) =>
+            tableData={stateMappings.sort((a, b) => {
+              if (a.stateType === "unmapped" && b.stateType !== "unmapped") {
+                return 1;
+              } else if (a.stateType !== "unmapped" && b.stateType === "unmapped") {
+                return -1;
+              } else if (a.stateType === "unmapped" && b.stateType === "unmapped") {
+                return 0;
+              }
+              return (
                 Object.keys(WorkItemStateTypeDisplayName).indexOf(a.stateType) -
                 Object.keys(WorkItemStateTypeDisplayName).indexOf(b.stateType)
-            )}
+              );
+            })}
             columns={columns}
           />
         </div>
