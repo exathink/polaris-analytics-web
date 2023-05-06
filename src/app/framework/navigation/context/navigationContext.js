@@ -22,7 +22,7 @@ class NavigationContextProvider extends React.Component {
       filterTopics: this.filterTopics.bind(this),
       showOptionalTopics: this.showOptionalTopics.bind(this),
       setPolling: this.setPolling.bind(this),
-      polling: true,
+      polling: false,
       enableVideo: viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE),
       setEnableVideo: this.setEnableVideo.bind(this),
       activeDashboardVideoConfig: undefined,
