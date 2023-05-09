@@ -222,6 +222,15 @@
               "__typename": "FeatureFlag"
             },
             "__typename": "FeatureFlagsEdge"
+          },
+          {
+            "node": {
+              "name": "ui.age_latency_enhancements",
+              "key": "9172b010-da4f-4b10-a5de-98942e54e38c",
+              "enabled": true,
+              "__typename": "FeatureFlag"
+            },
+            "__typename": "FeatureFlagsEdge"
           }
         ],
         "__typename": "FeatureFlagsConnection"
