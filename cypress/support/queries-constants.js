@@ -25,6 +25,7 @@ export const WIP_INSPECTOR = {
   projectFlowMetrics: "projectFlowMetrics",
   projectPipelineCycleMetrics: "projectPipelineCycleMetrics",
   projectPipelineStateDetails: "projectPipelineStateDetails",
+  projectFlowMetricsTrends: "projectFlowMetricsTrends"
 };
 
 export const USER = {
