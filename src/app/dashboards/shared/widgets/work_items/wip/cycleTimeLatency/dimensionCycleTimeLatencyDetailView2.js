@@ -151,7 +151,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     });
 
     return _latestData;
-  }, [appliedFilters, initTransformedData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appliedFilters, initTransformedData, exclude]);
 
   const engineeringWorkItems = React.useMemo(() => latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1), [latestData]);
   const deliveryWorkItems = React.useMemo(() => latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1), [latestData]);
