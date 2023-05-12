@@ -131,10 +131,8 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 selectedQuadrant,
                 blurClass
               }) => {
-
-    const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter(
-      workItem => stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-    ).filter(x => selectedQuadrant === undefined || selectedQuadrant === getQuadrant(x.cycleTime, x.latency, cycleTimeTarget, latencyTarget));
+                
+    const workItemsWithAggregateDurations = workItems;
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
     const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));
