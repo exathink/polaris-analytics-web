@@ -101,8 +101,8 @@ export const PipelineFunnelChart = Chart({
             formatter: function() {
               return (
                 showVolumeOrEffort === "volume" ?
-                  this.point.timeToClear ?
-                    humanizeDuration(this.point.timeToClear)
+                  this.point.stateType === WorkItemStateTypes.backlog && this.point.timeToClear ?
+                    `Supply: ${humanizeDuration(this.point.timeToClear)}`
                     :
                     this.point.stateType === WorkItemStateTypes.closed ?
                       `Throughput: ${i18nNumber(intl, getCloseRate(workItemStateTypeCounts, days), 1)} /day`
