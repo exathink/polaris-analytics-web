@@ -41,6 +41,10 @@ describe("Wip Inspector", () => {
       fixturePath: `${WIP_INSPECTOR.projectPipelineCycleMetrics}.json`,
     });
     cy.interceptQuery({
+      operationName: WIP_INSPECTOR.projectFlowMetricsTrends,
+      fixturePath: `${WIP_INSPECTOR.projectFlowMetricsTrends}.json`,
+    });
+    cy.interceptQuery({
       operationName: WIP_INSPECTOR.projectPipelineStateDetails,
       fixturePath: `${WIP_INSPECTOR.projectPipelineStateDetails}.json`,
     });
@@ -66,6 +70,11 @@ describe("Wip Inspector", () => {
     });
 
     cy.interceptQueryWithResponse({
+      operationName: WIP_INSPECTOR.projectFlowMetricsTrends,
+      body: {data: {project: {cycleMetricsTrends: []}}}
+    });
+
+    cy.interceptQueryWithResponse({
       operationName: WIP_INSPECTOR.projectPipelineCycleMetrics,
       // res.body.data.project.pipelineCycleMetrics = {};
       body: {data: {project: {pipelineCycleMetrics: {}}}}
@@ -81,60 +90,15 @@ describe("Wip Inspector", () => {
       .its("response.body.data.project.cycleMetricsTrends")
       .should("have.length", 0);
 
-    cy.getBySel("throughput").should("contain", `Throughput`);
-    cy.getBySel("throughput").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-      cy.getBySel("trend-percent-val").should("not.exist");
-    });
+    cy.getBySel("summary-wip").should("contain", `Work in Progress`);
+    cy.getBySel("completed-work").should("contain", `Completed Work`);
 
-    cy.log("CycleTime Metric");
-    cy.getBySel("cycletime").should("contain", `Cycle Time`);
-    cy.getBySel("cycletime").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-      cy.getBySel("target").should("not.exist");
-
-      cy.getBySel("trend-percent-val").should("not.exist");
-    });
-
-    cy.log("WIP Total");
-    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`);
-
-    cy.getBySel("wip-total").should("contain", `Total`);
-    cy.getBySel("wip-total").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-      cy.getBySel("target").should("not.exist");
-    });
-
-    cy.log("WIP Age");
-    cy.getBySel("wip-age").should("contain", `Age`);
-    cy.getBySel("wip-age").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-      cy.getBySel("target").should("not.exist");
-    });
-
-    cy.log("Total Effort");
-    cy.getBySel("total-effort").should("contain", `Total Effort`);
-    cy.getBySel("total-effort").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-    });
-
-    cy.log("Commit Latency");
-    cy.getBySel("commit-latency").should("contain", `Commit Latency`);
-    cy.getBySel("commit-latency").within(() => {
-      cy.getBySel("metricValue").should("have.text", "N/A");
-      cy.getBySel("uom").should("not.be.visible");
-    });
 
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
     .its("response.body.data.project.workItems.edges")
     .then(res => {
-      cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Specs in Coding`)
-      cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Specs in Shipping`)
+      cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `${res.length} Work Items in Coding`)
+      cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `0 Work Items in Shipping`)
     });
   });
 
@@ -145,62 +109,12 @@ describe("Wip Inspector", () => {
       .its("response.body.data.project.cycleMetricsTrends")
       .should("have.length", 2);
 
-    cy.getBySel("throughput").should("contain", `Throughput`);
-    cy.getBySel("throughput").within(() => {
-      cy.getBySel("metricValue").should("have.text", "0.7");
-      cy.getBySel("uom").should("have.text", "Specs/Day");
-
-      cy.getBySel("trend-percent-val").should("contain", "15%").and("have.css", "color", "rgba(0, 128, 0, 0.7)");
-    });
-
-    cy.log("CycleTime Metric");
-    cy.getBySel("cycletime").should("contain", `Cycle Time`);
-    cy.getBySel("cycletime").within(() => {
-      cy.getBySel("metricValue").should("have.text", "2.95");
-      cy.getBySel("uom").should("have.text", "Days");
-      cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
-
-      cy.getBySel("trend-percent-val").should("contain", "8.3%").and("have.css", "color", "rgba(255, 0, 0, 0.7)");
-    });
-
-    cy.log("WIP Total");
-    cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineCycleMetrics)}`);
-
-    cy.getBySel("wip-total").should("contain", `Total`);
-    cy.getBySel("wip-total").within(() => {
-      cy.getBySel("metricValue").should("have.text", "2");
-      cy.getBySel("uom").should("have.text", "Specs");
-      cy.getBySel("target").should("have.text", "Limit 5");
-    });
-
-    cy.log("WIP Age");
-    cy.getBySel("wip-age").should("contain", `Age`);
-    cy.getBySel("wip-age").within(() => {
-      cy.getBySel("metricValue").should("have.text", "31.49");
-      cy.getBySel("uom").should("have.text", "Days");
-      cy.getBySel("target").should("have.text", `Target ${ctx.cycleTimeTarget} Days`);
-    });
-
-    cy.log("Total Effort");
-    cy.getBySel("total-effort").should("contain", `Total Effort`);
-    cy.getBySel("total-effort").within(() => {
-      cy.getBySel("metricValue").should("have.text", "1.3");
-      cy.getBySel("uom").should("have.text", "FTE Days");
-    });
-
-    cy.log("Commit Latency");
-    cy.getBySel("commit-latency").should("contain", `Commit Latency`);
-    cy.getBySel("commit-latency").within(() => {
-      cy.getBySel("metricValue").should("have.text", "31.01");
-      cy.getBySel("uom").should("have.text", "Days");
-    });
-
     cy.wait(`@${getQueryFullName(WIP_INSPECTOR.projectPipelineStateDetails)}`)
       .its("response.body.data.project.workItems.edges")
       .should("have.length", 4)
       .then(res => {
-        cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `2 Specs in Coding`)
-        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `2 Specs in Shipping`)
+        cy.getBySel("engineering").find("svg.highcharts-root").should("contain", `2 Work Items in Coding`)
+        cy.getBySel("delivery").find("svg.highcharts-root").should("contain", `2 Work Items in Shipping`)
       });
 
     // TODO: Need to fix this test later, its failing on the cli run but passing on desktop app run
