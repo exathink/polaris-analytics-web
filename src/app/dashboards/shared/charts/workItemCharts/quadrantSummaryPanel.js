@@ -136,7 +136,7 @@ export function QuadrantSummaryPanel({
   size
 }) {
   const intl = useIntl();
-  const workItemsWithAggregateDurations = getWorkItemDurations(workItems).filter((workItem) =>
+  const workItemsWithAggregateDurations = workItems.filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
   const quadrantCounts = getQuadrantCounts({

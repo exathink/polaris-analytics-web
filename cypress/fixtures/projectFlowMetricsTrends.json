@@ -1,0 +1,71 @@
+{
+  "data": {
+    "project": {
+      "cycleMetricsTrends": [
+        {
+          "measurementDate": "2023-05-09",
+          "avgLeadTime": 11.528462873931623,
+          "minCycleTime": 0.1186574074074074,
+          "q1CycleTime": 1.1869444444444444,
+          "medianCycleTime": 2.0571759259259257,
+          "q3CycleTime": 15.507650462962962,
+          "percentileCycleTime": 29.633530092592594,
+          "maxCycleTime": 29.633530092592594,
+          "avgCycleTime": 9.257629357298475,
+          "percentileLeadTime": 29.877199074074074,
+          "maxLeadTime": 29.877199074074074,
+          "totalEffort": 31.0833333333333,
+          "percentileEffort": 7.33333333333333,
+          "avgEffort": 1.82843137254902,
+          "maxEffort": 7.33333333333333,
+          "avgDuration": 1.77368804466231,
+          "maxDuration": 11.5985300925926,
+          "percentileDuration": 11.5985300925926,
+          "avgLatency": 4.8933462428774925,
+          "maxLatency": 28.012060185185184,
+          "percentileLatency": 28.012060185185184,
+          "workItemsWithNullCycleTime": 9,
+          "workItemsInScope": 26,
+          "workItemsWithCommits": 17,
+          "earliestClosedDate": "2023-04-12T15:40:58.006000",
+          "latestClosedDate": "2023-04-28T16:10:20.225000",
+          "targetPercentile": null,
+          "cadence": 7,
+          "__typename": "AggregateCycleMetricsImpl"
+        },
+        {
+          "measurementDate": "2023-04-09",
+          "avgLeadTime": 10.61749393738977,
+          "minCycleTime": 0.20539351851851853,
+          "q1CycleTime": 2.1780324074074073,
+          "medianCycleTime": 4.17931712962963,
+          "q3CycleTime": 8.06638888888889,
+          "percentileCycleTime": 17.2540625,
+          "maxCycleTime": 17.2540625,
+          "avgCycleTime": 5.69537037037037,
+          "percentileLeadTime": 38.11657407407407,
+          "maxLeadTime": 38.11657407407407,
+          "totalEffort": 31.4666666666667,
+          "percentileEffort": 7.5,
+          "avgEffort": 2.09777777777778,
+          "maxEffort": 7.5,
+          "avgDuration": 3.51546141975309,
+          "maxDuration": 17.0980324074074,
+          "percentileDuration": 17.0980324074074,
+          "avgLatency": 1.5082137345679012,
+          "maxLatency": 9.629467592592592,
+          "percentileLatency": 9.629467592592592,
+          "workItemsWithNullCycleTime": 5,
+          "workItemsInScope": 21,
+          "workItemsWithCommits": 15,
+          "earliestClosedDate": "2023-03-15T22:06:02.260000",
+          "latestClosedDate": "2023-04-09T16:26:04.343000",
+          "targetPercentile": null,
+          "cadence": 8,
+          "__typename": "AggregateCycleMetricsImpl"
+        }
+      ],
+      "__typename": "Project"
+    }
+  }
+}

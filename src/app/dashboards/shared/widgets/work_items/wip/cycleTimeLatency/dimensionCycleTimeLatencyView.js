@@ -210,7 +210,7 @@ export const DimensionCycleTimeLatencyView = ({
         flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
-          workItems={initWorkItems}
+          workItems={initialData}
           stateTypes={stateTypes}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
