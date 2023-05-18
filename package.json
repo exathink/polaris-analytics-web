@@ -8,6 +8,7 @@
     "@apollo/client": "^3.3.11",
     "@formatjs/intl-pluralrules": "^4.0.11",
     "@formatjs/intl-relativetimeformat": "^8.1.2",
+    "@tanstack/react-virtual": "3.0.0-beta.54",
     "antd": "4.18.9",
     "antd-local-icon": "^0.1.3",
     "axios": "^0.18.0",

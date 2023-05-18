@@ -1,7 +1,7 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable} from "../../../../../../components/tables/tableUtils";
+import {SORTER, StripeTable, VirtualStripeTable} from "../../../../../../components/tables/tableUtils";
 import {AppTerms, WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
@@ -339,7 +339,7 @@ export const CycleTimeLatencyTable = injectIntl(
     };
 
     return (
-      <StripeTable
+      <VirtualStripeTable
         columns={columns}
         dataSource={dataSource}
         testId="cycle-time-latency-table"

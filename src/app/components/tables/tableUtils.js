@@ -4,6 +4,9 @@ import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
+import {useVirtualizer} from "@tanstack/react-virtual";
+import classNames from "classnames";
+
 export const DEFAULT_PAGE_SIZE = 200;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
@@ -150,3 +153,114 @@ export const SORTER = {
     return span["_milliseconds"];
   },
 };
+
+export function VirtualStripeTable({
+  columns,
+  dataSource,
+  height,
+  testId,
+  loading,
+  onChange,
+  paginationOptions = {},
+  ...tableProps
+}) {
+  const parentRef = React.useRef();
+
+  const rowVirtualizer = useVirtualizer({
+    count: dataSource.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 70,
+    overscan: 5,
+  });
+
+  const virtualRows = rowVirtualizer.getVirtualItems();
+
+  return (
+    <Table
+      rowClassName={(record, index) => styles.tableRow}
+      size="small"
+      pagination={false}
+      columns={columns}
+      dataSource={dataSource}
+      scroll={{y: "100%", scrollToFirstRowOnChange: false}}
+      showSorterTooltip={false}
+      loading={loading}
+      data-testid={testId}
+      className={classNames(styles.tableStyle)}
+      onChange={onChange}
+      components={{
+        table: "table",
+        header: {
+          wrapper: "thead",
+          row: "tr",
+          cell: "th",
+        },
+        body: (rawData, options) => {
+          let tableSize = rowVirtualizer.getTotalSize() || 150;
+          return (
+            <div
+              className="ant-table-body tw-h-full tw-w-full tw-overflow-auto tw-p-1"
+              ref={parentRef}
+            >
+              <table>
+                <tbody
+                  style={{position: "relative", height: `${tableSize}px`, width: "100%"}}
+                  className="ant-table-tbody"
+                >
+                  {virtualRows.map((virtualRow) => {
+                    const row = rawData[virtualRow.index];
+                    const keys = columns.map((x) => x.dataIndex);
+                    const columnsRender = columns.map((x) => x.render);
+                     // const columnsWidth = columns.map((x) => x.width);
+                    // hack to fix column width issue
+                    const columnsWidth = ["4%", "16%", "10%", "10%", "10%", "10%", "10%"];
+                    return (
+                      <tr
+                        key={row.key}
+                        data-row-key={row.key}
+                        className={classNames(`ant-table-row-level-0 ant-table-row`, styles.tableRow)}
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: `${virtualRow.size}px`,
+                          transform: `translateY(${virtualRow.start}px)`,
+                        }}
+                      >
+                        {keys.map((key, index) => (
+                          <td className="ant-table-cell" key={key} style={{width: columnsWidth[index]}}>
+                            {columnsRender[index](row[key], row)}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          );
+        },
+      }}
+      summary={(pageData) => {
+        return (
+          <Table.Summary fixed="bottom">
+            <Table.Summary.Row className="tw-bg-gray-100">
+              <Table.Summary.Cell index={0} align="left" colSpan="20">
+                <div className="tw-flex tw-space-x-6">
+                  {tableProps?.renderTableSummary?.(pageData) ?? (
+                    <LabelValue label="Records" value={getRecordsCount(pageData, paginationOptions)} />
+                  )}
+                </div>
+              </Table.Summary.Cell>
+
+              {/* This dummy cell is to fill remaining space of summary stats row */}
+              <Table.Summary.Cell index={100} colSpan="50" align="left"></Table.Summary.Cell>
+            </Table.Summary.Row>
+          </Table.Summary>
+        );
+      }}
+      {...tableProps}
+    />
+  );
+}
