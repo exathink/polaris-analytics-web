@@ -211,7 +211,9 @@ export function VirtualStripeTable({
                     const row = rawData[virtualRow.index];
                     const keys = columns.map((x) => x.dataIndex);
                     const columnsRender = columns.map((x) => x.render);
-                    const columnsWidth = columns.map((x) => x.width);
+                     // const columnsWidth = columns.map((x) => x.width);
+                    // hack to fix column width issue
+                    const columnsWidth = ["4%", "16%", "10%", "10%", "10%", "10%", "10%"];
                     return (
                       <tr
                         key={row.key}
