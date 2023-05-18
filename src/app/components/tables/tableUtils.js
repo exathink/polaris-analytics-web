@@ -201,13 +201,8 @@ export function VirtualStripeTable({
             <div
               className="ant-table-body tw-h-full tw-w-full tw-overflow-auto tw-p-1"
               ref={parentRef}
-              style={{
-                height: `${tableSize}px`,
-                width: "100%",
-                position: "relative",
-              }}
             >
-              <table style={{tableLayout: "fixed"}}>
+              <table>
                 <tbody
                   style={{position: "relative", height: `${tableSize}px`, width: "100%"}}
                   className="ant-table-tbody"
