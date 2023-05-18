@@ -137,20 +137,26 @@ export const DimensionCycleTimeLatencyDetailView = ({
     : (w, selectedStateValues) =>
         selectedStateValues.length === 0 || selectedStateValues.map((x) => x.value).includes(w.state);
 
-  const initTransformedData = getWorkItemDurations(initWorkItems).map((w) => ({
+  const initTransformedData = React.useMemo(() => getWorkItemDurations(initWorkItems).map((w) => ({
     ...w,
     quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
-  }));
+  })), [initWorkItems, cycleTimeTarget, latencyTarget]);
 
-  // this data is always up-to-date with all the applied filters
-  const latestData = getFilteredData({
-    initData: initTransformedData,
-    appliedFilters,
-    filterFns,
-  });
-  const engineeringWorkItems = latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1);
-  const deliveryWorkItems = latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1);
+      // this data is always up-to-date with all the applied filters
+  const latestData = React.useMemo(() => {
+    const _latestData = getFilteredData({
+      initData: initTransformedData,
+      appliedFilters,
+      filterFns,
+    });
 
+    return _latestData;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appliedFilters, initTransformedData, exclude]);
+
+  const engineeringWorkItems = React.useMemo(() => latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1), [latestData]);
+  const deliveryWorkItems = React.useMemo(() => latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1), [latestData]);
+ 
   const engineeringSeriesData = useCycleTimeLatencyHook(engineeringWorkItems);
   const deliverySeriesData = useCycleTimeLatencyHook(deliveryWorkItems);
 

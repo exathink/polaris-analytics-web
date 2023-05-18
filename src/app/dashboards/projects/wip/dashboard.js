@@ -137,7 +137,7 @@ function WipDashboard({
           showDetail={false}
           hideTitlesInDetailView={true}
         />
-        <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite">
+        <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite" data-testid="completed-work">
           <div className="tw-grid tw-grid-cols-2 tw-gap-1">
             <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Completed Work, Last {flowAnalysisPeriod} Days</div>
 

@@ -272,17 +272,29 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   return columns;
 }
 
+function getUniqueItems(data) {
+  const [workItemTypes, stateTypes, teams] = [new Set(), new Set(), new Set()];
+
+  data.forEach((item) => {
+    workItemTypes.add(item.workItemType);
+    stateTypes.add(WorkItemStateTypeDisplayName[item.stateType]);
+    item.teamNodeRefs.map((t) => t.teamName).forEach((tn) => teams.add(tn));
+  });
+
+  return {
+    workItemTypes: [...workItemTypes],
+    stateTypes: [...stateTypes],
+    teams: [...teams],
+  };
+}
+
 export const CycleTimeLatencyTable = injectIntl(
   ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
     const [appliedSorter, setAppliedSorter] = React.useState();
     const [appliedName, setAppliedName] = React.useState();
 
     // get unique workItem types
-    const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
-    const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
-
-    const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-
+   const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
     const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 

@@ -3,7 +3,7 @@ import React from "react";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
-import {useFlowEfficiency} from "../../clientSideFlowMetrics";
+import {getWorkItemDurations, useFlowEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export const DimensionQuadrantSummaryView = ({
@@ -26,6 +26,7 @@ export const DimensionQuadrantSummaryView = ({
   }, [data, dimension]);
 
   const flowEfficiencyPercentage = useFlowEfficiency(workItems, stateTypes);
+  const initTransformedData = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
 
   return (
     <PlainCard
@@ -42,12 +43,12 @@ export const DimensionQuadrantSummaryView = ({
           </div>
         ),
         placement: "bottom",
-        content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
+        content: <FlowEfficiencyDetailsView workItems={initTransformedData} phases={stateTypes} />,
       }}
       className="tw-h-full"
     >
       <QuadrantSummaryPanel
-        workItems={workItems}
+        workItems={initTransformedData}
         stateTypes={stateTypes}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
