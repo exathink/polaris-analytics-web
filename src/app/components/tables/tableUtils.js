@@ -219,7 +219,7 @@ export function VirtualStripeTable({
                         className={classNames(`ant-table-row-level-0 ant-table-row`, styles.tableRow)}
                         style={{
                           position: "absolute",
-                          top: 35,
+                          top: 0,
                           left: 0,
                           width: "100%",
                           height: `${virtualRow.size}px`,
