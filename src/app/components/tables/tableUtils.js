@@ -208,7 +208,10 @@ export function VirtualStripeTable({
                   className="ant-table-tbody"
                 >
                   {virtualRows.map((virtualRow) => {
-                    const row = rawData[virtualRow.index];
+                    const row = virtualRow.index in rawData ? rawData[virtualRow.index] : null;
+                    if (row == null) {
+                      return null;
+                    }
                     const keys = columns.map((x) => x.dataIndex);
                     const columnsRender = columns.map((x) => x.render);
                      // const columnsWidth = columns.map((x) => x.width);
