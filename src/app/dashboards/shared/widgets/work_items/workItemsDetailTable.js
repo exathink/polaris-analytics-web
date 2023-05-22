@@ -3,7 +3,7 @@ import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
 import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
-import {getRecordsCount, SORTER, StripeTable} from "../../../../components/tables/tableUtils";
+import {getRecordsCount, SORTER, StripeTable, VirtualStripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
@@ -256,7 +256,7 @@ export const WorkItemsDetailTable =
     });
 
     return (
-      <StripeTable
+      <VirtualStripeTable
         columns={columns}
         dataSource={dataSource}
         testId="work-items-detail-table"
