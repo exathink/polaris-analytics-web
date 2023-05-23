@@ -1,7 +1,6 @@
 import { Chart } from "../../../../framework/viz/charts";
 import { buildIndex, pick, elide, localNow } from "../../../../helpers/utility";
 import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
 
 import {
   AppTerms,
@@ -13,8 +12,9 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrant, getQuadrantColor, getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 
 
@@ -109,9 +109,9 @@ function getTeamEntry(teamNodeRefs) {
   return teamNodeRefs.length > 0 ? teamsString : "";
 }
 
-export const WorkItemsCycleTimeVsLatencyChart = Chart({
+export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
-    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant")
+    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen")
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
@@ -129,7 +129,8 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
                 view,
                 tooltipType,
                 selectedQuadrant,
-                blurClass
+                blurClass,
+                fullScreen
               }) => {
                 
     const workItemsWithAggregateDurations = workItems;
@@ -217,7 +218,7 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
       tooltip: {
         useHTML: true,
         hideDelay: 50,
-        outside: true,
+        outside: fullScreen === false,
         formatter: function() {
           const {
             displayId,
@@ -305,4 +306,4 @@ export const WorkItemsCycleTimeVsLatencyChart = Chart({
       }
     }
   }
-});
+}));
