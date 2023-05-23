@@ -11,7 +11,7 @@ function getStateCounts(items) {
       acc[item.state].count += 1;
       acc[item.state].totalAge += item.cycleTime;
     } else {
-      acc[item.state] = {count: 1, totalAge: item.cycleTime, stateType: item.stateType, flowType: item.flowType };
+      acc[item.state] = {count: 1, totalAge: item.cycleTime, timeInState: item.timeInState, stateType: item.stateType, flowType: item.flowType };
     }
     return acc;
   }, {});
@@ -44,7 +44,7 @@ function getSeries(items, specsOnly) {
       data: Object.entries(getStateCounts(items))
         .sort(compare)
         .map((e, index) => {
-          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
+          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge, timeInState: e[1].timeInState};
         }),
     },
   ];
@@ -89,15 +89,20 @@ export const WipQueueSizeChart = Chart({
         hideDelay: 50,
         formatter: function () {
           let avgAge = 0;
+          let avgTime = 0;
           if (this.point.totalAge != null && this.point.totalAge > 0 && this.point.y > 0) {
              avgAge = i18nNumber(intl, this.point.totalAge/this.point.y, 1);
           }
-          
+          if (this.point.timeInState != null && this.point.timeInState > 0 && this.point.y > 0) {
+            avgTime = i18nNumber(intl, this.point.timeInState / this.point.y, 1);
+          }
+
           return tooltipHtml_v2({
             header: `${this.point.category}`,
             body: [
               [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`],
-              [`Avg. Age: `, `${avgAge} ${getSingularPlural(avgAge, "Day")}`]
+              [`Avg. Age: `, `${avgAge} ${getSingularPlural(avgAge, "Day")}`],
+              [`Avg. Time in State: `, `${avgTime} ${getSingularPlural(avgTime, "Day")}`]
             ]
           })
         }
