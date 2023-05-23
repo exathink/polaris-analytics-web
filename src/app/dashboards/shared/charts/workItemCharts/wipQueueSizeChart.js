@@ -102,7 +102,7 @@ export const WipQueueSizeChart = Chart({
             body: [
               [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`],
               [`Avg. Age: `, `${avgAge} ${getSingularPlural(avgAge, "Day")}`],
-              [`Avg. Time: `, `${avgTime} ${getSingularPlural(avgTime, "Day")}`]
+              [`Avg. Time in State: `, `${avgTime} ${getSingularPlural(avgTime, "Day")}`]
             ]
           })
         }
