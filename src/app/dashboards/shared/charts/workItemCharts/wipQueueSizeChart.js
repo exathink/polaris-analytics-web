@@ -59,7 +59,7 @@ export const WipQueueSizeChart = Chart({
     const filteredData = items.filter(x => phases.includes(x.stateType));
 
     const series = getSeries(filteredData, specsOnly);
-    const aggregateDurations = getDeliveryCycleDurationsByState(filteredData, phases);
+    const aggregateDurations = getDeliveryCycleDurationsByState(items, phases);
 
     return {
       chart: {
