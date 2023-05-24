@@ -12,8 +12,6 @@ import {WorkItemStateTypes} from "../../shared/config";
 import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
 import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
 import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
-import {DimensionCycleTimeLatencyDetailView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyDetailView";
-import {DimensionCycleTimeLatencyView} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionCycleTimeLatencyView";
 import {getReferenceString} from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.teams.instance";
