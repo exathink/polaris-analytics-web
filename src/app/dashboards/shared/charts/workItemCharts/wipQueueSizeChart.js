@@ -12,7 +12,7 @@ function getStateCounts(items) {
       acc[item.state].count += 1;
       acc[item.state].totalAge += item.cycleTime;
     } else {
-      acc[item.state] = {count: 1, totalAge: item.cycleTime, timeInState: item.timeInState, stateType: item.stateType, flowType: item.flowType };
+      acc[item.state] = {count: 1, totalAge: item.cycleTime, stateType: item.stateType, flowType: item.flowType };
     }
     return acc;
   }, {});
@@ -45,7 +45,7 @@ function getSeries(items, specsOnly) {
       data: Object.entries(getStateCounts(items))
         .sort(compare)
         .map((e, index) => {
-          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge, timeInState: e[1].timeInState};
+          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
         }),
     },
   ];
