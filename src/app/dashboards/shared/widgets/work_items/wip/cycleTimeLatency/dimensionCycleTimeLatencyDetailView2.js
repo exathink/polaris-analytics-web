@@ -32,6 +32,7 @@ import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeC
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
 import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
+import { DELIVERY_PHASES, ENGINEERING_PHASES } from "../../../../config";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -335,8 +336,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
       // show 3 modes
       const codingQueueSizeElement = (
         <WipQueueSizeChart
-          items={chartCategory === "delivery" ? [] : engineeringWorkItems}
+          items={chartCategory === "delivery" ? [] : latestData}
           stageName={"Coding"}
+          phases={ENGINEERING_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
             setAppliedFilters((prev) => {
@@ -353,8 +355,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
       );
       const deliveryQueueSizeElement = (
         <WipQueueSizeChart
-          items={chartCategory === "engineering" ? [] : deliveryWorkItems}
+          items={chartCategory === "engineering" ? [] : latestData}
           stageName={"Shipping"}
+          phases={DELIVERY_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
             setAppliedFilters((prev) => {
