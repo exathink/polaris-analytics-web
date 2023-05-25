@@ -4,11 +4,8 @@ import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 import {i18nNumber, pick} from "../../../../helpers/utility";
 
 import {Colors, workItemFlowTypeColor, WorkItemStateTypeDisplayName, WorkItemTypeSortOrder} from "../../config";
-import {getDeliveryCycleDurationsByState} from "../../widgets/work_items/clientSideFlowMetrics";
+import {getDeliveryCycleDurationsByState, getAverageTimeInState} from "../../widgets/work_items/clientSideFlowMetrics";
 
-function getAverageTimeInState(workItems, aggregateDurations, state) {
-  return workItems.length > 0 ? aggregateDurations[state].daysInState / (workItems.length) : 0;
-}
 
 export const WorkItemsAggregateDurationsByStateChart = Chart({
   chartUpdateProps: (props) => (

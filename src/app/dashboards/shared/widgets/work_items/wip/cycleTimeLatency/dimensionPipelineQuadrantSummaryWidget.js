@@ -4,7 +4,7 @@ import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensi
 import {DimensionQuadrantSummaryView} from "./dimensionQuadrantSummaryView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
-import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView";
+import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView2";
 
 
 export const DimensionPipelineQuadrantSummaryWidget = (

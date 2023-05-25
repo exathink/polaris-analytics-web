@@ -83,6 +83,10 @@ export function getTimeInActiveAndWaitStates(workItems, phases = ALL_PHASES) {
   return {timeInActiveState, timeInWaitState};
 }
 
+export function getAverageTimeInState(workItems, aggregateDurations, state) {
+  return workItems.length > 0 ? aggregateDurations[state].daysInState / (workItems.length) : 0;
+}
+
 export function getFlowEfficiencyFraction(workItems, phases = ALL_PHASES) {
   const {timeInActiveState, timeInWaitState} = getTimeInActiveAndWaitStates(workItems, phases);
   const flowEfficiencyFraction =

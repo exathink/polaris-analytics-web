@@ -1,9 +1,10 @@
 
 import {Chart} from "../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
-import { assignWorkItemStateColor, Colors, itemsDesc, workItemFlowTypeColor } from "../../config";
+import { Colors, itemsDesc, workItemFlowTypeColor } from "../../config";
 import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
 import { getSingularPlural, i18nNumber, pick } from "../../../../helpers/utility";
+import { getDeliveryCycleDurationsByState, getAverageTimeInState } from "../../widgets/work_items/clientSideFlowMetrics";
 
 function getStateCounts(items) {
   const obj = items.reduce((acc, item) => {
@@ -11,7 +12,7 @@ function getStateCounts(items) {
       acc[item.state].count += 1;
       acc[item.state].totalAge += item.cycleTime;
     } else {
-      acc[item.state] = {count: 1, totalAge: item.cycleTime, timeInState: item.timeInState, stateType: item.stateType, flowType: item.flowType };
+      acc[item.state] = {count: 1, totalAge: item.cycleTime, stateType: item.stateType, flowType: item.flowType };
     }
     return acc;
   }, {});
@@ -44,18 +45,22 @@ function getSeries(items, specsOnly) {
       data: Object.entries(getStateCounts(items))
         .sort(compare)
         .map((e, index) => {
-          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge, timeInState: e[1].timeInState};
+          return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
         }),
     },
   ];
 }
 
 export const WipQueueSizeChart = Chart({
-  chartUpdateProps: (props) => pick(props, "items", "specsOnly", "stageName"),
+  chartUpdateProps: (props) => pick(props, "items", "specsOnly", "stageName", "phases"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
-  getConfig: ({items, stageName, specsOnly, onPointClick, intl}) => {
-    const series = getSeries(items, specsOnly);
+  getConfig: ({items, stageName, specsOnly, phases, onPointClick, intl}) => {
+    const filteredData = items.filter(x => phases.includes(x.stateType));
+
+    const series = getSeries(filteredData, specsOnly);
+    const aggregateDurations = getDeliveryCycleDurationsByState(items, phases);
+
     return {
       chart: {
         backgroundColor: Colors.Chart.backgroundColor,
@@ -74,7 +79,7 @@ export const WipQueueSizeChart = Chart({
       },
       xAxis: {
         type: 'linear',
-        categories: Object.entries(getStateCounts(items)).sort(compare).flatMap(e => e[0])
+        categories: Object.entries(getStateCounts(filteredData)).sort(compare).flatMap(e => e[0])
       },
       yAxis: {
         type: 'linear',
@@ -89,20 +94,19 @@ export const WipQueueSizeChart = Chart({
         hideDelay: 50,
         formatter: function () {
           let avgAge = 0;
-          let avgTime = 0;
           if (this.point.totalAge != null && this.point.totalAge > 0 && this.point.y > 0) {
              avgAge = i18nNumber(intl, this.point.totalAge/this.point.y, 1);
           }
-          if (this.point.timeInState != null && this.point.timeInState > 0 && this.point.y > 0) {
-            avgTime = i18nNumber(intl, this.point.timeInState / this.point.y, 1);
-          }
+
+          let timeInState = getAverageTimeInState(items, aggregateDurations, this.point.name);
+          timeInState = i18nNumber(intl, timeInState, 1);
 
           return tooltipHtml_v2({
             header: `${this.point.category}`,
             body: [
               [`Queue Size: `, `${this.point.y} ${itemsDesc(specsOnly)}`],
               [`Avg. Age: `, `${avgAge} ${getSingularPlural(avgAge, "Day")}`],
-              [`Avg. Time in State: `, `${avgTime} ${getSingularPlural(avgTime, "Day")}`]
+              [`Avg. Time in State: `, `${timeInState} ${getSingularPlural(timeInState, "Day")}`]
             ]
           })
         }
