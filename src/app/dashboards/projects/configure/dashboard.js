@@ -23,6 +23,7 @@ import {WidgetCore, useWidget} from "../../../framework/viz/dashboard/widgetCore
 import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams";
 import {StripeTable} from "../../../components/tables/tableUtils";
 import {CustomTag, LabelValue} from "../../../helpers/components";
+import {PlusOutlined} from "@ant-design/icons";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -228,7 +229,7 @@ export function ValueStreamWorkStreamEditorView({}) {
     <div className="">
       <div className="tw-flex tw-items-center tw-justify-between">
         <LabelValue label={"Value Streams"} className="tw-ml-2" />
-        <Button type="primary">New Value Stream</Button>
+        <Button type="primary" className="tw-mr-2"> <PlusOutlined /> New Value Stream</Button>
       </div>
       <ValueStreamEditorTable tableData={items} />
     </div>
