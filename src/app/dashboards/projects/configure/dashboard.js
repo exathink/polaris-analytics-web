@@ -210,24 +210,29 @@ function useValueStreamEditorColumns() {
         );
       },
     },
-  ]
+  ];
 }
 
 export function ValueStreamEditorTable({tableData}) {
   const columns = useValueStreamEditorColumns();
 
-  return <StripeTable dataSource={tableData} columns={columns}/>
+  return <StripeTable dataSource={tableData} columns={columns} />;
 }
 
 export function ValueStreamWorkStreamEditorView({}) {
   const {data} = useWidget();
-  const edges = data.project.valueStreams?.edges??[];
+  const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
 
-  return <div className="">
-    <LabelValue label={"Value Streams"} className="tw-ml-2"/>
-    <ValueStreamEditorTable tableData={items}/>
-  </div>
+  return (
+    <div className="">
+      <div className="tw-flex tw-items-center tw-justify-between">
+        <LabelValue label={"Value Streams"} className="tw-ml-2" />
+        <Button type="primary">New Value Stream</Button>
+      </div>
+      <ValueStreamEditorTable tableData={items} />
+    </div>
+  );
 }
 
 export function ValueStreamWorkStreamEditorWidget({instanceKey, context, view}) {
@@ -245,10 +250,10 @@ export function ValueStreamWorkStreamEditorDashboard({}) {
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
-          <Dashboard gridLayout={true} className="tw-grid tw-gap-2 tw-grid-cols-5">
+          <Dashboard gridLayout={true} className="tw-grid tw-grid-cols-5 tw-gap-2">
             <DashboardRow title={""}>
               <DashboardWidget
-                className="tw-col-start-2 tw-col-span-3 tw-row-span-6 tw-row-start-1"
+                className="tw-col-span-3 tw-col-start-2 tw-row-span-6 tw-row-start-1"
                 title={" "}
                 name="valuestream-workstream-editor"
                 render={({view}) => {
