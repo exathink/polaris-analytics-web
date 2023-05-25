@@ -18,7 +18,7 @@ export function Label({label, className}) {
 const TAG_COLOR = "#108ee9";
 export function CustomTag({children}) {
   return (
-    <Tag color={TAG_COLOR}>
+    <Tag color={TAG_COLOR} style={{marginTop: "5px"}}>
       {children}
     </Tag>
   );
