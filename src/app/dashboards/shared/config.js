@@ -146,6 +146,8 @@ export const ALL_PHASES = [
   WorkItemStateTypes.deliver,
   WorkItemStateTypes.closed,
 ];
+export const ENGINEERING_PHASES = [WorkItemStateTypes.open, WorkItemStateTypes.make];
+export const DELIVERY_PHASES = [WorkItemStateTypes.deliver];
 
 export function cycleTimeDisplay(stateType) {
   return stateType !== WorkItemStateTypes.closed ? 'Age': `Cycle Time`;
