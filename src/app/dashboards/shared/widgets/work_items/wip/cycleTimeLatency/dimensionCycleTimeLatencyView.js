@@ -258,8 +258,9 @@ export const DimensionCycleTimeLatencyView = ({
     if (displayBag?.wipChartType === "queue") {
       const queueSizeElement = (
         <WipQueueSizeChart
-          items={latestData}
+          items={initialData}
           stageName={stageName}
+          phases={stateTypes}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
             setAppliedFilters((prev) => {
