@@ -8,6 +8,7 @@ import {WorkItemStateTypeMapWidget} from "../shared/widgets/workItemStateTypeMap
 import styles from "./dashboard.module.css";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
+import Button from "../../../../components/uielements/button";
 
 import {
   MeasurementSettingsDashboard,
@@ -18,6 +19,10 @@ import {CONFIG_TABS, ConfigSelector} from "../../shared/widgets/configure/config
 
 import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
+import {WidgetCore, useWidget} from "../../../framework/viz/dashboard/widgetCore";
+import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams";
+import {StripeTable} from "../../../components/tables/tableUtils";
+import {CustomTag, LabelValue} from "../../../helpers/components";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -32,17 +37,18 @@ ValueStreamMappingDashboard.videoConfig = {
 };
 
 export function ValueStreamMappingInitialDashboard() {
-
-
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
-
-          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-[auto_1fr_1fr_1fr_1fr_1fr] tw-gap-x-2">
+          <Dashboard
+            dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
+            gridLayout={true}
+            className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-[auto_1fr_1fr_1fr_1fr_1fr] tw-gap-x-2"
+          >
             <DashboardRow>
               <DashboardWidget
-                className="tw-col-span-2 tw-row-start-1 tw-col-start-1"
+                className="tw-col-span-2 tw-col-start-1 tw-row-start-1"
                 render={() => (
                   <div className="tw-flex tw-flex-col tw-items-center tw-bg-white tw-p-2">
                     <div className="tw-flex tw-flex-col tw-items-center" id="state-type-mapping">
@@ -50,9 +56,7 @@ export function ValueStreamMappingInitialDashboard() {
                         Configure the delivery process mapping for this value stream
                       </div>
                       <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
-                        <em>
-                          Click on the info icon for more guidance.
-                        </em>
+                        <em>Click on the info icon for more guidance.</em>
                       </div>
                     </div>
                   </div>
@@ -61,10 +65,10 @@ export function ValueStreamMappingInitialDashboard() {
             </DashboardRow>
             <DashboardRow>
               <DashboardWidget
-                className="tw-row-start-2 tw-col-start-1 tw-row-span-4"
+                className="tw-col-start-1 tw-row-span-4 tw-row-start-2"
                 name="project-pipeline-detailed"
                 infoConfig={PipelineFunnelWidgetInitialInfoConfig}
-                render={({ view }) => (
+                render={({view}) => (
                   <ProjectPipelineFunnelWidget
                     instanceKey={key}
                     context={context}
@@ -73,14 +77,14 @@ export function ValueStreamMappingInitialDashboard() {
                     view={view}
                     includeSubTasks={{
                       includeSubTasksInClosedState: settingsWithDefaults.includeSubTasksFlowMetrics,
-                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector
+                      includeSubTasksInNonClosedState: settingsWithDefaults.includeSubTasksWipInspector,
                     }}
                   />
                 )}
                 showDetail={false}
               />
               <DashboardWidget
-                className="tw-row-start-2 tw-col-start-2 tw-row-span-5"
+                className="tw-col-start-2 tw-row-span-5 tw-row-start-2"
                 infoConfig={DeliveryProcessMappingInitialInfoConfig}
                 name="workitem-statetype-map"
                 render={({view}) => {
@@ -108,10 +112,14 @@ export function ValueStreamMappingDashboard() {
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
         return (
-          <Dashboard dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig} gridLayout={true} className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2">
+          <Dashboard
+            dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
+            gridLayout={true}
+            className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2"
+          >
             <DashboardRow title={" "}>
               <DashboardWidget
-                className="tw-row-start-2 tw-row-span-4"
+                className="tw-row-span-4 tw-row-start-2"
                 name="project-pipeline-detailed"
                 title={" "}
                 infoConfig={ProjectPipelineFunnelWidget.infoConfig}
@@ -131,7 +139,7 @@ export function ValueStreamMappingDashboard() {
                 showDetail={false}
               />
               <DashboardWidget
-                className="tw-row-start-1 tw-col-start-2 tw-row-span-6"
+                className="tw-col-start-2 tw-row-span-6 tw-row-start-1"
                 title={" "}
                 infoConfig={WorkItemStateTypeMapWidget.infoConfig}
                 name="workitem-statetype-map"
@@ -155,9 +163,115 @@ export function ValueStreamMappingDashboard() {
   );
 }
 
+function useValueStreamEditorColumns() {
+  return [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "25%",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      width: "20%",
+    },
+    {
+      title: "Tags",
+      dataIndex: "workItemSelectors",
+      key: "workItemSelectors",
+      width: "20%",
+      render: (text, record) => {
+        return (
+          <div>
+            {record.workItemSelectors.map((w) => (
+              <CustomTag key={w}>{w}</CustomTag>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      width: "20%",
+      render: (text, record) => {
+        return (
+          <div className="tw-flex tw-justify-center tw-gap-4">
+            <Button type="primary" size="small">
+              Edit
+            </Button>{" "}
+            <Button type="danger" size="small">
+              Delete
+            </Button>
+          </div>
+        );
+      },
+    },
+  ]
+}
+
+export function ValueStreamEditorTable({tableData}) {
+  const columns = useValueStreamEditorColumns();
+
+  return <StripeTable dataSource={tableData} columns={columns}/>
+}
+
+export function ValueStreamWorkStreamEditorView({}) {
+  const {data} = useWidget();
+  const edges = data.project.valueStreams?.edges??[];
+  const items = edges.map((edge) => edge.node);
+
+  return <div className="">
+    <LabelValue label={"Value Streams"} className="tw-ml-2"/>
+    <ValueStreamEditorTable tableData={items}/>
+  </div>
+}
+
+export function ValueStreamWorkStreamEditorWidget({instanceKey, context, view}) {
+  const result = useQueryProjectValueStreams({instanceKey});
+
+  return (
+    <WidgetCore result={result} errorContext="ValueStreamWorkStreamEditorWidget.useQueryProjectValueStreams">
+      {view === "primary" && <ValueStreamWorkStreamEditorView />}
+    </WidgetCore>
+  );
+}
+
+export function ValueStreamWorkStreamEditorDashboard({}) {
+  return (
+    <ProjectDashboard
+      render={({project: {key, settingsWithDefaults}, context}) => {
+        return (
+          <Dashboard gridLayout={true} className="tw-grid tw-gap-2 tw-grid-cols-5">
+            <DashboardRow title={""}>
+              <DashboardWidget
+                className="tw-col-start-2 tw-col-span-3 tw-row-span-6 tw-row-start-1"
+                title={" "}
+                name="valuestream-workstream-editor"
+                render={({view}) => {
+                  return <ValueStreamWorkStreamEditorWidget instanceKey={key} context={context} view={view} />;
+                }}
+              />
+            </DashboardRow>
+          </Dashboard>
+        );
+      }}
+    />
+  );
+}
+
+const componentsMap = {
+  [CONFIG_TABS.DELIVERY_PROCESS_MAPPING]: <ValueStreamMappingDashboard />,
+  [CONFIG_TABS.VALUE_STREAMS]: <ValueStreamWorkStreamEditorDashboard />,
+  [CONFIG_TABS.RESPONSE_TIME_SLA]: <ResponseTimeSLASettingsDashboard dimension={"project"} />,
+  [CONFIG_TABS.MEASUREMENT_SETTINGS]: <MeasurementSettingsDashboard dimension={"project"} />,
+};
 
 export default withViewerContext(({viewerContext}) => {
-  const [configTab, setConfigTab] = React.useState(CONFIG_TABS.VALUE_STREAM);
+  const [configTab, setConfigTab] = React.useState(CONFIG_TABS.DELIVERY_PROCESS_MAPPING);
 
   return (
     <ProjectDashboard
@@ -178,17 +292,17 @@ export default withViewerContext(({viewerContext}) => {
               title={""}
               className={styles.configTab}
               controls={[
-                () => <ConfigSelector dimension={"project"} configTab={configTab} setConfigTab={setConfigTab} settingsName={"Value Stream Settings"}/>,
+                () => (
+                  <ConfigSelector
+                    dimension={"project"}
+                    configTab={configTab}
+                    setConfigTab={setConfigTab}
+                    settingsName={"Value Stream Settings"}
+                  />
+                ),
               ]}
             >
-              {configTab === CONFIG_TABS.VALUE_STREAM ? (
-                <ValueStreamMappingDashboard />
-              ) : configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
-                <ResponseTimeSLASettingsDashboard dimension={"project"} />
-              ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
-                <MeasurementSettingsDashboard dimension={"project"} />
-              ) : null}
-
+              {componentsMap[configTab] ?? null}
             </DashboardRow>
           </Dashboard>
         );
