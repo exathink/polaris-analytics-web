@@ -167,6 +167,11 @@ export function ValueStreamMappingDashboard() {
 }
 
 function useValueStreamEditorColumns() {
+  const [visible, setVisible] = React.useState(false);
+  function onClose() {
+    setVisible(false);
+  }
+
   return [
     {
       title: "Name",
@@ -202,13 +207,18 @@ function useValueStreamEditorColumns() {
       width: "20%",
       render: (text, record) => {
         return (
-          <div className="tw-flex tw-justify-center tw-gap-4">
-            <Button type="primary" size="small">
+          <div className="tw-flex tw-justify-center tw-gap-4" key={record.name}>
+            <Button type="primary" size="small" onClick={() => setVisible(true)}>
               Edit
             </Button>{" "}
             <Button type="danger" size="small">
               Delete
             </Button>
+            <ValueStreamForm
+              initialValues={{name: record.name, workItemSelectors: record.workItemSelectors}}
+              visible={visible}
+              onClose={onClose}
+            />
           </div>
         );
       },
@@ -222,7 +232,60 @@ export function ValueStreamEditorTable({tableData}) {
   return <StripeTable dataSource={tableData} columns={columns} />;
 }
 
-export function ValueStreamWorkStreamEditorView({initialValues, onSubmit}) {
+export function ValueStreamForm({initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
+  return (
+    <Drawer title={"New Value Stream"} width={720} onClose={onClose} visible={visible}>
+      <Form
+        key={initialValues.name}
+        layout="vertical"
+        onFinish={(values) => onSubmit({...values, onClose})}
+        initialValues={initialValues}
+      >
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              name={"name"}
+              label="Value Stream"
+              rules={[{required: true, message: "Value Stream is required"}]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              name="workItemSelectors"
+              label="Tags"
+              // rules={[{required: true, message: "Please select tags", type: "array"}]}
+            >
+              <Select mode="multiple" placeholder="Please select tags">
+                {(uniqWorkItemSelectors ?? initialValues.workItemSelectors).map((x) => (
+                  <Option key={x.value} value={x.value}>
+                    {x.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <div
+          className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+          style={{borderTop: "1px solid #e9e9e9"}}
+        >
+          <Button onClick={onClose} style={{marginRight: 8}}>
+            Cancel
+          </Button>
+
+          <Button htmlType="submit" type="primary">
+            Save
+          </Button>
+        </div>
+      </Form>
+    </Drawer>
+  );
+}
+
+export function ValueStreamWorkStreamEditorView() {
   const {data} = useWidget();
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
@@ -245,54 +308,17 @@ export function ValueStreamWorkStreamEditorView({initialValues, onSubmit}) {
           {" "}
           <PlusOutlined /> New Value Stream
         </Button>
-        <Drawer title={"New Value Stream"} width={720} onClose={onClose} visible={visible}>
-          <Form
-            key={visible}
-            layout="vertical"
-            onFinish={(values) => onSubmit({...values, onClose})}
-            initialValues={initialValues}
-          >
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name={"name"}
-                  label="Value Stream"
-                  rules={[{required: true, message: "Value Stream is required"}]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="workItemSelectors"
-                  label="Tags"
-                  // rules={[{required: true, message: "Please select tags", type: "array"}]}
-                >
-                  <Select mode="multiple" placeholder="Please select tags">
-                    {uniqWorkItemSelectors.map((x) => (
-                      <Option key={x.value} value={x.value}>
-                        {x.label}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <div
-              className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
-              style={{borderTop: "1px solid #e9e9e9"}}
-            >
-              <Button onClick={onClose} style={{marginRight: 8}}>
-                Cancel
-              </Button>
-
-              <Button htmlType="submit" type="primary">
-                Save
-              </Button>
-            </div>
-          </Form>
-        </Drawer>
+        <ValueStreamForm
+          key={"new-form"}
+          uniqWorkItemSelectors={uniqWorkItemSelectors}
+          onSubmit={(values) => console.log("value-streams", {...values})}
+          initialValues={{
+            name: "",
+            workItemSelectors: []
+          }}
+          visible={visible}
+          onClose={onClose}
+        />
       </div>
       <ValueStreamEditorTable tableData={items} />
     </div>
@@ -304,14 +330,7 @@ export function ValueStreamWorkStreamEditorWidget({instanceKey, context, view}) 
 
   return (
     <WidgetCore result={result} errorContext="ValueStreamWorkStreamEditorWidget.useQueryProjectValueStreams">
-      {view === "primary" && (
-        <ValueStreamWorkStreamEditorView
-          onSubmit={(values) => console.log("value-streams", {...values})}
-          initialValues={{
-            name: "Name",
-          }}
-        />
-      )}
+      {view === "primary" && <ValueStreamWorkStreamEditorView />}
     </WidgetCore>
   );
 }
