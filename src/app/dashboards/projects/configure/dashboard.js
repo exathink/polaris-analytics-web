@@ -24,6 +24,8 @@ import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams"
 import {StripeTable} from "../../../components/tables/tableUtils";
 import {CustomTag, LabelValue} from "../../../helpers/components";
 import {PlusOutlined} from "@ant-design/icons";
+import {Col, Drawer, Form, Input, Row, Select} from "antd";
+const {Option} = Select;
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -220,16 +222,77 @@ export function ValueStreamEditorTable({tableData}) {
   return <StripeTable dataSource={tableData} columns={columns} />;
 }
 
-export function ValueStreamWorkStreamEditorView({}) {
+export function ValueStreamWorkStreamEditorView({initialValues, onSubmit}) {
   const {data} = useWidget();
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
+
+  const uniqWorkItemSelectors = [...new Set(items.flatMap((x) => x.workItemSelectors))].map((x) => ({
+    value: x,
+    label: x,
+  }));
+
+  const [visible, setVisible] = React.useState(false);
+  function onClose() {
+    setVisible(false);
+  }
 
   return (
     <div className="">
       <div className="tw-flex tw-items-center tw-justify-between">
         <LabelValue label={"Value Streams"} className="tw-ml-2" />
-        <Button type="primary" className="tw-mr-2"> <PlusOutlined /> New Value Stream</Button>
+        <Button type="primary" className="tw-mr-2" onClick={() => setVisible(true)}>
+          {" "}
+          <PlusOutlined /> New Value Stream
+        </Button>
+        <Drawer title={"New Value Stream"} width={720} onClose={onClose} visible={visible}>
+          <Form
+            key={visible}
+            layout="vertical"
+            onFinish={(values) => onSubmit({...values, onClose})}
+            initialValues={initialValues}
+          >
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item
+                  name={"name"}
+                  label="Value Stream"
+                  rules={[{required: true, message: "Value Stream is required"}]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item
+                  name="workItemSelectors"
+                  label="Tags"
+                  // rules={[{required: true, message: "Please select tags", type: "array"}]}
+                >
+                  <Select mode="multiple" placeholder="Please select tags">
+                    {uniqWorkItemSelectors.map((x) => (
+                      <Option key={x.value} value={x.value}>
+                        {x.label}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <div
+              className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+              style={{borderTop: "1px solid #e9e9e9"}}
+            >
+              <Button onClick={onClose} style={{marginRight: 8}}>
+                Cancel
+              </Button>
+
+              <Button htmlType="submit" type="primary">
+                Save
+              </Button>
+            </div>
+          </Form>
+        </Drawer>
       </div>
       <ValueStreamEditorTable tableData={items} />
     </div>
@@ -241,7 +304,14 @@ export function ValueStreamWorkStreamEditorWidget({instanceKey, context, view}) 
 
   return (
     <WidgetCore result={result} errorContext="ValueStreamWorkStreamEditorWidget.useQueryProjectValueStreams">
-      {view === "primary" && <ValueStreamWorkStreamEditorView />}
+      {view === "primary" && (
+        <ValueStreamWorkStreamEditorView
+          onSubmit={(values) => console.log("value-streams", {...values})}
+          initialValues={{
+            name: "Name",
+          }}
+        />
+      )}
     </WidgetCore>
   );
 }
