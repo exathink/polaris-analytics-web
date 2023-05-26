@@ -218,6 +218,7 @@ function useValueStreamEditorColumns() {
               initialValues={{name: record.name, workItemSelectors: record.workItemSelectors}}
               visible={visible}
               onClose={onClose}
+              formType="EDIT_FORM"
             />
           </div>
         );
@@ -232,11 +233,21 @@ export function ValueStreamEditorTable({tableData}) {
   return <StripeTable dataSource={tableData} columns={columns} />;
 }
 
-export function ValueStreamForm({initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
+export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
+  let tags = [];
+  let title=""
+  if (formType === "NEW_FORM") {
+    tags = uniqWorkItemSelectors;
+    title = "New Value Stream";
+  }
+  if (formType === "EDIT_FORM") {
+    tags = initialValues.workItemSelectors;
+    title = "Edit Value Stream";
+  }
+
   return (
-    <Drawer title={"New Value Stream"} width={720} onClose={onClose} visible={visible}>
+    <Drawer title={title} width={720} onClose={onClose} visible={visible}>
       <Form
-        key={initialValues.name}
         layout="vertical"
         onFinish={(values) => onSubmit({...values, onClose})}
         initialValues={initialValues}
@@ -258,7 +269,7 @@ export function ValueStreamForm({initialValues, onSubmit, uniqWorkItemSelectors,
               // rules={[{required: true, message: "Please select tags", type: "array"}]}
             >
               <Select mode="multiple" placeholder="Please select tags">
-                {(uniqWorkItemSelectors ?? initialValues.workItemSelectors).map((x) => (
+                {tags.map((x) => (
                   <Option key={x.value} value={x.value}>
                     {x.label}
                   </Option>
@@ -309,12 +320,12 @@ export function ValueStreamWorkStreamEditorView() {
           <PlusOutlined /> New Value Stream
         </Button>
         <ValueStreamForm
-          key={"new-form"}
+          formType="NEW_FORM"
           uniqWorkItemSelectors={uniqWorkItemSelectors}
           onSubmit={(values) => console.log("value-streams", {...values})}
           initialValues={{
             name: "",
-            workItemSelectors: []
+            workItemSelectors: [],
           }}
           visible={visible}
           onClose={onClose}
