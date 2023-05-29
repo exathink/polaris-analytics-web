@@ -167,12 +167,14 @@ export function ValueStreamMappingDashboard() {
 }
 
 function useValueStreamEditorColumns() {
+  const [currentRecord, setCurrentRecord] = React.useState();
+
   const [visible, setVisible] = React.useState(false);
   function onClose() {
     setVisible(false);
   }
 
-  return [
+  const columns = [
     {
       title: "Name",
       dataIndex: "name",
@@ -208,34 +210,42 @@ function useValueStreamEditorColumns() {
       render: (text, record) => {
         return (
           <div className="tw-flex tw-justify-center tw-gap-4" key={record.name}>
-            <Button type="primary" size="small" onClick={() => setVisible(true)}>
+            <Button type="primary" size="small" onClick={() => {setCurrentRecord(record); setVisible(true)}}>
               Edit
             </Button>{" "}
             <Button type="danger" size="small">
               Delete
             </Button>
-            <ValueStreamForm
-              initialValues={{name: record.name, workItemSelectors: record.workItemSelectors}}
-              visible={visible}
-              onClose={onClose}
-              formType="EDIT_FORM"
-            />
           </div>
         );
       },
     },
   ];
+  return {columns, currentRecord, visible, onClose};
 }
 
 export function ValueStreamEditorTable({tableData}) {
-  const columns = useValueStreamEditorColumns();
+  const {columns, currentRecord, visible, onClose} = useValueStreamEditorColumns();
 
-  return <StripeTable dataSource={tableData} columns={columns} />;
+
+
+  return (
+    <>
+      <StripeTable dataSource={tableData} columns={columns} />
+      <ValueStreamForm
+        key={currentRecord?.name}
+        initialValues={{name: currentRecord?.name??"", workItemSelectors: currentRecord?.workItemSelectors??[]}}
+        visible={visible}
+        onClose={onClose}
+        formType="EDIT_FORM"
+      />
+    </>
+  );
 }
 
 export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
   let tags = [];
-  let title=""
+  let title = "";
   if (formType === "NEW_FORM") {
     tags = uniqWorkItemSelectors;
     title = "New Value Stream";
@@ -247,11 +257,7 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
 
   return (
     <Drawer title={title} width={720} onClose={onClose} visible={visible}>
-      <Form
-        layout="vertical"
-        onFinish={(values) => onSubmit({...values, onClose})}
-        initialValues={initialValues}
-      >
+      <Form layout="vertical" onFinish={(values) => onSubmit({...values, onClose})} initialValues={initialValues}>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
@@ -268,10 +274,10 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
               label="Tags"
               // rules={[{required: true, message: "Please select tags", type: "array"}]}
             >
-              <Select mode="multiple" placeholder="Please select tags">
+              <Select mode="multiple" placeholder="Please select tags" >
                 {tags.map((x) => (
-                  <Option key={x.value} value={x.value}>
-                    {x.label}
+                  <Option key={x} value={x}>
+                    {x}
                   </Option>
                 ))}
               </Select>
@@ -301,10 +307,7 @@ export function ValueStreamWorkStreamEditorView() {
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
 
-  const uniqWorkItemSelectors = [...new Set(items.flatMap((x) => x.workItemSelectors))].map((x) => ({
-    value: x,
-    label: x,
-  }));
+  const uniqWorkItemSelectors = [...new Set(items.flatMap((x) => x.workItemSelectors))];
 
   const [visible, setVisible] = React.useState(false);
   function onClose() {
