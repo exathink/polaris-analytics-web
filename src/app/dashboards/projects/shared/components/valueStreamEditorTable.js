@@ -69,8 +69,12 @@ function useValueStreamEditorColumns() {
   return {columns, currentRecord, visible, onClose};
 }
 
-export function ValueStreamEditorTable({tableData}) {
+export function ValueStreamEditorTable({tableData, projectKey}) {
   const {columns, currentRecord, visible, onClose} = useValueStreamEditorColumns();
+
+  function handleSubmit(values) {
+    console.log(values);
+  }
 
   return (
     <>
@@ -78,6 +82,7 @@ export function ValueStreamEditorTable({tableData}) {
       <ValueStreamForm
         key={currentRecord?.name}
         initialValues={{name: currentRecord?.name ?? "", workItemSelectors: currentRecord?.workItemSelectors ?? []}}
+        onSubmit={handleSubmit}
         visible={visible}
         onClose={onClose}
         formType="EDIT_FORM"
