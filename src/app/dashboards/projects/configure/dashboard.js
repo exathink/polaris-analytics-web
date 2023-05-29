@@ -23,9 +23,10 @@ import {WidgetCore, useWidget} from "../../../framework/viz/dashboard/widgetCore
 import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams";
 import {LabelValue} from "../../../helpers/components";
 import {PlusOutlined} from "@ant-design/icons";
-import { ValueStreamForm } from "../shared/components/projectValueStreamUtils";
-import { ValueStreamEditorTable } from "../shared/components/valueStreamEditorTable";
-
+import {ValueStreamForm} from "../shared/components/projectValueStreamUtils";
+import {ValueStreamEditorTable} from "../shared/components/valueStreamEditorTable";
+import {useCreateValueStream} from "../shared/hooks/useCreateValueStream";
+import {logGraphQlError} from "../../../components/graphql/utils";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -166,8 +167,7 @@ export function ValueStreamMappingDashboard() {
   );
 }
 
-
-export function ValueStreamWorkStreamEditorView() {
+export function ValueStreamWorkStreamEditorView({projectKey}) {
   const {data} = useWidget();
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
@@ -177,6 +177,39 @@ export function ValueStreamWorkStreamEditorView() {
   const [visible, setVisible] = React.useState(false);
   function onClose() {
     setVisible(false);
+  }
+
+  // mutation to create value stream
+  const [mutate, {loading, client}] = useCreateValueStream({
+    onCompleted: ({createValueStream}) => {
+      if (createValueStream.success) {
+        // show success message
+        //  "Updated Successfully.";
+        client.resetStore();
+      } else {
+        logGraphQlError("ValueStreamEditorTable.useUpdateValueStream", createValueStream.errorMessage);
+        // show error message
+      }
+    },
+    onError: (error) => {
+      logGraphQlError("ValueStreamEditorTable.useUpdateValueStream", error);
+      // show error message (error.message)
+    },
+  });
+
+  function handleSubmit(values) {
+    const payload = {
+      name: values.name,
+      description: values.description ?? "test",
+      workItemSelectors: values.workItemSelectors,
+    };
+    // call mutation on save button click
+    mutate({
+      variables: {
+        projectKey,
+        ...payload,
+      },
+    });
   }
 
   return (
@@ -190,7 +223,7 @@ export function ValueStreamWorkStreamEditorView() {
         <ValueStreamForm
           formType="NEW_FORM"
           uniqWorkItemSelectors={uniqWorkItemSelectors}
-          onSubmit={(values) => console.log("value-streams", {...values})}
+          onSubmit={handleSubmit}
           initialValues={{
             name: "",
             workItemSelectors: [],
@@ -199,7 +232,7 @@ export function ValueStreamWorkStreamEditorView() {
           onClose={onClose}
         />
       </div>
-      <ValueStreamEditorTable tableData={items} />
+      <ValueStreamEditorTable tableData={items} projectKey={projectKey} />
     </div>
   );
 }
@@ -209,7 +242,7 @@ export function ValueStreamWorkStreamEditorWidget({instanceKey, context, view}) 
 
   return (
     <WidgetCore result={result} errorContext="ValueStreamWorkStreamEditorWidget.useQueryProjectValueStreams">
-      {view === "primary" && <ValueStreamWorkStreamEditorView />}
+      {view === "primary" && <ValueStreamWorkStreamEditorView projectKey={instanceKey} />}
     </WidgetCore>
   );
 }
