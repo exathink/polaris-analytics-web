@@ -21,11 +21,11 @@ import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/in
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
 import {WidgetCore, useWidget} from "../../../framework/viz/dashboard/widgetCore";
 import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams";
-import {StripeTable} from "../../../components/tables/tableUtils";
-import {CustomTag, LabelValue} from "../../../helpers/components";
+import {LabelValue} from "../../../helpers/components";
 import {PlusOutlined} from "@ant-design/icons";
-import {Col, Drawer, Form, Input, Row, Select} from "antd";
-const {Option} = Select;
+import { ValueStreamForm } from "../shared/components/projectValueStreamUtils";
+import { ValueStreamEditorTable } from "../shared/components/valueStreamEditorTable";
+
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -166,141 +166,6 @@ export function ValueStreamMappingDashboard() {
   );
 }
 
-function useValueStreamEditorColumns() {
-  const [currentRecord, setCurrentRecord] = React.useState();
-
-  const [visible, setVisible] = React.useState(false);
-  function onClose() {
-    setVisible(false);
-  }
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "25%",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      width: "20%",
-    },
-    {
-      title: "Tags",
-      dataIndex: "workItemSelectors",
-      key: "workItemSelectors",
-      width: "20%",
-      render: (text, record) => {
-        return (
-          <div>
-            {record.workItemSelectors.map((w) => (
-              <CustomTag key={w}>{w}</CustomTag>
-            ))}
-          </div>
-        );
-      },
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      width: "20%",
-      render: (text, record) => {
-        return (
-          <div className="tw-flex tw-justify-center tw-gap-4" key={record.name}>
-            <Button type="primary" size="small" onClick={() => {setCurrentRecord(record); setVisible(true)}}>
-              Edit
-            </Button>{" "}
-            <Button type="danger" size="small">
-              Delete
-            </Button>
-          </div>
-        );
-      },
-    },
-  ];
-  return {columns, currentRecord, visible, onClose};
-}
-
-export function ValueStreamEditorTable({tableData}) {
-  const {columns, currentRecord, visible, onClose} = useValueStreamEditorColumns();
-
-
-
-  return (
-    <>
-      <StripeTable dataSource={tableData} columns={columns} />
-      <ValueStreamForm
-        key={currentRecord?.name}
-        initialValues={{name: currentRecord?.name??"", workItemSelectors: currentRecord?.workItemSelectors??[]}}
-        visible={visible}
-        onClose={onClose}
-        formType="EDIT_FORM"
-      />
-    </>
-  );
-}
-
-export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
-  let tags = [];
-  let title = "";
-  if (formType === "NEW_FORM") {
-    tags = uniqWorkItemSelectors;
-    title = "New Value Stream";
-  }
-  if (formType === "EDIT_FORM") {
-    tags = initialValues.workItemSelectors;
-    title = "Edit Value Stream";
-  }
-
-  return (
-    <Drawer title={title} width={720} onClose={onClose} visible={visible}>
-      <Form layout="vertical" onFinish={(values) => onSubmit({...values, onClose})} initialValues={initialValues}>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item
-              name={"name"}
-              label="Value Stream"
-              rules={[{required: true, message: "Value Stream is required"}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name="workItemSelectors"
-              label="Tags"
-              // rules={[{required: true, message: "Please select tags", type: "array"}]}
-            >
-              <Select mode="multiple" placeholder="Please select tags" >
-                {tags.map((x) => (
-                  <Option key={x} value={x}>
-                    {x}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <div
-          className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
-          style={{borderTop: "1px solid #e9e9e9"}}
-        >
-          <Button onClick={onClose} style={{marginRight: 8}}>
-            Cancel
-          </Button>
-
-          <Button htmlType="submit" type="primary">
-            Save
-          </Button>
-        </div>
-      </Form>
-    </Drawer>
-  );
-}
 
 export function ValueStreamWorkStreamEditorView() {
   const {data} = useWidget();

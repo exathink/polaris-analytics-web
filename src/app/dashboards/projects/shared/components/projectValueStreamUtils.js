@@ -1,10 +1,12 @@
-import {capitalize} from "lodash";
 import React from "react";
 import {useHistory, useLocation} from "react-router-dom";
 import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetCore";
 import {SelectDropdown, useSelect} from "../../../shared/components/select/selectDropdown";
 import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 import {useQueryParamState} from "../helper/hooks";
+import { Col, Drawer, Form, Input, Row, Select } from "antd";
+import Button from "../../../../../components/uielements/button";
+const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 let firstRender = true
@@ -78,5 +80,65 @@ export function ProjectValueStreamsWidget({context}) {
     <WidgetCore result={result} errorContext="ValueStreamsWidget.useQueryValueStreams">
       <ValueStreamsDropdown />
     </WidgetCore>
+  );
+}
+
+
+export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
+  let tags = [];
+  let title = "";
+  if (formType === "NEW_FORM") {
+    tags = uniqWorkItemSelectors;
+    title = "New Value Stream";
+  }
+  if (formType === "EDIT_FORM") {
+    tags = initialValues.workItemSelectors;
+    title = "Edit Value Stream";
+  }
+
+  return (
+    <Drawer title={title} width={720} onClose={onClose} visible={visible}>
+      <Form layout="vertical" onFinish={(values) => onSubmit({...values, onClose})} initialValues={initialValues}>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              name={"name"}
+              label="Value Stream"
+              rules={[{required: true, message: "Value Stream is required"}]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              name="workItemSelectors"
+              label="Tags"
+              // rules={[{required: true, message: "Please select tags", type: "array"}]}
+            >
+              <Select mode="multiple" placeholder="Please select tags">
+                {tags.map((x) => (
+                  <Option key={x} value={x}>
+                    {x}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <div
+          className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+          style={{borderTop: "1px solid #e9e9e9"}}
+        >
+          <Button onClick={onClose} style={{marginRight: 8}}>
+            Cancel
+          </Button>
+
+          <Button htmlType="submit" type="primary">
+            Save
+          </Button>
+        </div>
+      </Form>
+    </Drawer>
   );
 }
