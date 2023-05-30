@@ -110,6 +110,15 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
             </Form.Item>
           </Col>
           <Col span={24}>
+          <Form.Item
+              name={"description"}
+              label="Description"
+              // rules={[{required: true, message: "Value Stream is required"}]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
             <Form.Item
               name="workItemSelectors"
               label="Tags"
