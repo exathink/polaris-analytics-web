@@ -27,6 +27,7 @@ import {ValueStreamForm} from "../shared/components/projectValueStreamUtils";
 import {ValueStreamEditorTable} from "../shared/components/valueStreamEditorTable";
 import {useCreateValueStream} from "../shared/hooks/useCreateValueStream";
 import {logGraphQlError} from "../../../components/graphql/utils";
+import {Alert} from "antd";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -174,26 +175,33 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
 
   const uniqWorkItemSelectors = [...new Set(items.flatMap((x) => x.workItemSelectors))];
 
+  const [status, updateStatus] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {mode: "", message: ""}
+  );
+
   const [visible, setVisible] = React.useState(false);
   function onClose() {
     setVisible(false);
   }
 
   // mutation to create value stream
-  const [mutate, {loading, client}] = useCreateValueStream({
+  const [mutate, {loading: mutationLoading, client}] = useCreateValueStream({
     onCompleted: ({createValueStream}) => {
       if (createValueStream.success) {
-        // show success message
-        //  "Updated Successfully.";
+        updateStatus({mode: "success", message: "Created Value Stream Successfully."});
         client.resetStore();
       } else {
         logGraphQlError("ValueStreamEditorTable.useUpdateValueStream", createValueStream.errorMessage);
-        // show error message
+        updateStatus({mode: "error", message: createValueStream.errorMessage});
       }
     },
     onError: (error) => {
       logGraphQlError("ValueStreamEditorTable.useUpdateValueStream", error);
-      // show error message (error.message)
+      updateStatus({mode: "error", message: error.message});
     },
   });
 
@@ -210,10 +218,29 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
         ...payload,
       },
     });
+
+    onClose();
   }
 
   return (
     <div className="">
+      {mutationLoading && (
+          <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
+            Processing...
+          </Button>
+        )}
+      {status.mode === "success" && (
+        <Alert message={status.message} type="success" showIcon closable className="tw-ml-auto tw-mr-[90px] tw-w-[300px]" />
+      )}
+      {status.mode === "error" && (
+        <Alert
+          message={status.message}
+          type="error"
+          showIcon
+          closable
+          className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+        />
+      )}
       <div className="tw-flex tw-items-center tw-justify-between">
         <LabelValue label={"Value Streams"} className="tw-ml-2" />
         <Button type="primary" className="tw-mr-2" onClick={() => setVisible(true)}>
