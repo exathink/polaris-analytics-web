@@ -1,7 +1,8 @@
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import React from "react";
 export const CONFIG_TABS = {
-  VALUE_STREAM: "value-stream",
+  DELIVERY_PROCESS_MAPPING: "delivery-process-mapping",
+  VALUE_STREAMS: "value-streams",
   RESPONSE_TIME_SLA: "response-time-sla",
   MEASUREMENT_SETTINGS: "measurement-settings",
 };
@@ -11,7 +12,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
     dimension === "project"
       ? [
           {
-            key: CONFIG_TABS.VALUE_STREAM,
+            key: CONFIG_TABS.DELIVERY_PROCESS_MAPPING,
             display: "Delivery Process Mapping",
           },
         ]
@@ -19,7 +20,10 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
 
   const groupings = [
     ...valueStreamGrouping,
-
+    {
+      key: CONFIG_TABS.VALUE_STREAMS,
+      display: "Value Streams / Work Streams",
+    },
     {
       key: CONFIG_TABS.MEASUREMENT_SETTINGS,
       display: settingsName,
