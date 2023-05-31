@@ -3,6 +3,9 @@ import {ValueStreamForm} from "./projectValueStreamUtils";
 import Button from "../../../../../components/uielements/button";
 import {StripeTable} from "../../../../components/tables/tableUtils";
 import {CustomTag} from "../../../../helpers/components";
+import {logGraphQlError} from "../../../../components/graphql/utils";
+import {useEditValueStream} from "../../shared/hooks/useEditValueStream";
+import {Alert} from "antd";
 
 function useValueStreamEditorColumns() {
   const [currentRecord, setCurrentRecord] = React.useState();
@@ -69,12 +72,74 @@ function useValueStreamEditorColumns() {
 export function ValueStreamEditorTable({tableData, projectKey}) {
   const {columns, currentRecord, visible, onClose} = useValueStreamEditorColumns();
 
+  const [status, updateStatus] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {mode: "", message: ""}
+  );
+
+  // mutation to edit value stream
+  const [mutate, {loading: mutationLoading, client}] = useEditValueStream({
+    onCompleted: ({editValueStream}) => {
+      if (editValueStream.success) {
+        updateStatus({mode: "success", message: "Edited Value Stream Successfully."});
+        client.resetStore();
+      } else {
+        logGraphQlError("ValueStreamEditorTable.useEditValueStream", editValueStream.errorMessage);
+        updateStatus({mode: "error", message: editValueStream.errorMessage});
+      }
+    },
+    onError: (error) => {
+      logGraphQlError("ValueStreamEditorTable.useEditValueStream", error);
+      updateStatus({mode: "error", message: error.message});
+    },
+  });
+
   function handleSubmit(values) {
-    console.log(values);
+    const payload = {
+      name: values.name,
+      description: values.description ?? "test",
+      workItemSelectors: values.workItemSelectors,
+    };
+    // call mutation on save button click
+    mutate({
+      variables: {
+        projectKey,
+        valueStreamKey: currentRecord.key,
+        ...payload,
+      },
+    });
+
+    onClose();
   }
 
   return (
     <>
+      {mutationLoading && (
+        <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
+          Processing...
+        </Button>
+      )}
+      {status.mode === "success" && (
+        <Alert
+          message={status.message}
+          type="success"
+          showIcon
+          closable
+          className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+        />
+      )}
+      {status.mode === "error" && (
+        <Alert
+          message={status.message}
+          type="error"
+          showIcon
+          closable
+          className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+        />
+      )}
       <StripeTable dataSource={tableData} columns={columns} />
       <ValueStreamForm
         key={currentRecord?.name}
