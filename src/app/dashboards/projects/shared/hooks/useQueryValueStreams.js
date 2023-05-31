@@ -11,6 +11,7 @@ query with_project_instance($key: String!) {
          node {
           key
           name
+          description
           workItemSelectors
          }
       }
