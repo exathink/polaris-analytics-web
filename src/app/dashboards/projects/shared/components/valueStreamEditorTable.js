@@ -57,9 +57,6 @@ function useValueStreamEditorColumns() {
               }}
             >
               Edit
-            </Button>{" "}
-            <Button type="danger" size="small">
-              Delete
             </Button>
           </div>
         );
