@@ -253,6 +253,7 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
           onSubmit={handleSubmit}
           initialValues={{
             name: "",
+            description: "",
             workItemSelectors: [],
           }}
           visible={visible}
