@@ -100,7 +100,7 @@ export function ValueStreamEditorTable({tableData, projectKey}) {
   function handleSubmit(values) {
     const payload = {
       name: values.name,
-      description: values.description ?? "test",
+      description: values.description,
       workItemSelectors: values.workItemSelectors,
     };
     // call mutation on save button click
