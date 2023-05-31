@@ -113,7 +113,7 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
           <Form.Item
               name={"description"}
               label="Description"
-              // rules={[{required: true, message: "Value Stream is required"}]}
+              rules={[{required: true, message: "Description is required"}]}
             >
               <Input />
             </Form.Item>
@@ -122,7 +122,7 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
             <Form.Item
               name="workItemSelectors"
               label="Tags"
-              // rules={[{required: true, message: "Please select tags", type: "array"}]}
+              rules={[{required: true, message: "Please select tags", type: "array"}]}
             >
               <Select mode="multiple" placeholder="Please select tags">
                 {tags.map((x) => (
