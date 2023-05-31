@@ -333,7 +333,7 @@ export default withViewerContext(({viewerContext}) => {
                     dimension={"project"}
                     configTab={configTab}
                     setConfigTab={setConfigTab}
-                    settingsName={"Value Stream Settings"}
+                    settingsName={"General Settings"}
                   />
                 ),
               ]}

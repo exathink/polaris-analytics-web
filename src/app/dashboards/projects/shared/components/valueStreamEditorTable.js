@@ -84,7 +84,7 @@ export function ValueStreamEditorTable({tableData, projectKey, uniqWorkItemSelec
   const [mutate, {loading: mutationLoading, client}] = useEditValueStream({
     onCompleted: ({editValueStream}) => {
       if (editValueStream.success) {
-        updateStatus({mode: "success", message: "Edited Value Stream Successfully."});
+        updateStatus({mode: "success", message: "Value stream was updated."});
         client.resetStore();
       } else {
         logGraphQlError("ValueStreamEditorTable.useEditValueStream", editValueStream.errorMessage);
