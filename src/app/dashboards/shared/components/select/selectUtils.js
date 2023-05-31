@@ -126,6 +126,7 @@ export function SelectDropdownMultiple({
   className,
   title,
   testId,
+  multipleCount = 1,
 }) {
   const selectClassName = classNames(
     "tw-flex",
@@ -135,16 +136,16 @@ export function SelectDropdownMultiple({
 
   const tagRender = ({label, value, closable, onClose}) => {
     const index = selectedValues.findIndex((item) => item.value === value);
-    if (index < 1) {
+    if (index < multipleCount) {
       return (
         <Tag closable={closable} onClose={onClose} key={value}>
           {label}
         </Tag>
       );
     }
-    if (index === 1) {
-      const remainingCount = selectedValues.length - 1;
-      const remainingLabels = selectedValues.slice(1).map((item) => item.label);
+    if (index === multipleCount) {
+      const remainingCount = selectedValues.length - multipleCount;
+      const remainingLabels = selectedValues.slice(multipleCount).map((item) => item.label);
 
       const remainingElements = (
         <div className="tw-p-1">
