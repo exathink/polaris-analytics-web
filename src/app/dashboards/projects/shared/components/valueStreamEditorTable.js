@@ -81,7 +81,11 @@ export function ValueStreamEditorTable({tableData, projectKey}) {
       <StripeTable dataSource={tableData} columns={columns} />
       <ValueStreamForm
         key={currentRecord?.name}
-        initialValues={{name: currentRecord?.name ?? "", workItemSelectors: currentRecord?.workItemSelectors ?? []}}
+        initialValues={{
+          name: currentRecord?.name ?? "",
+          description: currentRecord?.description ?? "",
+          workItemSelectors: currentRecord?.workItemSelectors ?? [],
+        }}
         onSubmit={handleSubmit}
         visible={visible}
         onClose={onClose}
