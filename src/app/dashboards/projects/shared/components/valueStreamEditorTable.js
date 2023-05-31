@@ -129,6 +129,7 @@ export function ValueStreamEditorTable({tableData, projectKey, uniqWorkItemSelec
           showIcon
           closable
           className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+          afterClose={() => updateStatus({mode: "init"})}
         />
       )}
       {status.mode === "error" && (
@@ -138,6 +139,7 @@ export function ValueStreamEditorTable({tableData, projectKey, uniqWorkItemSelec
           showIcon
           closable
           className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+          afterClose={() => updateStatus({mode: "init"})}
         />
       )}
       <StripeTable dataSource={tableData} columns={columns} />
