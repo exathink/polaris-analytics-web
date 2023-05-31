@@ -173,7 +173,8 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
 
-  const uniqWorkItemSelectors = [...new Set(items.flatMap((x) => x.workItemSelectors))];
+  const tags = data.project.tags ?? [];
+  const uniqWorkItemSelectors = [...new Set(tags)];
 
   const [status, updateStatus] = React.useReducer(
     (data, partialData) => ({
@@ -260,7 +261,7 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
           onClose={onClose}
         />
       </div>
-      <ValueStreamEditorTable tableData={items} projectKey={projectKey} />
+      <ValueStreamEditorTable tableData={items} projectKey={projectKey} uniqWorkItemSelectors={uniqWorkItemSelectors} />
     </div>
   );
 }

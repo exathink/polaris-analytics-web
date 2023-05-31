@@ -69,7 +69,7 @@ function useValueStreamEditorColumns() {
   return {columns, currentRecord, visible, onClose};
 }
 
-export function ValueStreamEditorTable({tableData, projectKey}) {
+export function ValueStreamEditorTable({tableData, projectKey, uniqWorkItemSelectors}) {
   const {columns, currentRecord, visible, onClose} = useValueStreamEditorColumns();
 
   const [status, updateStatus] = React.useReducer(
@@ -152,6 +152,7 @@ export function ValueStreamEditorTable({tableData, projectKey}) {
         visible={visible}
         onClose={onClose}
         formType="EDIT_FORM"
+        uniqWorkItemSelectors={uniqWorkItemSelectors}
       />
     </>
   );

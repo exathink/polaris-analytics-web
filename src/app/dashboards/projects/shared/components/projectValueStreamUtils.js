@@ -85,14 +85,12 @@ export function ProjectValueStreamsWidget({context}) {
 
 
 export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
-  let tags = [];
+  
   let title = "";
   if (formType === "NEW_FORM") {
-    tags = uniqWorkItemSelectors;
     title = "New Value Stream";
   }
   if (formType === "EDIT_FORM") {
-    tags = initialValues.workItemSelectors;
     title = "Edit Value Stream";
   }
 
@@ -125,7 +123,7 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
               rules={[{required: true, message: "Please select tags", type: "array"}]}
             >
               <Select mode="multiple" placeholder="Please select tags">
-                {tags.map((x) => (
+                {uniqWorkItemSelectors.map((x) => (
                   <Option key={x} value={x}>
                     {x}
                   </Option>
