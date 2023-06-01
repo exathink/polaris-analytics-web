@@ -3,7 +3,6 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {capitalizeFirstLetter, elide, epoch, getMinMaxDatesFromRange, getWeekendPlotBands, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
-import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 const workItemEventSymbol = {
   unmapped: "triangle",
@@ -170,7 +169,7 @@ function getDeliveryCyclePlotLines(workItem, intl) {
   );
 }
 
-export const WorkItemEventsTimelineChart = withNavigationContext(Chart({
+export const WorkItemEventsTimelineChart = Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
   eventHandler: DefaultSelectionEventHandler,
@@ -287,4 +286,4 @@ export const WorkItemEventsTimelineChart = withNavigationContext(Chart({
       },
     };
   },
-}));
+});

@@ -3,12 +3,14 @@ import {VizItem, VizRow} from "../../../shared/containers/layout";
 import {WorkItemEventsTimelineChart} from './workItemEventTimelineChart'
 import {navigateToExternalURL} from "../../../shared/navigation/navigate";
 import {getCommitBrowseUrl} from "../../../shared/helpers/commitUtils";
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
-export const WorkItemEventTimelineView = (
+export const WorkItemEventTimelineView = withNavigationContext((
   {
     workItem,
     view,
-    context
+    context,
+    fullScreen
   }
 ) => {
 
@@ -36,10 +38,11 @@ export const WorkItemEventTimelineView = (
           context={context}
           view={view}
           onSelectionChange={handlePointClick}
+          fullScreen
         />
       </VizItem>
     </VizRow>
   );
 
-}
+})
 
