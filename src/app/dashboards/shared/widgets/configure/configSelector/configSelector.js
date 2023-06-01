@@ -22,7 +22,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
     ...valueStreamGrouping,
     {
       key: CONFIG_TABS.VALUE_STREAMS,
-      display: "Value Streams / Work Streams",
+      display: "Value Streams",
     },
     {
       key: CONFIG_TABS.MEASUREMENT_SETTINGS,
