@@ -3,6 +3,7 @@ import {DefaultSelectionEventHandler} from "../../../../framework/viz/charts/eve
 import {capitalizeFirstLetter, elide, epoch, getMinMaxDatesFromRange, getWeekendPlotBands, pick, toMoment} from "../../../../helpers/utility";
 import {Colors, WorkItemStateTypeColor, WorkItemStateTypeDisplayName} from "../../../shared/config";
 import {formatDateTime} from "../../../../i18n";
+import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
 const workItemEventSymbol = {
   unmapped: "triangle",
@@ -169,7 +170,7 @@ function getDeliveryCyclePlotLines(workItem, intl) {
   );
 }
 
-export const WorkItemEventsTimelineChart = Chart({
+export const WorkItemEventsTimelineChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => pick(props, "workItem"),
 
   eventHandler: DefaultSelectionEventHandler,
@@ -208,7 +209,7 @@ export const WorkItemEventsTimelineChart = Chart({
     });
   },
 
-  getConfig: ({workItem, context, intl}) => {
+  getConfig: ({workItem, context, intl, fullScreen}) => {
     const series_data = [
       ...getWorkItemEvents(workItem),
       ...getWorkItemCommitEvents(workItem),
@@ -257,6 +258,7 @@ export const WorkItemEventsTimelineChart = Chart({
       },
       tooltip: {
         useHTML: true,
+        outside: fullScreen === false,
         hideDelay: 50,
         formatter: function () {
           return tooltipFormatters[this.point.eventType](this.point, intl);
@@ -285,4 +287,4 @@ export const WorkItemEventsTimelineChart = Chart({
       },
     };
   },
-});
+}));
