@@ -3,14 +3,16 @@ import {analytics_service} from "../../../../services/graphql";
 
 export const GET_PROJECT_VALUE_STREAMS_QUERY = gql`
 query with_project_instance($key: String!) {
-  project(key: $key) {
+  project(key: $key, interfaces: [Tags]) {
     name
     key
+    tags
     valueStreams {
       edges {
          node {
           key
           name
+          description
           workItemSelectors
          }
       }
