@@ -93,7 +93,7 @@ const TopDashboard = ({ viewerContext }) => (
           <DashboardRow h={"68%"} title={"Teams"}  className={styles.teamsRow}>
             <DashboardWidget
               w={1}
-              name={``}
+              name={`Teams`}
 
               className={styles.orgTeamsTable}
               render={({ view }) =>
@@ -105,7 +105,7 @@ const TopDashboard = ({ viewerContext }) => (
                   specsOnly={true}
                   includeSubTasks={false}
                 />}
-              showDetail={false}
+              showDetail={true}
             />
           </DashboardRow>
         </Dashboard>
