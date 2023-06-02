@@ -37,6 +37,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
       dataIndex: "name",
       key: "name",
       width: "10%",
+      sorter: (a, b) => SORTER.string_compare(a.name, b.name),
       ...nameSearchState
     },
     {
