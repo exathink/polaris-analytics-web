@@ -59,7 +59,7 @@ export const dashboard = () => (
             <DashboardRow h={"68%"} title={"Teams"}>
               <DashboardWidget
                 w={1}
-                name={``}
+                name={`Teams`}
                 render={({view}) => (
                   <OrgTeamsTableWidget
                     organizationKey={project.organizationKey}
@@ -72,7 +72,7 @@ export const dashboard = () => (
                     latestWorkItemEvent={project.latestWorkItemEvent}
                   />
                 )}
-                showDetail={false}
+                showDetail={true}
               />
             </DashboardRow>
           </Dashboard>
