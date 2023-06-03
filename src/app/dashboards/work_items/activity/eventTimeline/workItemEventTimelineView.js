@@ -38,7 +38,7 @@ export const WorkItemEventTimelineView = withNavigationContext((
           context={context}
           view={view}
           onSelectionChange={handlePointClick}
-          fullScreen
+          fullScreen={fullScreen}
         />
       </VizItem>
     </VizRow>
