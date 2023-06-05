@@ -35,7 +35,7 @@
   display: grid;
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 15% 5% fit-content(70%) 10%;
+  grid-template-rows: 15% 5% minmax(auto, 70%) 10%;
   height: 100%;
   grid-template-areas:
     "teamMembersSlider teamMembersSlider"
@@ -91,7 +91,7 @@
   display: grid;
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 10% 5% fit-content(75%) 5%;
+  grid-template-rows: 10% 5% minmax(auto, 75%) 5%;
   grid-template-areas:
     "selectTeam messageNotification"
     "updateTeamsTitle updateTeamsTitle"
