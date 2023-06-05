@@ -9,6 +9,7 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {formatDateTime} from "../../../../../i18n/utils";
 import {getRowSelection} from "../utils";
 import Button from "../../../../../../components/uielements/button";
+const DEFAULT_TEAM = "Unassigned";
 
 function getTransformedData(data, intl) {
   if (data == null) {
@@ -20,6 +21,7 @@ function getTransformedData(data, intl) {
     .map((node) => {
       return {
         ...node,
+        teamName: node.teamName ?? DEFAULT_TEAM,
         latestCommit: formatDateTime(intl, node.latestCommit),
       };
     })

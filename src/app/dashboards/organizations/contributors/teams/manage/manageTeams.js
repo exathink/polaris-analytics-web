@@ -7,6 +7,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework
 import {useQueryOrganizationTeams} from "../useQueryOrganizationTeams";
 import {ManageTeamsWorkflow} from "./manageTeamsWorkflow";
 import styles from "../../../../../framework/viz/dashboard/dashboardItem.module.css";
+import classNames from "classnames";
 
 const dashboard_id = "dashboards.contributors.manage.manage-teams";
 
@@ -28,9 +29,9 @@ function ManageTeams({context, intl}) {
   const props = {organizationKey, teamsList, context, intl};
 
   return (
-    <Dashboard dashboard={`${dashboard_id}`}>
-      <DashboardRow h={"95%"}>
-        <DashboardWidget className={styles.dashboardItem} w={1} render={() => <ManageTeamsWorkflow {...props} />} />
+    <Dashboard dashboard={`${dashboard_id}`} gridLayout={true} className="tw-grid tw-grid-rows-[100%]">
+      <DashboardRow>
+        <DashboardWidget className={classNames(styles.dashboardItem, "tw-h-full")} w={1} render={() => <ManageTeamsWorkflow {...props} />} />
       </DashboardRow>
     </Dashboard>
   );
