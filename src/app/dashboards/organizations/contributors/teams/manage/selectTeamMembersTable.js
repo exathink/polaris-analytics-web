@@ -1,17 +1,21 @@
+import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 
-const DEFAULT_TEAM = "Unassigned";
-
 function customTeamNameRender(text, record, searchText) {
-  return text ?? DEFAULT_TEAM;
+  return (
+    <Highlighter
+      highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
+      searchWords={searchText || ""}
+      textToHighlight={text.toString()}
+    />
+  );
 }
 
 export function useSelectTeamMembersColumns() {
-  const [nameSearchState, teamNameSearchState] = [
-    useSearch("name"),
-    useSearch("teamName", {customRender: customTeamNameRender}),
-  ];
+  const nameSearchState =  useSearch("name");
+  const teamNameSearchState =  useSearch("teamName", {customRender: customTeamNameRender});
+
   const columns = [
     {
       title: "Name",
@@ -68,7 +72,7 @@ export function SelectTeamMembersTable({tableData, columns, loading, testId, row
       loading={loading}
       testId={testId}
       rowSelection={rowSelection}
-      rowKey={record => record.key}
+      rowKey={(record) => record.key}
     />
   );
 }
