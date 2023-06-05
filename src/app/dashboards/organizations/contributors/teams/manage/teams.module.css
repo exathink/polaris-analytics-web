@@ -2,12 +2,14 @@
   background-color: white;
   display: grid;
   grid-template-columns: 100px 1fr 1fr 100px;
+  grid-template-rows: 5% 95%;
   grid-template-areas:
     "backButton steps steps ."
     "stepContent stepContent stepContent stepContent";
   gap: 0.5rem;
   justify-items: center;
   align-items: center;
+  height: 100%;
 }
 
 .manageTeamsStepsWrapper {
@@ -21,8 +23,8 @@
 }
 .manageTeamsStepsContent {
   margin: 0 2rem;
-  min-height: 50vh;
   grid-area: stepContent;
+  height: 100%;
 }
 
 /* 
@@ -33,6 +35,8 @@
   display: grid;
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 15% 5% minmax(auto, 70%) 10%;
+  height: 100%;
   grid-template-areas:
     "teamMembersSlider teamMembersSlider"
     "userMessage userMessage"
@@ -57,7 +61,6 @@
 
 .selectTeamMembersTableWrapper {
   grid-area: teamMembersTable;
-  margin-bottom: 20px;
 }
 
 .rangeSliderWrapper {
@@ -84,14 +87,15 @@
 
 /* Update Teams Page */
 .updateTeamsPage {
+  height: 100%;
   display: grid;
   gap: 0.2rem;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 10% 5% minmax(auto, 75%) 5%;
   grid-template-areas:
     "selectTeam messageNotification"
     "updateTeamsTitle updateTeamsTitle"
     "updateTeamsTable updateTeamsTable"
-    "actionButtons actionButtons"
     "updateTeamsAction updateTeamsAction";
 }
 
