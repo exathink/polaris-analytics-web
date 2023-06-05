@@ -24,7 +24,8 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
   const getDescendantValues = (record) => {
     const values = [];
     (function recurse(record) {
-      values.push(record[dataIndex].toString().toLowerCase());
+      let recordVal = record[dataIndex]??"";
+      values.push(recordVal.toString().toLowerCase());
       record.children && record.children.forEach(recurse);
     })(record);
     return values;
@@ -57,7 +58,7 @@ export function useSearch(dataIndex, {onSearch, customRender} = {}) {
     },
 
     onFilter: (value, record) => {
-      const recordName = record[dataIndex];
+      const recordName = record[dataIndex]??"";
       const searchLower = value.toLowerCase();
       return (
         recordName.toString().toLowerCase().includes(searchLower) ||
