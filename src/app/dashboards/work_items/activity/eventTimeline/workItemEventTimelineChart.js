@@ -208,7 +208,7 @@ export const WorkItemEventsTimelineChart = Chart({
     });
   },
 
-  getConfig: ({workItem, context, intl}) => {
+  getConfig: ({workItem, context, intl, fullScreen}) => {
     const series_data = [
       ...getWorkItemEvents(workItem),
       ...getWorkItemCommitEvents(workItem),
@@ -257,6 +257,7 @@ export const WorkItemEventsTimelineChart = Chart({
       },
       tooltip: {
         useHTML: true,
+        outside: fullScreen === false,
         hideDelay: 50,
         formatter: function () {
           return tooltipFormatters[this.point.eventType](this.point, intl);

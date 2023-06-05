@@ -199,3 +199,7 @@ table thead th {
 .editUserFormCell .ant-form-item-control-input {
   min-height: 16px;
 }
+
+.highcharts-tooltip-container {
+  z-index: 999999 !important;
+}
