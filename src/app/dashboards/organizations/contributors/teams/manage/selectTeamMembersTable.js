@@ -2,25 +2,20 @@ import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 
-const DEFAULT_TEAM = "Unassigned";
-
 function customTeamNameRender(text, record, searchText) {
-  let customText = text || DEFAULT_TEAM;
-
   return (
     <Highlighter
       highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
       searchWords={searchText || ""}
-      textToHighlight={customText.toString()}
+      textToHighlight={text.toString()}
     />
   );
 }
 
 export function useSelectTeamMembersColumns() {
-  const [nameSearchState, teamNameSearchState] = [
-    useSearch("name"),
-    useSearch("teamName", {customRender: customTeamNameRender}),
-  ];
+  const nameSearchState =  useSearch("name");
+  const teamNameSearchState =  useSearch("teamName", {customRender: customTeamNameRender});
+
   const columns = [
     {
       title: "Name",
