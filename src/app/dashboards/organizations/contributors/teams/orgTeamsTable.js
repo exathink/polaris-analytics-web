@@ -64,7 +64,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "cycleTime",
           key: "cycleTime",
           width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.cycleTime, b.cycleTime),
+          sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
           render: (text, record) => {
             return <AvgCycleTime
               displayType="cellrender"
@@ -82,7 +82,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "effort",
           key: "effort",
           width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.effort, b.effort),
+          sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
           // render: renderTrendMetric({metric: "avgEffort", good: TrendIndicator.isNegative, uom: "FTE Days", samplingFrequency})
           render: (text, record) => {
             return (
@@ -103,7 +103,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "implementation",
           key: "implementation",
           width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.implementation, b.implementation),
+          sorter: (a, b) => SORTER.number_compare(a.implementation, b.implementation),
           render: (text, record) => {
             return (
               <AvgDuration
@@ -123,7 +123,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "delivery",
           key: "delivery",
           width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.delivery, b.delivery),
+          sorter: (a, b) => SORTER.number_compare(a.delivery, b.delivery),
           render: (text, record) => {
             return (
               <AvgLatency
@@ -153,7 +153,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "volume",
           key: "volume",
           width: "6%",
-          sorter: (a, b) => SORTER.string_compare(a.volume, b.volume),
+          sorter: (a, b) => SORTER.number_compare(a.volume, b.volume),
           render: (text, record) => {
             return (
               <Volume
@@ -176,7 +176,7 @@ export function useOrgTeamsTableColumns(samplingFrequency, specsOnly) {
           dataIndex: "effortOut",
           key: "effortOut",
           width: "8%",
-          sorter: (a, b) => SORTER.string_compare(a.effortOut, b.effortOut),
+          sorter: (a, b) => SORTER.number_compare(a.effortOut, b.effortOut),
           render: (text, record) => {
             return (
               <EffortOUT
