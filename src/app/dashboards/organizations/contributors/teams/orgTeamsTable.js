@@ -5,12 +5,14 @@ import {ButtonBar} from "../../../../containers/buttonBar/buttonBar";
 import Button from "../../../../../components/uielements/button";
 import {CreateNewTeamWidget} from "./createNewTeam";
 import {TeamLink} from "../../../shared/navigation/teamLink";
-import {fromNow, getNumber} from "../../../../helpers/utility";
+import {fromNow, getNumber, i18nNumber} from "../../../../helpers/utility";
 import {injectIntl} from "react-intl";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {AvgCycleTime, AvgDuration, AvgEffort, AvgLatency, EffortOUT, Volume} from "../../../shared/components/flowStatistics/flowStatistics";
 import { renderMetric } from "../../../../components/misc/statistic/statistic";
 import { AppTerms } from "../../../shared/config";
+import {LabelValue} from "../../../../helpers/components";
+import {useSummaryStats} from "../../../shared/hooks/useSummaryStats";
 
 function customNameRender(text, record, searchText) {
   return (
@@ -261,20 +263,61 @@ function getTransformedData(tableData, intl) {
 }
 
 
+const summaryStatsColumns = {
+  cycleTime: "Days",
+  effort: "FTE Days",
+  implementation: "Days",
+  delivery: "Days",
+}
+
 export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, organizationKey, intl, specsOnly}) => {
   const transformedData = getTransformedData(tableData, intl)
   const columns = useOrgTeamsTableColumns(samplingFrequency, specsOnly);
+
+  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+    useSummaryStats({summaryStatsColumns});
 
   const locale = {
     emptyText: () => <CreateNewTeamWidget organizationKey={organizationKey} />,
   };
 
+  const res = tableData.reduce((acc, item) => acc + item.contributorCount, 0)
   return (
     <StripeTable
       columns={columns}
       dataSource={transformedData}
       locale={locale}
-      rowKey={(record) => record.key}
+      onChange={handleChange}
+      rowKey={(record) => record.rowKey}
+      renderTableSummary={(pageData) => {
+        const avgData = getAvgSortersData(pageData);
+        const avgFiltersData = getAvgFiltersData(pageData);
+          return (
+            <>
+              <LabelValue label="Contributors" value={res} />
+              {avgFiltersData
+                .filter((x) => summaryStatsColumns[x.appliedFilter])
+                .map((x, i) => {
+                  return (
+                    <LabelValue
+                      key={x.appliedFilter}
+                      label={`Avg. ${x.appliedFilter}`}
+                      value={i18nNumber(intl, x.average, 2)}
+                      uom={summaryStatsColumns[x.appliedFilter]}
+                    />
+                  );
+                })}
+              {avgData !== 0 && avgData != null && appliedFilters.includes(appliedSorter) === false && (
+                <LabelValue
+                  key={appliedSorter}
+                  label={<span>{appliedName}</span>}
+                  value={i18nNumber(intl, avgData, 2)}
+                  uom={summaryStatsColumns[appliedSorter]}
+                />
+              )}
+            </>
+          );
+        }}
     />
   );
 })
