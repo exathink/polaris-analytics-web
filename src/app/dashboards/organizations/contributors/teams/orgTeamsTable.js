@@ -274,7 +274,7 @@ export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, or
   const transformedData = getTransformedData(tableData, intl)
   const columns = useOrgTeamsTableColumns(samplingFrequency, specsOnly);
 
-  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
+  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgSortersData} =
     useSummaryStats({summaryStatsColumns});
 
   const locale = {
@@ -291,22 +291,10 @@ export const OrgTeamsTable = injectIntl(({tableData, days, samplingFrequency, or
       rowKey={(record) => record.rowKey}
       renderTableSummary={(pageData) => {
         const avgData = getAvgSortersData(pageData);
-        const avgFiltersData = getAvgFiltersData(pageData);
+
           return (
             <>
               <LabelValue label="Contributors" value={res} />
-              {avgFiltersData
-                .filter((x) => summaryStatsColumns[x.appliedFilter])
-                .map((x, i) => {
-                  return (
-                    <LabelValue
-                      key={x.appliedFilter}
-                      label={`Avg. ${x.appliedFilter}`}
-                      value={i18nNumber(intl, x.average, 2)}
-                      uom={summaryStatsColumns[x.appliedFilter]}
-                    />
-                  );
-                })}
               {avgData !== 0 && avgData != null && appliedFilters.includes(appliedSorter) === false && (
                 <LabelValue
                   key={appliedSorter}
