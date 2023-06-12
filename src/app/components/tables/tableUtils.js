@@ -7,6 +7,10 @@ import {LabelValue} from "../../helpers/components";
 import {useVirtualizer} from "@tanstack/react-virtual";
 import classNames from "classnames";
 
+import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
+
 export const DEFAULT_PAGE_SIZE = 200;
 export const TABLE_HEIGHTS = {
   FIFTEEN: "15vh",
@@ -265,5 +269,17 @@ export function VirtualStripeTable({
       }}
       {...tableProps}
     />
+  );
+}
+
+
+export function AgGridStripeTable({
+  columnDefs,
+  rowData,
+}) {
+  return (
+    <div className="ag-theme-alpine" style={{height: "100%"}}>
+      <AgGridReact columnDefs={columnDefs} rowData={rowData} />
+    </div>
   );
 }
