@@ -1,20 +1,9 @@
-import {Highlighter} from "../../../../../components/misc/highlighter";
 import {useSearch} from "../../../../../components/tables/hooks";
 import {SORTER, StripeTable} from "../../../../../components/tables/tableUtils";
 
-function customTeamNameRender(text, record, searchText) {
-  return (
-    <Highlighter
-      highlightStyle={{backgroundColor: "#ffc069", padding: 0}}
-      searchWords={searchText || ""}
-      textToHighlight={text.toString()}
-    />
-  );
-}
 
-export function useSelectTeamMembersColumns() {
+export function useSelectTeamMembersColumns(filters) {
   const nameSearchState =  useSearch("name");
-  const teamNameSearchState =  useSearch("teamName", {customRender: customTeamNameRender});
 
   const columns = [
     {
@@ -31,7 +20,8 @@ export function useSelectTeamMembersColumns() {
       key: "teamName",
       width: "20%",
       sorter: (a, b) => SORTER.string_compare(a.teamName, b.teamName),
-      ...teamNameSearchState,
+      filters: filters.teams.map((b) => ({text: b, value: b})),
+      onFilter: (value, record) => record.teamName.indexOf(value) === 0,
     },
     {
       title: "Latest Commit",
@@ -64,7 +54,10 @@ export function useSelectTeamMembersColumns() {
   ];
   return columns;
 }
-export function SelectTeamMembersTable({tableData, columns, loading, testId, rowSelection}) {
+export function SelectTeamMembersTable({tableData, loading, testId, rowSelection}) {
+  const teams = [...new Set(tableData.map((x) => x.teamName))];
+  const filters = {teams};
+  const columns = useSelectTeamMembersColumns(filters);
   return (
     <StripeTable
       dataSource={tableData}
