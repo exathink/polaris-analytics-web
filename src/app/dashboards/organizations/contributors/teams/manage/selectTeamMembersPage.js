@@ -38,7 +38,6 @@ export function SelectTeamMembersPage({
   selectedRecords,
   dispatch,
 }) {
-  const columns = useSelectTeamMembersColumns();
 
   const {loading, error, data, previousData} = useQueryOrganizationContributors({
     organizationKey: organizationKey,
@@ -124,7 +123,6 @@ export function SelectTeamMembersPage({
       <div className={styles.selectTeamMembersTableWrapper}>
         <SelectTeamMembersTable
           tableData={[...teamsData.values()]}
-          columns={columns}
           loading={loading}
           testId="select-team-members-table"
           rowSelection={{
