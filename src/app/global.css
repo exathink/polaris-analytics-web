@@ -203,3 +203,8 @@ table thead th {
 .highcharts-tooltip-container {
   z-index: 999999 !important;
 }
+
+.ag-theme-alpine .ag-icon-menu {
+  background: transparent url('./filter.svg') center/contain no-repeat;
+  color: transparent;
+}
