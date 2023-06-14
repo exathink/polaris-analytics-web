@@ -276,10 +276,11 @@ export function VirtualStripeTable({
 export function AgGridStripeTable({
   columnDefs,
   rowData,
+  defaultColDef
 }) {
   return (
     <div className="ag-theme-alpine" style={{height: "100%"}}>
-      <AgGridReact columnDefs={columnDefs} rowData={rowData} />
+      <AgGridReact columnDefs={columnDefs} rowData={rowData} defaultColDef={defaultColDef} suppressMenuHide={true}/>
     </div>
   );
 }
