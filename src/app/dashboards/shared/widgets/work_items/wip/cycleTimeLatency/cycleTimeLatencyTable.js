@@ -1,21 +1,25 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable, VirtualStripeTable} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
 import {AppTerms, WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
-import {InfoCircleFilled} from "@ant-design/icons";
+import {FilterFilled, FilterOutlined, InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
+  CardCol,
   comboColumnStateTypeRender,
   comboColumnTitleRender,
   customColumnRender,
+  workItemTypeImageMap,
 } from "../../../../../projects/shared/helper/renderers";
 import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
 import {LabelValue} from "../../../../../../helpers/components";
 import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
+import FilterComp from "./agGridFilterUtils";
+import { Tag } from "antd";
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
@@ -101,6 +105,27 @@ function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
     </span>
   );
 }
+
+function QuadrantCol(params) {
+  return (
+    <span
+      style={{
+        color: QuadrantColors[params.data.quadrant],
+        marginLeft: "9px",
+        cursor: "pointer",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
+        fontWeight: 500,
+      }}
+    >
+      {getQuadrantIcon(params.data.quadrant)}
+      &nbsp;
+      {QuadrantNames[params.data.quadrant]}
+    </span>
+  );
+}
+
+
 
 // function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 //   return (text, record, searchText) => {
@@ -269,7 +294,54 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     },
   ];
 
-  return columns;
+  const defaultColDef = React.useMemo(() => {
+    return {sortable: true};
+  }, []);
+
+  const newColumns = [
+    {
+      field: "quadrant",
+      cellRenderer: QuadrantCol,
+      filter: FilterComp,
+      filterParams: {
+        values: filters.quadrants
+          .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
+          .map((b) => ({
+            text: (
+              <span style={{color: QuadrantColors[b]}}>
+                {getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}
+              </span>
+            ),
+            value: b,
+          })),
+        onFilter: ({value, record}) => {
+          appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"]);
+          return value.includes(record.quadrant);
+        },
+      },
+    },
+    {field: "name", cellRenderer: CardCol, autoHeight: true, autoWidth: true, width: 320},
+    {field: "state"},
+    {
+      field: "cycleTime",
+      filter: FilterComp,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+          return testMetric(value, record, "cycleTime");
+        },
+      },
+    },
+    {
+      field: "latency",
+    },
+    {field: "effort"},
+    {field: "latestCommitDisplay"},
+  ];
+
+  return {columnDefs: newColumns, defaultColDef: defaultColDef};
+  // return columns;
 }
 
 function getUniqueItems(data) {
@@ -300,7 +372,7 @@ export const CycleTimeLatencyTable = injectIntl(
 
     const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
-    const columns = useCycleTimeLatencyTableColumns({
+    const {columnDefs, defaultColDef} = useCycleTimeLatencyTableColumns({
       filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
       appliedFilters,
       callBacks,
@@ -339,43 +411,44 @@ export const CycleTimeLatencyTable = injectIntl(
     };
 
     return (
-      <VirtualStripeTable
-        columns={columns}
-        dataSource={dataSource}
-        testId="cycle-time-latency-table"
-        onChange={handleChange}
-        rowKey={(record) => record.key}
-        renderTableSummary={(pageData) => {
-          // calculate avg for summary stats columns
+      // <VirtualStripeTable
+      //   columns={columns}
+      //   dataSource={dataSource}
+      //   testId="cycle-time-latency-table"
+      //   onChange={handleChange}
+      //   rowKey={(record) => record.key}
+      //   renderTableSummary={(pageData) => {
+      //     // calculate avg for summary stats columns
 
-          let avgData;
-          if (appliedSorter === "latestCommitDisplay") {
-            avgData = averageOfDurations(pageData.map((item) => item.latestCommit));
-          } else {
-            avgData =
-              appliedSorter && summaryStatsColumns[appliedSorter]
-                ? average(pageData, (item) => +item[appliedSorter])
-                : undefined;
-          }
+      //     let avgData;
+      //     if (appliedSorter === "latestCommitDisplay") {
+      //       avgData = averageOfDurations(pageData.map((item) => item.latestCommit));
+      //     } else {
+      //       avgData =
+      //         appliedSorter && summaryStatsColumns[appliedSorter]
+      //           ? average(pageData, (item) => +item[appliedSorter])
+      //           : undefined;
+      //     }
 
-          return (
-            <>
-              <LabelValue
-                label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display}
-                value={pageData?.length}
-              />
-              {avgData !== 0 && avgData && (
-                <LabelValue
-                  key={getMetricsMetaKey(appliedSorter, "stateType")}
-                  label={`Avg. ${appliedName}`}
-                  value={i18nNumber(intl, avgData, 2)}
-                  uom={summaryStatsColumns[appliedSorter]}
-                />
-              )}
-            </>
-          );
-        }}
-      />
+      //     return (
+      //       <>
+      //         <LabelValue
+      //           label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display}
+      //           value={pageData?.length}
+      //         />
+      //         {avgData !== 0 && avgData && (
+      //           <LabelValue
+      //             key={getMetricsMetaKey(appliedSorter, "stateType")}
+      //             label={`Avg. ${appliedName}`}
+      //             value={i18nNumber(intl, avgData, 2)}
+      //             uom={summaryStatsColumns[appliedSorter]}
+      //           />
+      //         )}
+      //       </>
+      //     );
+      //   }}
+      // />
+      <AgGridStripeTable columnDefs={columnDefs} defaultColDef={defaultColDef} rowData={dataSource} />
     );
   }
 );
