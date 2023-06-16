@@ -320,7 +320,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
         },
       },
     },
-    {field: "name", cellRenderer: CardCol, autoHeight: true, autoWidth: true, width: 320},
+    {field: "name", cellRenderer: CardCol, autoHeight: true, width: 320},
     {field: "state"},
     {
       field: "cycleTime",
