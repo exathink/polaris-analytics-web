@@ -7,7 +7,7 @@ import {LabelValue} from "../../helpers/components";
 import {useVirtualizer} from "@tanstack/react-virtual";
 import classNames from "classnames";
 
-import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 
@@ -273,14 +273,26 @@ export function VirtualStripeTable({
 }
 
 
-export function AgGridStripeTable({
-  columnDefs,
-  rowData,
-  defaultColDef
-}) {
+/**
+ * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
+ */
+export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(
+  { rowData, columnDefs, defaultColDef, ...props },
+  gridRef
+) {
+  // On div wrapping Grid
+  // a) specify theme CSS Class Class
+  // b) sets Grid size
   return (
-    <div className="ag-theme-alpine" style={{height: "100%"}}>
-      <AgGridReact columnDefs={columnDefs} rowData={rowData} defaultColDef={defaultColDef} suppressMenuHide={true}/>
+    <div className="ag-theme-alpine tw-h-full">
+      <AgGridReact
+        ref={gridRef}
+        rowSelection="multiple"
+        rowData={rowData}
+        columnDefs={columnDefs}
+        defaultColDef={defaultColDef}
+        {...props}
+      />
     </div>
   );
-}
+});
