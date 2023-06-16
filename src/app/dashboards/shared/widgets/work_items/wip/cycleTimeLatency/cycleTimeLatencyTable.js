@@ -8,6 +8,7 @@ import {FilterFilled, FilterOutlined, InfoCircleFilled} from "@ant-design/icons"
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
+  StateTypeCol,
   comboColumnStateTypeRender,
   comboColumnTitleRender,
   customColumnRender,
@@ -321,7 +322,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       },
     },
     {field: "name", cellRenderer: CardCol, autoHeight: true, width: 320},
-    {field: "state"},
+    {field: "state", cellRenderer: StateTypeCol},
     {
       field: "cycleTime",
       filter: FilterComp,

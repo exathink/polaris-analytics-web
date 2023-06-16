@@ -134,6 +134,21 @@ export function CardCol(params) {
   );
 }
 
+export function StateTypeCol(params) {
+  const record = params.data;
+  return (
+    <div className="tw-grid tw-cursor-pointer tw-grid-cols-[25px,auto] tw-items-center tw-gap-1">
+      <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center tw-leading-6" : "tw-self-center tw-leading-6"}>
+        {getStateTypeIcon(record.stateTypeInternal)}
+      </div>
+      <div className="tw-font-medium tw-lowercase tw-text-gray-300 tw-leading-6">{record.state}</div>
+      {record.timeInStateDisplay && (
+        <div className="tw-text-xs tw-font-normal tw-text-gray-300 tw-leading-6">entered {record.timeInStateDisplay}</div>
+      )}
+    </div>
+  );
+}
+
 export function ComboCardTitleColumn({record}) {
   const blurClass = useBlurClass();
   return (
