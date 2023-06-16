@@ -37,13 +37,10 @@ export default React.forwardRef((props, ref) => {
         multiple={true}
         prefixCls={`ant-dropdown-menu`}
         className={""}
-        // onClick={onMenuClick}
         onSelect={onSelectKeys}
         onDeselect={onSelectKeys}
         selectedKeys={selectedKeys}
         getPopupContainer={getContainerNode}
-        // openKeys={openKeys}
-        // onOpenChange={onOpenChange}
       >
         {renderFilterItems({
           filters: props.values || [],
@@ -65,7 +62,7 @@ export default React.forwardRef((props, ref) => {
           type="primary"
           size="small"
           onClick={() => {
-            setSelectedKeys();
+            setSelectedKeys(selectedKeys);
           }}
         >
           OK
