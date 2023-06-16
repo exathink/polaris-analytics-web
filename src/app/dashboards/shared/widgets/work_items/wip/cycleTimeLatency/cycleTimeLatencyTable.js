@@ -301,7 +301,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   ];
 
   const defaultColDef = React.useMemo(() => {
-    return {sortable: true};
+    return {sortable: true, resizable: true};
   }, []);
 
   const newColumns = [
