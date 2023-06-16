@@ -117,15 +117,17 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
 export function CardCol(params) {
   const record = params.data;
   return (
-    <div className={styles.comboCardCol}>
-      <div className={styles.workItemType}>{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
-      <div className={classNames(styles.title)}>{truncateString(record.name, 38, "#6b7280")}</div>
-      <div className={styles.displayId}>
-        {record.epicName && (
-          <Tag color="#108ee9" style={{marginLeft: "30px"}}>
-            {truncateString(record.epicName, 25, "#108ee9")}
-          </Tag>
-        )}
+    <div className="tw-flex tw-items-center tw-gap-2 tw-py-2">
+      <div className="">{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
+      <div className="tw-flex tw-flex-col tw-items-start">
+        <div className="tw-leading-6">{truncateString(record.name, 38, "#6b7280")}</div>
+        <div className="tw-leading-6">
+          {record.epicName && (
+            <Tag color="#108ee9">
+              {truncateString(record.epicName, 25, "#108ee9")}
+            </Tag>
+          )}
+        </div>
       </div>
     </div>
   );
