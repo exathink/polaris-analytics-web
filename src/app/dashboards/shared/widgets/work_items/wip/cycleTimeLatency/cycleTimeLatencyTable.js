@@ -474,7 +474,12 @@ export const CycleTimeLatencyTable = injectIntl(
       //     );
       //   }}
       // />
-      <AgGridStripeTable columnDefs={columnDefs} defaultColDef={defaultColDef} rowData={dataSource} />
+      <AgGridStripeTable
+        columnDefs={columnDefs}
+        defaultColDef={defaultColDef}
+        rowData={dataSource}
+        suppressMenuHide={true}
+      />
     );
   }
 );
