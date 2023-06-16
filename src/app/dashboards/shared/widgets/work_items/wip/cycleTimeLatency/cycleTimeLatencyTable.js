@@ -20,7 +20,7 @@ import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 import FilterComp from "./agGridFilterUtils";
-import { Tag } from "antd";
+import {Tag} from "antd";
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
@@ -126,8 +126,6 @@ function QuadrantCol(params) {
   );
 }
 
-
-
 // function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
 //   return (text, record, searchText) => {
 //     return (
@@ -147,14 +145,21 @@ function QuadrantCol(params) {
 //   };
 // }
 
-
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const blurClass = useBlurClass("tw-blur-[2px]");
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender({...callBacks, blurClass})});
-  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
-  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
-  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} FTE Days</>, className: "tw-textXs"})}
-  const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})}
+  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
+    customRender: comboColumnTitleRender({...callBacks, blurClass}),
+  });
+  const stateTypeRenderState = {
+    render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement),
+  };
+  const metricRenderState = {
+    render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
+  };
+  const effortRenderState = {
+    render: customColumnRender({...callBacks, colRender: (text) => <>{text} FTE Days</>, className: "tw-textXs"}),
+  };
+  const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})};
   const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
   // const renderTeamsCol = {render: renderTeamsCall(callBacks)};
 
@@ -191,8 +196,8 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
           value: b,
         })),
       onFilter: (value, record) => {
-        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
-        return record.quadrant.indexOf(value) === 0
+        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"]);
+        return record.quadrant.indexOf(value) === 0;
       },
       ...renderQuadrantState,
     },
@@ -207,7 +212,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       onFilter: (value, record) => {
         appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["name"]);
         return titleSearchState.onFilter(value, record);
-      }
+      },
     },
     // {
     //   title: "Type",
@@ -256,7 +261,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => {
         appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
-        return testMetric(value, record, "cycleTime")
+        return testMetric(value, record, "cycleTime");
       },
       sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
       ...metricRenderState,
@@ -325,6 +330,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     {field: "state", cellRenderer: StateTypeCol},
     {
       field: "cycleTime",
+      cellRenderer: (params) => {
+        const record = params.data;
+        return <span className="tw-textXs">{record.cycleTime} days</span>;
+      },
       filter: FilterComp,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -336,9 +345,25 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     },
     {
       field: "latency",
+      cellRenderer: (params) => {
+        const record = params.data;
+        return <span className="tw-textXs">{record.latency} days</span>;
+      },
     },
-    {field: "effort"},
-    {field: "latestCommitDisplay"},
+    {
+      field: "effort",
+      cellRenderer: (params) => {
+        const record = params.data;
+        return <span className="tw-textXs">{record.effort} FTE Days</span>;
+      },
+    },
+    {
+      field: "latestCommitDisplay",
+      cellRenderer: (params) => {
+        const record = params.data;
+        return <span className="tw-textXs">{record.latestCommitDisplay}</span>;
+      },
+    },
   ];
 
   return {columnDefs: newColumns, defaultColDef: defaultColDef};
@@ -367,7 +392,7 @@ export const CycleTimeLatencyTable = injectIntl(
     const [appliedName, setAppliedName] = React.useState();
 
     // get unique workItem types
-   const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
+    const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
     const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 
@@ -400,7 +425,7 @@ export const CycleTimeLatencyTable = injectIntl(
         }
 
         const [currentInteraction] = prev.get(FILTERS.CURRENT_INTERACTION);
-        if (currentInteraction==="cycleTime") {
+        if (currentInteraction === "cycleTime") {
           callBacks.setWipChartType("age");
         }
 
