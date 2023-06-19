@@ -21,6 +21,7 @@ import {allPairs, getHistogramCategories} from "../../../../../projects/shared/h
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 import FilterComp from "./agGridFilterUtils";
 import {Tag} from "antd";
+import { CustomHeader } from "./agGridUtils";
 
 const summaryStatsColumns = {
   cycleTimeOrLatency: "Days",
@@ -301,7 +302,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   ];
 
   const defaultColDef = React.useMemo(() => {
-    return {sortable: true, resizable: true};
+    return {sortable: true, resizable: true, headerComponent: CustomHeader};
   }, []);
 
   const newColumns = [

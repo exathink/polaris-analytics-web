@@ -204,7 +204,14 @@ table thead th {
   z-index: 999999 !important;
 }
 
-.ag-theme-alpine .ag-icon-menu {
-  background: transparent url('./filter.svg') center/contain no-repeat;
-  color: transparent;
+.ag-theme-alpine .ag-header-cell-filtered .customHeaderMenuButton > span{
+  color: #1890ff !important;
+}
+
+.ag-theme-alpine .ag-header-cell-sortable .customSortLabel > span.anticon-caret-up.active{
+  color: #1890ff !important;
+}
+
+.ag-theme-alpine .ag-header-cell-sortable .customSortLabel > span.anticon-caret-down.active{
+  color: #1890ff !important;
 }
