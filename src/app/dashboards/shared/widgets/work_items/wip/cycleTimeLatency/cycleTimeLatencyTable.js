@@ -11,8 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import FilterComp from "./agGridFilterUtils";
-import { CustomHeader } from "./agGridUtils";
+import {CustomHeader, MultiCheckboxFilter} from "./agGridUtils";
 
 const QuadrantSort = {
   ok: 0,
@@ -100,7 +99,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
       field: "quadrant",
       headerName: "Status",
       cellRenderer: QuadrantCol,
-      filter: FilterComp,
+      filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.quadrants
           .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
@@ -127,7 +126,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
         const record = params.data;
         return <span className="tw-textXs">{record.cycleTime} days</span>;
       },
-      filter: FilterComp,
+      filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
