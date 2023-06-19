@@ -50,13 +50,13 @@ export function CustomHeader(props) {
           <CaretUpOutlined
             className={classNames(
               ascSort,
-              "tw-inline-block !tw-text-sm !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
+              "tw-inline-block !tw-text-[11px] !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
             )}
           />
           <CaretDownOutlined
             className={classNames(
               descSort,
-              "tw-inline-block !tw-text-sm !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
+              "tw-inline-block !tw-text-[11px] !tw-mt-[-3px] !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
             )}
           />
         </div>
