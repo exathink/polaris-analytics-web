@@ -8,7 +8,8 @@ export function CustomHeader(props) {
   const [noSort, setNoSort] = React.useState("inactive");
   const refButton = React.useRef(null);
 
-  const onMenuClicked = () => {
+  const onMenuClicked = (e) => {
+    if (e.stopPropagation) e.stopPropagation();
     props.showColumnMenu(refButton.current);
   };
 
@@ -34,7 +35,7 @@ export function CustomHeader(props) {
       <div
         ref={refButton}
         className="customHeaderMenuButton tw-cursor-pointer tw-justify-self-end"
-        onClick={() => onMenuClicked()}
+        onClick={(e) => onMenuClicked(e)}
       >
         <FilterFilled className="tw-p-1 !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]" />
       </div>
