@@ -2,9 +2,9 @@ import React from "react";
 import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
 import {AgGridStripeTable, SORTER} from "../../../../../../components/tables/tableUtils";
-import {AppTerms, WorkItemStateTypeDisplayName} from "../../../../config";
+import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
-import {FilterFilled, FilterOutlined, InfoCircleFilled} from "@ant-design/icons";
+import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
@@ -12,27 +12,12 @@ import {
   comboColumnStateTypeRender,
   comboColumnTitleRender,
   customColumnRender,
-  workItemTypeImageMap,
 } from "../../../../../projects/shared/helper/renderers";
-import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
-import {LabelValue} from "../../../../../../helpers/components";
-import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
+import {useBlurClass} from "../../../../../../helpers/utility";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 import FilterComp from "./agGridFilterUtils";
-import {Tag} from "antd";
 import { CustomHeader } from "./agGridUtils";
-
-const summaryStatsColumns = {
-  cycleTimeOrLatency: "Days",
-  latency: "Days",
-  cycleTime: "Days",
-  leadTimeOrAge: "Days",
-  Age: "Days",
-  leadTime: "Days",
-  effort: "FTE Days",
-  latestCommitDisplay: "Days",
-};
 
 const QuadrantSort = {
   ok: 0,
@@ -127,24 +112,6 @@ function QuadrantCol(params) {
   );
 }
 
-// function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
-//   return (text, record, searchText) => {
-//     return (
-//       text && (
-//         <span
-//           onClick={() => {
-//             setPlacement("top");
-//             setShowPanel(true);
-//             setWorkItemKey(record.key);
-//           }}
-//           style={{cursor: "pointer"}}
-//         >
-//           {record.teamNodeRefs.length > 1 ? "multiple" : text}
-//         </span>
-//       )
-//     );
-//   };
-// }
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
   const blurClass = useBlurClass("tw-blur-[2px]");
@@ -308,6 +275,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
   const newColumns = [
     {
       field: "quadrant",
+      headerName: "Status",
       cellRenderer: QuadrantCol,
       filter: FilterComp,
       filterParams: {
@@ -327,10 +295,11 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
         },
       },
     },
-    {field: "name", cellRenderer: CardCol, autoHeight: true, width: 320},
-    {field: "state", cellRenderer: StateTypeCol},
+    {field: "name",  headerName: "Card", cellRenderer: CardCol, autoHeight: true, width: 320},
+    {field: "state",  headerName: "State", cellRenderer: StateTypeCol},
     {
       field: "cycleTime",
+      headerName: "Age",
       cellRenderer: (params) => {
         const record = params.data;
         return <span className="tw-textXs">{record.cycleTime} days</span>;
@@ -346,6 +315,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     },
     {
       field: "latency",
+      headerName: "Latency",
       cellRenderer: (params) => {
         const record = params.data;
         return <span className="tw-textXs">{record.latency} days</span>;
@@ -353,6 +323,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     },
     {
       field: "effort",
+      headerName: "Effort",
       cellRenderer: (params) => {
         const record = params.data;
         return <span className="tw-textXs">{record.effort} FTE Days</span>;
@@ -360,6 +331,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBa
     },
     {
       field: "latestCommitDisplay",
+      headerName: "Latest Commit",
       cellRenderer: (params) => {
         const record = params.data;
         return <span className="tw-textXs">{record.latestCommitDisplay}</span>;
