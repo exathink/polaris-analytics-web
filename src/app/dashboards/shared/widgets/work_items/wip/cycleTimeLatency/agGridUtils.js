@@ -80,7 +80,7 @@ export function CustomHeader(props) {
       }}
       onTouchEnd={(event) => onSortRequested("asc", event)}
     >
-      <div className="customHeaderLabel">{props.displayName}</div>
+      <div className="customHeaderLabel tw-uppercase tw-text-xs tw-font-medium">{props.displayName}</div>
       {sort}
       {menu}
     </div>
