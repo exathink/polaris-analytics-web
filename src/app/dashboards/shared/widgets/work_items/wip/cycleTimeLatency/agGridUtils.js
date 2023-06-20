@@ -145,15 +145,6 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
         >
           Reset
         </Button>
-        <Button
-          type="primary"
-          size="small"
-          onClick={() => {
-            setSelectedKeys(selectedKeys);
-          }}
-        >
-          OK
-        </Button>
       </div>
     </div>
   );
