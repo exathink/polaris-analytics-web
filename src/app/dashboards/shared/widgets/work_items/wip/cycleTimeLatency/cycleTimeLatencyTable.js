@@ -83,7 +83,7 @@ function QuadrantCol(params) {
 }
 
 
-export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
+export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
@@ -188,12 +188,14 @@ export const CycleTimeLatencyTable = injectIntl(
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
     const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 
-    const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
+    const dataSource = React.useMemo(
+      () => getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget}),
+      [tableData, cycleTimeTarget, latencyTarget, intl]
+    );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const {columnDefs, defaultColDef} = useCycleTimeLatencyTableColumns({
       filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
       appliedFilters,
-      callBacks,
     });
 
 
@@ -203,6 +205,12 @@ export const CycleTimeLatencyTable = injectIntl(
         defaultColDef={defaultColDef}
         rowData={dataSource}
         suppressMenuHide={true}
+        onCellClicked={(e) => {
+          const record = e.data;
+          callBacks.setPlacement("top");
+          callBacks.setShowPanel(true);
+          callBacks.setWorkItemKey(record.key);
+        }}
       />
     );
   }
