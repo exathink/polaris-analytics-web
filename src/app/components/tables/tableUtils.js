@@ -1,5 +1,5 @@
 import React from "react";
-import {Table} from "antd";
+import {Empty, Table} from "antd";
 import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
@@ -294,6 +294,7 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(
         rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
+        noRowsOverlayComponent={Empty}
         {...props}
       />
     </div>
