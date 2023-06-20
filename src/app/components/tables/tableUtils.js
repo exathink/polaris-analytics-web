@@ -280,23 +280,13 @@ export function VirtualStripeTable({
 /**
  * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
  */
-export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(
-  { rowData, columnDefs, defaultColDef, ...props },
-  gridRef
-) {
+export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(props, gridRef) {
   // On div wrapping Grid
   // a) specify theme CSS Class Class
   // b) sets Grid size
   return (
     <div className="ag-theme-alpine tw-h-full">
-      <AgGridReact
-        ref={gridRef}
-        rowData={rowData}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        noRowsOverlayComponent={Empty}
-        {...props}
-      />
+      <AgGridReact ref={gridRef} noRowsOverlayComponent={Empty} {...props} />
     </div>
   );
 });
