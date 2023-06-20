@@ -291,7 +291,6 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(
     <div className="ag-theme-alpine tw-h-full">
       <AgGridReact
         ref={gridRef}
-        rowSelection="multiple"
         rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
