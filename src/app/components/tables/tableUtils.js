@@ -286,7 +286,12 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
   // b) sets Grid size
   return (
     <div className="ag-theme-alpine tw-h-full">
-      <AgGridReact ref={gridRef} noRowsOverlayComponent={Empty} {...props} />
+      <AgGridReact
+        ref={gridRef}
+        noRowsOverlayComponent={Empty}
+        onGridReady={(params) => params.api.sizeColumnsToFit()}
+        {...props}
+      />
     </div>
   );
 });
