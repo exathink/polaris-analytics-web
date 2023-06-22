@@ -87,7 +87,13 @@
     "cy:run": "yarn cypress run"
   },
   "jest": {
-    "resetMocks": false
+    "resetMocks": false,
+    "transform": {
+      "^.+\\.[j]sx?$": "babel-jest"
+      },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@shotgunjed)/"
+      ]
   },
   "eslintConfig": {
     "extends": [
