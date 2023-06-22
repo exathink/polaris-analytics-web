@@ -123,7 +123,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       },
     },
     {field: "name",  headerName: "Card", cellRenderer: CardCol, autoHeight: true, width: 320},
-    {field: "state",  headerName: "State", cellRenderer: StateTypeCol},
+    {field: "state",  headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
     {
       field: "cycleTime",
       headerName: "Age",
