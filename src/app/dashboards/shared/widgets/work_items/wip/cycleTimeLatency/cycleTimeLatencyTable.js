@@ -156,7 +156,6 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         maxNumConditions: 1,
         filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
         buttons: ['reset'],
-        closeOnApply: true,
       },
       menuTabs: ["filterMenuTab"],
     },
