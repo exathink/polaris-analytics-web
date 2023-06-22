@@ -111,6 +111,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           return value.includes(record.quadrant);
         },
       },
+      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
     },
     {field: "name",  headerName: "Card", cellRenderer: CardCol, autoHeight: true, width: 320},
     {field: "state",  headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
@@ -126,6 +127,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           return testMetric(value, record, "cycleTime");
         },
       },
+      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
     },
     {
       field: "latency",
