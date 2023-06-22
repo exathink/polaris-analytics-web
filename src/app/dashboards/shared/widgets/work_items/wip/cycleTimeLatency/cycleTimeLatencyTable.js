@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {AgGridStripeTable} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, TextWithUom} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
@@ -78,17 +78,6 @@ function QuadrantCol(params) {
       {getQuadrantIcon(params.data.quadrant)}
       &nbsp;
       {QuadrantNames[params.data.quadrant]}
-    </span>
-  );
-}
-
-function TextWithUom(props) {
-  const record = props.data;
-  const field = props.colDef.field;
-  const uom = props.uom ?? "Days";
-  return (
-    <span className="tw-textXs">
-      {record[field]} {uom}
     </span>
   );
 }
