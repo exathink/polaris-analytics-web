@@ -91,7 +91,12 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
   }
 
   const defaultColDef = React.useMemo(() => {
-    return {sortable: true, resizable: true, headerComponent: CustomHeader};
+    return {
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeader,
+      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
+    };
   }, []);
 
   const columns = [
