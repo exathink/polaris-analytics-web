@@ -90,6 +90,8 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
   }
 
   const columns = [
+    {field: "displayId", hide: true},
+    {field: "epicName", hide: true},
     {
       field: "quadrant",
       headerName: "Status",
@@ -113,8 +115,24 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       },
       menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
     },
-    {field: "name",  headerName: "Card", cellRenderer: CardCol, autoHeight: true, width: 320},
-    {field: "state",  headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
+    {
+      field: "name",
+      headerName: "Card",
+      cellRenderer: CardCol,
+      autoHeight: true,
+      width: 320,
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ['reset'],
+        maxNumConditions: 1,
+      },
+      filterValueGetter: (params) => {
+        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+      },
+      menuTabs: ["filterMenuTab"],
+    },
+    {field: "state", headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
     {
       field: "cycleTime",
       headerName: "Age",
@@ -133,22 +151,30 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       field: "latency",
       headerName: "Latency",
       cellRenderer: TextWithUom,
+      filter: "agNumberColumnFilter",
+      filterParams: {
+        maxNumConditions: 1,
+        filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+        buttons: ['reset'],
+        closeOnApply: true,
+      },
+      menuTabs: ["filterMenuTab"],
     },
     {
       field: "effort",
       headerName: "Effort",
       cellRenderer: TextWithUom,
       cellRendererParams: {
-       uom: "FTE Days"
-      }
+        uom: "FTE Days",
+      },
     },
     {
       field: "latestCommitDisplay",
       headerName: "Latest Commit",
       cellRenderer: TextWithUom,
       cellRendererParams: {
-        uom: ""
-       }
+        uom: "",
+      },
     },
   ];
 
