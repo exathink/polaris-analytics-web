@@ -82,6 +82,16 @@ function QuadrantCol(params) {
   );
 }
 
+function TextWithUom(props) {
+  const record = props.data;
+  const field = props.colDef.field;
+  const uom = props.uom ?? "Days";
+  return (
+    <span className="tw-textXs">
+      {record[field]} {uom}
+    </span>
+  );
+}
 
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
@@ -118,10 +128,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     {
       field: "cycleTime",
       headerName: "Age",
-      cellRenderer: (params) => {
-        const record = params.data;
-        return <span className="tw-textXs">{record.cycleTime} days</span>;
-      },
+      cellRenderer: TextWithUom,
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -134,27 +141,23 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     {
       field: "latency",
       headerName: "Latency",
-      cellRenderer: (params) => {
-        const record = params.data;
-        return <span className="tw-textXs">{record.latency} days</span>;
-      },
+      cellRenderer: TextWithUom,
     },
     {
       field: "effort",
       headerName: "Effort",
-      cellRenderer: (params) => {
-        const record = params.data;
-        return <span className="tw-textXs">{record.effort} FTE Days</span>;
-      },
-
+      cellRenderer: TextWithUom,
+      cellRendererParams: {
+       uom: "FTE Days"
+      }
     },
     {
       field: "latestCommitDisplay",
       headerName: "Latest Commit",
-      cellRenderer: (params) => {
-        const record = params.data;
-        return <span className="tw-textXs">{record.latestCommitDisplay}</span>;
-      },
+      cellRenderer: TextWithUom,
+      cellRendererParams: {
+        uom: ""
+       }
     },
   ];
 
