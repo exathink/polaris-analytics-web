@@ -90,15 +90,6 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
 
-  const defaultColDef = React.useMemo(() => {
-    return {
-      sortable: true,
-      resizable: true,
-      headerComponent: CustomHeader,
-      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
-    };
-  }, []);
-
   const columns = [
     {
       field: "quadrant",
@@ -155,6 +146,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         const record = params.data;
         return <span className="tw-textXs">{record.effort} FTE Days</span>;
       },
+
     },
     {
       field: "latestCommitDisplay",
@@ -166,7 +158,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     },
   ];
 
-  return {columnDefs: columns, defaultColDef: defaultColDef};
+  return {columnDefs: columns};
 }
 
 function getUniqueItems(data) {
@@ -198,7 +190,7 @@ export const CycleTimeLatencyTable = injectIntl(
       [tableData, cycleTimeTarget, latencyTarget, intl]
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
-    const {columnDefs, defaultColDef} = useCycleTimeLatencyTableColumns({
+    const {columnDefs} = useCycleTimeLatencyTableColumns({
       filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
       appliedFilters,
     });
@@ -207,7 +199,6 @@ export const CycleTimeLatencyTable = injectIntl(
     return (
       <AgGridStripeTable
         columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
         rowData={dataSource}
         onRowClicked={(e) => {
           const record = e.data;
