@@ -290,6 +290,7 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
         ref={gridRef}
         noRowsOverlayComponent={Empty}
         onGridReady={(params) => params.api.sizeColumnsToFit()}
+        suppressMenuHide={true}
         {...props}
       />
     </div>

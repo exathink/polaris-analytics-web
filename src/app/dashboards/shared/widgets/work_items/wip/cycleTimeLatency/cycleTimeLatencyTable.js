@@ -204,7 +204,6 @@ export const CycleTimeLatencyTable = injectIntl(
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         rowData={dataSource}
-        suppressMenuHide={true}
         onRowClicked={(e) => {
           const record = e.data;
           callBacks.setPlacement("top");
