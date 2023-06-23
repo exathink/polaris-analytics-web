@@ -205,7 +205,7 @@ export const CycleTimeLatencyTable = injectIntl(
         {
           statusPanel: 'agAggregationComponent',
           statusPanelParams : {
-              aggFuncs: ['avg', 'sum']
+              aggFuncs: ['avg', 'min', 'max']
           }
         }
       ],
