@@ -67,17 +67,16 @@ function QuadrantCol(params) {
   return (
     <span
       style={{
-        color: QuadrantColors[params.data.quadrant],
-        marginLeft: "9px",
+        color: QuadrantColors[params.value],
         cursor: "pointer",
         fontSize: "0.75rem",
         lineHeight: "1rem",
         fontWeight: 500,
       }}
     >
-      {getQuadrantIcon(params.data.quadrant)}
+      {getQuadrantIcon(params.value)}
       &nbsp;
-      {QuadrantNames[params.data.quadrant]}
+      {QuadrantNames[params.value] ?? params.value}
     </span>
   );
 }
@@ -96,22 +95,9 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       field: "quadrant",
       headerName: "Status",
       cellRenderer: QuadrantCol,
-      filter: MultiCheckboxFilter,
+      filter: "agSetColumnFilter",
       filterParams: {
-        values: filters.quadrants
-          .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
-          .map((b) => ({
-            text: (
-              <span style={{color: QuadrantColors[b]}}>
-                {getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}
-              </span>
-            ),
-            value: b,
-          })),
-        onFilter: ({value, record}) => {
-          appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"]);
-          return value.includes(record.quadrant);
-        },
+        cellRenderer: QuadrantCol,
       },
       menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
     },
