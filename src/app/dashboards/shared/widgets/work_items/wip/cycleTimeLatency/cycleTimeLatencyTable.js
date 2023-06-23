@@ -222,6 +222,8 @@ export const CycleTimeLatencyTable = injectIntl(
 
           const sortState = params.columnApi.getColumnState().find((x) => x.sort);
           if (sortState?.sort && RefCols.includes(sortState.colId)) {
+            params.api.clearRangeSelection();
+
             const filteredCount = getFilteredRowCountValue(params.api);
             params.api.addCellRange({
               rowStartIndex: 0,
