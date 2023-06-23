@@ -105,7 +105,6 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       field: "name",
       headerName: "Card",
       cellRenderer: CardCol,
-      autoHeight: true,
       width: 320,
       filter: "agTextColumnFilter",
       filterParams: {
