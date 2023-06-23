@@ -74,6 +74,7 @@ function QuadrantCol(params) {
   );
 }
 
+const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   function testMetric(value, record, metric) {
@@ -92,7 +93,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       filterParams: {
         cellRenderer: QuadrantCol,
       },
-      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
+      menuTabs: MenuTabs,
     },
     {
       field: "name",
@@ -108,7 +109,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       filterValueGetter: (params) => {
         return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
       },
-      menuTabs: ["filterMenuTab"],
+      menuTabs: MenuTabs,
     },
     {field: "state", headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
     {
@@ -123,7 +124,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           return testMetric(value, record, "cycleTime");
         },
       },
-      menuTabs: ["filterMenuTab", "columnsMenuTab", "generalMenuTab"],
+      menuTabs: MenuTabs,
     },
     {
       field: "latency",
@@ -135,7 +136,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
         buttons: ['reset'],
       },
-      menuTabs: ["filterMenuTab"],
+      menuTabs: MenuTabs,
     },
     {
       field: "effort",
