@@ -215,3 +215,10 @@ table thead th {
 .ag-theme-alpine .ag-header-cell-sortable .customSortLabel > span.anticon-caret-down.active{
   color: #1890ff !important;
 }
+
+.ag-theme-alpine .ag-status-bar .ag-status-name-value .ag-status-name-value-value {
+  @apply tw-text-lg tw-font-semibold
+}
+.ag-theme-alpine .ag-status-bar .ag-status-name-value span {
+  @apply tw-text-sm tw-font-medium tw-uppercase
+}
