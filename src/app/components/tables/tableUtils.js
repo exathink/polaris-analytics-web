@@ -12,7 +12,6 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import "ag-grid-enterprise";
 import {LicenseManager} from "ag-grid-enterprise";
-import {CustomHeader} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 // enter your license key here to suppress license message in the console and watermark
 LicenseManager.setLicenseKey("[TRIAL]_this_AG_Grid_Enterprise_key_( AG-043118 )_is_granted_for_evaluation_only___Use_in_production_is_not_permitted___Please_report_misuse_to_( legal@ag-grid.com )___For_help_with_purchasing_a_production_key_please_contact_( info@ag-grid.com )___All_Front-End_JavaScript_developers_working_on_the_application_would_need_to_be_licensed___This_key_will_deactivate_on_( 31 July 2023 )____[v2]_MTY5MDc1ODAwMDAwMA==f7deb9985cb10bc1921d8a43ac3c1b44");
 
@@ -301,7 +300,6 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
     return {
       sortable: true,
       resizable: true,
-      headerComponent: CustomHeader,
       menuTabs: [],
       cellClass: "tw-flex tw-items-center"
     };
