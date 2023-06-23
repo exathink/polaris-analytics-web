@@ -204,10 +204,17 @@ export const CustomTotalAndFilteredRowCount = (props) => {
     setFilteredCount(getFilteredRowCountValue(props.api));
   }
 
+  let value;
+  if (filteredCount === totalCount) {
+    value = `${totalCount}`;
+  } else {
+    value = `${filteredCount} of ${totalCount}`;
+  }
+
   return (
     <LabelValue
       label={props.label || "Rows"}
-      value={`${filteredCount} of ${totalCount}`}
+      value={value}
       className={"tw-py-2"}
     />
   );
