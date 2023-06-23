@@ -11,7 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import {MultiCheckboxFilter} from "./agGridUtils";
+import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -193,11 +193,23 @@ export const CycleTimeLatencyTable = injectIntl(
       appliedFilters,
     });
 
+    const statusBar = {
+      statusPanels: [
+        {
+          statusPanel: CustomTotalAndFilteredRowCount,
+          statusPanelParams: {
+            label: "Work Items",
+          },
+          align: "left",
+        },
+      ],
+    };
 
     return (
       <AgGridStripeTable
         columnDefs={columnDefs}
         rowData={dataSource}
+        statusBar={statusBar}
         onRowClicked={(e) => {
           const record = e.data;
           callBacks.setPlacement("top");
