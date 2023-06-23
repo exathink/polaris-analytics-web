@@ -11,14 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import {CustomHeader, MultiCheckboxFilter} from "./agGridUtils";
-
-const QuadrantSort = {
-  ok: 0,
-  latency: 1,
-  age: 2,
-  critical: 3,
-};
+import {MultiCheckboxFilter} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
