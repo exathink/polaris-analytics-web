@@ -208,7 +208,7 @@ export const CustomTotalAndFilteredRowCount = (props) => {
     <LabelValue
       label={props.label || "Rows"}
       value={`${filteredCount} of ${totalCount}`}
-      className={"tw-ml-4 tw-py-2"}
+      className={"tw-py-2"}
     />
   );
 };
