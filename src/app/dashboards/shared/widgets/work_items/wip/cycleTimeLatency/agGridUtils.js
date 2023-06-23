@@ -166,7 +166,7 @@ function renderFilterItems({filters, prefixCls, filteredKeys}) {
   });
 }
 
-function getFilteredRowCountValue(gridApi) {
+export function getFilteredRowCountValue(gridApi) {
   let filteredRowCount = 0;
   gridApi.forEachNodeAfterFilter((node) => {
     if (!node.group) {
@@ -176,7 +176,7 @@ function getFilteredRowCountValue(gridApi) {
   return filteredRowCount;
 }
 
-function getTotalRowCount(gridApi) {
+export function getTotalRowCount(gridApi) {
   let totalRowCount = 0;
   gridApi.forEachNode((node) => {
     if (!node.group) {
