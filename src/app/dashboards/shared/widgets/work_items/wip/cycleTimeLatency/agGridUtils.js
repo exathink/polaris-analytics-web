@@ -3,6 +3,7 @@ import classNames from "classnames";
 import React from "react";
 import {Checkbox, Menu, Button} from "antd";
 import {getContainerNode} from "../../../../../../helpers/utility";
+import {LabelValue} from "../../../../../../helpers/components";
 
 export function CustomHeader(props) {
   const [ascSort, setAscSort] = React.useState("inactive");
@@ -164,3 +165,50 @@ function renderFilterItems({filters, prefixCls, filteredKeys}) {
     );
   });
 }
+
+function getFilteredRowCountValue(gridApi) {
+  let filteredRowCount = 0;
+  gridApi.forEachNodeAfterFilter((node) => {
+    if (!node.group) {
+      filteredRowCount++;
+    }
+  });
+  return filteredRowCount;
+}
+
+function getTotalRowCount(gridApi) {
+  let totalRowCount = 0;
+  gridApi.forEachNode((node) => {
+    if (!node.group) {
+      totalRowCount++;
+    }
+  });
+  return totalRowCount;
+}
+
+export const CustomTotalAndFilteredRowCount = (props) => {
+  const [totalCount, setTotalCount] = React.useState(0);
+  const [filteredCount, setFilteredCount] = React.useState(0);
+
+  React.useEffect(() => {
+    props.api.addEventListener("modelUpdated", updateCounts);
+    updateCounts();
+
+    return () => {
+      props.api.removeEventListener("modelUpdated", updateCounts);
+    };
+  }, [props.api]);
+
+  function updateCounts() {
+    setTotalCount(getTotalRowCount(props.api));
+    setFilteredCount(getFilteredRowCountValue(props.api));
+  }
+
+  return (
+    <LabelValue
+      label={props.label || "Rows"}
+      value={`${filteredCount} of ${totalCount}`}
+      className={"tw-ml-4 tw-py-2"}
+    />
+  );
+};
