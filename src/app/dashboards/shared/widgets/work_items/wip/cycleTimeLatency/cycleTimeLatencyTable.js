@@ -11,7 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
+import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter, getFilteredRowCountValue, getTotalRowCount} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -202,6 +202,12 @@ export const CycleTimeLatencyTable = injectIntl(
           },
           align: "left",
         },
+        {
+          statusPanel: 'agAggregationComponent',
+          statusPanelParams : {
+              aggFuncs: ['avg', 'sum']
+          }
+        }
       ],
     };
 
@@ -210,7 +216,24 @@ export const CycleTimeLatencyTable = injectIntl(
         columnDefs={columnDefs}
         rowData={dataSource}
         statusBar={statusBar}
-        onRowClicked={(e) => {
+        onSortChanged={(params) => {
+          // columns for which we need to show average and sum
+          const RefCols = ["cycleTime", "latency", "effort"];
+
+          const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+          if (sortState?.sort && RefCols.includes(sortState.colId)) {
+            const filteredCount = getFilteredRowCountValue(params.api);
+            params.api.addCellRange({
+              rowStartIndex: 0,
+              rowEndIndex: filteredCount - 1,
+              columns: [sortState.colId],
+            });
+          } else {
+            params.api.clearRangeSelection();
+          }
+        }}
+        enableRangeSelection={true}
+        onRowDoubleClicked={(e) => {
           const record = e.data;
           callBacks.setPlacement("top");
           callBacks.setShowPanel(true);
