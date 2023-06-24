@@ -82,79 +82,82 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
 
-  const columns = [
-    {field: "displayId", hide: true},
-    {field: "epicName", hide: true},
-    {
-      field: "quadrant",
-      headerName: "Status",
-      cellRenderer: QuadrantCol,
-      filter: "agSetColumnFilter",
-      filterParams: {
+  const columns = React.useMemo(
+    () => [
+      {field: "displayId", hide: true},
+      {field: "epicName", hide: true},
+      {
+        field: "quadrant",
+        headerName: "Status",
         cellRenderer: QuadrantCol,
+        filter: "agSetColumnFilter",
+        filterParams: {
+          cellRenderer: QuadrantCol,
+        },
+        menuTabs: MenuTabs,
       },
-      menuTabs: MenuTabs,
-    },
-    {
-      field: "name",
-      headerName: "Card",
-      cellRenderer: CardCol,
-      width: 320,
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ['reset'],
-        maxNumConditions: 1,
+      {
+        field: "name",
+        headerName: "Card",
+        cellRenderer: CardCol,
+        width: 320,
+        filter: "agTextColumnFilter",
+        filterParams: {
+          filterOptions: ["contains", "startsWith"],
+          buttons: ["reset"],
+          maxNumConditions: 1,
+        },
+        filterValueGetter: (params) => {
+          return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+        },
+        menuTabs: MenuTabs,
       },
-      filterValueGetter: (params) => {
-        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+      {field: "state", headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
+      {
+        field: "cycleTime",
+        headerName: "Age",
+        cellRenderer: TextWithUom,
+        filter: MultiCheckboxFilter,
+        filterParams: {
+          values: filters.categories.map((b) => ({text: b, value: b})),
+          onFilter: ({value, record}) => {
+            appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+            return testMetric(value, record, "cycleTime");
+          },
+        },
+        menuTabs: MenuTabs,
       },
-      menuTabs: MenuTabs,
-    },
-    {field: "state", headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
-    {
-      field: "cycleTime",
-      headerName: "Age",
-      cellRenderer: TextWithUom,
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.categories.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
-          return testMetric(value, record, "cycleTime");
+      {
+        field: "latency",
+        headerName: "Latency",
+        cellRenderer: TextWithUom,
+        filter: "agNumberColumnFilter",
+        filterParams: {
+          maxNumConditions: 1,
+          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+          buttons: ["reset"],
+        },
+        menuTabs: MenuTabs,
+      },
+      {
+        field: "effort",
+        headerName: "Effort",
+        cellRenderer: TextWithUom,
+        cellRendererParams: {
+          uom: "FTE Days",
         },
       },
-      menuTabs: MenuTabs,
-    },
-    {
-      field: "latency",
-      headerName: "Latency",
-      cellRenderer: TextWithUom,
-      filter: "agNumberColumnFilter",
-      filterParams: {
-        maxNumConditions: 1,
-        filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
-        buttons: ['reset'],
+      {
+        field: "latestCommitDisplay",
+        headerName: "Latest Commit",
+        cellRenderer: TextWithUom,
+        cellRendererParams: {
+          uom: "",
+        },
       },
-      menuTabs: MenuTabs,
-    },
-    {
-      field: "effort",
-      headerName: "Effort",
-      cellRenderer: TextWithUom,
-      cellRendererParams: {
-        uom: "FTE Days",
-      },
-    },
-    {
-      field: "latestCommitDisplay",
-      headerName: "Latest Commit",
-      cellRenderer: TextWithUom,
-      cellRendererParams: {
-        uom: "",
-      },
-    },
-  ];
+    ],
+    []
+  );
 
   return {columnDefs: columns};
 }
@@ -235,12 +238,20 @@ export const CycleTimeLatencyTable = injectIntl(
           }
         }}
         enableRangeSelection={true}
-        onRowDoubleClicked={(e) => {
-          const record = e.data;
-          callBacks.setPlacement("top");
-          callBacks.setShowPanel(true);
-          callBacks.setWorkItemKey(record.key);
+        onCellClicked={(e) => {
+          if (e.colDef.field === "name") {
+            const record = e.data;
+            callBacks.setPlacement("top");
+            callBacks.setShowPanel(true);
+            callBacks.setWorkItemKey(record.key);
+          }
         }}
+        // onRowDoubleClicked={(e) => {
+        //   const record = e.data;
+        //   callBacks.setPlacement("top");
+        //   callBacks.setShowPanel(true);
+        //   callBacks.setWorkItemKey(record.key);
+        // }}
       />
     );
   }
