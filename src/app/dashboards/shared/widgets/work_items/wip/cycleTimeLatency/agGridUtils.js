@@ -135,14 +135,13 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           filteredKeys: selectedKeys,
         })}
       </Menu>
-      <div className={`ant-table-filter-dropdown-btns`}>
+      <div className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end tw-mr-2`}>
         <Button
-          type="link"
-          size="small"
-          disabled={selectedKeys.length === 0}
+          type="default"
           onClick={() => {
             setSelectedKeys([]);
           }}
+          className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2"
         >
           Reset
         </Button>
