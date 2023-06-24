@@ -164,6 +164,9 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         cellRendererParams: {
           uom: "",
         },
+        comparator: (_valA, _valB, nodeA, nodeB) => {
+          return SORTER.date_compare(nodeA.data.workItemStateDetails.latestCommit, nodeB.data.workItemStateDetails.latestCommit)
+        }
       },
     ],
     []
