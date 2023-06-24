@@ -11,7 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter, getFilteredRowCountValue, getTotalRowCount} from "./agGridUtils";
+import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter, getFilteredRowCountValue} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -56,6 +56,12 @@ function getQuadrantIcon(quadrant) {
   }
 }
 
+
+
+function quadrantFormatter(params) {
+  return QuadrantNames[params.value] ?? params.value;
+}
+
 function QuadrantCol(params) {
   return (
     <span
@@ -69,13 +75,9 @@ function QuadrantCol(params) {
     >
       {getQuadrantIcon(params.value)}
       &nbsp;
-      {QuadrantNames[params.value] ?? params.value}
+      {params.valueFormatted}
     </span>
   );
-}
-
-function quadrantFormatter(params) {
-  return QuadrantNames[params.value] ?? params.value;
 }
 
 const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
