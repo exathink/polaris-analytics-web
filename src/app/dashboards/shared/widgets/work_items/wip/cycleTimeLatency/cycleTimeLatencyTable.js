@@ -101,7 +101,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           cellRenderer: QuadrantCol,
         },
         menuTabs: MenuTabs,
-        valueFormatter: quadrantFormatter
+        valueFormatter: quadrantFormatter,
       },
       {
         field: "name",
@@ -119,7 +119,15 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         },
         menuTabs: MenuTabs,
       },
-      {field: "state", headerName: "State", cellRenderer: StateTypeCol, autoHeight: true},
+      {
+        field: "state",
+        headerName: "State",
+        cellRenderer: StateTypeCol,
+        autoHeight: true,
+        comparator: (_valA, _valB, nodeA, nodeB) => {
+          return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
+        },
+      },
       {
         field: "cycleTime",
         headerName: "Age",
@@ -165,8 +173,11 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           uom: "",
         },
         comparator: (_valA, _valB, nodeA, nodeB) => {
-          return SORTER.date_compare(nodeA.data.workItemStateDetails.latestCommit, nodeB.data.workItemStateDetails.latestCommit)
-        }
+          return SORTER.date_compare(
+            nodeA.data.workItemStateDetails.latestCommit,
+            nodeB.data.workItemStateDetails.latestCommit
+          );
+        },
       },
     ],
     []
