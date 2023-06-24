@@ -203,23 +203,25 @@ export const CycleTimeLatencyTable = injectIntl(
       appliedFilters,
     });
 
-    const statusBar = {
-      statusPanels: [
-        {
-          statusPanel: CustomTotalAndFilteredRowCount,
-          statusPanelParams: {
-            label: "Work Items",
+    const statusBar = React.useMemo(() => {
+      return {
+        statusPanels: [
+          {
+            statusPanel: CustomTotalAndFilteredRowCount,
+            statusPanelParams: {
+              label: "Work Items",
+            },
+            align: "left",
           },
-          align: "left",
-        },
-        {
-          statusPanel: 'agAggregationComponent',
-          statusPanelParams : {
-              aggFuncs: ['avg', 'min', 'max']
-          }
-        }
-      ],
-    };
+          {
+            statusPanel: "agAggregationComponent",
+            statusPanelParams: {
+              aggFuncs: ["avg", "min", "max"],
+            },
+          },
+        ],
+      };
+    }, []);
 
     return (
       <AgGridStripeTable
@@ -253,12 +255,6 @@ export const CycleTimeLatencyTable = injectIntl(
             callBacks.setWorkItemKey(record.key);
           }
         }}
-        // onRowDoubleClicked={(e) => {
-        //   const record = e.data;
-        //   callBacks.setPlacement("top");
-        //   callBacks.setShowPanel(true);
-        //   callBacks.setWorkItemKey(record.key);
-        // }}
       />
     );
   }
