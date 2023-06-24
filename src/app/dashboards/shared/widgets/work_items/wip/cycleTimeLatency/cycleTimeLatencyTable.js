@@ -230,6 +230,7 @@ export const CycleTimeLatencyTable = injectIntl(
         statusBar={statusBar}
         onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
         enableRangeSelection={true}
+        defaultExcelExportParams={{fileName: "Work_In_Progress" }}
         onCellClicked={(e) => {
           if (e.colDef.field === "name") {
             const record = e.data;
