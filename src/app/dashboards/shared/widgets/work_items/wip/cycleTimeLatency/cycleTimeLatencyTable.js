@@ -117,6 +117,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filterValueGetter: (params) => {
           return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
         },
+        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.workItemType, nodeB.data.workItemType),
         menuTabs: MenuTabs,
       },
       {
