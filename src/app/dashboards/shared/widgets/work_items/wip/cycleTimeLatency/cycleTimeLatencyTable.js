@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {AgGridStripeTable, TextWithUom} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
@@ -11,7 +11,7 @@ import {
 } from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter, getFilteredRowCountValue} from "./agGridUtils";
+import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -228,24 +228,7 @@ export const CycleTimeLatencyTable = injectIntl(
         columnDefs={columnDefs}
         rowData={dataSource}
         statusBar={statusBar}
-        onSortChanged={(params) => {
-          // columns for which we need to show average and sum
-          const RefCols = ["cycleTime", "latency", "effort"];
-
-          const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-          if (sortState?.sort && RefCols.includes(sortState.colId)) {
-            params.api.clearRangeSelection();
-
-            const filteredCount = getFilteredRowCountValue(params.api);
-            params.api.addCellRange({
-              rowStartIndex: 0,
-              rowEndIndex: filteredCount - 1,
-              columns: [sortState.colId],
-            });
-          } else {
-            params.api.clearRangeSelection();
-          }
-        }}
+        onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
         enableRangeSelection={true}
         onCellClicked={(e) => {
           if (e.colDef.field === "name") {
