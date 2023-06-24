@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl} from "react-intl";
-import {AgGridStripeTable, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
@@ -124,6 +124,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         field: "cycleTime",
         headerName: "Age",
         cellRenderer: TextWithUom,
+        comparator: SORTER.number_compare,
         filter: MultiCheckboxFilter,
         filterParams: {
           values: filters.categories.map((b) => ({text: b, value: b})),
@@ -138,6 +139,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         field: "latency",
         headerName: "Latency",
         cellRenderer: TextWithUom,
+        comparator: SORTER.number_compare,
         filter: "agNumberColumnFilter",
         filterParams: {
           maxNumConditions: 1,
@@ -153,6 +155,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         cellRendererParams: {
           uom: "FTE Days",
         },
+        comparator: SORTER.number_compare,
       },
       {
         field: "latestCommitDisplay",
