@@ -75,7 +75,7 @@ function QuadrantCol(params) {
     >
       {getQuadrantIcon(params.value)}
       &nbsp;
-      {params.valueFormatted}
+      {quadrantFormatter(params)}
     </span>
   );
 }
