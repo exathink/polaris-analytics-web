@@ -124,7 +124,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
       <Menu
         multiple={true}
         prefixCls={`ant-dropdown-menu`}
-        className={""}
+        className={"!tw-bg-[rgb(248,248,248)]"}
         onSelect={onSelectKeys}
         onDeselect={onSelectKeys}
         selectedKeys={selectedKeys}
@@ -135,7 +135,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           filteredKeys: selectedKeys,
         })}
       </Menu>
-      <div className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end tw-mr-2`}>
+      <div className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end !tw-bg-[rgb(248,248,248)] !tw-border-t-[rgb(221,226,235)]`}>
         <Button
           type="default"
           onClick={() => {
@@ -157,7 +157,7 @@ function renderFilterItems({filters, prefixCls, filteredKeys}) {
     const Component = Checkbox;
 
     return (
-      <Menu.Item key={filter.value !== undefined ? key : index}>
+      <Menu.Item key={filter.value !== undefined ? key : index} className="!tw-leading-3">
         <Component checked={filteredKeys.includes(key)} />
         <span className="tw-ml-2">{filter.text}</span>
       </Menu.Item>
