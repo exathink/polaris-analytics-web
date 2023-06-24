@@ -301,6 +301,7 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
       sortable: true,
       resizable: true,
       menuTabs: [],
+      useValueFormatterForExport: true,
       cellClass: "tw-flex tw-items-center",
       headerClass: "tw-uppercase tw-text-xs tw-font-medium"
     };

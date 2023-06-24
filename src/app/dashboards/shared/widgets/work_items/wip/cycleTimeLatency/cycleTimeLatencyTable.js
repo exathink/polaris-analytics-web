@@ -74,6 +74,10 @@ function QuadrantCol(params) {
   );
 }
 
+function quadrantFormatter(params) {
+  return QuadrantNames[params.value] ?? params.value;
+}
+
 const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
@@ -95,6 +99,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
           cellRenderer: QuadrantCol,
         },
         menuTabs: MenuTabs,
+        valueFormatter: quadrantFormatter
       },
       {
         field: "name",
