@@ -141,7 +141,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           onClick={() => {
             setSelectedKeys([]);
           }}
-          className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2"
+          className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2 !tw-leading-none"
         >
           Reset
         </Button>
