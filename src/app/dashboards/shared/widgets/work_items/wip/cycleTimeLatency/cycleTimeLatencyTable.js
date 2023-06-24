@@ -248,9 +248,9 @@ export const CycleTimeLatencyTable = injectIntl(
         statusBar={statusBar}
         onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
         enableRangeSelection={true}
-        defaultExcelExportParams={{fileName: "Work_In_Progress" }}
+        defaultExcelExportParams={{fileName: "Work_In_Progress"}}
         onCellClicked={(e) => {
-          if (e.colDef.field === "name") {
+          if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
             const record = e.data;
             callBacks.setPlacement("top");
             callBacks.setShowPanel(true);
