@@ -114,6 +114,41 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
     }
 }
 
+export function CardCol(params) {
+  const record = params.data;
+  return (
+    <div className="tw-flex tw-items-center tw-gap-2 tw-py-2">
+      <div className="">{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
+      <div className="tw-flex tw-flex-col tw-items-start">
+        <div className="tw-leading-6">{truncateString(record.name, 38, "#6b7280")}</div>
+        <div className="tw-flex tw-items-center tw-leading-6">
+          <div className="tw-text-xs tw-font-semibold">{record.displayId}</div>
+          {record.epicName && (
+            <Tag color="#108ee9" style={{marginLeft: "30px"}}>
+              {truncateString(record.epicName, 25, "#108ee9")}
+            </Tag>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function StateTypeCol(params) {
+  const record = params.data;
+  return (
+    <div className="tw-grid tw-cursor-pointer tw-grid-cols-[25px,auto] tw-items-center tw-gap-1">
+      <div className={record.timeInStateDisplay ? "tw-row-span-2 tw-self-center tw-leading-6" : "tw-self-center tw-leading-6"}>
+        {getStateTypeIcon(record.stateTypeInternal)}
+      </div>
+      <div className="tw-font-medium tw-lowercase tw-text-gray-300 tw-leading-6">{record.state}</div>
+      {record.timeInStateDisplay && (
+        <div className="tw-text-xs tw-font-normal tw-text-gray-300 tw-leading-6">entered {record.timeInStateDisplay}</div>
+      )}
+    </div>
+  );
+}
+
 export function ComboCardTitleColumn({record}) {
   const blurClass = useBlurClass();
   return (

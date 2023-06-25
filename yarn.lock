@@ -2565,6 +2565,23 @@ adjust-sourcemap-loader@^4.0.0:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
 
+ag-grid-community@^30.0.2:
+  version "30.0.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-30.0.2.tgz#dc03f32bddf9b221932a0fd5a89f5f04b48deb07"
+  integrity sha512-yJ+H/y2UvuzJpDdD1osLswZFBaUVd8vHxyOhreUihYC763Yz16jgIgP/8vmqpbSHHmJZ7bqs5ojV2uehLJ8BGQ==
+
+ag-grid-enterprise@^30.0.2:
+  version "30.0.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-30.0.2.tgz#33defe9031c1a3be31101280e460252bec27543b"
+  integrity sha512-6uPMuKl6eh466kgVdqhgqdsfIqV8FHkrvahHTze3pq4fUNNwVXwCYR9HYq6HE5P6v3omy91WyDQrxWrL0fdJIg==
+
+ag-grid-react@^30.0.2:
+  version "30.0.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-30.0.2.tgz#fe71ceebf2db33d7e1683c6ad785593c5e218d0f"
+  integrity sha512-frVRqwEHw/jcAtUzh/0lOkVVp5NwAiNg97uTK/GYHnRiWF/7evdgQ9dBFsJ3suloayXIdz6A4wpyktdfaQxzww==
+  dependencies:
+    prop-types "^15.8.1"
+
 agent-base@6:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"

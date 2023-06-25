@@ -1,39 +1,17 @@
 import React from "react";
-import {useSearchMultiCol} from "../../../../../../components/tables/hooks";
 import {injectIntl} from "react-intl";
-import {SORTER, StripeTable, VirtualStripeTable} from "../../../../../../components/tables/tableUtils";
-import {AppTerms, WorkItemStateTypeDisplayName} from "../../../../config";
+import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
+import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
-  comboColumnStateTypeRender,
-  comboColumnTitleRender,
-  customColumnRender,
+  CardCol,
+  StateTypeCol,
 } from "../../../../../projects/shared/helper/renderers";
-import {average, averageOfDurations, i18nNumber, useBlurClass} from "../../../../../../helpers/utility";
-import {LabelValue} from "../../../../../../helpers/components";
-import {getMetricsMetaKey} from "../../../../helpers/metricsMeta";
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
-
-const summaryStatsColumns = {
-  cycleTimeOrLatency: "Days",
-  latency: "Days",
-  cycleTime: "Days",
-  leadTimeOrAge: "Days",
-  Age: "Days",
-  leadTime: "Days",
-  effort: "FTE Days",
-  latestCommitDisplay: "Days",
-};
-
-const QuadrantSort = {
-  ok: 0,
-  latency: 1,
-  age: 2,
-  critical: 3,
-};
+import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -78,198 +56,135 @@ function getQuadrantIcon(quadrant) {
   }
 }
 
-function renderQuadrantCol({setShowPanel, setWorkItemKey, setPlacement}) {
-  return (text, record, searchText) => (
+
+
+function quadrantFormatter(params) {
+  return QuadrantNames[params.value] ?? params.value;
+}
+
+function QuadrantCol(params) {
+  return (
     <span
-      onClick={() => {
-        setPlacement("top");
-        setShowPanel(true);
-        setWorkItemKey(record.key);
-      }}
       style={{
-        color: QuadrantColors[record.quadrant],
-        marginLeft: "9px",
+        color: QuadrantColors[params.value],
         cursor: "pointer",
         fontSize: "0.75rem",
         lineHeight: "1rem",
         fontWeight: 500,
       }}
     >
-      {getQuadrantIcon(record.quadrant)}
+      {getQuadrantIcon(params.value)}
       &nbsp;
-      {QuadrantNames[record.quadrant]}
+      {quadrantFormatter(params)}
     </span>
   );
 }
 
-// function renderTeamsCall({setShowPanel, setWorkItemKey, setPlacement}) {
-//   return (text, record, searchText) => {
-//     return (
-//       text && (
-//         <span
-//           onClick={() => {
-//             setPlacement("top");
-//             setShowPanel(true);
-//             setWorkItemKey(record.key);
-//           }}
-//           style={{cursor: "pointer"}}
-//         >
-//           {record.teamNodeRefs.length > 1 ? "multiple" : text}
-//         </span>
-//       )
-//     );
-//   };
-// }
-
-
-export function useCycleTimeLatencyTableColumns({filters, appliedFilters, callBacks}) {
-  const blurClass = useBlurClass("tw-blur-[2px]");
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {customRender: comboColumnTitleRender({...callBacks, blurClass})});
-  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey, callBacks.setPlacement)};
-  const metricRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} days</>, className: "tw-textXs"})}
-  const effortRenderState = {render: customColumnRender({...callBacks,colRender: text => <>{text} FTE Days</>, className: "tw-textXs"})}
-  const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})}
-  const renderQuadrantState = {render: renderQuadrantCol(callBacks)};
-  // const renderTeamsCol = {render: renderTeamsCall(callBacks)};
+const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
+export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
 
-  const columns = [
-    // {
-    //   title: "Team",
-    //   dataIndex: "teams",
-    //   key: "teams",
-    //   filteredValue: appliedFilters.teams || null,
-    //   filters: filters.teams.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => record.teams.match(new RegExp(value, "i")),
-    //   width: "4%",
-    //   ...renderTeamsCol,
-    // },
-    {
-      title: "Status",
-      dataIndex: "quadrant",
-      key: "quadrant",
-      width: "5%",
-      filteredValue: appliedFilters.get(FILTERS.QUADRANT) || null,
-      filters: filters.quadrants
-        .sort((a, b) => QuadrantSort[a] - QuadrantSort[b])
-        .map((b) => ({
-          text: (
-            <span style={{color: QuadrantColors[b]}}>
-              {getQuadrantIcon(b)}&nbsp;{QuadrantNames[b]}
-            </span>
-          ),
-          value: b,
-        })),
-      onFilter: (value, record) => {
-        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
-        return record.quadrant.indexOf(value) === 0
+  const columns = React.useMemo(
+    () => [
+      {field: "displayId", hide: true},
+      {field: "epicName", hide: true},
+      {
+        field: "quadrant",
+        headerName: "Status",
+        cellRenderer: QuadrantCol,
+        filter: "agSetColumnFilter",
+        filterParams: {
+          cellRenderer: QuadrantCol,
+        },
+        menuTabs: MenuTabs,
+        valueFormatter: quadrantFormatter,
       },
-      ...renderQuadrantState,
-    },
-    {
-      title: "Card",
-      dataIndex: "name",
-      key: "name",
-      width: "12%",
-      filteredValue: appliedFilters.get("name") || null,
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      ...titleSearchState,
-      onFilter: (value, record) => {
-        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["name"]);
-        return titleSearchState.onFilter(value, record);
-      }
-    },
-    // {
-    //   title: "Type",
-    //   dataIndex: "workItemType",
-    //   key: "workItemType",
-    //   sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-    //   filteredValue: appliedFilters.workItemType || null,
-    //   filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-    //   width: "5%",
-    //   ...renderState,
-    // },
-    // {
-    //   title: "Phase",
-    //   dataIndex: "stateType",
-    //   key: "stateType",
-    //   sorter: (a, b) => SORTER.string_compare(a.stateType, b.stateType),
-    //   filteredValue: appliedFilters.stateType || null,
-    //   filters: filters.stateTypes.map((b) => ({text: b, value: b})),
-    //   onFilter: (value, record) => record.stateType.indexOf(value) === 0,
-    //   width: "5%",
-    //   ...renderState,
-    // },
-    {
-      title: "State",
-      dataIndex: "state",
-      key: "state",
-      width: "7%",
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      ...stateTypeRenderState,
-    },
-    // {
-    //   title: "Entered",
-    //   dataIndex: "timeInStateDisplay",
-    //   key: "timeInStateDisplay",
-    //   width: "5%",
-    //   sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-    //   ...renderState,
-    // },
-    {
-      title: "Age",
-      dataIndex: "cycleTime",
-      key: "cycleTime",
-      width: "5%",
-      filteredValue: appliedFilters.get("cycleTime") || null,
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => {
-        appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
-        return testMetric(value, record, "cycleTime")
+      {
+        field: "name",
+        headerName: "Card",
+        cellRenderer: CardCol,
+        width: 320,
+        filter: "agTextColumnFilter",
+        filterParams: {
+          filterOptions: ["contains", "startsWith"],
+          buttons: ["reset"],
+          maxNumConditions: 1,
+        },
+        filterValueGetter: (params) => {
+          return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+        },
+        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.workItemType, nodeB.data.workItemType),
+        menuTabs: MenuTabs,
       },
-      sorter: (a, b) => SORTER.number_compare(a.cycleTime, b.cycleTime),
-      ...metricRenderState,
-    },
-    {
-      title: "Latency",
-      dataIndex: "latency",
-      key: "latency",
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.latency, b.latency),
-      ...metricRenderState,
-    },
-    // {
-    //   title: 'Implem...',
-    //   dataIndex: "duration",
-    //   key: "duration",
-    //   width: "4%",
-    //   sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
-    //   ...renderState,
-    // },
-    {
-      title: "Effort",
-      dataIndex: "effort",
-      key: "effort",
-      width: "4%",
-      sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-      ...effortRenderState,
-    },
-    {
-      title: "Latest Commit",
-      dataIndex: "latestCommitDisplay",
-      key: "latestCommitDisplay",
-      width: "5%",
-      sorter: (a, b) => SORTER.date_compare(a.workItemStateDetails.latestCommit, b.workItemStateDetails.latestCommit),
-      ...renderState,
-    },
-  ];
+      {
+        field: "state",
+        headerName: "State",
+        cellRenderer: StateTypeCol,
+        autoHeight: true,
+        comparator: (_valA, _valB, nodeA, nodeB) => {
+          return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
+        },
+      },
+      {
+        field: "cycleTime",
+        headerName: "Age",
+        cellRenderer: TextWithUom,
+        comparator: SORTER.number_compare,
+        filter: MultiCheckboxFilter,
+        filterParams: {
+          values: filters.categories.map((b) => ({text: b, value: b})),
+          onFilter: ({value, record}) => {
+            appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+            return testMetric(value, record, "cycleTime");
+          },
+        },
+        menuTabs: MenuTabs,
+      },
+      {
+        field: "latency",
+        headerName: "Latency",
+        cellRenderer: TextWithUom,
+        comparator: SORTER.number_compare,
+        filter: "agNumberColumnFilter",
+        filterParams: {
+          maxNumConditions: 1,
+          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+          buttons: ["reset"],
+        },
+        menuTabs: MenuTabs,
+      },
+      {
+        field: "effort",
+        headerName: "Effort",
+        cellRenderer: TextWithUom,
+        cellRendererParams: {
+          uom: "FTE Days",
+        },
+        comparator: SORTER.number_compare,
+      },
+      {
+        field: "latestCommitDisplay",
+        headerName: "Latest Commit",
+        cellRenderer: TextWithUom,
+        cellRendererParams: {
+          uom: "",
+        },
+        comparator: (_valA, _valB, nodeA, nodeB) => {
+          return SORTER.date_compare(
+            nodeA.data.workItemStateDetails.latestCommit,
+            nodeB.data.workItemStateDetails.latestCommit
+          );
+        },
+      },
+    ],
+    []
+  );
 
-  return columns;
+  return {columnDefs: columns};
 }
 
 function getUniqueItems(data) {
@@ -290,90 +205,57 @@ function getUniqueItems(data) {
 
 export const CycleTimeLatencyTable = injectIntl(
   ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
-    const [appliedSorter, setAppliedSorter] = React.useState();
-    const [appliedName, setAppliedName] = React.useState();
 
     // get unique workItem types
-   const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
+    const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
     const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 
-    const dataSource = getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget});
+    const dataSource = React.useMemo(
+      () => getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget}),
+      [tableData, cycleTimeTarget, latencyTarget, intl]
+    );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
-    const columns = useCycleTimeLatencyTableColumns({
+    const {columnDefs} = useCycleTimeLatencyTableColumns({
       filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
       appliedFilters,
-      callBacks,
     });
 
-    const handleChange = (p, f, s, e) => {
-      // remove keys which have null values (eg: {filterKey1: null})
-      const cleanFilters = Object.entries(f).reduce((acc, [itemKey, itemVal]) => {
-        if (itemVal != null) {
-          acc[itemKey] = itemVal;
-        }
-        return acc;
-      }, {});
-
-      const filtersMap = new Map(Object.entries(cleanFilters));
-
-      callBacks.setAppliedFilters((prev) => {
-        if (filtersMap.size === 0) {
-          prev.delete(FILTERS.QUADRANT);
-          prev.delete(FILTERS.NAME);
-          prev.delete(FILTERS.CYCLETIME);
-          prev.delete(FILTERS.CURRENT_INTERACTION);
-          return new Map(prev);
-        }
-
-        const [currentInteraction] = prev.get(FILTERS.CURRENT_INTERACTION);
-        if (currentInteraction==="cycleTime") {
-          callBacks.setWipChartType("age");
-        }
-
-        return new Map([...prev, ...filtersMap]);
-      });
-
-      setAppliedSorter(s?.column?.dataIndex);
-      setAppliedName(s?.column?.dataIndex === "latestCommitDisplay" ? "Commit Latency" : s?.column?.title);
-    };
+    const statusBar = React.useMemo(() => {
+      return {
+        statusPanels: [
+          {
+            statusPanel: CustomTotalAndFilteredRowCount,
+            statusPanelParams: {
+              label: "Work Items",
+            },
+            align: "left",
+          },
+          {
+            statusPanel: "agAggregationComponent",
+            statusPanelParams: {
+              aggFuncs: ["avg", "min", "max"],
+            },
+          },
+        ],
+      };
+    }, []);
 
     return (
-      <VirtualStripeTable
-        columns={columns}
-        dataSource={dataSource}
-        testId="cycle-time-latency-table"
-        onChange={handleChange}
-        rowKey={(record) => record.key}
-        renderTableSummary={(pageData) => {
-          // calculate avg for summary stats columns
-
-          let avgData;
-          if (appliedSorter === "latestCommitDisplay") {
-            avgData = averageOfDurations(pageData.map((item) => item.latestCommit));
-          } else {
-            avgData =
-              appliedSorter && summaryStatsColumns[appliedSorter]
-                ? average(pageData, (item) => +item[appliedSorter])
-                : undefined;
+      <AgGridStripeTable
+        columnDefs={columnDefs}
+        rowData={dataSource}
+        statusBar={statusBar}
+        onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
+        enableRangeSelection={true}
+        defaultExcelExportParams={{fileName: "Work_In_Progress"}}
+        onCellClicked={(e) => {
+          if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
+            const record = e.data;
+            callBacks.setPlacement("top");
+            callBacks.setShowPanel(true);
+            callBacks.setWorkItemKey(record.key);
           }
-
-          return (
-            <>
-              <LabelValue
-                label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display}
-                value={pageData?.length}
-              />
-              {avgData !== 0 && avgData && (
-                <LabelValue
-                  key={getMetricsMetaKey(appliedSorter, "stateType")}
-                  label={`Avg. ${appliedName}`}
-                  value={i18nNumber(intl, avgData, 2)}
-                  uom={summaryStatsColumns[appliedSorter]}
-                />
-              )}
-            </>
-          );
         }}
       />
     );
