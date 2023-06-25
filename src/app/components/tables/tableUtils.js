@@ -1,11 +1,20 @@
 import React from "react";
-import {Table} from "antd";
+import {Empty, Table} from "antd";
 import styles from "./tableUtils.module.css";
 import {diff_in_dates} from "../../helpers/utility";
 import {LabelValue} from "../../helpers/components";
 
 import {useVirtualizer} from "@tanstack/react-virtual";
 import classNames from "classnames";
+
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react'; // the AG Grid React Component
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
+import "ag-grid-enterprise";
+import {LicenseManager} from "ag-grid-enterprise";
+import {getFilteredRowCountValue} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
+// enter your license key here to suppress license message in the console and watermark
+LicenseManager.setLicenseKey("[TRIAL]_this_AG_Grid_Enterprise_key_( AG-043118 )_is_granted_for_evaluation_only___Use_in_production_is_not_permitted___Please_report_misuse_to_( legal@ag-grid.com )___For_help_with_purchasing_a_production_key_please_contact_( info@ag-grid.com )___All_Front-End_JavaScript_developers_working_on_the_application_would_need_to_be_licensed___This_key_will_deactivate_on_( 31 July 2023 )____[v2]_MTY5MDc1ODAwMDAwMA==f7deb9985cb10bc1921d8a43ac3c1b44");
 
 export const DEFAULT_PAGE_SIZE = 200;
 export const TABLE_HEIGHTS = {
@@ -267,3 +276,73 @@ export function VirtualStripeTable({
     />
   );
 }
+
+/**
+ * Some Common cellRenderer
+ */
+export function TextWithUom(props) {
+  const record = props.data;
+  const field = props.colDef.field;
+  const uom = props.uom ?? "Days";
+  return (
+    <span className="tw-textXs">
+      {record[field]} {uom}
+    </span>
+  );
+}
+
+  /**
+   * columns for which we need to show aggregation component
+   * @param {string[]} ColsToAggregate
+   */
+  export const getOnSortChanged = (ColsToAggregate) => (params) => {
+    const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+    if (sortState?.sort && ColsToAggregate.includes(sortState.colId)) {
+      // clear prev range selection before applying new range selection
+      params.api.clearRangeSelection();
+
+      const filteredCount = getFilteredRowCountValue(params.api);
+      params.api.addCellRange({
+        rowStartIndex: 0,
+        rowEndIndex: filteredCount - 1,
+        columns: [sortState.colId],
+      });
+    } else {
+      params.api.clearRangeSelection();
+    }
+  }
+
+
+/**
+ * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
+ */
+export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(props, gridRef) {
+  // These properties are applied across all the columns of all the tables using this component. we can override this by passing this from props
+  const defaultColDef = React.useMemo(() => {
+    return {
+      sortable: true,
+      resizable: true,
+      menuTabs: [],
+      useValueFormatterForExport: true,
+      cellClass: "tw-flex tw-items-center",
+      headerClass: "tw-uppercase tw-text-xs tw-font-medium"
+    };
+  }, []);
+
+  // On div wrapping Grid
+  // a) specify theme CSS Class Class
+  // b) sets Grid size
+  return (
+    <div className="ag-theme-alpine tw-h-full">
+      <AgGridReact
+        ref={gridRef}
+        noRowsOverlayComponent={Empty}
+        onGridReady={(params) => params.api.sizeColumnsToFit()}
+        suppressMenuHide={true}
+        animateRows={true}
+        defaultColDef={defaultColDef}
+        {...props}
+      />
+    </div>
+  );
+});
