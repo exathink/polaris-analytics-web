@@ -92,20 +92,11 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
     () => [
       {field: "displayId", hide: true},
       {field: "epicName", hide: true},
-      {
-        field: "quadrant",
-        headerName: "Status",
-        cellRenderer: QuadrantCol,
-        filter: "agSetColumnFilter",
-        filterParams: {
-          cellRenderer: QuadrantCol,
-        },
-        menuTabs: MenuTabs,
-        valueFormatter: quadrantFormatter,
-      },
+
       {
         field: "name",
-        headerName: "Card",
+        headerName: "Work Item",
+        pinned: 'left',
         cellRenderer: CardCol,
         width: 320,
         filter: "agTextColumnFilter",
@@ -119,6 +110,17 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         },
         comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.workItemType, nodeB.data.workItemType),
         menuTabs: MenuTabs,
+      },
+      {
+        field: "quadrant",
+        headerName: "Status",
+        cellRenderer: QuadrantCol,
+        filter: "agSetColumnFilter",
+        filterParams: {
+          cellRenderer: QuadrantCol,
+        },
+        menuTabs: MenuTabs,
+        valueFormatter: quadrantFormatter,
       },
       {
         field: "state",
