@@ -12,6 +12,7 @@ import {
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
+import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -30,6 +31,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget),
       teams: joinTeams(item),
+      url: getRemoteBrowseUrl(item)
     };
   });
 }
@@ -94,6 +96,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
       {field: "epicName", headerName: "Epic", hide: true},
       {field: 'workItemsSourceName', headerName: "WorkStream", hide: true},
       {field: 'teams', headerName: 'Teams', hide: "true"},
+      {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
       {
         field: "name",
         headerName: "Work Item",
@@ -261,7 +264,23 @@ export const CycleTimeLatencyTable = injectIntl(
         statusBar={statusBar}
         onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
         enableRangeSelection={true}
-        defaultExcelExportParams={{fileName: "Work_In_Progress"}}
+        defaultExcelExportParams={{
+          fileName: "Work_In_Progress",
+          autoConvertFormulas: true,
+          processCellCallback: params => {
+              const field = params.column.getColDef().field;
+              return field === 'url' ? `=HYPERLINK("${params.value}")` : params.value;
+          }
+        }}
+        excelStyles={[
+          {
+              id: 'hyperlinks',
+              font: {
+                  underline: 'Single',
+                  color: '#358ccb'
+              }
+          }
+        ]}
         onCellClicked={(e) => {
           if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
             const record = e.data;
