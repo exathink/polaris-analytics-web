@@ -90,9 +90,10 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   const columns = React.useMemo(
     () => [
-      {field: "displayId", hide: true},
-      {field: "epicName", hide: true},
-
+      {field: "displayId", headerName: "ID", hide: true},
+      {field: "epicName", headerName: "Epic", hide: true},
+      {field: 'workItemsSourceName', headerName: "WorkStream", hide: true},
+      {field: 'teams', headerName: 'Teams', hide: "true"},
       {
         field: "name",
         headerName: "Work Item",
