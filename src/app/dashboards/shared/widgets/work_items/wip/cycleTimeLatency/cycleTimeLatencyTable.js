@@ -121,7 +121,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         cellRenderer: StateTypeCol,
         autoHeight: true,
         comparator: (_valA, _valB, nodeA, nodeB) => {
-          return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
+          return SORTER.string_compare(nodeA.data.state, nodeB.data.state);
         },
         menuTabs: MenuTabs,
       },
