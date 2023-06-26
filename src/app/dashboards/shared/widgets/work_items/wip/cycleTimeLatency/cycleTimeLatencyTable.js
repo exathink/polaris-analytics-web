@@ -12,6 +12,7 @@ import {
 import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
 import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
+import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 
 const getNumber = (num, intl) => {
   return intl.formatNumber(num, {maximumFractionDigits: 2});
@@ -30,6 +31,7 @@ function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
       quadrant: getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget),
       teams: joinTeams(item),
+      url: getRemoteBrowseUrl(item)
     };
   });
 }
@@ -80,7 +82,7 @@ function QuadrantCol(params) {
   );
 }
 
-const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
+const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   function testMetric(value, record, metric) {
@@ -90,22 +92,15 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   const columns = React.useMemo(
     () => [
-      {field: "displayId", hide: true},
-      {field: "epicName", hide: true},
-      {
-        field: "quadrant",
-        headerName: "Status",
-        cellRenderer: QuadrantCol,
-        filter: "agSetColumnFilter",
-        filterParams: {
-          cellRenderer: QuadrantCol,
-        },
-        menuTabs: MenuTabs,
-        valueFormatter: quadrantFormatter,
-      },
+      {field: "displayId", headerName: "ID", hide: true},
+      {field: "epicName", headerName: "Epic", hide: true},
+      {field: 'workItemsSourceName', headerName: "WorkStream", hide: true},
+      {field: 'teams', headerName: 'Teams', hide: "true"},
+      {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
       {
         field: "name",
-        headerName: "Card",
+        headerName: "Work Item",
+        pinned: 'left',
         cellRenderer: CardCol,
         width: 320,
         filter: "agTextColumnFilter",
@@ -117,8 +112,8 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filterValueGetter: (params) => {
           return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
         },
-        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.workItemType, nodeB.data.workItemType),
-        menuTabs: MenuTabs,
+        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.displayId, nodeB.data.displayId),
+        menuTabs: [...MenuTabs, 'columnsMenuTab'],
       },
       {
         field: "state",
@@ -128,7 +123,20 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         comparator: (_valA, _valB, nodeA, nodeB) => {
           return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
         },
+        menuTabs: MenuTabs,
       },
+      {
+        field: "quadrant",
+        headerName: "Status",
+        cellRenderer: QuadrantCol,
+        filter: "agSetColumnFilter",
+        filterParams: {
+          cellRenderer: QuadrantCol,
+        },
+        menuTabs: MenuTabs,
+        valueFormatter: quadrantFormatter,
+      },
+
       {
         field: "cycleTime",
         headerName: "Age",
@@ -161,10 +169,17 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         field: "effort",
         headerName: "Effort",
         cellRenderer: TextWithUom,
+        filter: "agNumberColumnFilter",
+        filterParams: {
+          maxNumConditions: 1,
+          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+          buttons: ["reset"],
+        },
         cellRendererParams: {
           uom: "FTE Days",
         },
         comparator: SORTER.number_compare,
+        menuTabs: MenuTabs,
       },
       {
         field: "latestCommitDisplay",
@@ -179,6 +194,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
             nodeB.data.workItemStateDetails.latestCommit
           );
         },
+        menuTabs: MenuTabs,
       },
     ],
     []
@@ -248,7 +264,23 @@ export const CycleTimeLatencyTable = injectIntl(
         statusBar={statusBar}
         onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
         enableRangeSelection={true}
-        defaultExcelExportParams={{fileName: "Work_In_Progress"}}
+        defaultExcelExportParams={{
+          fileName: "Work_In_Progress",
+          autoConvertFormulas: true,
+          processCellCallback: params => {
+              const field = params.column.getColDef().field;
+              return field === 'url' ? `=HYPERLINK("${params.value}")` : params.value;
+          }
+        }}
+        excelStyles={[
+          {
+              id: 'hyperlinks',
+              font: {
+                  underline: 'Single',
+                  color: '#358ccb'
+              }
+          }
+        ]}
         onCellClicked={(e) => {
           if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
             const record = e.data;

@@ -14,7 +14,7 @@ const workTrackingMap = {
   gitlab: "Gitlab",
 };
 
-function getRemoteBrowseUrl(workItem) {
+export function getRemoteBrowseUrl(workItem) {
   /* this is a hack. Need to replace with robust server side urls at some point */
   const url = new URL(workItem.url);
   switch (workItem.workTrackingIntegrationType) {
