@@ -80,7 +80,7 @@ function QuadrantCol(params) {
   );
 }
 
-const MenuTabs = ["filterMenuTab", "columnsMenuTab", "generalMenuTab"];
+const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
 
   function testMetric(value, record, metric) {
@@ -109,7 +109,17 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filterValueGetter: (params) => {
           return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
         },
-        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.workItemType, nodeB.data.workItemType),
+        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.displayId, nodeB.data.displayId),
+        menuTabs: [...MenuTabs, 'columnsMenuTab'],
+      },
+      {
+        field: "state",
+        headerName: "State",
+        cellRenderer: StateTypeCol,
+        autoHeight: true,
+        comparator: (_valA, _valB, nodeA, nodeB) => {
+          return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
+        },
         menuTabs: MenuTabs,
       },
       {
@@ -123,15 +133,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         menuTabs: MenuTabs,
         valueFormatter: quadrantFormatter,
       },
-      {
-        field: "state",
-        headerName: "State",
-        cellRenderer: StateTypeCol,
-        autoHeight: true,
-        comparator: (_valA, _valB, nodeA, nodeB) => {
-          return SORTER.date_compare(nodeA.data.latestTransitionDate, nodeB.data.latestTransitionDate);
-        },
-      },
+
       {
         field: "cycleTime",
         headerName: "Age",
@@ -164,10 +166,17 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         field: "effort",
         headerName: "Effort",
         cellRenderer: TextWithUom,
+        filter: "agNumberColumnFilter",
+        filterParams: {
+          maxNumConditions: 1,
+          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+          buttons: ["reset"],
+        },
         cellRendererParams: {
           uom: "FTE Days",
         },
         comparator: SORTER.number_compare,
+        menuTabs: MenuTabs,
       },
       {
         field: "latestCommitDisplay",
@@ -182,6 +191,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
             nodeB.data.workItemStateDetails.latestCommit
           );
         },
+        menuTabs: MenuTabs,
       },
     ],
     []
