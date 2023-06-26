@@ -269,7 +269,7 @@ export const CycleTimeLatencyTable = injectIntl(
           autoConvertFormulas: true,
           processCellCallback: params => {
               const field = params.column.getColDef().field;
-              return field === 'url' ? `=HYPERLINK("${params.value}")` : params.value;
+              return field === 'url' ? `=HYPERLINK("${params.value}")` : params.formatValue ? params.formatValue(params.value): params.value;
           }
         }}
         excelStyles={[
