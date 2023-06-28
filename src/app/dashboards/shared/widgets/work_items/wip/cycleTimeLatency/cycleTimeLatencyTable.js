@@ -145,8 +145,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filter: MultiCheckboxFilter,
         filterParams: {
           values: filters.categories.map((b) => ({text: b, value: b})),
-          onFilter: ({value, record}) => {
-            appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+          onFilter: ({value, record}) => {     
             return testMetric(value, record, "cycleTime");
           },
         },
@@ -288,6 +287,12 @@ export const CycleTimeLatencyTable = injectIntl(
             callBacks.setShowPanel(true);
             callBacks.setWorkItemKey(record.key);
           }
+        }}
+        onFilterChanged={(params) => {
+          const filterModel = params.api.getFilterModel();
+          // if(filterModel["cycleTime"]){
+          //   appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+          // }
         }}
       />
     );
