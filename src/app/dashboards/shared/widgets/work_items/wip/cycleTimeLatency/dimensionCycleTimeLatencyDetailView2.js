@@ -53,6 +53,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     variables: {specsOnly},
   } = useWidget();
 
+  const gridRef = React.useRef(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
@@ -111,6 +112,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   function handleResetAll() {
     setAppliedFilters(new Map());
+    // resets all filters of the ag-grid table
+    gridRef.current.api.setFilterModel(null);
+
     updateWipChartType("queue");
     // reset chart components state
     resetComponentState();
@@ -633,6 +637,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
+          ref={gridRef}
           tableData={eventSource === "table" ? latestDataForTable : latestData}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}

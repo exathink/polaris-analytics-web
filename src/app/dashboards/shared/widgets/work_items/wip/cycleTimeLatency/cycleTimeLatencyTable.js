@@ -269,6 +269,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
       (params) => {
         callBacks.setEventSource("table");
         if (params.columns) {
+          // get latest applied filter
           const [currentCol] = params.columns;
           if (currentCol) {
             if (currentCol.getColId() === "cycleTime") {
