@@ -268,24 +268,26 @@ export const CycleTimeLatencyTable = React.forwardRef(
     const handleFilterChange = React.useCallback(
       (params) => {
         callBacks.setEventSource("table");
+
+        const filterModel = params.api.getFilterModel();
+
         if (params.columns) {
           // get latest applied filter
           const [currentCol] = params.columns;
           if (currentCol) {
-            if (currentCol.getColId() === "cycleTime") {
+            if (currentCol.getColId() === "cycleTime" && filterModel["cycleTime"] != null) {
               callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"])));
               callBacks.setWipChartType("age");
             }
-            if (currentCol.getColId() === "name") {
+            if (currentCol.getColId() === "name" && filterModel["name"] != null) {
               callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["name"])));
             }
-            if (currentCol.getColId() === "quadrant") {
+            if (currentCol.getColId() === "quadrant" && filterModel["quadrant"] != null) {
               callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])));
             }
           }
         }
 
-        const filterModel = params.api.getFilterModel();
 
         // remove keys which have null values (eg: {filterKey1: null})
         const cleanFilters = Object.entries(filterModel).reduce((acc, [itemKey, itemVal]) => {
