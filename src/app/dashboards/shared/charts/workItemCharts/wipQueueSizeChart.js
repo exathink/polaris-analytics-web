@@ -70,7 +70,7 @@ export const WipQueueSizeChart = Chart({
         type: "bar"
       },
       title: {
-        text: `Queue Size: ${items.length} ${itemsDesc(specsOnly)} in ${stageName}` || 'Title',
+        text: `Queue Size: ${filteredData.length} ${itemsDesc(specsOnly)} in ${stageName}` || 'Title',
         align: 'left',
       },
       subtitle: {

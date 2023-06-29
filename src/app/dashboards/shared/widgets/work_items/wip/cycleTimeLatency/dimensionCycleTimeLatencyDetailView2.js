@@ -184,7 +184,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       chartConfig={{
         title: `Age Analysis: Coding`,
         align: {align: "left"},
-        subtitle: getSubTitleForHistogram({workItems: latestData, specsOnly, intl}),
+        subtitle: getSubTitleForHistogram({workItems: engineeringWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
         tooltip: getTooltipForAgeLatency,
         legendItemClick: () => {},
@@ -213,7 +213,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       chartConfig={{
         title: `Age Analysis: Shipping`,
         align: {align: "left"},
-        subtitle: getSubTitleForHistogram({workItems: latestData, specsOnly, intl}),
+        subtitle: getSubTitleForHistogram({workItems: deliveryWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
         tooltip: getTooltipForAgeLatency,
         legendItemClick: () => {},
