@@ -56,6 +56,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
+  const [eventSource, setEventSource] = React.useState("init");
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map());
@@ -77,12 +78,15 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage("wip_chart_type");
   const [wipChartType, setWipChartType] = React.useState(wip_chart_type_localstorage || "queue");
 
-  const updateWipChartType = (value) => {
+  const updateWipChartType = React.useCallback((value) => {
     setValueToLocalStorage(value);
     setWipChartType(value);
-  }
+  }, [setValueToLocalStorage])
 
-  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType};
+  const callBacks = React.useMemo(
+    () => ({setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource}),
+    [setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, updateWipChartType, setEventSource]
+  );
 
   const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -154,6 +158,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
     return _latestData;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appliedFilters, initTransformedData, exclude]);
+
+ // eventSource --> init / table, 
+ // whether interaction started from table or outside table
+ // if it started from table, we want to use recently cached data instead of using latest data
+  const latestDataForTable = React.useMemo(() => {
+    return latestData;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventSource, initTransformedData, exclude]);
+  
+
 
   const engineeringWorkItems = React.useMemo(() => latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1), [latestData]);
   const deliveryWorkItems = React.useMemo(() => latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1), [latestData]);
@@ -259,6 +273,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
+        setEventSource("init");
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "engineering") {
           handleQuadrantClear();
         } else {
@@ -284,6 +299,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
+        setEventSource("init");
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "delivery") {
           handleQuadrantClear();
         } else {
@@ -486,6 +502,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             title="WorkStream"
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.WORK_STREAM);
@@ -505,6 +522,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedValue={selectedTeam}
             testId="team-dropdown"
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.TEAM);
@@ -522,6 +540,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             uniqueItems={uniqueIssueTypes}
             selectedValue={selectedIssueType}
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.ISSUE_TYPE);
@@ -540,10 +559,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
               uniqueItems={states}
               selectedValues={selectedStateValues}
               handleChange={(values) => {
+                setEventSource("init");
                 setAppliedFilters((prev) => {
                   if (values.length > 0) {
                     prev.delete(FILTERS.CATEGORY);
-                    return new Map(prev.set("state", values).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                    return new Map(prev.set(FILTERS.STATE, values).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
                   } else {
                     prev.delete(FILTERS.STATE);
                     prev.delete(FILTERS.CATEGORY);
@@ -555,7 +575,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
               className="tw-w-[13rem]"
             />
             <Checkbox
-              onChange={(e) => setExclude(e.target.checked)}
+              onChange={(e) => {
+                setEventSource("init");
+                setExclude(e.target.checked);
+              }}
               name="state-exclude"
               checked={exclude}
               className="!tw-mb-1 tw-self-end"
@@ -610,7 +633,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
-          tableData={latestData}
+          tableData={eventSource === "table" ? latestDataForTable : latestData}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
