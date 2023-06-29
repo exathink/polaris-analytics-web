@@ -130,6 +130,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
     appliedFilters.delete(FILTERS.CATEGORY);
 
+    // resets all filters of the ag-grid table
+    gridRef.current.api.setFilterModel({cycleTime: {filterType: "multi-checkbox", values: []}});
+
     updateWipChartType("age");
 
     // remove age, currentInteraction, category filter
