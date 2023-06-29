@@ -637,7 +637,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
-          appliedFilters={appliedFilters}
           specsOnly={specsOnly}
         />
       </div>

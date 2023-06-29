@@ -229,7 +229,7 @@ function getUniqueItems(data) {
 }
 
 export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
+  ({tableData, intl, callBacks, cycleTimeTarget, latencyTarget, specsOnly}) => {
 
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
@@ -265,25 +265,25 @@ export const CycleTimeLatencyTable = injectIntl(
       };
     }, []);
 
-    const handleFilterChange = React.useCallback((params) => {
-      callBacks.setEventSource("table");
-        if(params.columns){
-          const [currentCol] = params.columns
-          if(currentCol){
-            if(currentCol.getColId() === "cycleTime"){
-              appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+    const handleFilterChange = React.useCallback(
+      (params) => {
+        callBacks.setEventSource("table");
+        if (params.columns) {
+          const [currentCol] = params.columns;
+          if (currentCol) {
+            if (currentCol.getColId() === "cycleTime") {
+              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"])));
               callBacks.setWipChartType("age");
             }
-            if(currentCol.getColId() === "name"){
-              appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["name"]);
+            if (currentCol.getColId() === "name") {
+              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["name"])));
             }
-            if(currentCol.getColId() === "quadrant"){
-              appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["quadrant"]);
+            if (currentCol.getColId() === "quadrant") {
+              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])));
             }
-            
-            callBacks.setAppliedFilters(new Map(appliedFilters));
           }
         }
+
         const filterModel = params.api.getFilterModel();
 
         // remove keys which have null values (eg: {filterKey1: null})
@@ -307,7 +307,9 @@ export const CycleTimeLatencyTable = injectIntl(
 
           return new Map([...prev, ...filtersMap]);
         });
-    }, [callBacks, appliedFilters]);
+      },
+      [callBacks]
+    );
 
     return (
       <AgGridStripeTable
