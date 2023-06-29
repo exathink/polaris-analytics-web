@@ -228,6 +228,8 @@ function getUniqueItems(data) {
   };
 }
 
+const COLS_TO_SYNC = ["quadrant", "cycleTime"];
+
 export const CycleTimeLatencyTable = React.forwardRef(
   ({tableData, callBacks, cycleTimeTarget, latencyTarget, specsOnly}, gridRef) => {
     const intl = useIntl();
@@ -291,7 +293,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
 
         // remove keys which have null values (eg: {filterKey1: null})
         const cleanFilters = Object.entries(filterModel).reduce((acc, [itemKey, itemVal]) => {
-          if (itemVal != null) {
+          if (itemVal != null && COLS_TO_SYNC.includes(itemKey)) {
             acc[itemKey] = getFilterValue(itemKey, itemVal);
           }
           return acc;
