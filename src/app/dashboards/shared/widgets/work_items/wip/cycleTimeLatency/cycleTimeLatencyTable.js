@@ -298,6 +298,7 @@ export const CycleTimeLatencyTable = injectIntl(
 
         callBacks.setAppliedFilters((prev) => {
           if (filtersMap.size === 0) {
+            prev.delete(FILTERS.QUADRANT);
             prev.delete(FILTERS.CYCLETIME);
             prev.delete(FILTERS.NAME);
             prev.delete(FILTERS.CURRENT_INTERACTION);
