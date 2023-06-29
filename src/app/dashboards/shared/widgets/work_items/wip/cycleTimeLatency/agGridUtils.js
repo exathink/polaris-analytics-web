@@ -111,9 +111,10 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
 
       setModel(model) {
         if (!model) {
-          return
+          setFilterState({filterType: "multi-checkbox", values: []});
+        } else {
+          setFilterState(model);
         }
-        setFilterState(model);
       },
     };
   });
