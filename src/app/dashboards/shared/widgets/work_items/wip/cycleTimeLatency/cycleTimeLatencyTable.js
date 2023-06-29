@@ -1,5 +1,5 @@
 import React from "react";
-import {injectIntl} from "react-intl";
+import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
@@ -228,9 +228,9 @@ function getUniqueItems(data) {
   };
 }
 
-export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, cycleTimeTarget, latencyTarget, specsOnly}) => {
-
+export const CycleTimeLatencyTable = React.forwardRef(
+  ({tableData, callBacks, cycleTimeTarget, latencyTarget, specsOnly}, gridRef) => {
+    const intl = useIntl();
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
@@ -313,6 +313,7 @@ export const CycleTimeLatencyTable = injectIntl(
 
     return (
       <AgGridStripeTable
+        ref={gridRef}
         columnDefs={columnDefs}
         rowData={dataSource}
         statusBar={statusBar}
