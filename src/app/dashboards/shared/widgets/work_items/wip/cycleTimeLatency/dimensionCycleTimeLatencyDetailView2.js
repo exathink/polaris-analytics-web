@@ -82,7 +82,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const updateWipChartType = React.useCallback((value) => {
     setValueToLocalStorage(value);
     setWipChartType(value);
-  }, [setValueToLocalStorage])
+  }, [setValueToLocalStorage, setWipChartType])
 
   const callBacks = React.useMemo(
     () => ({setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource}),
