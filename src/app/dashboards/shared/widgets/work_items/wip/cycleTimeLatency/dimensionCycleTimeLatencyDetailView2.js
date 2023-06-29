@@ -79,15 +79,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage("wip_chart_type");
   const [wipChartType, setWipChartType] = React.useState(wip_chart_type_localstorage || "queue");
 
-  const updateWipChartType = React.useCallback((value) => {
+  const updateWipChartType = (value) => {
     setValueToLocalStorage(value);
     setWipChartType(value);
-  }, [setValueToLocalStorage, setWipChartType])
+  };
 
-  const callBacks = React.useMemo(
-    () => ({setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource}),
-    [setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, updateWipChartType, setEventSource]
-  );
+  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource};
 
   const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
