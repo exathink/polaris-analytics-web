@@ -192,6 +192,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stateType={"deliver"}
       series={engineeringSeriesData}
       onPointClick={({options, category}) => {
+        setEventSource("init");
         const bucket = options.bucket;
         setAppliedFilters((prev) => {
           return new Map(
@@ -221,6 +222,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stateType={"deliver"}
       series={deliverySeriesData}
       onPointClick={({options, category}) => {
+        setEventSource("init");
         const bucket = options.bucket;
         setAppliedFilters((prev) => {
           return new Map(
@@ -358,6 +360,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           phases={ENGINEERING_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
+            setEventSource("init");
             setAppliedFilters((prev) => {
               return new Map(
                 prev
@@ -377,6 +380,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           phases={DELIVERY_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
+            setEventSource("init");
             setAppliedFilters((prev) => {
               return new Map(
                 prev
