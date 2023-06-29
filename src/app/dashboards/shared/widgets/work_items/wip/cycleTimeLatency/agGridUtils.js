@@ -91,22 +91,22 @@ export function CustomHeader(props) {
 }
 
 export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
-  const [filterState, setFilterState] = React.useState({values: [], filterType: "multi-checkbox"});
+  const [filterState, setFilterState] = React.useState({filterType: "multi-checkbox", values: []});
 
   React.useImperativeHandle(ref, () => {
     return {
       doesFilterPass(params) {
-        const selectedKeys = filterState.values;
+        const selectedKeys = filterState?.values;
         return selectedKeys.some(selectedKey => props.onFilter({value: selectedKey, record: params.data}));
       },
 
       isFilterActive() {
-        const selectedKeys = filterState.values;
+        const selectedKeys = filterState?.values;
         return selectedKeys.length > 0;
       },
 
       getModel() {
-        return filterState;
+        return this.isFilterActive() ? filterState : null;
       },
 
       setModel(model) {
@@ -121,7 +121,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
   React.useEffect(() => {
     props.filterChangedCallback();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterState.values]);
+  }, [filterState?.values]);
 
   const onSelectKeys = ({selectedKeys}) => {
     setFilterState(prev => ({...prev, values: selectedKeys}))
@@ -135,12 +135,12 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
         className={"!tw-bg-[rgb(248,248,248)]"}
         onSelect={onSelectKeys}
         onDeselect={onSelectKeys}
-        selectedKeys={filterState.values}
+        selectedKeys={filterState?.values}
         getPopupContainer={getContainerNode}
       >
         {renderFilterItems({
           filters: props.values || [],
-          filteredKeys: filterState.values,
+          filteredKeys: filterState?.values,
         })}
       </Menu>
       <div className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end !tw-bg-[rgb(248,248,248)] !tw-border-t-[rgb(221,226,235)]`}>
