@@ -281,12 +281,10 @@ export function VirtualStripeTable({
  * Some Common cellRenderer
  */
 export function TextWithUom(props) {
-  const record = props.data;
-  const field = props.colDef.field;
   const uom = props.uom ?? "Days";
   return (
     <span className="tw-textXs">
-      {record[field]} {uom}
+      {props.value} {uom}
     </span>
   );
 }
