@@ -53,9 +53,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
     variables: {specsOnly},
   } = useWidget();
 
+  const gridRef = React.useRef(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [placement, setPlacement] = React.useState("top");
+  const [eventSource, setEventSource] = React.useState("init");
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map());
@@ -80,9 +82,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const updateWipChartType = (value) => {
     setValueToLocalStorage(value);
     setWipChartType(value);
-  }
+  };
 
-  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType};
+  const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource};
 
   const initWorkItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -107,6 +109,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   function handleResetAll() {
     setAppliedFilters(new Map());
+    // resets all filters of the ag-grid table
+    gridRef.current.api.setFilterModel(null);
+
     updateWipChartType("queue");
     // reset chart components state
     resetComponentState();
@@ -124,6 +129,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
     appliedFilters.delete(FILTERS.CYCLETIME);
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
     appliedFilters.delete(FILTERS.CATEGORY);
+
+    // resets all filters of the ag-grid table
+    gridRef.current.api.setFilterModel({cycleTime: {filterType: "multi-checkbox", values: []}});
 
     updateWipChartType("age");
 
@@ -155,6 +163,16 @@ export const DimensionCycleTimeLatencyDetailView = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appliedFilters, initTransformedData, exclude]);
 
+ // eventSource --> init / table, 
+ // whether interaction started from table or outside table
+ // if it started from table, we want to use recently cached data instead of using latest data
+  const latestDataForTable = React.useMemo(() => {
+    return latestData;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventSource, initTransformedData, exclude]);
+  
+
+
   const engineeringWorkItems = React.useMemo(() => latestData.filter((w) => engineeringStateTypes.indexOf(w.stateType) !== -1), [latestData]);
   const deliveryWorkItems = React.useMemo(() => latestData.filter((w) => deliveryStateTypes.indexOf(w.stateType) !== -1), [latestData]);
  
@@ -166,7 +184,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       chartConfig={{
         title: `Age Analysis: Coding`,
         align: {align: "left"},
-        subtitle: getSubTitleForHistogram({workItems: latestData, specsOnly, intl}),
+        subtitle: getSubTitleForHistogram({workItems: engineeringWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
         tooltip: getTooltipForAgeLatency,
         legendItemClick: () => {},
@@ -177,6 +195,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stateType={"deliver"}
       series={engineeringSeriesData}
       onPointClick={({options, category}) => {
+        setEventSource("init");
         const bucket = options.bucket;
         setAppliedFilters((prev) => {
           return new Map(
@@ -195,7 +214,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       chartConfig={{
         title: `Age Analysis: Shipping`,
         align: {align: "left"},
-        subtitle: getSubTitleForHistogram({workItems: latestData, specsOnly, intl}),
+        subtitle: getSubTitleForHistogram({workItems: deliveryWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
         tooltip: getTooltipForAgeLatency,
         legendItemClick: () => {},
@@ -206,6 +225,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       stateType={"deliver"}
       series={deliverySeriesData}
       onPointClick={({options, category}) => {
+        setEventSource("init");
         const bucket = options.bucket;
         setAppliedFilters((prev) => {
           return new Map(
@@ -259,6 +279,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
+        setEventSource("init");
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "engineering") {
           handleQuadrantClear();
         } else {
@@ -284,6 +305,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       onQuadrantClick={(quadrant) => {
+        setEventSource("init");
         if (selectedQuadrant !== undefined && selectedQuadrant === quadrant && chartCategory === "delivery") {
           handleQuadrantClear();
         } else {
@@ -341,6 +363,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           phases={ENGINEERING_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
+            setEventSource("init");
             setAppliedFilters((prev) => {
               return new Map(
                 prev
@@ -360,6 +383,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           phases={DELIVERY_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
+            setEventSource("init");
             setAppliedFilters((prev) => {
               return new Map(
                 prev
@@ -486,6 +510,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             title="WorkStream"
             uniqueItems={[defaultOptionType, ...uniqueWorkStreams]}
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.WORK_STREAM);
@@ -505,6 +530,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             selectedValue={selectedTeam}
             testId="team-dropdown"
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.TEAM);
@@ -522,6 +548,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
             uniqueItems={uniqueIssueTypes}
             selectedValue={selectedIssueType}
             handleChange={(item) => {
+              setEventSource("init");
               setAppliedFilters((prev) => {
                 if (item.value === defaultOptionType.value) {
                   prev.delete(FILTERS.ISSUE_TYPE);
@@ -540,10 +567,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
               uniqueItems={states}
               selectedValues={selectedStateValues}
               handleChange={(values) => {
+                setEventSource("init");
                 setAppliedFilters((prev) => {
                   if (values.length > 0) {
                     prev.delete(FILTERS.CATEGORY);
-                    return new Map(prev.set("state", values).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                    return new Map(prev.set(FILTERS.STATE, values).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
                   } else {
                     prev.delete(FILTERS.STATE);
                     prev.delete(FILTERS.CATEGORY);
@@ -555,7 +583,10 @@ export const DimensionCycleTimeLatencyDetailView = ({
               className="tw-w-[13rem]"
             />
             <Checkbox
-              onChange={(e) => setExclude(e.target.checked)}
+              onChange={(e) => {
+                setEventSource("init");
+                setExclude(e.target.checked);
+              }}
               name="state-exclude"
               checked={exclude}
               className="!tw-mb-1 tw-self-end"
@@ -610,11 +641,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
       <div className={styles.cycleTimeLatencyTable} data-testid="wip-latency-table">
         <CycleTimeLatencyTable
-          tableData={latestData}
+          ref={gridRef}
+          tableData={eventSource === "table" ? latestDataForTable : latestData}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           callBacks={callBacks}
-          appliedFilters={appliedFilters}
           specsOnly={specsOnly}
         />
       </div>
