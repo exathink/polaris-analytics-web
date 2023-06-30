@@ -59,7 +59,7 @@ export function CustomHeader(props) {
           <CaretDownOutlined
             className={classNames(
               descSort,
-              "tw-inline-block !tw-text-[11px] !tw-mt-[-3px] !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
+              "!tw-mt-[-3px] tw-inline-block !tw-text-[11px] !tw-leading-[0.5rem] !tw-text-[#bfbfbf] hover:!tw-bg-[rgba(0,0,0,.04)] hover:!tw-text-[rgba(0,0,0,.45)]"
             )}
           />
         </div>
@@ -83,42 +83,65 @@ export function CustomHeader(props) {
       }}
       onTouchEnd={(event) => onSortRequested("asc", event)}
     >
-      <div className="customHeaderLabel tw-uppercase tw-text-xs tw-font-medium">{props.displayName}</div>
+      <div className="customHeaderLabel tw-text-xs tw-font-medium tw-uppercase">{props.displayName}</div>
       {sort}
       {menu}
     </div>
   );
 }
 
+let firstRender = true;
 export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
-  const [selectedKeys, setSelectedKeys] = React.useState([]);
+  const [filterState, setFilterState] = React.useState([]);
 
   React.useImperativeHandle(ref, () => {
     return {
       doesFilterPass(params) {
-        return selectedKeys.some(selectedKey => props.onFilter({value: selectedKey, record: params.data}));
+        const selectedKeys = filterState;
+        return selectedKeys.some((selectedKey) => props.onFilter({value: selectedKey, record: params.data}));
       },
 
       isFilterActive() {
+        const selectedKeys = filterState;
         return selectedKeys.length > 0;
       },
 
       getModel() {
-        return undefined;
+        if (filterState == null || filterState.length === 0) {
+          return undefined;
+        } else {
+          return {
+            filterType: "multi-checkbox",
+            values: filterState,
+          };
+        }
       },
 
-      setModel(model) {},
+      setModel(model) {
+        if (!model) {
+          setFilterState([]);
+        } else {
+          setFilterState(model.values);
+        }
+      },
     };
   });
 
   React.useEffect(() => {
-    props.filterChangedCallback();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedKeys]);
+    if (!firstRender) {
+      props.filterChangedCallback();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterState]);
+
+  React.useEffect(() => {
+    firstRender = false;
+  }, []);
 
   const onSelectKeys = ({selectedKeys}) => {
-    setSelectedKeys(selectedKeys);
+    setFilterState(selectedKeys);
   };
+
   return (
     <div className="ant-table-filter-dropdown">
       <Menu
@@ -127,19 +150,21 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
         className={"!tw-bg-[rgb(248,248,248)]"}
         onSelect={onSelectKeys}
         onDeselect={onSelectKeys}
-        selectedKeys={selectedKeys}
+        selectedKeys={filterState}
         getPopupContainer={getContainerNode}
       >
         {renderFilterItems({
           filters: props.values || [],
-          filteredKeys: selectedKeys,
+          filteredKeys: filterState,
         })}
       </Menu>
-      <div className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end !tw-bg-[rgb(248,248,248)] !tw-border-t-[rgb(221,226,235)]`}>
+      <div
+        className={`ant-table-filter-dropdown-btns tw-flex !tw-justify-end !tw-border-t-[rgb(221,226,235)] !tw-bg-[rgb(248,248,248)]`}
+      >
         <Button
           type="default"
           onClick={() => {
-            setSelectedKeys([]);
+            setFilterState([]);
           }}
           className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2 !tw-leading-none"
         >
@@ -210,11 +235,5 @@ export const CustomTotalAndFilteredRowCount = (props) => {
     value = `${filteredCount} of ${totalCount}`;
   }
 
-  return (
-    <LabelValue
-      label={props.label || "Rows"}
-      value={value}
-      className={"tw-py-2"}
-    />
-  );
+  return <LabelValue label={props.label || "Rows"} value={value} className={"tw-py-2"} />;
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import {injectIntl} from "react-intl";
+import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
@@ -82,8 +82,18 @@ function QuadrantCol(params) {
   );
 }
 
+const valueAccessor = {
+  cycleTime: (data) => data.values,
+  quadrant: (data) => data.values,
+  name: (data) => [data.filter],
+};
+
+function getFilterValue(key, value) {
+  return valueAccessor[key](value);
+}
+
 const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
-export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
+export function useCycleTimeLatencyTableColumns({filters}) {
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
@@ -101,7 +111,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         field: "name",
         headerName: "Work Item",
         pinned: 'left',
-        cellRenderer: CardCol,
+        cellRenderer: React.memo(CardCol),
         width: 320,
         filter: "agTextColumnFilter",
         filterParams: {
@@ -145,8 +155,7 @@ export function useCycleTimeLatencyTableColumns({filters, appliedFilters}) {
         filter: MultiCheckboxFilter,
         filterParams: {
           values: filters.categories.map((b) => ({text: b, value: b})),
-          onFilter: ({value, record}) => {
-            appliedFilters.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"]);
+          onFilter: ({value, record}) => {     
             return testMetric(value, record, "cycleTime");
           },
         },
@@ -219,9 +228,11 @@ function getUniqueItems(data) {
   };
 }
 
-export const CycleTimeLatencyTable = injectIntl(
-  ({tableData, intl, callBacks, appliedFilters, cycleTimeTarget, latencyTarget, specsOnly}) => {
+const COLS_TO_SYNC = ["quadrant", "cycleTime"];
 
+export const CycleTimeLatencyTable = React.forwardRef(
+  ({tableData, callBacks, cycleTimeTarget, latencyTarget, specsOnly}, gridRef) => {
+    const intl = useIntl();
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
@@ -233,8 +244,7 @@ export const CycleTimeLatencyTable = injectIntl(
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const {columnDefs} = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData},
-      appliedFilters,
+      filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData}
     });
 
     const statusBar = React.useMemo(() => {
@@ -257,8 +267,57 @@ export const CycleTimeLatencyTable = injectIntl(
       };
     }, []);
 
+    const handleFilterChange = React.useCallback(
+      (params) => {
+
+        const filterModel = params.api.getFilterModel();
+
+        if (params.columns) {
+          // get latest applied filter
+          const [currentCol] = params.columns;
+          if (currentCol) {
+            if (currentCol.getColId() === "cycleTime" && filterModel["cycleTime"] != null) {
+              callBacks.setEventSource("table");
+              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"])));
+              callBacks.setWipChartType("age");
+            }
+
+            if (currentCol.getColId() === "quadrant" && filterModel["quadrant"] != null) {
+              callBacks.setEventSource("table");
+              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])));
+            }
+          }
+        }
+
+
+        // remove keys which have null values (eg: {filterKey1: null})
+        const cleanFilters = Object.entries(filterModel).reduce((acc, [itemKey, itemVal]) => {
+          if (itemVal != null && COLS_TO_SYNC.includes(itemKey)) {
+            acc[itemKey] = getFilterValue(itemKey, itemVal);
+          }
+          return acc;
+        }, {});
+
+        const filtersMap = new Map(Object.entries(cleanFilters));
+
+        callBacks.setAppliedFilters((prev) => {
+          if (filtersMap.size === 0) {
+            prev.delete(FILTERS.QUADRANT);
+            prev.delete(FILTERS.CYCLETIME);
+            prev.delete(FILTERS.NAME);
+            prev.delete(FILTERS.CURRENT_INTERACTION);
+            return new Map(prev);
+          }
+
+          return new Map([...prev, ...filtersMap]);
+        });
+      },
+      [callBacks]
+    );
+
     return (
       <AgGridStripeTable
+        ref={gridRef}
         columnDefs={columnDefs}
         rowData={dataSource}
         statusBar={statusBar}
@@ -289,6 +348,7 @@ export const CycleTimeLatencyTable = injectIntl(
             callBacks.setWorkItemKey(record.key);
           }
         }}
+        onFilterChanged={handleFilterChange}
       />
     );
   }
