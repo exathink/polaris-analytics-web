@@ -51,7 +51,7 @@ export const dashboard = ({viewerContext}) => {
               {
                 organization.projectCount > 0 ?
                   <DashboardWidget
-                    w={1 / 3}
+                    w={1 / 2}
                     name="most-active-projects"
                     render={
                       ({view}) =>
@@ -73,26 +73,7 @@ export const dashboard = ({viewerContext}) => {
                   null
               }
               <DashboardWidget
-                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
-                name="most-active-contributors"
-                render={
-                  ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'organization'}
-                      instanceKey={organization.key}
-                      childConnection={'recentlyActiveContributors'}
-                      context={context}
-                      childContext={Contributors}
-                      top={10}
-                      latestCommit={organization.latestCommit}
-                      days={1}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
-              <DashboardWidget
-                w={organization.projectCount > 0 ? 1 / 3 : 1 / 2}
+                w={1/2}
                 name="most-active-repositories"
                 render={
                   ({view}) =>
@@ -130,8 +111,8 @@ export const dashboard = ({viewerContext}) => {
                       groupBy={'workItem'}
                       groupings={
                         teamsActive ?
-                          ['workItem', 'team', 'author', 'repository','branch'] :
-                          ['workItem','author', 'repository','branch']
+                          ['workItem', 'team', 'repository','branch'] :
+                          ['workItem', 'repository','branch']
                       }
                       showHeader
                       showTable

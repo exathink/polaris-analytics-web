@@ -29,7 +29,11 @@ export const DimensionContributorActivityProfileWidget = (
        query ${dimension}ContributorActivitySummaries($key: String!, $pageSize: Int, $referenceDate: DateTime){
           ${dimension}(key: $key){
               id
-              contributors(first:$pageSize, referenceDate: $referenceDate, summaries:[ActivityLevelSummary], interfaces: [CommitSummary, RepositoryCount]) {
+              contributors(first:$pageSize, referenceDate: $referenceDate, 
+              summaries:[ActivityLevelSummary], 
+              interfaces: [CommitSummary, RepositoryCount], 
+              commitWithinDays: 90
+              ) {
                 count
                 activityLevelSummary {
                     activeCount
