@@ -48,7 +48,7 @@ const TopDashboard = ({ viewerContext }) => (
         <Dashboard dashboard={`${dashboard_id}`} className={styles.organizationDashboard} gridLayout={true}>
           <DashboardRow
             h="22%"
-            title={Contexts.contributors.display()}
+            title={`Contributors Last 90 Days`}
             className={styles.manageContributorRow}
             controls={getDashboardControls(organization, viewerContext, context)}
           >
@@ -71,24 +71,7 @@ const TopDashboard = ({ viewerContext }) => (
               )}
               showDetail={true}
             />
-            <DashboardWidget
-              className={styles.activeContributors}
-              name="most-active-contributors"
-              render={({ view }) => (
-                <DimensionMostActiveChildrenWidget
-                  dimension={"organization"}
-                  instanceKey={organization.key}
-                  childConnection={"recentlyActiveContributors"}
-                  context={context}
-                  childContext={Contributors}
-                  top={10}
-                  latestCommit={organization.latestCommit}
-                  days={1}
-                  view={view}
-                />
-              )}
-              showDetail={true}
-            />
+
           </DashboardRow>
           <DashboardRow h={"68%"} title={"Teams"}  className={styles.teamsRow}>
             <DashboardWidget

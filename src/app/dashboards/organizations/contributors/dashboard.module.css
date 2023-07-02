@@ -5,7 +5,7 @@
     grid-template-rows: 6% 22% 6% 65%;
     grid-template-areas:
       "manageContributorRow manageContributorRow"
-      "activityProfile activeContributors"
+      "activityProfile activityProfile"
       "teamsRow teamsRow"
       "orgTeamsTable orgTeamsTable";
     gap: 0.5rem;
