@@ -65,7 +65,7 @@ const TopDashboard = ({ viewerContext }) => (
                   enableDrillDown={true}
                   suppressDataLabelsAt={500}
                   view={view}
-                  pageSize={50}
+                  pageSize={500}
                   referenceDate={organization.latestCommit}
                 />
               )}
