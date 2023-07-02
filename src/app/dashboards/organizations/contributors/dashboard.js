@@ -48,7 +48,7 @@ const TopDashboard = ({ viewerContext }) => (
         <Dashboard dashboard={`${dashboard_id}`} className={styles.organizationDashboard} gridLayout={true}>
           <DashboardRow
             h="22%"
-            title={`Contributors Last 90 Days`}
+            title={`Contributors, Last 90 Days`}
             className={styles.manageContributorRow}
             controls={getDashboardControls(organization, viewerContext, context)}
           >

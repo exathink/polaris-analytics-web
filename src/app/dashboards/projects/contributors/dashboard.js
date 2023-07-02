@@ -17,9 +17,9 @@ export const dashboard = () => (
       ({project, context}) => {
         return (
           <Dashboard dashboard={`${dashboard_id}`}>
-            <DashboardRow h="22%" title={Contexts.contributors.display()}>
+            <DashboardRow h="22%" title={"Contributors, Last 90 Days"}>
               <DashboardWidget
-                w={1 / 2}
+                w={1}
                 name="contributors-activity-profile"
                 render={({view}) => (
                   <DimensionContributorActivityProfileWidget
@@ -31,26 +31,8 @@ export const dashboard = () => (
                     enableDrillDown={true}
                     suppressDataLabelsAt={500}
                     view={view}
-                    pageSize={50}
+                    pageSize={500}
                     referenceDate={project.latestCommit}
-                  />
-                )}
-                showDetail={true}
-              />
-              <DashboardWidget
-                w={1 / 2}
-                name="most-active-contributors"
-                render={({view}) => (
-                  <DimensionMostActiveChildrenWidget
-                    dimension={"project"}
-                    instanceKey={project.key}
-                    childConnection={"recentlyActiveContributors"}
-                    context={context}
-                    childContext={Contributors}
-                    top={10}
-                    latestCommit={project.latestCommit}
-                    days={30}
-                    view={view}
                   />
                 )}
                 showDetail={true}
