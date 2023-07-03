@@ -3,7 +3,7 @@ import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
 import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
-import {getRecordsCount, SORTER, StripeTable, VirtualStripeTable} from "../../../../components/tables/tableUtils";
+import {AgGridStripeTable, getOnSortChanged, getRecordsCount, SORTER, StripeTable, VirtualStripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
@@ -15,6 +15,7 @@ import {formatDateTime} from "../../../../i18n";
 import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
 import {LabelValue} from "../../../../helpers/components";
 import {useSummaryStats} from "../../hooks/useSummaryStats";
+import { CustomTotalAndFilteredRowCount, MultiCheckboxFilter } from "./wip/cycleTimeLatency/agGridUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -53,11 +54,11 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   });
 
   const filterState = {
-      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
-  }
+    filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
+    ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
+    onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
+    render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
+  };
   const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
   const metricRenderState = {
     render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
@@ -73,25 +74,25 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   }
 
   let defaultOptionalCol = {
-    title: projectDeliveryCycleFlowMetricsMeta["effort"].display,
-    dataIndex: "effort",
-    key: "effort",
+    headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
+    field: "effort",
     ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
     filters: filters.categories.map((b) => ({text: b, value: b})),
     onFilter: (value, record) => testMetric(value, record, "effort"),
-    width: "5%",
+
     sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
     ...effortRenderState,
   };
   if (selectedMetric === "duration") {
     defaultOptionalCol = {
-      title: projectDeliveryCycleFlowMetricsMeta["duration"].display,
-      dataIndex: "duration",
-      key: "duration",
-      ...(selectedMetric === "duration" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
+      headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
+      field: "duration",
+      ...(selectedMetric === "duration"
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
+        : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "duration"),
-      width: "5%",
+
       sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
       ...metricRenderState,
     };
@@ -99,14 +100,20 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   const latencyKey = getMetricsMetaKey("latency", stateType);
   if (selectedMetric === latencyKey) {
     defaultOptionalCol = {
-      title: getSelectedMetricDisplayName("latency", stateType),
-      dataIndex: latencyKey,
-      key: latencyKey,
-      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, latencyKey),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a[latencyKey], b[latencyKey]),
+      headerName: getSelectedMetricDisplayName("latency", stateType),
+      field: latencyKey,
+      ...(selectedMetric === latencyKey
+        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
+        : {}),
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          return testMetric(value, record, latencyKey);
+        },
+      },
+
+      comparator: (valA, valB, nodeA, nodeB) => SORTER.number_compare(nodeA[latencyKey], nodeB[latencyKey]),
       ...metricRenderState,
     };
   }
@@ -114,47 +121,42 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   let lastCol = {};
   if (isClosed(stateType)) {
     lastCol = {
-      title: "Closed At",
-      dataIndex: "endDate",
-      key: "endDate",
-      width: "6%",
-      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
+      headerName: "Closed At",
+      field: "endDate",
+
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.endDate, b.endDate),
       ...renderState,
     };
   } else {
     lastCol = {
-      title: "Latest Commit",
-      dataIndex: "latestCommitDisplay",
-      key: "latestCommit",
-      width: "6%",
-      sorter: (a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
+      headerName: "Latest Commit",
+      field: "latestCommitDisplay",
+
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
       ...renderState,
     };
   }
 
   const columns = [
     {
-      title: "Workstream",
-      dataIndex: "workItemsSourceName",
-      key: "workItemsSourceName",
+      headerName: "Workstream",
+      field: "workItemsSourceName",
       filters: filters.workItemStreams.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
-      width: "6%",
-      render: (text, record) => text 
+
+      render: (text, record) => text,
     },
     {
-      title: "CARD",
-      dataIndex: "name",
-      key: "name",
-      width: "12%",
+      headerName: "CARD",
+      field: "name",
+
       sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
-      title: "State",
-      dataIndex: "state",
-      key: "state",
-      width: "7%",
+      headerName: "State",
+      field: "state",
+
       sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
@@ -168,29 +170,28 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // here which is possible because we are returning these columns in a hook,
       // but I dont know for sure and did not have the time to investigate it well
       // enough. Something to look at.
-      title: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
-      dataIndex: "leadTimeOrAge",
-      key: "leadTime",
+      headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
+      field: "leadTimeOrAge",
       ...(selectedMetric === "leadTimeOrAge"
         ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
-      width: "5%",
+
       sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
       ...metricRenderState,
     },
     {
-      title: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
-      dataIndex: "cycleTimeOrLatency",
-      key: "cycleTime",
+      headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
+      field: "cycleTimeOrLatency",
       ...(selectedMetric === "cycleTimeOrLatency"
         ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
+
+      comparator: (_valA, _valB, nodeA, nodeB) =>
+        SORTER.number_compare(nodeA.cycleTimeOrLatency, nodeB.cycleTimeOrLatency),
       ...metricRenderState,
     },
     defaultOptionalCol,
@@ -255,46 +256,66 @@ export const WorkItemsDetailTable =
       supportsFilterOnCard
     });
 
+    const statusBar = React.useMemo(() => {
+      return {
+        statusPanels: [
+          {
+            statusPanel: CustomTotalAndFilteredRowCount,
+            statusPanelParams: {
+              label: "Work Items",
+            },
+            align: "left",
+          },
+          {
+            statusPanel: "agAggregationComponent",
+            statusPanelParams: {
+              aggFuncs: ["avg", "min", "max"],
+            },
+          },
+        ],
+      };
+    }, []);
+
+
+    const gridRef = React.useRef(null);
+
     return (
-      <VirtualStripeTable
-        columns={columns}
-        dataSource={dataSource}
-        testId="work-items-detail-table"
-        rowKey={(record) => record.rowKey}
-        onChange={handleChange}
-        loading={loading}
-        paginationOptions={paginationOptions}
-        renderTableSummary={(pageData) => {
-          const avgData = getAvgSortersData(pageData);
-          const avgFiltersData = getAvgFiltersData(pageData);
-          
-          return (
-            <>
-              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={getRecordsCount(pageData, paginationOptions)} />
-              {avgFiltersData
-                .filter((x) => summaryStatsColumns[x.appliedFilter])
-                .map((x, i) => {
-                  return (
-                    <LabelValue
-                      key={x.appliedFilter}
-                      label={`Avg. ${getSelectedMetricDisplayName(x.appliedFilter, stateType)}`}
-                      value={i18nNumber(intl, x.average, 2)}
-                      uom={summaryStatsColumns[x.appliedFilter]}
-                    />
-                  );
-                })}
-              {avgData !== 0 &&
-                avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false && (
-                  <LabelValue
-                    key={getMetricsMetaKey(appliedSorter, stateType)}
-                    label={`Avg. ${appliedName}`}
-                    value={i18nNumber(intl, avgData, 2)}
-                    uom={summaryStatsColumns[appliedSorter]}
-                  />
-                )}
-            </>
-          );
+      <AgGridStripeTable
+        ref={gridRef}
+        columnDefs={columns}
+        rowData={dataSource}
+        statusBar={statusBar}
+        onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
+        enableRangeSelection={true}
+        defaultExcelExportParams={{
+          fileName: "Work_In_Progress",
+          autoConvertFormulas: true,
+          processCellCallback: (params) => {
+            const field = params.column.getColDef().field;
+            return field === "url"
+              ? `=HYPERLINK("${params.value}")`
+              : params.formatValue
+              ? params.formatValue(params.value)
+              : params.value;
+          },
         }}
+        excelStyles={[
+          {
+            id: "hyperlinks",
+            font: {
+              underline: "Single",
+              color: "#358ccb",
+            },
+          },
+        ]}
+        onCellClicked={(e) => {
+          if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
+            const record = e.data;
+            setShowPanel(true);
+            setWorkItemKey(record.key);
+          }
+        }}
+        testId="work-items-detail-table"
       />
     );
   };
