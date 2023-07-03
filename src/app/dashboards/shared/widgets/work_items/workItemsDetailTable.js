@@ -150,14 +150,14 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       headerName: "CARD",
       field: "name",
 
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+      comparator: (valA, valB, a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
       headerName: "State",
       field: "state",
 
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
       ...stateTypeRenderState,
@@ -178,7 +178,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
 
-      sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
+      comparator: (valA, valB, a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
       ...metricRenderState,
     },
     {
