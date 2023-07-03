@@ -178,7 +178,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
 
-      comparator: (valA, valB, a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
+      comparator: SORTER.number_compare,
       ...metricRenderState,
     },
     {
