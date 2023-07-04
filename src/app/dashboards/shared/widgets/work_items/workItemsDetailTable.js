@@ -3,7 +3,7 @@ import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
 import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
-import {AgGridStripeTable, getOnSortChanged, getRecordsCount, SORTER, StripeTable, VirtualStripeTable} from "../../../../components/tables/tableUtils";
+import {AgGridStripeTable, getOnSortChanged, getRecordsCount, SORTER, StripeTable, TextWithUom, VirtualStripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
   comboColumnStateTypeRender,
@@ -76,6 +76,10 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   let defaultOptionalCol = {
     headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
     field: "effort",
+    cellRenderer: TextWithUom,
+    cellRendererParams: {
+      uom: "FTE Days",
+    },
     ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
     filters: filters.categories.map((b) => ({text: b, value: b})),
     onFilter: (value, record) => testMetric(value, record, "effort"),
@@ -172,6 +176,7 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       // enough. Something to look at.
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
+      cellRenderer: TextWithUom,
       ...(selectedMetric === "leadTimeOrAge"
         ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
@@ -184,14 +189,14 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
     {
       headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       field: "cycleTimeOrLatency",
+      cellRenderer: TextWithUom,
       ...(selectedMetric === "cycleTimeOrLatency"
         ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
         : {}),
       filters: filters.categories.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
 
-      comparator: (_valA, _valB, nodeA, nodeB) =>
-        SORTER.number_compare(nodeA.cycleTimeOrLatency, nodeB.cycleTimeOrLatency),
+      comparator: SORTER.number_compare,
       ...metricRenderState,
     },
     defaultOptionalCol,
@@ -285,7 +290,7 @@ export const WorkItemsDetailTable =
         columnDefs={columns}
         rowData={dataSource}
         statusBar={statusBar}
-        onSortChanged={getOnSortChanged(["cycleTime", "latency", "effort"])}
+        onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort"])}
         enableRangeSelection={true}
         defaultExcelExportParams={{
           fileName: "Work_In_Progress",
