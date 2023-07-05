@@ -171,7 +171,7 @@ export function useWorkItemsDetailTableColumns({
       pinned: "left",
       cellRenderer: React.memo(CardCol),
       autoHeight: true,
-      comparator: (valA, valB, a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
+      comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
       ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
@@ -179,7 +179,7 @@ export function useWorkItemsDetailTableColumns({
       field: "state",
       autoHeight: true,
       cellRenderer: StateTypeCol,
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.states.map((b) => ({text: b, value: b})),
