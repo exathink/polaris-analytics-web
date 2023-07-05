@@ -1,26 +1,17 @@
 import React from "react";
 import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
-import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
+import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {
   AgGridStripeTable,
   getOnSortChanged,
-  getRecordsCount,
   SORTER,
-  StripeTable,
   TextWithStyle,
   TextWithUom,
-  VirtualStripeTable,
 } from "../../../../components/tables/tableUtils";
-import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
-import {
-  CardCol,
-  StateTypeCol,
-  comboColumnStateTypeRender,
-  comboColumnTitleRender,
-  customColumnRender,
-} from "../../../projects/shared/helper/renderers";
+import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {CardCol, StateTypeCol, comboColumnTitleRender} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -28,8 +19,7 @@ import {
   getSelectedMetricDisplayName,
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
-import {LabelValue} from "../../../../helpers/components";
-import {useSummaryStats} from "../../hooks/useSummaryStats";
+
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
 
 function getLeadTimeOrAge(item, intl) {
@@ -240,18 +230,6 @@ export function useWorkItemsDetailTableColumns({
   return columns;
 }
 
-const summaryStatsColumns = {
-  cycleTimeOrLatency: "Days",
-  cycleTime: "Days",
-  latency: "Days",
-  leadTimeOrAge: "Days",
-  age: "Days",
-  leadTime: "Days",
-  effort: "FTE Days",
-  delivery: "Days",
-  duration: "Days",
-};
-
 export const WorkItemsDetailTable = ({
   view,
   stateType,
@@ -268,9 +246,6 @@ export const WorkItemsDetailTable = ({
   paginationOptions,
 }) => {
   const intl = useIntl();
-
-  const {appliedFilters, appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
-    useSummaryStats({summaryStatsColumns, extraFilter: getMetricsMetaKey(selectedMetric, stateType)});
 
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
