@@ -289,6 +289,14 @@ export function TextWithUom(props) {
   );
 }
 
+export function TextWithStyle({value}) {
+  return (
+    <span className="tw-textXs">
+      {value}
+    </span>
+  );
+}
+
   /**
    * columns for which we need to show aggregation component
    * @param {string[]} ColsToAggregate
