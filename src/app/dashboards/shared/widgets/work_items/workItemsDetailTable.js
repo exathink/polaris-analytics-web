@@ -6,6 +6,8 @@ import {joinTeams} from "../../helpers/teamUtils";
 import {AgGridStripeTable, getOnSortChanged, getRecordsCount, SORTER, StripeTable, TextWithUom, VirtualStripeTable} from "../../../../components/tables/tableUtils";
 import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
+  CardCol,
+  StateTypeCol,
   comboColumnStateTypeRender,
   comboColumnTitleRender,
   customColumnRender,
@@ -151,16 +153,19 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
       render: (text, record) => text,
     },
     {
-      headerName: "CARD",
+      headerName: "Work Item",
       field: "name",
-
+      width: 320,
+      cellRenderer: React.memo(CardCol),
+      autoHeight: true,
       comparator: (valA, valB, a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
       ...(supportsFilterOnCard ? filterState : titleSearchState),
     },
     {
       headerName: "State",
       field: "state",
-
+      autoHeight: true,
+      cellRenderer: StateTypeCol,
       comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
       filters: filters.states.map((b) => ({text: b, value: b})),
       onFilter: (value, record) => record.state.indexOf(value) === 0,
