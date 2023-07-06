@@ -168,6 +168,7 @@ export function useWorkItemsDetailTableColumns({
       headerName: "State",
       field: "state",
       autoHeight: true,
+      width: 250,
       cellRenderer: StateTypeCol,
       comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
       filter: MultiCheckboxFilter,
@@ -180,7 +181,6 @@ export function useWorkItemsDetailTableColumns({
     {
       headerName: "Workstream",
       field: "workItemsSourceName",
-      width: 250,
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.workItemStreams.map((b) => ({text: b, value: b})),
