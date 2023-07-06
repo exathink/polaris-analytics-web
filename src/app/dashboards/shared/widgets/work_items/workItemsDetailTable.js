@@ -297,7 +297,7 @@ export const WorkItemsDetailTable = ({
       columnDefs={columns}
       rowData={dataSource}
       statusBar={statusBar}
-      onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort"])}
+      onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])}
       enableRangeSelection={true}
       defaultExcelExportParams={{
         fileName: "Work_In_Progress",
