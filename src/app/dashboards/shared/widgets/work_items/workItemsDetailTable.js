@@ -87,8 +87,6 @@ export function useWorkItemsDetailTableColumns({
     cellRendererParams: {
       uom: "FTE Days",
     },
-    ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-
     filter: MultiCheckboxFilter,
     filterParams: {
       values: filters.categories.map((b) => ({text: b, value: b})),
@@ -101,10 +99,6 @@ export function useWorkItemsDetailTableColumns({
     defaultOptionalCol = {
       headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
       field: "duration",
-      ...(selectedMetric === "duration"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
-
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -121,9 +115,6 @@ export function useWorkItemsDetailTableColumns({
       headerName: getSelectedMetricDisplayName("latency", stateType),
       field: latencyKey,
       cellRenderer: TextWithUom,
-      ...(selectedMetric === latencyKey
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -193,9 +184,6 @@ export function useWorkItemsDetailTableColumns({
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
       cellRenderer: TextWithUom,
-      ...(selectedMetric === "leadTimeOrAge"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -210,9 +198,6 @@ export function useWorkItemsDetailTableColumns({
       headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       field: "cycleTimeOrLatency",
       cellRenderer: TextWithUom,
-      ...(selectedMetric === "cycleTimeOrLatency"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
