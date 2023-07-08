@@ -61,7 +61,9 @@ export function WorkItemsDetailHistogramTable({
             paginationOptions={paginationOptions}
             onGridReady={(params) => {
               defaultOnGridReady(params);
-              params.api.setFilterModel({[tableSelectedMetric]: {values: [selectedFilter]}});
+              if(selectedFilter){
+                params.api.setFilterModel({[getNormalizedMetricKey(tableSelectedMetric)]: {values: [selectedFilter]}});
+              }
             }}
           />
         </div>
