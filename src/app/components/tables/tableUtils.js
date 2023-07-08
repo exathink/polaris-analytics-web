@@ -318,7 +318,9 @@ export function TextWithStyle({value}) {
     }
   }
 
-
+export function defaultOnGridReady(params) {
+  params.api.sizeColumnsToFit();
+}
 /**
  * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
  */
@@ -343,7 +345,7 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
       <AgGridReact
         ref={gridRef}
         noRowsOverlayComponent={Empty}
-        onGridReady={(params) => params.api.sizeColumnsToFit()}
+        onGridReady={defaultOnGridReady}
         suppressMenuHide={true}
         animateRows={true}
         defaultColDef={defaultColDef}
