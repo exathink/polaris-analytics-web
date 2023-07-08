@@ -244,6 +244,7 @@ export const WorkItemsDetailTable = ({
   loading,
   specsOnly,
   paginationOptions,
+  onGridReady
 }) => {
   const intl = useIntl();
 
@@ -289,11 +290,8 @@ export const WorkItemsDetailTable = ({
     };
   }, []);
 
-  const gridRef = React.useRef(null);
-
   return (
     <AgGridStripeTable
-      ref={gridRef}
       columnDefs={columns}
       rowData={dataSource}
       statusBar={statusBar}
@@ -328,6 +326,7 @@ export const WorkItemsDetailTable = ({
         }
       }}
       testId="work-items-detail-table"
+      onGridReady={onGridReady}
     />
   );
 };

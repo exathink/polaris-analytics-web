@@ -1,6 +1,7 @@
 import React from "react";
 import {WorkItemsDetailHistogramChart} from "../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {WorkItemsDetailTable} from "./workItemsDetailTable";
+import {defaultOnGridReady} from "../../../../components/tables/tableUtils";
 
 function getNormalizedMetricKey(selectedMetric) {
   return selectedMetric === "leadTime"
@@ -58,6 +59,10 @@ export function WorkItemsDetailHistogramTable({
             colWidthBoundaries={colWidthBoundaries}
             specsOnly={specsOnly}
             paginationOptions={paginationOptions}
+            onGridReady={(params) => {
+              defaultOnGridReady(params);
+              params.api.setFilterModel({[tableSelectedMetric]: {values: [selectedFilter]}});
+            }}
           />
         </div>
       )}
