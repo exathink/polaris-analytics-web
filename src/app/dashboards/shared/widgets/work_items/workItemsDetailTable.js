@@ -1,5 +1,4 @@
 import React from "react";
-import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
 import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
@@ -12,7 +11,7 @@ import {
   useDefaultColDef,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
-import {CardCol, StateTypeCol, comboColumnTitleRender} from "../../../projects/shared/helper/renderers";
+import {CardCol, StateTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -63,16 +62,6 @@ export function useWorkItemsDetailTableColumns({
   supportsFilterOnCard,
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: comboColumnTitleRender({...callBacks, blurClass: blurClass}),
-  });
-
-  const filterState = {
-    filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-    ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-    onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-    render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
-  };
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
@@ -154,11 +143,20 @@ export function useWorkItemsDetailTableColumns({
       headerName: "Work Item",
       field: "name",
       width: 320,
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      filterValueGetter: (params) => {
+        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+      },
       pinned: "left",
       cellRenderer: React.memo(CardCol),
       autoHeight: true,
       comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
-      ...(supportsFilterOnCard ? filterState : titleSearchState),
+      menuTabs: [...MenuTabs, 'columnsMenuTab'],
     },
     {
       headerName: "State",
