@@ -9,6 +9,7 @@ import {
   SORTER,
   TextWithStyle,
   TextWithUom,
+  useDefaultColDef,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
 import {CardCol, StateTypeCol, comboColumnTitleRender} from "../../../projects/shared/helper/renderers";
@@ -20,7 +21,7 @@ import {
   projectDeliveryCycleFlowMetricsMeta,
 } from "../../helpers/metricsMeta";
 
-import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
+import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -255,6 +256,16 @@ export const WorkItemsDetailTable = ({
     supportsFilterOnCard,
   });
 
+  const _defaultColDef = useDefaultColDef();
+  const defaultColDef = React.useMemo(() => ({
+    ..._defaultColDef,
+    floatingFilter: true,
+    floatingFilterComponent: CustomFloatingFilter,
+    floatingFilterComponentParams: {
+      suppressFilterButton: true,
+    },
+  }), []);
+
   const statusBar = React.useMemo(() => {
     return {
       statusPanels: [
@@ -312,6 +323,7 @@ export const WorkItemsDetailTable = ({
       }}
       testId="work-items-detail-table"
       onGridReady={onGridReady}
+      defaultColDef={defaultColDef}
     />
   );
 };
