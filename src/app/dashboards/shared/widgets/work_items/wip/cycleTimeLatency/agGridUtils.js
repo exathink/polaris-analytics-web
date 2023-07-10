@@ -90,7 +90,6 @@ export function CustomHeader(props) {
   );
 }
 
-let firstRender = true;
 export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
   const [filterState, setFilterState] = React.useState([]);
 
@@ -124,19 +123,17 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           setFilterState(model.values);
         }
       },
+
+      getModelAsString(){
+        return this.isFilterActive() ? filterState : "";
+      }
     };
   });
 
   React.useEffect(() => {
-    if (!firstRender) {
-      props.filterChangedCallback();
-    }
+    props.filterChangedCallback();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterState]);
-
-  React.useEffect(() => {
-    firstRender = false;
-  }, []);
 
   const onSelectKeys = ({selectedKeys}) => {
     setFilterState(selectedKeys);
