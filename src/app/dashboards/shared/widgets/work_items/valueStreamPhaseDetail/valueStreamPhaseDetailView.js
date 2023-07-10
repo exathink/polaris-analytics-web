@@ -14,7 +14,6 @@ import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
-import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useSelect} from "../../../components/select/selectDropdown";
 import {
@@ -233,16 +232,7 @@ const PhaseDetailView = ({
                 layout="col"
                 className="tw-ml-4"
               />
-              {selectedFilter != null && (
-                <div className="tw-ml-6">
-                  <ClearFilters
-                    selectedFilter={selectedFilter}
-                    selectedMetric={selectedMetric}
-                    stateType={selectedStateType}
-                    handleClearClick={handleClearClick}
-                  />
-                </div>
-              )}
+              
             </div>
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
