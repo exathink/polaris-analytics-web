@@ -139,6 +139,22 @@ export function useWorkItemsDetailTableColumns({
   }
 
   const columns = [
+    {field: "displayId", headerName: "ID", hide: true},
+    {field: "epicName", headerName: "Epic", hide: true},
+    {
+      headerName: "Workstream",
+      field: "workItemsSourceName",
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => record.workItemsSourceName === value,
+      },
+      menuTabs: MenuTabs,
+      cellRenderer: TextWithStyle,
+      hide: true
+    },
+    {field: 'teams', headerName: 'Teams', hide: "true"},
+    {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
     {
       headerName: "Work Item",
       field: "name",
@@ -171,17 +187,6 @@ export function useWorkItemsDetailTableColumns({
         onFilter: ({value, record}) => record.state.indexOf(value) === 0,
       },
       menuTabs: MenuTabs,
-    },
-    {
-      headerName: "Workstream",
-      field: "workItemsSourceName",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.workItemsSourceName === value,
-      },
-      menuTabs: MenuTabs,
-      cellRenderer: TextWithStyle,
     },
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
