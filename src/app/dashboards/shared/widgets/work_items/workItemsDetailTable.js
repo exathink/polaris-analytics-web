@@ -81,7 +81,7 @@ export function useWorkItemsDetailTableColumns({
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
-  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("Day", "FTE Day"), value: String(b).replace("Day", "FTE Day")}));
+  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("day", "FTE Day"), value: String(b).replace("day", "FTE Day")}));
   let defaultOptionalCol = {
     headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
     field: "effort",
@@ -245,7 +245,7 @@ export const WorkItemsDetailTable = ({
   const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
-  const categories = getHistogramCategories(colWidthBoundaries, "Days");
+  const categories = getHistogramCategories(colWidthBoundaries, "days");
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter((x) => Boolean(x.epicName)).map((x) => x.epicName))];
 
