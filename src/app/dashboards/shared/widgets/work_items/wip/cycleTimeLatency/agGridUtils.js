@@ -181,7 +181,7 @@ function renderFilterItems({filters, prefixCls, filteredKeys}) {
     return (
       <Menu.Item key={filter.value !== undefined ? key : index} className="!tw-leading-3">
         <Component checked={filteredKeys.includes(key)} />
-        <span className="tw-ml-2">{filter.text}</span>
+        <span className="tw-ml-2 tw-textXs">{filter.text}</span>
       </Menu.Item>
     );
   });
@@ -261,7 +261,7 @@ export const CustomFloatingFilter = React.forwardRef((props, ref) => {
 
   return (
     <div class="ag-floating-filter-input" role="presentation">
-      <input ref={inputRef} disabled className="ag-input-field-input ag-text-field-input"/>
+      <input ref={inputRef} disabled className="ag-input-field-input ag-text-field-input tw-textXs"/>
     </div>
   );
 })
