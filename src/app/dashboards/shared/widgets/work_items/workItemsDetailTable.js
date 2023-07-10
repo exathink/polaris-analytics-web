@@ -81,6 +81,7 @@ export function useWorkItemsDetailTableColumns({
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
+  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("Day", "FTE Day"), value: String(b).replace("Day", "FTE Day")}));
   let defaultOptionalCol = {
     headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
     field: "effort",
@@ -90,8 +91,11 @@ export function useWorkItemsDetailTableColumns({
     },
     filter: MultiCheckboxFilter,
     filterParams: {
-      values: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: ({value, record}) => testMetric(value, record, "effort"),
+      values: effortCategories,
+      onFilter: ({value, record}) => {
+        const [part1, part2] = filters.allPairsData[effortCategories.map((x) => x.value).indexOf(value)];
+        return Number(record["effort"]) >= part1 && Number(record["effort"]) < part2;
+      }
     },
     menuTabs: MenuTabs,
     comparator: SORTER.number_compare,
@@ -241,7 +245,7 @@ export const WorkItemsDetailTable = ({
   const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
 
-  const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "FTE Days" : "days");
+  const categories = getHistogramCategories(colWidthBoundaries, "Days");
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter((x) => Boolean(x.epicName)).map((x) => x.epicName))];
 
