@@ -234,3 +234,26 @@ export const CustomTotalAndFilteredRowCount = (props) => {
 
   return <LabelValue label={props.label || "Rows"} value={value} className={"tw-py-2"} />;
 };
+
+export const CustomFloatingFilter = React.forwardRef((props, ref) => {
+  const inputRef = React.useRef(null);
+
+  React.useImperativeHandle(ref, () => {
+    return {
+      onParentModelChanged(parentModel) {
+        // When the filter is empty we will receive a null value here
+        if (!parentModel) {
+          inputRef.current.value = "";
+        } else {
+          inputRef.current.value = parentModel.values.join(" ") + "";
+        }
+      },
+    };
+  });
+
+  return (
+    <div class="ag-floating-filter-input" role="presentation">
+      <input ref={inputRef} disabled className="ag-input-field-input ag-text-field-input"/>
+    </div>
+  );
+})
