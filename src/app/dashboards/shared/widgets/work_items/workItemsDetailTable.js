@@ -160,6 +160,7 @@ export function useWorkItemsDetailTableColumns({
       field: "name",
       width: 320,
       filter: "agTextColumnFilter",
+      floatingFilter: false,
       filterParams: {
         filterOptions: ["contains", "startsWith"],
         buttons: ["reset"],
