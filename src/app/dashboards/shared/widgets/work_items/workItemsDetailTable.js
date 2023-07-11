@@ -326,7 +326,7 @@ export const WorkItemsDetailTable = ({
         if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
           const record = e.data;
           setShowPanel(true);
-          setWorkItemKey(record.key);
+          setWorkItemKey(record.workItemKey || record.key);
         }
       }}
       testId="work-items-detail-table"
