@@ -64,6 +64,14 @@ export function WorkItemsDetailHistogramTable({
               if(selectedFilter){
                 params.api.setFilterModel({[getNormalizedMetricKey(tableSelectedMetric)]: {values: [selectedFilter]}});
               }
+
+              if(tableSelectedMetric && tableData.length > 0){
+                params.api.addCellRange({
+                  rowStartIndex: 0,
+                  rowEndIndex: tableData.length - 1,
+                  columns: [getNormalizedMetricKey(tableSelectedMetric)],
+                });
+              }
             }}
           />
         </div>
