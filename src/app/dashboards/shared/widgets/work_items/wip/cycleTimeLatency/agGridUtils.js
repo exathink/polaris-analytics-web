@@ -162,6 +162,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           type="default"
           onClick={() => {
             setFilterState([]);
+            props.api.clearRangeSelection();
           }}
           className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2 !tw-leading-none"
         >
