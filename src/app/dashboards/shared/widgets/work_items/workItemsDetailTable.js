@@ -74,7 +74,7 @@ export function useWorkItemsDetailTableColumns({
   let defaultOptionalCol = {
     headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
     field: "effort",
-    cellRenderer: TextWithUom,
+    cellRenderer: React.memo(TextWithUom),
     cellRendererParams: {
       uom: "FTE Days",
     },
@@ -99,7 +99,7 @@ export function useWorkItemsDetailTableColumns({
         onFilter: ({value, record}) => testMetric(value, record, "duration"),
       },
       menuTabs: MenuTabs,
-      cellRenderer: TextWithUom,
+      cellRenderer: React.memo(TextWithUom),
       comparator: SORTER.number_compare,
     };
   }
@@ -108,7 +108,7 @@ export function useWorkItemsDetailTableColumns({
     defaultOptionalCol = {
       headerName: getSelectedMetricDisplayName("latency", stateType),
       field: latencyKey,
-      cellRenderer: TextWithUom,
+      cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -126,14 +126,14 @@ export function useWorkItemsDetailTableColumns({
     lastCol = {
       headerName: "Closed At",
       field: "endDate",
-      cellRenderer: TextWithStyle,
+      cellRenderer: React.memo(TextWithStyle),
       comparator: (valA, valB, a, b) => SORTER.date_compare(a.endDate, b.endDate),
     };
   } else {
     lastCol = {
       headerName: "Latest Commit",
       field: "latestCommitDisplay",
-      cellRenderer: TextWithStyle,
+      cellRenderer: React.memo(TextWithStyle),
       comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
     };
   }
@@ -150,7 +150,7 @@ export function useWorkItemsDetailTableColumns({
         onFilter: ({value, record}) => record.workItemsSourceName === value,
       },
       menuTabs: MenuTabs,
-      cellRenderer: TextWithStyle,
+      cellRenderer: React.memo(TextWithStyle),
       hide: true
     },
     {field: 'teams', headerName: 'Teams', hide: "true"},
@@ -179,7 +179,7 @@ export function useWorkItemsDetailTableColumns({
       field: "state",
       autoHeight: true,
       width: 250,
-      cellRenderer: StateTypeCol,
+      cellRenderer: React.memo(StateTypeCol),
       comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
       filter: MultiCheckboxFilter,
       filterParams: {
@@ -191,7 +191,7 @@ export function useWorkItemsDetailTableColumns({
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
-      cellRenderer: TextWithUom,
+      cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -205,7 +205,7 @@ export function useWorkItemsDetailTableColumns({
     {
       headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       field: "cycleTimeOrLatency",
-      cellRenderer: TextWithUom,
+      cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
@@ -252,7 +252,7 @@ export const WorkItemsDetailTable = ({
   const allPairsData = allPairs(colWidthBoundaries);
   const epicNames = [...new Set(tableData.filter((x) => Boolean(x.epicName)).map((x) => x.epicName))];
 
-  const dataSource = getTransformedData(tableData, intl);
+  const dataSource = React.useMemo(() => getTransformedData(tableData, intl), [tableData, intl]);
   const columns = useWorkItemsDetailTableColumns({
     stateType,
     filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
