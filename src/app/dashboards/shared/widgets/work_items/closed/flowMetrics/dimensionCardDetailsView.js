@@ -18,6 +18,7 @@ const getData = (data, dimension) => {
       edge.node,
       "id",
       "name",
+      "url",
       "key",
       "displayId",
       "workItemKey",
