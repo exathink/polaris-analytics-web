@@ -1,20 +1,26 @@
 import React from "react";
-import {useSearchMultiCol} from "../../../../components/tables/hooks";
 import {useIntl} from "react-intl";
-import {AppTerms, WorkItemStateTypeDisplayName} from "../../config";
+import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
-import {getRecordsCount, SORTER, StripeTable, VirtualStripeTable} from "../../../../components/tables/tableUtils";
-import {getNumber, i18nNumber, useBlurClass} from "../../../../helpers/utility";
 import {
-  comboColumnStateTypeRender,
-  comboColumnTitleRender,
-  customColumnRender,
-} from "../../../projects/shared/helper/renderers";
+  AgGridStripeTable,
+  getOnSortChanged,
+  SORTER,
+  TextWithStyle,
+  TextWithUom,
+  useDefaultColDef,
+} from "../../../../components/tables/tableUtils";
+import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {CardCol, StateTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
-import {getMetricsMetaKey, getSelectedMetricDisplayName, projectDeliveryCycleFlowMetricsMeta} from "../../helpers/metricsMeta";
-import {LabelValue} from "../../../../helpers/components";
-import {useSummaryStats} from "../../hooks/useSummaryStats";
+import {
+  getMetricsMetaKey,
+  getSelectedMetricDisplayName,
+  projectDeliveryCycleFlowMetricsMeta,
+} from "../../helpers/metricsMeta";
+
+import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -46,152 +52,170 @@ function getTransformedData(data, intl) {
   });
 }
 
-export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, intl, selectedFilter, selectedMetric, supportsFilterOnCard}) {
+export function useWorkItemsDetailTableColumns({
+  stateType,
+  filters,
+  callBacks,
+  intl,
+  selectedFilter,
+  selectedMetric,
+  supportsFilterOnCard,
+}) {
   const blurClass = useBlurClass("tw-blur-[2px]");
-  const titleSearchState = useSearchMultiCol(["name", "displayId", "epicName"], {
-    customRender: comboColumnTitleRender({...callBacks, blurClass: blurClass}),
-  });
-
-  const filterState = {
-      filters: filters.workItemTypes.map((b) => ({text: b, value: b})),
-      ...(selectedMetric === undefined ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-      onFilter: (value, record) => record.workItemType.indexOf(value) === 0,
-      render: comboColumnTitleRender({...callBacks, search: false, blurClass: blurClass}),
-  }
-  const stateTypeRenderState = {render: comboColumnStateTypeRender(callBacks.setShowPanel, callBacks.setWorkItemKey)};
-  const metricRenderState = {
-    render: customColumnRender({...callBacks, colRender: (text) => <>{text} days</>, className: "tw-textXs"}),
-  };
-  const effortRenderState = {
-    render: customColumnRender({...callBacks, colRender: (text) => <>{text} FTE Days</>, className: "tw-textXs"}),
-  };
-  const renderState = {render: customColumnRender({...callBacks, className: "tw-textXs"})};
 
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
   }
 
+  const MenuTabs = ["filterMenuTab", "generalMenuTab"];
+
+  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("day", "FTE Day"), value: String(b).replace("day", "FTE Day")}));
   let defaultOptionalCol = {
-    title: projectDeliveryCycleFlowMetricsMeta["effort"].display,
-    dataIndex: "effort",
-    key: "effort",
-    ...(selectedMetric === "effort" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-    filters: filters.categories.map((b) => ({text: b, value: b})),
-    onFilter: (value, record) => testMetric(value, record, "effort"),
-    width: "5%",
-    sorter: (a, b) => SORTER.number_compare(a.effort, b.effort),
-    ...effortRenderState,
+    headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
+    field: "effort",
+    cellRenderer: React.memo(TextWithUom),
+    cellRendererParams: {
+      uom: "FTE Days",
+    },
+    filter: MultiCheckboxFilter,
+    filterParams: {
+      values: effortCategories,
+      onFilter: ({value, record}) => {
+        const [part1, part2] = filters.allPairsData[effortCategories.map((x) => x.value).indexOf(value)];
+        return Number(record["effort"]) >= part1 && Number(record["effort"]) < part2;
+      }
+    },
+    menuTabs: MenuTabs,
+    comparator: SORTER.number_compare,
   };
   if (selectedMetric === "duration") {
     defaultOptionalCol = {
-      title: projectDeliveryCycleFlowMetricsMeta["duration"].display,
-      dataIndex: "duration",
-      key: "duration",
-      ...(selectedMetric === "duration" ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "duration"),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.duration, b.duration),
-      ...metricRenderState,
+      headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
+      field: "duration",
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => testMetric(value, record, "duration"),
+      },
+      menuTabs: MenuTabs,
+      cellRenderer: React.memo(TextWithUom),
+      comparator: SORTER.number_compare,
     };
   }
   const latencyKey = getMetricsMetaKey("latency", stateType);
   if (selectedMetric === latencyKey) {
     defaultOptionalCol = {
-      title: getSelectedMetricDisplayName("latency", stateType),
-      dataIndex: latencyKey,
-      key: latencyKey,
-      ...(selectedMetric === latencyKey ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null} : {}),
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, latencyKey),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a[latencyKey], b[latencyKey]),
-      ...metricRenderState,
+      headerName: getSelectedMetricDisplayName("latency", stateType),
+      field: latencyKey,
+      cellRenderer: React.memo(TextWithUom),
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          return testMetric(value, record, latencyKey);
+        },
+      },
+      menuTabs: MenuTabs,
+      comparator: SORTER.number_compare,
     };
   }
 
   let lastCol = {};
   if (isClosed(stateType)) {
     lastCol = {
-      title: "Closed At",
-      dataIndex: "endDate",
-      key: "endDate",
-      width: "6%",
-      sorter: (a, b) => SORTER.date_compare(a.endDate, b.endDate),
-      ...renderState,
+      headerName: "Closed At",
+      field: "endDate",
+      cellRenderer: React.memo(TextWithStyle),
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.endDate, b.endDate),
     };
   } else {
     lastCol = {
-      title: "Latest Commit",
-      dataIndex: "latestCommitDisplay",
-      key: "latestCommit",
-      width: "6%",
-      sorter: (a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
-      ...renderState,
+      headerName: "Latest Commit",
+      field: "latestCommitDisplay",
+      cellRenderer: React.memo(TextWithStyle),
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
     };
   }
 
   const columns = [
+    {field: "displayId", headerName: "ID", hide: true},
+    {field: "epicName", headerName: "Epic", hide: true},
     {
-      title: "Workstream",
-      dataIndex: "workItemsSourceName",
-      key: "workItemsSourceName",
-      filters: filters.workItemStreams.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.workItemsSourceName.indexOf(value) === 0,
-      width: "6%",
-      render: (text, record) => text 
+      headerName: "Workstream",
+      field: "workItemsSourceName",
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => record.workItemsSourceName === value,
+      },
+      menuTabs: MenuTabs,
+      cellRenderer: React.memo(TextWithStyle),
+      hide: true
+    },
+    {field: 'teams', headerName: 'Teams', hide: "true"},
+    {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
+    {
+      headerName: "Work Item",
+      field: "name",
+      width: 320,
+      filter: "agTextColumnFilter",
+      floatingFilter: false,
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      filterValueGetter: (params) => {
+        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+      },
+      pinned: "left",
+      cellRenderer: React.memo(CardCol),
+      autoHeight: true,
+      comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
+      menuTabs: [...MenuTabs, 'columnsMenuTab'],
     },
     {
-      title: "CARD",
-      dataIndex: "name",
-      key: "name",
-      width: "12%",
-      sorter: (a, b) => SORTER.string_compare(a.workItemType, b.workItemType),
-      ...(supportsFilterOnCard ? filterState : titleSearchState),
+      headerName: "State",
+      field: "state",
+      autoHeight: true,
+      width: 250,
+      cellRenderer: React.memo(StateTypeCol),
+      comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.states.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => record.state.indexOf(value) === 0,
+      },
+      menuTabs: MenuTabs,
     },
     {
-      title: "State",
-      dataIndex: "state",
-      key: "state",
-      width: "7%",
-      sorter: (a, b) => SORTER.date_compare(a.latestTransitionDate, b.latestTransitionDate),
-      filters: filters.states.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => record.state.indexOf(value) === 0,
-      ...stateTypeRenderState,
+      headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
+      field: "leadTimeOrAge",
+      cellRenderer: React.memo(TextWithUom),
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          return testMetric(value, record, "leadTimeOrAge");
+        },
+      },
+      menuTabs: MenuTabs,
+      comparator: SORTER.number_compare,
     },
     {
-      // TODO: this little hack to pad the title is to work around
-      // a jitter on the table that appears to be because the column titles have
-      // different widths between the two renders. It does not fix it perfectly
-      // but makes it less noticeable. There is a bigger underlying issue
-      // here which is possible because we are returning these columns in a hook,
-      // but I dont know for sure and did not have the time to investigate it well
-      // enough. Something to look at.
-      title: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
-      dataIndex: "leadTimeOrAge",
-      key: "leadTime",
-      ...(selectedMetric === "leadTimeOrAge"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "leadTimeOrAge"),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.leadTimeOrAge, b.leadTimeOrAge),
-      ...metricRenderState,
-    },
-    {
-      title: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
-      dataIndex: "cycleTimeOrLatency",
-      key: "cycleTime",
-      ...(selectedMetric === "cycleTimeOrLatency"
-        ? {defaultFilteredValue: selectedFilter != null ? [selectedFilter] : null}
-        : {}),
-      filters: filters.categories.map((b) => ({text: b, value: b})),
-      onFilter: (value, record) => testMetric(value, record, "cycleTimeOrLatency"),
-      width: "5%",
-      sorter: (a, b) => SORTER.number_compare(a.cycleTimeOrLatency, b.cycleTimeOrLatency),
-      ...metricRenderState,
+      headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
+      field: "cycleTimeOrLatency",
+      cellRenderer: React.memo(TextWithUom),
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.categories.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          return testMetric(value, record, "cycleTimeOrLatency");
+        },
+      },
+      menuTabs: MenuTabs,
+      comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
     lastCol,
@@ -200,101 +224,114 @@ export function useWorkItemsDetailTableColumns({stateType, filters, callBacks, i
   return columns;
 }
 
-const summaryStatsColumns = {
-  cycleTimeOrLatency: "Days",
-  cycleTime: "Days",
-  latency: "Days",
-  leadTimeOrAge: "Days",
-  age: "Days",
-  leadTime: "Days",
-  effort: "FTE Days",
-  delivery: "Days",
-  duration: "Days"
-}
+export const WorkItemsDetailTable = ({
+  view,
+  stateType,
+  tableData,
+  setShowPanel,
+  setWorkItemKey,
+  colWidthBoundaries,
+  selectedFilter,
+  selectedMetric,
+  supportsFilterOnCard,
+  onChange,
+  loading,
+  specsOnly,
+  paginationOptions,
+  onGridReady
+}) => {
+  const intl = useIntl();
 
-export const WorkItemsDetailTable = 
-  ({
-    view,
+  // get unique workItem types
+  const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
+  const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
+  const states = [...new Set(tableData.map((x) => x.state))];
+  const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+  const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+
+  const categories = getHistogramCategories(colWidthBoundaries, "days");
+  const allPairsData = allPairs(colWidthBoundaries);
+  const epicNames = [...new Set(tableData.filter((x) => Boolean(x.epicName)).map((x) => x.epicName))];
+
+  const dataSource = React.useMemo(() => getTransformedData(tableData, intl), [tableData, intl]);
+  const columns = useWorkItemsDetailTableColumns({
     stateType,
-    tableData,
-    setShowPanel,
-    setWorkItemKey,
-    colWidthBoundaries,
+    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
+    callBacks: {setShowPanel, setWorkItemKey},
+    intl,
     selectedFilter,
     selectedMetric,
     supportsFilterOnCard,
-    onChange,
-    loading,
-    specsOnly,
-    paginationOptions
-  }) => {
-    const intl = useIntl();
+  });
 
-    const {appliedFilters ,appliedSorter, appliedName, handleChange, getAvgFiltersData, getAvgSortersData} =
-      useSummaryStats({summaryStatsColumns, extraFilter: getMetricsMetaKey(selectedMetric, stateType)});
+  const _defaultColDef = useDefaultColDef();
+  const defaultColDef = React.useMemo(() => ({
+    ..._defaultColDef,
+    floatingFilter: true,
+    floatingFilterComponent: CustomFloatingFilter,
+    floatingFilterComponentParams: {
+      suppressFilterButton: true,
+    },
+  }), []);
 
-    // get unique workItem types
-    const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
-    const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
-    const states = [...new Set(tableData.map((x) => x.state))];
-    const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
-    const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const statusBar = React.useMemo(() => {
+    return {
+      statusPanels: [
+        {
+          statusPanel: CustomTotalAndFilteredRowCount,
+          statusPanelParams: {
+            label: "Work Items",
+          },
+          align: "left",
+        },
+        {
+          statusPanel: "agAggregationComponent",
+          statusPanelParams: {
+            aggFuncs: ["avg", "min", "max"],
+          },
+        },
+      ],
+    };
+  }, []);
 
-    const categories = getHistogramCategories(colWidthBoundaries, selectedMetric === "effort" ? "FTE Days" : "days");
-    const allPairsData = allPairs(colWidthBoundaries);
-    const epicNames = [...new Set(tableData.filter(x => Boolean(x.epicName)).map((x) => x.epicName))];
-
-    const dataSource = getTransformedData(tableData, intl);
-    const columns = useWorkItemsDetailTableColumns({
-      stateType,
-      filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
-      callBacks: {setShowPanel, setWorkItemKey},
-      intl,
-      selectedFilter,
-      selectedMetric,
-      supportsFilterOnCard
-    });
-
-    return (
-      <VirtualStripeTable
-        columns={columns}
-        dataSource={dataSource}
-        testId="work-items-detail-table"
-        rowKey={(record) => record.rowKey}
-        onChange={handleChange}
-        loading={loading}
-        paginationOptions={paginationOptions}
-        renderTableSummary={(pageData) => {
-          const avgData = getAvgSortersData(pageData);
-          const avgFiltersData = getAvgFiltersData(pageData);
-          
-          return (
-            <>
-              <LabelValue label={specsOnly ? AppTerms.specs.display : AppTerms.cards.display} value={getRecordsCount(pageData, paginationOptions)} />
-              {avgFiltersData
-                .filter((x) => summaryStatsColumns[x.appliedFilter])
-                .map((x, i) => {
-                  return (
-                    <LabelValue
-                      key={x.appliedFilter}
-                      label={`Avg. ${getSelectedMetricDisplayName(x.appliedFilter, stateType)}`}
-                      value={i18nNumber(intl, x.average, 2)}
-                      uom={summaryStatsColumns[x.appliedFilter]}
-                    />
-                  );
-                })}
-              {avgData !== 0 &&
-                avgData && appliedFilters.includes(getMetricsMetaKey(appliedSorter, stateType))===false && (
-                  <LabelValue
-                    key={getMetricsMetaKey(appliedSorter, stateType)}
-                    label={`Avg. ${appliedName}`}
-                    value={i18nNumber(intl, avgData, 2)}
-                    uom={summaryStatsColumns[appliedSorter]}
-                  />
-                )}
-            </>
-          );
-        }}
-      />
-    );
-  };
+  return (
+    <AgGridStripeTable
+      columnDefs={columns}
+      rowData={dataSource}
+      statusBar={statusBar}
+      onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])}
+      enableRangeSelection={true}
+      defaultExcelExportParams={{
+        fileName: "Work_In_Progress",
+        autoConvertFormulas: true,
+        processCellCallback: (params) => {
+          const field = params.column.getColDef().field;
+          return field === "url"
+            ? `=HYPERLINK("${params.value}")`
+            : params.formatValue
+            ? params.formatValue(params.value)
+            : params.value;
+        },
+      }}
+      excelStyles={[
+        {
+          id: "hyperlinks",
+          font: {
+            underline: "Single",
+            color: "#358ccb",
+          },
+        },
+      ]}
+      onCellClicked={(e) => {
+        if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
+          const record = e.data;
+          setShowPanel(true);
+          setWorkItemKey(record.workItemKey || record.key);
+        }
+      }}
+      testId="work-items-detail-table"
+      onGridReady={onGridReady}
+      defaultColDef={defaultColDef}
+    />
+  );
+};

@@ -15,7 +15,6 @@ import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl, useIntl} from "react-intl";
-import {ClearFilters} from "../../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
@@ -62,6 +61,7 @@ const DeliveryCyclesFlowMetricsView = ({
           edge.node,
           "id",
           "name",
+          "url",
           "key",
           "displayId",
           "workItemKey",
@@ -243,16 +243,6 @@ const DeliveryCyclesFlowMetricsView = ({
           )}
           {!defectsOnly && !hideControls && (
             <div className="tw-ml-auto tw-flex tw-items-center">
-              {selectedFilter != null && (
-                <div className="tw-mr-8">
-                  <ClearFilters
-                    selectedFilter={selectedFilter}
-                    selectedMetric={selectedMetric.key}
-                    stateType={WorkItemStateTypes.closed}
-                    handleClearClick={handleClearClick}
-                  />
-                </div>
-              )}
               <GroupingSelector
                 label={"View"}
                 value={yAxisScale}
@@ -336,6 +326,7 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
       edge.node,
       "id",
       "name",
+      "url",
       "key",
       "displayId",
       "workItemKey",

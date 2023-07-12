@@ -281,10 +281,18 @@ export function VirtualStripeTable({
  * Some Common cellRenderer
  */
 export function TextWithUom(props) {
-  const uom = props.uom ?? "Days";
+  const uom = props.uom ?? "days";
   return (
     <span className="tw-textXs">
       {props.value} {uom}
+    </span>
+  );
+}
+
+export function TextWithStyle({value}) {
+  return (
+    <span className="tw-textXs">
+      {value}
     </span>
   );
 }
@@ -310,12 +318,11 @@ export function TextWithUom(props) {
     }
   }
 
+export function defaultOnGridReady(params) {
+  params.api.sizeColumnsToFit();
+}
 
-/**
- * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
- */
-export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(props, gridRef) {
-  // These properties are applied across all the columns of all the tables using this component. we can override this by passing this from props
+export function useDefaultColDef() {
   const defaultColDef = React.useMemo(() => {
     return {
       sortable: true,
@@ -323,9 +330,19 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
       menuTabs: [],
       useValueFormatterForExport: true,
       cellClass: "tw-flex tw-items-center",
-      headerClass: "tw-uppercase tw-text-xs tw-font-medium"
+      headerClass: "tw-uppercase tw-text-xs tw-font-medium",
     };
   }, []);
+
+  return defaultColDef;
+}
+
+/**
+ * @type {React.ForwardRefRenderFunction<AgGridReact, AgGridReactProps>}
+ */
+export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(props, gridRef) {
+  // These properties are applied across all the columns of all the tables using this component. we can override this by passing this from props
+  const defaultColDef = useDefaultColDef();
 
   // On div wrapping Grid
   // a) specify theme CSS Class Class
@@ -335,7 +352,7 @@ export const AgGridStripeTable = React.forwardRef(function AgGridReactTable(prop
       <AgGridReact
         ref={gridRef}
         noRowsOverlayComponent={Empty}
-        onGridReady={(params) => params.api.sizeColumnsToFit()}
+        onGridReady={defaultOnGridReady}
         suppressMenuHide={true}
         animateRows={true}
         defaultColDef={defaultColDef}
