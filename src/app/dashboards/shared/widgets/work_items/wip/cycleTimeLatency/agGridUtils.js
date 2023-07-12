@@ -90,7 +90,6 @@ export function CustomHeader(props) {
   );
 }
 
-let firstRender = true;
 export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
   const [filterState, setFilterState] = React.useState([]);
 
@@ -124,19 +123,17 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           setFilterState(model.values);
         }
       },
+
+      getModelAsString(){
+        return this.isFilterActive() ? filterState : "";
+      }
     };
   });
 
   React.useEffect(() => {
-    if (!firstRender) {
-      props.filterChangedCallback();
-    }
+    props.filterChangedCallback();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterState]);
-
-  React.useEffect(() => {
-    firstRender = false;
-  }, []);
 
   const onSelectKeys = ({selectedKeys}) => {
     setFilterState(selectedKeys);
@@ -165,6 +162,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
           type="default"
           onClick={() => {
             setFilterState([]);
+            props.api.clearRangeSelection();
           }}
           className="ag-button ag-standard-button ag-filter-apply-panel-button tw-p-2 !tw-leading-none"
         >
@@ -184,7 +182,7 @@ function renderFilterItems({filters, prefixCls, filteredKeys}) {
     return (
       <Menu.Item key={filter.value !== undefined ? key : index} className="!tw-leading-3">
         <Component checked={filteredKeys.includes(key)} />
-        <span className="tw-ml-2">{filter.text}</span>
+        <span className="tw-ml-2 tw-textXs">{filter.text}</span>
       </Menu.Item>
     );
   });
@@ -237,3 +235,34 @@ export const CustomTotalAndFilteredRowCount = (props) => {
 
   return <LabelValue label={props.label || "Rows"} value={value} className={"tw-py-2"} />;
 };
+
+export const CustomFloatingFilter = React.forwardRef((props, ref) => {
+  const inputRef = React.useRef(null);
+
+  React.useImperativeHandle(ref, () => {
+    return {
+      onParentModelChanged(parentModel) {
+        // When the filter is empty we will receive a null value here
+        if (!parentModel) {
+          inputRef.current.value = "";
+        } else {
+          if (parentModel.values != null && parentModel.values.length > 0) {
+            inputRef.current.value = parentModel.values.join(" ");
+          }
+          if (parentModel.filter != null) {
+            inputRef.current.value = parentModel.filter;
+            if (parentModel.filterTo != null) {
+              inputRef.current.value = `${parentModel.filter} - ${parentModel.filterTo}`
+            }
+          }
+        }
+      },
+    };
+  });
+
+  return (
+    <div class="ag-floating-filter-input" role="presentation">
+      <input ref={inputRef} disabled className="ag-input-field-input ag-text-field-input tw-textXs"/>
+    </div>
+  );
+})

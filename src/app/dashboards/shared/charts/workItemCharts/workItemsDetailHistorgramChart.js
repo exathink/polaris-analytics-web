@@ -147,9 +147,12 @@ export const WorkItemsDetailHistogramChart = Chart({
                 // check if the current series is effort
                 if (currentSeries.name === "Effort") {
                   currentSeries.xAxis.userOptions.originalCategories = currentSeries.xAxis.categories;
-                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map((x) =>
-                    x.replace("days", "FTE Days")
-                  );
+                  currentSeries.xAxis.categories = currentSeries.xAxis.categories.map((x) => {
+                    if (x.includes("day") && !x.includes("days")) {
+                      return x.replace("day", "FTE Day");
+                    }
+                    return x.replace("days", "FTE Days");
+                  });
                 } else {
                   // reset xAxis categories if it has been overridden earlier
                   if (currentSeries.xAxis.userOptions.originalCategories) {
