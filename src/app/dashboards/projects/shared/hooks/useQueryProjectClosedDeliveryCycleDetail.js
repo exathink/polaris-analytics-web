@@ -37,7 +37,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
           node {
             name
             key
-
+            url
             displayId
             workItemKey
             workItemType

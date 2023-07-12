@@ -14,7 +14,6 @@ import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
-import {ClearFilters} from "../../../components/clearFilters/clearFilters";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useSelect} from "../../../components/select/selectDropdown";
 import {
@@ -155,9 +154,10 @@ const PhaseDetailView = ({
     return `${specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
   }
 
+  const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(candidateWorkItems), [candidateWorkItems]);
+
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
-    const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
 
     const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
       isClosed(selectedStateType) ? w["leadTime"] : w["cycleTime"]
@@ -196,10 +196,9 @@ const PhaseDetailView = ({
     });
 
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
-  }, [candidateWorkItems, workItemScope, intl, selectedStateType]);
+  }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
 
   if (selectedStateType != null) {
-    const workItemsWithAggregateDurations = getWorkItemDurations(candidateWorkItems);
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
@@ -233,16 +232,7 @@ const PhaseDetailView = ({
                 layout="col"
                 className="tw-ml-4"
               />
-              {selectedFilter != null && (
-                <div className="tw-ml-6">
-                  <ClearFilters
-                    selectedFilter={selectedFilter}
-                    selectedMetric={selectedMetric}
-                    stateType={selectedStateType}
-                    handleClearClick={handleClearClick}
-                  />
-                </div>
-              )}
+              
             </div>
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
