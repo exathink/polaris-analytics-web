@@ -11,7 +11,7 @@ import {
   useDefaultColDef,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
-import {CardCol, StateTypeCol} from "../../../projects/shared/helper/renderers";
+import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -121,23 +121,6 @@ export function useWorkItemsDetailTableColumns({
     };
   }
 
-  let lastCol = {};
-  if (isClosed(stateType)) {
-    lastCol = {
-      headerName: "Closed At",
-      field: "endDate",
-      cellRenderer: React.memo(TextWithStyle),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.endDate, b.endDate),
-    };
-  } else {
-    lastCol = {
-      headerName: "Latest Commit",
-      field: "latestCommitDisplay",
-      cellRenderer: React.memo(TextWithStyle),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
-    };
-  }
-
   const columns = [
     {field: "displayId", headerName: "ID", hide: true},
     {field: "epicName", headerName: "Epic", hide: true},
@@ -190,6 +173,17 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
     },
     {
+      headerName: "Issue Type",
+      field: "workItemType",
+      cellRenderer: React.memo(IssueTypeCol),
+      filter: "agSetColumnFilter",
+      filterParams: {
+        cellRenderer: IssueTypeCol,
+      },
+      menuTabs: MenuTabs,
+      // comparator: SORTER.number_compare,
+    },
+    {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
       cellRenderer: React.memo(TextWithUom),
@@ -218,7 +212,6 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
-    lastCol,
   ];
 
   return columns;
