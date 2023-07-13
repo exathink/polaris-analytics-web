@@ -122,7 +122,18 @@ export function useWorkItemsDetailTableColumns({
   }
 
   const columns = [
-    {field: "displayId", headerName: "ID", hide: true},
+    {
+      field: "displayId",
+      headerName: "ID",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: true,
+    },
     {
       field: "epicName",
       headerName: "Epic",
@@ -148,7 +159,19 @@ export function useWorkItemsDetailTableColumns({
       hide: true,
     },
     {field: "teams", headerName: "Teams", hide: "true"},
-    {field: "url", headerName: "URL", hide: "true", cellClass: "hyperlinks"},
+    {
+      field: "url",
+      headerName: "URL",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: "true",
+      cellClass: "hyperlinks",
+    },
     {
       headerName: "Work Item",
       field: "name",
