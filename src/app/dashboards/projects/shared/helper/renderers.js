@@ -149,6 +149,23 @@ export function StateTypeCol(params) {
   );
 }
 
+const IssueTypeMapping = {
+  story: {name: "Story", icon: workItemTypeImageMap.story},
+  task: {name: "Task", icon: workItemTypeImageMap.task},
+  bug: {name: "Bug", icon: workItemTypeImageMap.bug},
+  subtask: {name: "Sub Task", icon: workItemTypeImageMap.subtask},
+}
+
+export function IssueTypeCol(params) {
+  const issueType = params.value;
+
+  return (
+    <span>
+      {IssueTypeMapping[issueType]?.icon ?? issueType} {IssueTypeMapping[issueType]?.name ?? ""}
+    </span>
+  );
+}
+
 export function ComboCardTitleColumn({record}) {
   const blurClass = useBlurClass();
   return (
