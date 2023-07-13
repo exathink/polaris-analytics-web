@@ -158,7 +158,20 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(TextWithStyle),
       hide: true,
     },
-    {field: "teams", headerName: "Teams", hide: "true"},
+    {
+      field: "teams",
+      headerName: "Teams",
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.teams.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          const _teams = record.teamNodeRefs.map((t) => t.teamName);
+          return _teams.includes(value);
+        },
+      },
+      menuTabs: MenuTabs,
+      hide: "true",
+    },
     {
       field: "url",
       headerName: "URL",
