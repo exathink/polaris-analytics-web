@@ -205,13 +205,6 @@ const PhaseDetailView = ({
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"leftControls"}>
               <div className="selectTeam">{selectTeamDropdown()}</div>
-              <div className="tw-ml-4">
-                <SelectIssueTypeDropdown
-                  valueIndex={issueTypeValueIndex}
-                  handleIssueTypeChange={handleIssueTypeChange}
-                  className="tw-w-24 lg:tw-w-36"
-                />
-              </div>
             </div>
             <div className={"middleControls"}>
               <GroupingSelector
