@@ -123,7 +123,18 @@ export function useWorkItemsDetailTableColumns({
 
   const columns = [
     {field: "displayId", headerName: "ID", hide: true},
-    {field: "epicName", headerName: "Epic", hide: true},
+    {
+      field: "epicName",
+      headerName: "Epic",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: true,
+    },
     {
       headerName: "Workstream",
       field: "workItemsSourceName",
@@ -134,10 +145,10 @@ export function useWorkItemsDetailTableColumns({
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
-      hide: true
+      hide: true,
     },
-    {field: 'teams', headerName: 'Teams', hide: "true"},
-    {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
+    {field: "teams", headerName: "Teams", hide: "true"},
+    {field: "url", headerName: "URL", hide: "true", cellClass: "hyperlinks"},
     {
       headerName: "Work Item",
       field: "name",
@@ -156,7 +167,7 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(CardCol),
       autoHeight: true,
       comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
-      menuTabs: [...MenuTabs, 'columnsMenuTab'],
+      menuTabs: [...MenuTabs, "columnsMenuTab"],
     },
     {
       headerName: "State",
