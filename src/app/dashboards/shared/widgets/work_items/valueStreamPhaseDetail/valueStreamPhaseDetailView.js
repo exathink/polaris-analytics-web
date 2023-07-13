@@ -203,9 +203,6 @@ const PhaseDetailView = ({
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
           <div className={"workItemStateDetailsControlWrapper"}>
-            <div className={"leftControls"}>
-              <div className="selectTeam">{selectTeamDropdown()}</div>
-            </div>
             <div className={"middleControls"}>
               <GroupingSelector
                 label={`Phase: ${WorkItemStateTypeDisplayName[selectedStateType]}`}
