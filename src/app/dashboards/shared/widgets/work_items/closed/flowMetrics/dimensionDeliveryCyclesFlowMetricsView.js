@@ -223,24 +223,6 @@ const DeliveryCyclesFlowMetricsView = ({
     <div className="tw-h-full">
       {chartOrTable === undefined && (
         <div className="tw-flex tw-h-[60px] tw-items-center">
-          {yAxisScale !== "table" && (
-            <div className="tw-flex tw-items-center tw-justify-center">
-              {teamDropdownElement}
-              {selectMetricDropdown()}
-            </div>
-          )}
-
-          {yAxisScale === "table" && (
-            <div className="tw-flex tw-items-center">
-            {teamDropdownElement}
-            <SelectIssueTypeDropdown
-              valueIndex={issueTypeValueIndex}
-              handleIssueTypeChange={handleIssueTypeChange}
-              wrapperClassName="tw-ml-4"
-              className="tw-w-36"
-            />
-            </div>     
-          )}
           {!defectsOnly && !hideControls && (
             <div className="tw-ml-auto tw-flex tw-items-center">
               <GroupingSelector
@@ -264,22 +246,7 @@ const DeliveryCyclesFlowMetricsView = ({
           )}
         </div>
       )}
-      {chartOrTable === "table" && (
-        <div className={classNames("tw-flex tw-absolute tw-left-0 tw-ml-4", displayBag?.filtersClass??"tw-top-[-3.5rem]")}>
-         <SelectTeamDropdown
-            uniqueTeams={uniqueTeams}
-            valueIndex={teamValueIndex}
-            handleTeamChange={handleTeamChange}
-            className="tw-w-36"
-          />
-          <SelectIssueTypeDropdown
-            valueIndex={issueTypeValueIndex}
-            handleIssueTypeChange={handleIssueTypeChange}
-            wrapperClassName="tw-ml-2"
-            className="tw-w-36"
-          />
-        </div>
-      )}
+
       <WorkItemsDetailHistogramTable
         // common props
         key={resetComponentStateKey}

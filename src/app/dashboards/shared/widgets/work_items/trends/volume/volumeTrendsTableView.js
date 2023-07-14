@@ -25,7 +25,7 @@ export function VolumeTrendsTableView({
   return (
     <div className="tw-h-full tw-w-full">
       <div className="tw-mr-8 tw-flex">
-        <div className="tw-ml-auto tw-flex tw-items-center">
+        <div className="tw-ml-auto tw-flex tw-items-center tw-mb-2">
           {before != null && (
             <div className="tw-mr-2">
               <ClearFilters

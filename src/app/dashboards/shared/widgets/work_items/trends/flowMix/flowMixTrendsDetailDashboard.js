@@ -46,7 +46,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
     <Dashboard
       id={dashboard_id}
       gridLayout={true}
-      className="tw-grid tw-grid-cols-4 tw-grid-rows-[10%_40%_10%_40%] tw-p-2"
+      className="tw-grid tw-grid-cols-4 tw-grid-rows-[10%_40%_8%_42%] tw-p-2"
     >
       <div className="tw-col-start-1 tw-row-start-1 tw-col-span-4 tw-flex tw-items-center tw-gap-2">
         <div className="tw-text-2xl tw-text-gray-300 tw-shrink-0 tw-mr-8">
@@ -102,7 +102,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
         />
       </DashboardRow>
       <DashboardRow
-        className="tw-col-start-3 tw-row-start-3 tw-flex tw-justify-center"
+        className="tw-col-start-1 tw-col-span-4 tw-row-start-3 tw-flex tw-justify-center"
         controls={[
           () =>
             before != null && (
