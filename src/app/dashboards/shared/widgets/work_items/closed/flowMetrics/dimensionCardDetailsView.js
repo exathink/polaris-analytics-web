@@ -3,9 +3,6 @@ import {TABLE_PAGINATION} from "../../../../../../../config/featureFlags";
 import {pick, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useUpdateQuery} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import { useSelect } from "../../../../components/select/selectDropdown";
-import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
-import { defaultTeam, SelectTeamDropdown, getAllUniqueTeams } from "../../../../components/select/selectTeamDropdown";
 
 import {WorkItemStateTypes} from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
@@ -41,36 +38,10 @@ const getData = (data, dimension) => {
 };
 
 export function CardDetailsView({data, dimension, view, context, workItemTypeFilter, supportsFilterOnCard, specsOnly, fetchMore}) {
-  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
-    uniqueItems: uniqueIssueTypes,
-    defaultVal: defaultIssueType,
-  });
-  const teams = [...new Set(getData(data, dimension).flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))].map((t) => ({
-    key: t,
-    name: t,
-  }));
-  const uniqueTeams = getAllUniqueTeams(teams);
-  const {selectedVal: {key: selectedTeam}, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
-    uniqueItems: uniqueTeams,
-    defaultVal: defaultTeam,
-  });
 
   const tableData = React.useMemo(() => {
-    const newData = getData(data, dimension);
-    return newData.filter((w) => {
-      if (selectedIssueType === "all") {
-        return true;
-      } else {
-        return w.workItemType === selectedIssueType;
-      }
-    }).filter((w) => {
-      if (selectedTeam === "all") {
-        return true;
-      } else {
-        return w.teamNodeRefs.map((t) => t.teamName).indexOf(selectedTeam) > -1;
-      }
-    });
-  }, [data, dimension, selectedIssueType, selectedTeam]);
+    return getData(data, dimension);
+  }, [data, dimension]);
 
   const updateQuery = useUpdateQuery(dimension, "workItemDeliveryCycles");
   const {pageInfo = {}, count} = data?.[dimension]?.["workItemDeliveryCycles"];
@@ -84,22 +55,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   return (
-    <div className="tw-relative tw-h-full  tw-w-full">
-      <div className="tw-absolute tw-top-[-3.5rem] tw-left-0 tw-mx-4 tw-flex tw-items-end tw-justify-between">
-        <SelectTeamDropdown
-          uniqueTeams={uniqueTeams}
-          valueIndex={teamValueIndex}
-          handleTeamChange={handleTeamChange}
-          wrapperClassName="tw-ml-2"
-          className="tw-w-36"
-         />
-        <SelectIssueTypeDropdown
-          valueIndex={issueTypeValueIndex}
-          handleIssueTypeChange={handleIssueTypeChange}
-          wrapperClassName="tw-ml-2"
-          className="tw-w-36"
-        />
-      </div>
+    <div className="tw-relative tw-h-full tw-w-full">
       <div className="tw-h-full">
         <WorkItemsDetailTable
           key={workItemTypeFilter}
