@@ -112,7 +112,7 @@ export const DimensionWorkBalanceTrendsWidget = (
       );
       return (
         <React.Fragment>
-          <div className="tw-ml-auto tw-flex tw-items-center">
+          <div className="tw-ml-auto tw-flex tw-items-center tw-mb-2">
             {selectedFilter != null && (
               <div className="tw-mr-8">
                 <ClearFilters
