@@ -249,6 +249,9 @@ export const CustomFloatingFilter = React.forwardRef((props, ref) => {
           if (parentModel.values != null && parentModel.values.length > 0) {
             inputRef.current.value = parentModel.values.join(" ");
           }
+          if (parentModel.values != null && parentModel.values.length === 0) {
+            inputRef.current.value = "";
+          }
           if (parentModel.filter != null) {
             inputRef.current.value = parentModel.filter;
             if (parentModel.filterTo != null) {
