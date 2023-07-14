@@ -11,7 +11,7 @@ import {
   useDefaultColDef,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
-import {CardCol, StateTypeCol} from "../../../projects/shared/helper/renderers";
+import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -121,26 +121,31 @@ export function useWorkItemsDetailTableColumns({
     };
   }
 
-  let lastCol = {};
-  if (isClosed(stateType)) {
-    lastCol = {
-      headerName: "Closed At",
-      field: "endDate",
-      cellRenderer: React.memo(TextWithStyle),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.endDate, b.endDate),
-    };
-  } else {
-    lastCol = {
-      headerName: "Latest Commit",
-      field: "latestCommitDisplay",
-      cellRenderer: React.memo(TextWithStyle),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.latestCommit, b.latestCommit),
-    };
-  }
-
   const columns = [
-    {field: "displayId", headerName: "ID", hide: true},
-    {field: "epicName", headerName: "Epic", hide: true},
+    {
+      field: "displayId",
+      headerName: "ID",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: true,
+    },
+    {
+      field: "epicName",
+      headerName: "Epic",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: true,
+    },
     {
       headerName: "Workstream",
       field: "workItemsSourceName",
@@ -151,10 +156,35 @@ export function useWorkItemsDetailTableColumns({
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
-      hide: true
+      hide: true,
     },
-    {field: 'teams', headerName: 'Teams', hide: "true"},
-    {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
+    {
+      field: "teams",
+      headerName: "Teams",
+      filter: MultiCheckboxFilter,
+      filterParams: {
+        values: filters.teams.map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          const _teams = record.teamNodeRefs.map((t) => t.teamName);
+          return _teams.includes(value);
+        },
+      },
+      menuTabs: MenuTabs,
+      hide: "true",
+    },
+    {
+      field: "url",
+      headerName: "URL",
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: "true",
+      cellClass: "hyperlinks",
+    },
     {
       headerName: "Work Item",
       field: "name",
@@ -173,7 +203,18 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(CardCol),
       autoHeight: true,
       comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
-      menuTabs: [...MenuTabs, 'columnsMenuTab'],
+      menuTabs: [...MenuTabs, "columnsMenuTab"],
+    },
+    {
+      headerName: "Work Item Type",
+      field: "workItemType",
+      cellRenderer: React.memo(IssueTypeCol),
+      filter: "agSetColumnFilter",
+      filterParams: {
+        cellRenderer: IssueTypeCol,
+      },
+      menuTabs: MenuTabs,
+      // comparator: SORTER.number_compare,
     },
     {
       headerName: "State",
@@ -218,7 +259,6 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
-    lastCol,
   ];
 
   return columns;
