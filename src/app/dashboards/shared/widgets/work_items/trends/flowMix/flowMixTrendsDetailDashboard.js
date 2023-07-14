@@ -102,7 +102,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
         />
       </DashboardRow>
       <DashboardRow
-        className="tw-col-start-4 tw-row-start-3 tw-flex tw-justify-end"
+        className="tw-col-start-1 tw-col-span-4 tw-row-start-3 tw-flex tw-justify-center"
         controls={[
           () =>
             before != null && (
