@@ -206,6 +206,17 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: [...MenuTabs, "columnsMenuTab"],
     },
     {
+      headerName: "Work Item Type",
+      field: "workItemType",
+      cellRenderer: React.memo(IssueTypeCol),
+      filter: "agSetColumnFilter",
+      filterParams: {
+        cellRenderer: IssueTypeCol,
+      },
+      menuTabs: MenuTabs,
+      // comparator: SORTER.number_compare,
+    },
+    {
       headerName: "State",
       field: "state",
       autoHeight: true,
@@ -218,17 +229,6 @@ export function useWorkItemsDetailTableColumns({
         onFilter: ({value, record}) => record.state.indexOf(value) === 0,
       },
       menuTabs: MenuTabs,
-    },
-    {
-      headerName: "Work Item Type",
-      field: "workItemType",
-      cellRenderer: React.memo(IssueTypeCol),
-      filter: "agSetColumnFilter",
-      filterParams: {
-        cellRenderer: IssueTypeCol,
-      },
-      menuTabs: MenuTabs,
-      // comparator: SORTER.number_compare,
     },
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
