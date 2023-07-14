@@ -220,7 +220,7 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
     },
     {
-      headerName: "Issue Type",
+      headerName: "Work Item Type",
       field: "workItemType",
       cellRenderer: React.memo(IssueTypeCol),
       filter: "agSetColumnFilter",
