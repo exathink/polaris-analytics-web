@@ -6,6 +6,7 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_ite
 
 import {WorkItemStateTypes} from "../../../../config";
 import {WorkItemsDetailTable} from "../../workItemsDetailTable";
+import { defaultOnGridReady } from "../../../../../../components/tables/tableUtils";
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 const getData = (data, dimension) => {
@@ -69,6 +70,7 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
           supportsFilterOnCard={supportsFilterOnCard}
           specsOnly={specsOnly}
           paginationOptions={paginationOptions}
+          onGridReady={defaultOnGridReady}
         />
       </div>
       <CardInspectorWithDrawer
