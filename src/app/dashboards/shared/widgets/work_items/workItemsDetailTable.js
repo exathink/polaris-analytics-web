@@ -215,8 +215,8 @@ export function useWorkItemsDetailTableColumns({
       filterValueGetter: (params) => {
         const field = params.column.getColDef().field;
         const fieldValue = params.data[field];
-        const componentTags = getCustomTypeTags(fieldValue);
-        return componentTags;
+        const customTypeTags = getCustomTypeTags(fieldValue);
+        return customTypeTags;
       },
       filterParams: {
         filterOptions: ["contains", "startsWith"],
