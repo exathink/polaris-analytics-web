@@ -297,6 +297,45 @@ export function TextWithStyle({value}) {
   );
 }
 
+export function getComponentTags(value) {
+  let val = "";
+  if (String(value).startsWith("component:")) {
+    const [_, tagString] = String(value).split("component:");
+    const tags= tagString.split(";;");
+    val = tags.join(", ");
+  }
+  return val;
+}
+
+export function CustomComponentCol({value}) {
+  let val = getComponentTags(value);
+
+  return (
+    <span className="tw-textXs">
+      {val}
+    </span>
+  );
+}
+
+export function getCustomTypeTags(value) {
+  let val = "";
+  if (String(value).startsWith("custom_type:")) {
+    const [_, tagString] = String(value).split("custom_type:");
+    const tags= tagString.split(";;");
+    val = tags.join(", ");
+  }
+  return val;
+}
+
+export function CustomTypeCol({value}) {
+  let val = getCustomTypeTags(value);
+  return (
+    <span className="tw-textXs">
+      {val}
+    </span>
+  );
+}
+
   /**
    * columns for which we need to show aggregation component
    * @param {string[]} ColsToAggregate
