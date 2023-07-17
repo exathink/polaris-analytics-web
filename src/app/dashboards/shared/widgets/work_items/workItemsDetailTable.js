@@ -63,6 +63,7 @@ export function useWorkItemsDetailTableColumns({
   intl,
   selectedFilter,
   selectedMetric,
+  workTrackingIntegrationType,
   supportsFilterOnCard,
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
@@ -124,6 +125,50 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     };
   }
+
+  const optionalCustomCols =
+    workTrackingIntegrationType === "jira"
+      ? [
+          {
+            headerName: "Component",
+            field: "tags",
+            filter: "agTextColumnFilter",
+            filterValueGetter: (params) => {
+              const field = params.column.getColDef().field;
+              const fieldValue = params.data[field];
+              const componentTags = getComponentTags(fieldValue);
+              return componentTags;
+            },
+            filterParams: {
+              filterOptions: ["contains", "startsWith"],
+              buttons: ["reset"],
+              maxNumConditions: 1,
+            },
+            menuTabs: MenuTabs,
+            cellRenderer: React.memo(CustomComponentCol),
+            hide: true,
+          },
+          {
+            headerName: "Custom Type",
+            field: "tags",
+            filter: "agTextColumnFilter",
+            filterValueGetter: (params) => {
+              const field = params.column.getColDef().field;
+              const fieldValue = params.data[field];
+              const customTypeTags = getCustomTypeTags(fieldValue);
+              return customTypeTags;
+            },
+            filterParams: {
+              filterOptions: ["contains", "startsWith"],
+              buttons: ["reset"],
+              maxNumConditions: 1,
+            },
+            menuTabs: MenuTabs,
+            cellRenderer: React.memo(CustomTypeCol),
+            hide: true,
+          },
+        ]
+      : [];
 
   const columns = [
     {
@@ -189,44 +234,7 @@ export function useWorkItemsDetailTableColumns({
       hide: "true",
       cellClass: "hyperlinks",
     },
-    {
-      headerName: "Component",
-      field: "tags",
-      filter: "agTextColumnFilter",
-      filterValueGetter: (params) => {
-        const field = params.column.getColDef().field;
-        const fieldValue = params.data[field];
-        const componentTags = getComponentTags(fieldValue);
-        return componentTags;
-      },
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      cellRenderer: React.memo(CustomComponentCol),
-      hide: true,
-    },
-    {
-      headerName: "Custom Type",
-      field: "tags",
-      filter: "agTextColumnFilter",
-      filterValueGetter: (params) => {
-        const field = params.column.getColDef().field;
-        const fieldValue = params.data[field];
-        const customTypeTags = getCustomTypeTags(fieldValue);
-        return customTypeTags;
-      },
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      cellRenderer: React.memo(CustomTypeCol),
-      hide: true,
-    },
+    ...optionalCustomCols,
     {
       headerName: "Work Item",
       field: "name",
@@ -330,6 +338,7 @@ export const WorkItemsDetailTable = ({
   const states = [...new Set(tableData.map((x) => x.state))];
   const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const workTrackingIntegrationType = tableData[0]?.["workTrackingIntegrationType"];
 
   const categories = getHistogramCategories(colWidthBoundaries, "days");
   const allPairsData = allPairs(colWidthBoundaries);
@@ -344,6 +353,7 @@ export const WorkItemsDetailTable = ({
     selectedFilter,
     selectedMetric,
     supportsFilterOnCard,
+    workTrackingIntegrationType
   });
 
   const _defaultColDef = useDefaultColDef();
