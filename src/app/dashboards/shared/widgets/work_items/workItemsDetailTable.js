@@ -4,6 +4,10 @@ import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {
   AgGridStripeTable,
+  CustomComponentCol,
+  CustomTypeCol,
+  getComponentTags,
+  getCustomTypeTags,
   getOnSortChanged,
   SORTER,
   TextWithStyle,
@@ -184,6 +188,44 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
       hide: "true",
       cellClass: "hyperlinks",
+    },
+    {
+      headerName: "Component",
+      field: "tags",
+      filter: "agTextColumnFilter",
+      filterValueGetter: (params) => {
+        const field = params.column.getColDef().field;
+        const fieldValue = params.data[field];
+        const componentTags = getComponentTags(fieldValue);
+        return componentTags;
+      },
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      cellRenderer: React.memo(CustomComponentCol),
+      hide: true,
+    },
+    {
+      headerName: "Custom Type",
+      field: "tags",
+      filter: "agTextColumnFilter",
+      filterValueGetter: (params) => {
+        const field = params.column.getColDef().field;
+        const fieldValue = params.data[field];
+        const componentTags = getCustomTypeTags(fieldValue);
+        return componentTags;
+      },
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      cellRenderer: React.memo(CustomTypeCol),
+      hide: true,
     },
     {
       headerName: "Work Item",
