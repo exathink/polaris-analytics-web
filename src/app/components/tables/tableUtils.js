@@ -1,8 +1,8 @@
 import React from "react";
-import {Empty, Table} from "antd";
+import {Empty, Table, Tooltip} from "antd";
 import styles from "./tableUtils.module.css";
-import {diff_in_dates} from "../../helpers/utility";
-import {LabelValue} from "../../helpers/components";
+import {TOOLTIP_COLOR, diff_in_dates, truncateString} from "../../helpers/utility";
+import {CustomTag, LabelValue} from "../../helpers/components";
 
 import {useVirtualizer} from "@tanstack/react-virtual";
 import classNames from "classnames";
@@ -295,6 +295,44 @@ export function TextWithStyle({value}) {
       {value}
     </span>
   );
+}
+
+const TAG_COLOR = "#108ee9";
+export function renderTags(tag_list) {
+  const classes = "tw-flex tw-flex-col";
+  const fullNodeWithTooltip = (
+    <div className={classes}>
+      {tag_list.map((x) => (
+        <CustomTag key={x}>{truncateString(x, 16, TAG_COLOR)}</CustomTag>
+      ))}
+    </div>
+  );
+  const fullNode = (
+    <div className={classes}>
+      {tag_list.map((x) => (
+        <CustomTag key={x}>{x}</CustomTag>
+      ))}
+    </div>
+  );
+
+  const partialNode = tag_list
+    .slice(0, 2)
+    .map((x) => <CustomTag key={x}>{truncateString(x, 16, TAG_COLOR)}</CustomTag>);
+
+  if (tag_list.length > 2) {
+    return (
+      <div className={classes}>
+        {partialNode}
+
+        <div className="tw-cursor-pointer tw-leading-none">
+          <Tooltip title={fullNode} color={TOOLTIP_COLOR}>
+            <span style={{fontSize: "20px", color: TAG_COLOR}}>...</span>
+          </Tooltip>
+        </div>
+      </div>
+    );
+  }
+  return fullNodeWithTooltip;
 }
 
 export function getComponentTags(value) {
