@@ -345,13 +345,8 @@ export function getComponentTags(value) {
 }
 
 export function CustomComponentCol({value}) {
-  let val = getComponentTags(value);
-
-  return (
-    <span className="tw-textXs">
-      {val}
-    </span>
-  );
+  let tags_list = getComponentTags(value);
+  return renderTags(tags_list);
 }
 
 export function getCustomTypeTags(value) {
