@@ -361,6 +361,7 @@ export const WorkItemsDetailTable = ({
   const _defaultColDef = useDefaultColDef();
   const defaultColDef = React.useMemo(() => ({
     ..._defaultColDef,
+    cellClass: "tw-flex tw-items-center tw-p-1 tw-pl-3",
     floatingFilter: true,
     floatingFilterComponent: CustomFloatingFilter,
     floatingFilterComponentParams: {
