@@ -299,7 +299,7 @@ export function TextWithStyle({value}) {
 
 const TAG_COLOR = "#108ee9";
 export function renderTags(tag_list) {
-  const classes = "tw-flex tw-flex-col";
+  const classes = "tw-flex tw-flex-col tw-items-start";
   const fullNodeWithTooltip = (
     <div className={classes}>
       {tag_list.map((x) => (
