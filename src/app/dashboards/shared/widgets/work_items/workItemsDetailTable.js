@@ -136,7 +136,7 @@ export function useWorkItemsDetailTableColumns({
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
               const fieldValue = params.data[field];
-              const componentTags = getComponentTags(fieldValue);
+              const componentTags = getComponentTags(fieldValue).join(', ');
               return componentTags;
             },
             filterParams: {
@@ -146,6 +146,8 @@ export function useWorkItemsDetailTableColumns({
             },
             menuTabs: MenuTabs,
             cellRenderer: React.memo(CustomComponentCol),
+            autoHeight: true,
+            wrapText: true,
             hide: true,
           },
           {

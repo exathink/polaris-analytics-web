@@ -298,11 +298,10 @@ export function TextWithStyle({value}) {
 }
 
 export function getComponentTags(value) {
-  let val = "";
+  let val = [];
   if (String(value).startsWith("component:")) {
     const [_, tagString] = String(value).split("component:");
-    const tags= tagString.split(";;");
-    val = tags.join(", ");
+    val = tagString.split(";;");
   }
   return val;
 }
