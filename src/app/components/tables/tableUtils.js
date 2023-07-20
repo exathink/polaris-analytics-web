@@ -362,7 +362,7 @@ export function getCustomTypeTags(value) {
 export function CustomTypeCol({value}) {
   let val = getCustomTypeTags(value);
   return (
-    <span className="tw-textXs">
+    <span>
       {val}
     </span>
   );
