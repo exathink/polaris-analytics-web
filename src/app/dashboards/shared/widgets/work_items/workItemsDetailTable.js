@@ -6,8 +6,7 @@ import {
   AgGridStripeTable,
   CustomComponentCol,
   CustomTypeCol,
-  getComponentTags,
-  getCustomTypeTags,
+  parseTags,
   getOnSortChanged,
   SORTER,
   TextWithStyle,
@@ -132,17 +131,18 @@ export function useWorkItemsDetailTableColumns({
           {
             headerName: "Component",
             field: "tags",
-            filter: "agTextColumnFilter",
+            filter: MultiCheckboxFilter,
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
               const fieldValue = params.data[field];
-              const componentTags = getComponentTags(fieldValue).join(', ');
+              const componentTags = parseTags(fieldValue).component.join(", ");
               return componentTags;
             },
             filterParams: {
-              filterOptions: ["contains", "startsWith"],
-              buttons: ["reset"],
-              maxNumConditions: 1,
+              values: filters.tags.map((b) => ({text: b, value: b})),
+              onFilter: ({value, record}) => {
+                return parseTags(record.tags).component.includes(value);
+              },
             },
             menuTabs: MenuTabs,
             cellRenderer: React.memo(CustomComponentCol),
@@ -157,7 +157,7 @@ export function useWorkItemsDetailTableColumns({
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
               const fieldValue = params.data[field];
-              const customTypeTags = getCustomTypeTags(fieldValue);
+              const customTypeTags = parseTags(fieldValue).custom_type;
               return customTypeTags;
             },
             filterParams: {
@@ -339,6 +339,7 @@ export const WorkItemsDetailTable = ({
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+  const tags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).component))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
   const workTrackingIntegrationType = tableData[0]?.["workTrackingIntegrationType"];
 
@@ -349,7 +350,7 @@ export const WorkItemsDetailTable = ({
   const dataSource = React.useMemo(() => getTransformedData(tableData, intl), [tableData, intl]);
   const columns = useWorkItemsDetailTableColumns({
     stateType,
-    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
+    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams, tags},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
     selectedFilter,
