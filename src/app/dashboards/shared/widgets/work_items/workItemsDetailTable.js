@@ -4,11 +4,15 @@ import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {
   AgGridStripeTable,
+  CustomComponentCol,
+  CustomTypeCol,
+  parseTags,
   getOnSortChanged,
   SORTER,
   TextWithStyle,
   TextWithUom,
   useDefaultColDef,
+  TagsCol,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
 import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
@@ -59,6 +63,7 @@ export function useWorkItemsDetailTableColumns({
   intl,
   selectedFilter,
   selectedMetric,
+  workTrackingIntegrationType,
   supportsFilterOnCard,
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
@@ -120,6 +125,74 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     };
   }
+
+  const optionalCustomCols =
+    workTrackingIntegrationType === "jira"
+      ? [
+          {
+            headerName: "Component",
+            field: "tags",
+            filter: MultiCheckboxFilter,
+            filterValueGetter: (params) => {
+              const field = params.column.getColDef().field;
+              const fieldValue = params.data[field];
+              const componentTags = parseTags(fieldValue).component.join(", ");
+              return componentTags;
+            },
+            filterParams: {
+              values: filters.componentTags.map((b) => ({text: b, value: b})),
+              onFilter: ({value, record}) => {
+                return parseTags(record.tags).component.includes(value);
+              },
+            },
+            menuTabs: MenuTabs,
+            cellRenderer: React.memo(CustomComponentCol),
+            autoHeight: true,
+            wrapText: true,
+            hide: true,
+          },
+          {
+            headerName: "Custom Type",
+            field: "tags",
+            filter: MultiCheckboxFilter,
+            filterValueGetter: (params) => {
+              const field = params.column.getColDef().field;
+              const fieldValue = params.data[field];
+              const customTypeTags = parseTags(fieldValue).custom_type;
+              return customTypeTags;
+            },
+            filterParams: {
+              values: filters.customTypeTags.map((b) => ({text: b, value: b})),
+              onFilter: ({value, record}) => {
+                return parseTags(record.tags).custom_type.includes(value);
+              },
+            },
+            menuTabs: MenuTabs,
+            cellRenderer: React.memo(CustomTypeCol),
+            hide: true,
+          },
+          {
+            headerName: "Tags",
+            field: "tags",
+            filter: MultiCheckboxFilter,
+            filterValueGetter: (params) => {
+              const field = params.column.getColDef().field;
+              const fieldValue = params.data[field];
+              const tags = parseTags(fieldValue).tags;
+              return tags;
+            },
+            filterParams: {
+              values: filters.tags.map((b) => ({text: b, value: b})),
+              onFilter: ({value, record}) => {
+                return parseTags(record.tags).tags.includes(value);
+              },
+            },
+            menuTabs: MenuTabs,
+            cellRenderer: React.memo(TagsCol),
+            hide: true,
+          },
+        ]
+      : [];
 
   const columns = [
     {
@@ -185,6 +258,7 @@ export function useWorkItemsDetailTableColumns({
       hide: "true",
       cellClass: "hyperlinks",
     },
+    ...optionalCustomCols,
     {
       headerName: "Work Item",
       field: "name",
@@ -287,7 +361,11 @@ export const WorkItemsDetailTable = ({
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
   const states = [...new Set(tableData.map((x) => x.state))];
   const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+  const componentTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).component))];
+  const customTypeTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).custom_type))];
+  const tags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).tags))];
   const teams = [...new Set(tableData.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
+  const workTrackingIntegrationType = tableData[0]?.["workTrackingIntegrationType"];
 
   const categories = getHistogramCategories(colWidthBoundaries, "days");
   const allPairsData = allPairs(colWidthBoundaries);
@@ -296,17 +374,19 @@ export const WorkItemsDetailTable = ({
   const dataSource = React.useMemo(() => getTransformedData(tableData, intl), [tableData, intl]);
   const columns = useWorkItemsDetailTableColumns({
     stateType,
-    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams},
+    filters: {workItemTypes, stateTypes, states, teams, epicNames, categories, allPairsData, workItemStreams, componentTags, customTypeTags, tags},
     callBacks: {setShowPanel, setWorkItemKey},
     intl,
     selectedFilter,
     selectedMetric,
     supportsFilterOnCard,
+    workTrackingIntegrationType
   });
 
   const _defaultColDef = useDefaultColDef();
   const defaultColDef = React.useMemo(() => ({
     ..._defaultColDef,
+    cellClass: "tw-flex tw-items-center tw-p-1 tw-pl-3",
     floatingFilter: true,
     floatingFilterComponent: CustomFloatingFilter,
     floatingFilterComponentParams: {

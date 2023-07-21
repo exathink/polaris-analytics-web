@@ -43,6 +43,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
             workItemsSourceName
             workTrackingIntegrationType
             url
+            tags
             teamNodeRefs {
               teamName
               teamKey

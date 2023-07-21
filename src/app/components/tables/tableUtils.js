@@ -1,8 +1,8 @@
 import React from "react";
-import {Empty, Table} from "antd";
+import {Empty, Table, Tooltip} from "antd";
 import styles from "./tableUtils.module.css";
-import {diff_in_dates} from "../../helpers/utility";
-import {LabelValue} from "../../helpers/components";
+import {TOOLTIP_COLOR, diff_in_dates, truncateString} from "../../helpers/utility";
+import {CustomTag, LabelValue} from "../../helpers/components";
 
 import {useVirtualizer} from "@tanstack/react-virtual";
 import classNames from "classnames";
@@ -296,6 +296,107 @@ export function TextWithStyle({value}) {
     </span>
   );
 }
+
+const TAG_COLOR = "#108ee9";
+export function renderTags(tag_list) {
+  const classes = "tw-flex tw-flex-col tw-items-start";
+  const fullNodeWithTooltip = (
+    <div className={classes}>
+      {tag_list.map((x) => (
+        <CustomTag key={x}>{truncateString(x, 16, TAG_COLOR)}</CustomTag>
+      ))}
+    </div>
+  );
+  const fullNode = (
+    <div className={classes}>
+      {tag_list.map((x) => (
+        <CustomTag key={x}>{x}</CustomTag>
+      ))}
+    </div>
+  );
+
+  const partialNode = tag_list
+    .slice(0, 2)
+    .map((x) => <CustomTag key={x}>{truncateString(x, 16, TAG_COLOR)}</CustomTag>);
+
+  if (tag_list.length > 2) {
+    return (
+      <div className={classes}>
+        {partialNode}
+
+        <div className="tw-cursor-pointer tw-leading-none">
+          <Tooltip title={fullNode} color={TOOLTIP_COLOR}>
+            <span style={{fontSize: "20px", color: TAG_COLOR}}>...</span>
+          </Tooltip>
+        </div>
+      </div>
+    );
+  }
+  return fullNodeWithTooltip;
+}
+
+/**
+ * 
+ * @param {string} tagSource 
+ */
+export function parseTags(tagSource) {
+  const result = {
+    component: [],
+    custom_type: [],
+    custom_tag: [],
+    tags: []
+  };
+
+  // split the tagSource by the ;; separator
+  const parts = tagSource.split(";;");
+
+  // init a var to hold the current prefix
+  let currentPrefix = "tags";
+
+  for (let part of parts) {
+    part = part.trim(); // Remove leading and trailing whitespaces
+    if (!part) continue; // Skip blank strings
+
+    // check if part starts with a known prefix
+    if (part.startsWith("component:")) {
+      result.component.push(part.slice("component:".length));
+      currentPrefix = "component";
+    } else if (part.startsWith("custom_type:")) {
+      result.custom_type.push(part.slice("custom_type:".length));
+      currentPrefix = "custom_type";
+    } else if (part.startsWith("custom_tag:")) {
+      result.custom_tag.push(part.slice("custom_tag:".length));
+      currentPrefix = "custom_tag";
+    } else {
+      // If part doesn't start with a known prefix, add it to the currentPrefix array
+      result[currentPrefix].push(part);
+    }
+  }
+
+  return result;
+}
+
+export function CustomComponentCol({value}) {
+  let tags_list = parseTags(value).component
+  return renderTags(tags_list);
+}
+
+
+export function CustomTypeCol({value}) {
+  let val = parseTags(value).custom_type.join(", ");
+  return (
+    <span>
+      {val}
+    </span>
+  );
+}
+
+export function TagsCol({value}) {
+  let tags_list = parseTags(value).tags;
+
+  return renderTags(tags_list);
+}
+
 
   /**
    * columns for which we need to show aggregation component
