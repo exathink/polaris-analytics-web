@@ -56,6 +56,8 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             
             epicName
 
+            tags
+
             leadTime
             cycleTime
             latency
