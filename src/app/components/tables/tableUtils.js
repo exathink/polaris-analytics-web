@@ -354,6 +354,9 @@ export function parseTags(tagSource) {
   let currentPrefix = "tags";
 
   for (let part of parts) {
+    part = part.trim(); // Remove leading and trailing whitespaces
+    if (!part) continue; // Skip blank strings
+
     // check if part starts with a known prefix
     if (part.startsWith("component:")) {
       result.component.push(part.slice("component:".length));
