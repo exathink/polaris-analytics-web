@@ -391,6 +391,13 @@ export function CustomTypeCol({value}) {
   );
 }
 
+export function TagsCol({value}) {
+  let tags_list = parseTags(value).tags;
+
+  return renderTags(tags_list);
+}
+
+
   /**
    * columns for which we need to show aggregation component
    * @param {string[]} ColsToAggregate
