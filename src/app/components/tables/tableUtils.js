@@ -335,32 +335,52 @@ export function renderTags(tag_list) {
   return fullNodeWithTooltip;
 }
 
-export function getComponentTags(value) {
-  let val = [];
-  if (String(value).startsWith("component:")) {
-    const [_, tagString] = String(value).split("component:");
-    val = tagString.split(";;");
+/**
+ * 
+ * @param {string} tagSource 
+ */
+export function parseTags(tagSource) {
+  const result = {
+    component: [],
+    custom_type: [],
+    custom_tag: [],
+    tags: []
+  };
+
+  // split the tagSource by the ;; separator
+  const parts = tagSource.split(";;");
+
+  // init a var to hold the current prefix
+  let currentPrefix = "tags";
+
+  for (let part of parts) {
+    // check if part starts with a known prefix
+    if (part.startsWith("component:")) {
+      result.component.push(part.slice("component:".length));
+      currentPrefix = "component";
+    } else if (part.startsWith("custom_type:")) {
+      result.custom_type.push(part.slice("custom_type:".length));
+      currentPrefix = "custom_type";
+    } else if (part.startsWith("custom_tag:")) {
+      result.custom_tag.push(part.slice("custom_tag:".length));
+      currentPrefix = "custom_tag";
+    } else {
+      // If part doesn't start with a known prefix, add it to the currentPrefix array
+      result[currentPrefix].push(part);
+    }
   }
-  return val;
+
+  return result;
 }
 
 export function CustomComponentCol({value}) {
-  let tags_list = getComponentTags(value);
+  let tags_list = parseTags(value).component
   return renderTags(tags_list);
 }
 
-export function getCustomTypeTags(value) {
-  let val = "";
-  if (String(value).startsWith("custom_type:")) {
-    const [_, tagString] = String(value).split("custom_type:");
-    const tags= tagString.split(";;");
-    val = tags.join(", ");
-  }
-  return val;
-}
 
 export function CustomTypeCol({value}) {
-  let val = getCustomTypeTags(value);
+  let val = parseTags(value).custom_type.join(", ");
   return (
     <span>
       {val}
