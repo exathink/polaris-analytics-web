@@ -8,18 +8,14 @@ import {
 } from "../../../../helpers/metricsMeta";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
-import {getUniqItems, pick} from "../../../../../../helpers/utility";
-import styles from "./flowMetrics.module.css";
-import {SelectDropdown, useSelect} from "../../../../components/select/selectDropdown";
+import {pick} from "../../../../../../helpers/utility";
+import {useSelect} from "../../../../components/select/selectDropdown";
 import {AppTerms, WorkItemStateTypes} from "../../../../config";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, getTimePeriod} from "../../../../../projects/shared/helper/utils";
 import {injectIntl, useIntl} from "react-intl";
 import {WorkItemsDetailHistogramTable} from "../../workItemsDetailHistogramTable";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
-import { defaultIssueType, SelectIssueTypeDropdown, uniqueIssueTypes } from "../../../../components/select/selectIssueTypeDropdown";
-import { defaultTeam as _defaultTeam, SelectTeamDropdown} from "../../../../components/select/selectTeamDropdown";
-import classNames from "classnames";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -62,6 +58,7 @@ const DeliveryCyclesFlowMetricsView = ({
           "id",
           "name",
           "url",
+          "tags",
           "key",
           "displayId",
           "workItemKey",
@@ -78,7 +75,8 @@ const DeliveryCyclesFlowMetricsView = ({
           "authorCount",
           "teamNodeRefs",
           "epicName",
-          "workItemsSourceName"
+          "workItemsSourceName",
+          "workTrackingIntegrationType"
         )
       ),
     [data, dimension]
@@ -99,7 +97,6 @@ const DeliveryCyclesFlowMetricsView = ({
   const {
     selectedVal: selectedMetric,
     setSelectedVal: setSelectedMetric,
-    handleChange: handleMetricChange,
   } = useSelect({
     uniqueItems: uniqueGroupings,
     defaultVal: _defaultMetric,
@@ -133,74 +130,7 @@ const DeliveryCyclesFlowMetricsView = ({
     // eslint-disable-next-line
   }, [initialMetric]);
 
-  function selectMetricDropdown() {
-    return (
-      !hideControls && (
-        <SelectDropdown
-          title="Metric"
-          value={uniqueGroupings
-            .map((x) => x.key)
-            .indexOf(getMetricsMetaKey(selectedMetric.key, WorkItemStateTypes.closed))}
-          uniqueItems={uniqueGroupings}
-          handleChange={(index) => {
-            setFilter(null);
-            handleMetricChange(index);
-          }}
-          testId="groupings-select"
-          className="tw-w-[170px]"
-          wrapperClassName={styles.metricDropdown}
-        />
-      )
-    );
-  }
-
-  const uniqueTeams = [
-    _defaultTeam,
-    ...getUniqItems(
-      model.flatMap((x) => x.teamNodeRefs),
-      (x) => x.teamKey
-    ).map((x) => ({key: x.teamKey, name: x.teamName})),
-  ];
-  const {selectedVal: selectedTeam, valueIndex: teamValueIndex, handleChange: handleTeamChange} = useSelect({
-    uniqueItems: uniqueTeams,
-    defaultVal: _defaultTeam,
-  });
-
-  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
-    uniqueItems: uniqueIssueTypes,
-    defaultVal: defaultIssueType,
-  });
-
-  const filteredData = React.useMemo(
-    () =>
-      model.filter((w) => {
-        if (selectedTeam.key === _defaultTeam.key) {
-          return true;
-        } else {
-          const _teams = w.teamNodeRefs.map((t) => t.teamName);
-          return _teams.includes(selectedTeam.name);
-        }
-      })
-      .filter((w) => {
-        if (selectedIssueType === "all") {
-          return true;
-        } else {
-          return w.workItemType === selectedIssueType;
-        }
-      }),
-    [model, selectedTeam, selectedIssueType]
-  );
-  const teamDropdownElement = (
-    <SelectDropdown
-      title={"Team"}
-      value={uniqueTeams.map((x) => x.key).indexOf(selectedTeam.key)}
-      uniqueItems={uniqueTeams}
-      handleChange={handleTeamChange}
-      testId="flowmetrics-team-dropdown"
-      className="tw-w-36"
-      wrapperClassName={yAxisScale === "table" ? "tw-ml-4": "tw-mb-[5px]"}
-    />
-  );
+  const filteredData = model;
 
   const seriesData = React.useMemo(() => {
     const points = filteredData
