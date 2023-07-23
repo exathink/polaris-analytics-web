@@ -339,12 +339,12 @@ export function renderTags(tag_list) {
  * 
  * @param {string} tagSource 
  */
-export function parseTags(tagSource) {
+export function parseTags(tagSource = "") {
   const result = {
     component: [],
     custom_type: [],
     custom_tag: [],
-    tags: []
+    tags: [],
   };
 
   // split the tagSource by the ;; separator
