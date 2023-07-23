@@ -202,12 +202,12 @@ export const WorkItemStateTypeColor = {
 }
 
 export const WorkItemStateTypeColorClass = {
-  unmapped: (() => `tw-bg-[${WorkItemStateTypeColor.unmapped}] tw-bg-opacity-50`)(),
-  backlog: (() => `tw-bg-[${WorkItemStateTypeColor.backlog}] tw-bg-opacity-50`)(),
-  open: (() => `tw-bg-[${WorkItemStateTypeColor.open}] tw-bg-opacity-50`)(),
-  wip: (() => `tw-bg-[${WorkItemStateTypeColor.wip}] tw-bg-opacity-50`)(),
-  complete: (() => `tw-bg-[${WorkItemStateTypeColor.complete}] tw-bg-opacity-50`)(),
-  closed: (() => `tw-bg-[${WorkItemStateTypeColor.closed}] tw-bg-opacity-50`)()
+  unmapped: `tw-bg-[#8f9a8e] tw-bg-opacity-50`,
+  backlog: `tw-bg-[rgba(218,115,4,0.75)] tw-bg-opacity-50`,
+  open: `tw-bg-[#c4ab49] tw-bg-opacity-50`,
+  wip: `tw-bg-[rgba(47,154,50,0.75)] tw-bg-opacity-50`,
+  complete: `tw-bg-[#90d53f] tw-bg-opacity-50`,
+  closed: `tw-bg-[#7824b5] tw-bg-opacity-50`
 }
 /* ------------- */
 
