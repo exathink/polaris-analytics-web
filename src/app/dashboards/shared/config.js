@@ -187,6 +187,11 @@ export const ReleaseStatus = {
   UNASSIGNED: "unassigned",
 }
 
+/*
+The next two configs are coupled.
+If you add elements here make sure you review the impact on the next one.
+The latter is a tailwinds class that matches this config.
+ */
 export const WorkItemStateTypeColor = {
   unmapped: '#8f9a8e',
   backlog: 'rgba(218,115,4,0.75)',
@@ -195,6 +200,16 @@ export const WorkItemStateTypeColor = {
   complete: '#90d53f',
   closed: '#7824b5'
 }
+
+export const WorkItemStateTypeColorClass = {
+  unmapped: (() => `tw-bg-[${WorkItemStateTypeColor.unmapped}] tw-bg-opacity-50`)(),
+  backlog: (() => `tw-bg-[${WorkItemStateTypeColor.backlog}] tw-bg-opacity-50`)(),
+  open: (() => `tw-bg-[${WorkItemStateTypeColor.open}] tw-bg-opacity-50`)(),
+  wip: (() => `tw-bg-[${WorkItemStateTypeColor.wip}] tw-bg-opacity-50`)(),
+  complete: (() => `tw-bg-[${WorkItemStateTypeColor.complete}] tw-bg-opacity-50`)(),
+  closed: (() => `tw-bg-[${WorkItemStateTypeColor.closed}] tw-bg-opacity-50`)()
+}
+/* ------------- */
 
 export function workItemFlowTypeColor(flowType) {
   return flowType != null ? WorkItemFlowTypeColor[flowType] : WorkItemFlowTypeColor['unassigned']
@@ -206,14 +221,7 @@ export const WorkItemFlowTypeColor = {
   waiting: "rgb(88,108,140)",
 };
 
-export const WorkItemStateTypeColorClass = {
-  unmapped: `tw-bg-[${WorkItemStateTypeColor.unmapped}] tw-bg-opacity-50`,
-  backlog: `tw-bg-[${WorkItemStateTypeColor.backlog}] tw-bg-opacity-50`,
-  open: `tw-bg-[${WorkItemStateTypeColor.open}] tw-bg-opacity-50`,
-  wip: `tw-bg-[${WorkItemStateTypeColor.wip}] tw-bg-opacity-50`,
-  complete: `tw-bg-[${WorkItemStateTypeColor.complete}] tw-bg-opacity-50`,
-  closed: `tw-bg-[${WorkItemStateTypeColor.closed}] tw-bg-opacity-50`
-}
+
 
 export const PullRequestStateTypeColor = {
   unmapped: '#8f9a8e',
