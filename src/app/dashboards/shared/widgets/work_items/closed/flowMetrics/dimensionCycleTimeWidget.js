@@ -8,6 +8,7 @@ import {useQueryDimensionPullRequestMetricsTrends} from "../../../../../projects
 export const DimensionCycleTimeWidget = ({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   view,
   latestWorkItemEvent,
@@ -25,6 +26,7 @@ export const DimensionCycleTimeWidget = ({
   const {loading, error, data} = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
+    tags,
     leadTimeTarget,
     cycleTimeTarget,
     leadTimeTargetPercentile: leadTimeConfidenceTarget,

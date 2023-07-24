@@ -8,6 +8,7 @@ import {CadenceCardView} from "./throughputViews";
 export const CadenceCardWidget = ({
   dimension,
   instanceKey,
+  tags,
   displayType,
   flowAnalysisPeriod,
   targetPercentile,
@@ -19,6 +20,7 @@ export const CadenceCardWidget = ({
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
+    tags,
     days: flowAnalysisPeriod,
     measurementWindow: flowAnalysisPeriod,
     samplingFrequency: flowAnalysisPeriod,
