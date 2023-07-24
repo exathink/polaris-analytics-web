@@ -70,7 +70,12 @@ export function CardDetailsView({data, dimension, view, context, workItemTypeFil
           supportsFilterOnCard={supportsFilterOnCard}
           specsOnly={specsOnly}
           paginationOptions={paginationOptions}
-          onGridReady={defaultOnGridReady}
+          onGridReady={(params) => {
+            defaultOnGridReady(params);
+            if (workItemTypeFilter) {
+              params.api.setFilterModel({workItemType: {values: [workItemTypeFilter]}});
+            }
+          }}
         />
       </div>
       <CardInspectorWithDrawer
