@@ -10,6 +10,7 @@ const dashboard_id = "dashboards.trends.projects.throughput.detail";
 export const ThroughputDetailDashboard = ({
   dimension,
   instanceKey,
+  tags,
   flowAnalysisPeriod,
   trendAnalysisPeriod,
   latestCommit,
@@ -35,6 +36,7 @@ export const ThroughputDetailDashboard = ({
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
+              tags={tags}
               displayBag={{displayType: "cardAdvanced", metric: "volume"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
@@ -58,6 +60,7 @@ export const ThroughputDetailDashboard = ({
             <FlowMetricsTrendsWidget
               dimension="project"
               instanceKey={instanceKey}
+              tags={tags}
               displayBag={{displayType: "cardAdvanced", metric: "throughput", detailsView: null}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
@@ -81,6 +84,7 @@ export const ThroughputDetailDashboard = ({
             <CadenceCardWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              tags={tags}
               displayType="cardAdvanced"
               flowAnalysisPeriod={flowAnalysisPeriod}
               latestCommit={latestCommit}
@@ -102,6 +106,7 @@ export const ThroughputDetailDashboard = ({
             <ThroughputTrendsWidget
               dimension={dimension}
               instanceKey={instanceKey}
+              tags={tags}
               days={flowAnalysisPeriod}
               measurementWindow={1}
               samplingFrequency={1}

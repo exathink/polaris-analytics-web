@@ -7,6 +7,7 @@ import {DimensionCycleTimeHistogramView} from "./dimensionDeliveryCyclesFlowMetr
 export const DimensionCycleTimeHistogramWidget = ({
   dimension,
   instanceKey,
+  tags,
   specsOnly,
   latestWorkItemEvent,
   days,
@@ -17,6 +18,7 @@ export const DimensionCycleTimeHistogramWidget = ({
   const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
+    tags,
     days: days,
     defectsOnly,
     specsOnly,

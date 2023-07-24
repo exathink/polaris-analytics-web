@@ -7,6 +7,7 @@ import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews"
 export function FlowMetricsView({
   data,
   dimension,
+  tags,
   instanceKey,
   displayBag,
   flowAnalysisPeriod,
@@ -29,6 +30,7 @@ export function FlowMetricsView({
         <ThroughputDetailDashboard
           dimension={dimension}
           instanceKey={instanceKey}
+          tags={tags}
           flowAnalysisPeriod={flowAnalysisPeriod}
           trendAnalysisPeriod={trendAnalysisPeriod}
           latestCommit={latestCommit}
@@ -42,6 +44,7 @@ export function FlowMetricsView({
         <ThroughputCardView
           data={data}
           dimension={dimension}
+          tags={tags}
           instanceKey={instanceKey}
           displayType={displayType}
           displayProps={{iconsShiftLeft, ...displayProps}}
@@ -74,6 +77,7 @@ export function FlowMetricsView({
               <ThroughputDetailDashboard
                 dimension={dimension}
                 instanceKey={instanceKey}
+                tags={tags}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 trendAnalysisPeriod={trendAnalysisPeriod}
                 latestCommit={latestCommit}
@@ -113,6 +117,7 @@ export function FlowMetricsView({
       <CycleTimeCardView
         data={data}
         dimension={dimension}
+        tags={tags}
         instanceKey={instanceKey}
         displayType={displayType}
         displayProps={displayProps}
