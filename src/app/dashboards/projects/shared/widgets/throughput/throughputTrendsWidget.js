@@ -8,6 +8,7 @@ import {ThroughputTrendsView} from "./throughputViews";
 export function ThroughputTrendsWidget({
   dimension,
   instanceKey,
+  tags,
   days,
   measurementWindow,
   samplingFrequency,
@@ -24,6 +25,7 @@ export function ThroughputTrendsWidget({
     dimension,
     instanceKey,
     days: days,
+    tags:tags,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
     targetPercentile,

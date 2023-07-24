@@ -49,6 +49,7 @@ export const FlowMetricsTrendsWidget = ({
     <FlowMetricsView
       data={data}
       dimension={dimension}
+      tags={tags}
       instanceKey={instanceKey}
       displayBag={displayBag}
       flowAnalysisPeriod={flowAnalysisPeriod}
