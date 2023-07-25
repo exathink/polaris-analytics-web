@@ -204,6 +204,8 @@ export const FILTERS = {
   QUADRANT_PANEL: "quadrantpanel",
   QUADRANT: "quadrant",
   CYCLETIME: "cycleTime",
+  LATENCY: "latency",
+  EFFORT: "effort",
   NAME: "name",
   STATE: "state",
   CATEGORY: "category",
@@ -239,7 +241,13 @@ export let filterFns = {
   },
   [FILTERS.NAME]: (w, [filterVal]) => {
     const re = new RegExp(filterVal, "i");
-    return w.name.match(re);
+    return w.name?.match?.(re) || w.displayId?.match?.(re) || w.epicName?.match?.(re);
+  },
+  [FILTERS.LATENCY]: (w, [filter, filterTo]) => {
+    return w.latency >= filter && w.latency <= filterTo;
+  },
+  [FILTERS.EFFORT]: (w, [filter, filterTo]) => {
+    return w.effort >= filter && w.effort <= filterTo;
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
@@ -271,7 +279,7 @@ export let filterFns = {
  */
 export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
-  const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION) ?? [];
+  const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION)?.value ?? [];
 
   if (interaction === "histogram" || interaction === "zoom_selection") {
     return secondaryData.selectedChartData;
@@ -286,7 +294,7 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   initData.forEach((item) => {
     // apply all filters
     const allFiltersPassed = remainingFilters.every((filterKey) => {
-      const filterValues = appliedFilters.get(filterKey);
+      const filterValues = appliedFilters.get(filterKey)?.value;
       return filterFns[filterKey](item, filterValues);
     });
 
@@ -306,6 +314,6 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
  * @returns any
  */
 export function getFilterValue(appliedFilters, filterKey) {
-  const filterValues = appliedFilters.get(filterKey) ?? [];
+  const filterValues = appliedFilters.get(filterKey)?.value ?? [];
   return filterValues;
 }

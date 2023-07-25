@@ -99,11 +99,11 @@ export const DimensionCycleTimeLatencyDetailView = ({
     }
     if (eventType === EVENT_TYPES.ZOOM_SELECTION) {
       setAppliedFilters(
-        (prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["zoom_selection", {selectedChartData: items}]))
+        (prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, {value: ["zoom_selection", {selectedChartData: items}]}))
       );
     }
     if (eventType === EVENT_TYPES.RESET_ZOOM_SELECTION) {
-      setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["zoom_reset_selection"])));
+      setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, {value: ["zoom_reset_selection"]})));
     }
   }
 
@@ -113,6 +113,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     gridRef.current.api.setFilterModel(null);
 
     updateWipChartType("queue");
+    setEventSource("init");
     // reset chart components state
     resetComponentState();
   }
@@ -200,8 +201,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
         setAppliedFilters((prev) => {
           return new Map(
             prev
-              .set(FILTERS.CATEGORY, ["engineering"])
-              .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+              .set(FILTERS.CATEGORY, {value: ["engineering"]})
+              .set(FILTERS.CURRENT_INTERACTION, {value: ["histogram", {histogramBucket: category, selectedChartData: bucket}]})
           );
         });
         updateWipChartType("motion");
@@ -230,8 +231,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
         setAppliedFilters((prev) => {
           return new Map(
             prev
-              .set(FILTERS.CATEGORY, ["delivery"])
-              .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+              .set(FILTERS.CATEGORY, {value: ["delivery"]})
+              .set(FILTERS.CURRENT_INTERACTION, {value: ["histogram", {histogramBucket: category, selectedChartData: bucket}]})
           );
         });
         updateWipChartType("motion");
@@ -286,9 +287,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
           setAppliedFilters((prev) => {
             return new Map(
               prev
-                .set(FILTERS.QUADRANT_PANEL, [quadrant])
-                .set(FILTERS.CATEGORY, ["engineering"])
-                .set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
+                .set(FILTERS.QUADRANT_PANEL, {value: [quadrant]})
+                .set(FILTERS.CATEGORY, {value: ["engineering"]})
+                .set(FILTERS.CURRENT_INTERACTION, {value: ["quadrant"]})
             );
           });
         }
@@ -312,9 +313,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
           setAppliedFilters((prev) => {
             return new Map(
               prev
-                .set(FILTERS.QUADRANT_PANEL, [quadrant])
-                .set(FILTERS.CATEGORY, ["delivery"])
-                .set(FILTERS.CURRENT_INTERACTION, ["quadrant"])
+                .set(FILTERS.QUADRANT_PANEL, {value: [quadrant]})
+                .set(FILTERS.CATEGORY, {value: ["delivery"]})
+                .set(FILTERS.CURRENT_INTERACTION, {value: ["quadrant"]})
             );
           });
         }
@@ -367,9 +368,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
             setAppliedFilters((prev) => {
               return new Map(
                 prev
-                  .set(FILTERS.CATEGORY, ["engineering"])
-                  .set(FILTERS.CURRENT_INTERACTION, ["queuesize"])
-                  .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
+                  .set(FILTERS.CATEGORY, {value: ["engineering"]})
+                  .set(FILTERS.CURRENT_INTERACTION, {value: ["queuesize"]})
+                  .set(FILTERS.STATE, {value: [{value: obj.options.name, label: obj.options.name}]})
               );
             });
             updateWipChartType("age");
@@ -387,9 +388,9 @@ export const DimensionCycleTimeLatencyDetailView = ({
             setAppliedFilters((prev) => {
               return new Map(
                 prev
-                  .set(FILTERS.CATEGORY, ["delivery"])
-                  .set(FILTERS.CURRENT_INTERACTION, ["queuesize"])
-                  .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
+                  .set(FILTERS.CATEGORY, {value: ["delivery"]})
+                  .set(FILTERS.CURRENT_INTERACTION, {value: ["queuesize"]})
+                  .set(FILTERS.STATE, {value: [{value: obj.options.name, label: obj.options.name}]})
               );
             });
             updateWipChartType("age");
@@ -517,7 +518,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   prev.delete(FILTERS.CURRENT_INTERACTION);
                   return new Map(prev);
                 }
-                return new Map(prev.set(FILTERS.WORK_STREAM, [item]).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                return new Map(prev.set(FILTERS.WORK_STREAM, {value: [item], source: "dropdown"}));
               });
             }}
             selectedValue={selectedWorkStream}
@@ -537,7 +538,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   prev.delete(FILTERS.CURRENT_INTERACTION);
                   return new Map(prev);
                 }
-                return new Map(prev.set(FILTERS.TEAM, [item]).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                return new Map(prev.set(FILTERS.TEAM, {value: [item], source: "dropdown"}));
               });
             }}
             className="tw-w-28"
@@ -555,7 +556,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                   prev.delete(FILTERS.CURRENT_INTERACTION);
                   return new Map(prev);
                 }
-                return new Map(prev.set(FILTERS.ISSUE_TYPE, [item]).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                return new Map(prev.set(FILTERS.ISSUE_TYPE, {value: [item], source: "dropdown"}));
               });
             }}
             className="tw-w-28"
@@ -571,7 +572,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 setAppliedFilters((prev) => {
                   if (values.length > 0) {
                     prev.delete(FILTERS.CATEGORY);
-                    return new Map(prev.set(FILTERS.STATE, values).set(FILTERS.CURRENT_INTERACTION, ["dropdown"]));
+                    return new Map(prev.set(FILTERS.STATE, {value: values, source: "dropdown"}));
                   } else {
                     prev.delete(FILTERS.STATE);
                     prev.delete(FILTERS.CATEGORY);
