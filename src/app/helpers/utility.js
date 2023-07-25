@@ -530,3 +530,11 @@ export function getSingularPlural(count, unit) {
     return `${unit}s`
   }
 }
+
+/**
+ * 
+ * @param {Map} map 
+ */
+export function getLastItemInMap(map) {
+  return Array.from(map)[map.size - 1];
+}
