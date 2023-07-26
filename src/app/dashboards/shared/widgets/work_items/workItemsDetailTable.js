@@ -15,6 +15,7 @@ import {
   TagsCol,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {useLocalStorage} from "../../../../helpers/hooksUtil";
 import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
@@ -65,6 +66,7 @@ export function useWorkItemsDetailTableColumns({
   selectedMetric,
   workTrackingIntegrationType,
   supportsFilterOnCard,
+  hidden_cols
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
 
@@ -132,6 +134,7 @@ export function useWorkItemsDetailTableColumns({
           {
             headerName: "Component",
             field: "tags",
+            colId: "component",
             filter: MultiCheckboxFilter,
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
@@ -149,11 +152,12 @@ export function useWorkItemsDetailTableColumns({
             cellRenderer: React.memo(CustomComponentCol),
             autoHeight: true,
             wrapText: true,
-            hide: true,
+            hide: !hidden_cols.includes("component"),
           },
           {
             headerName: "Custom Type",
             field: "tags",
+            colId: "custom_type",
             filter: MultiCheckboxFilter,
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
@@ -169,11 +173,12 @@ export function useWorkItemsDetailTableColumns({
             },
             menuTabs: MenuTabs,
             cellRenderer: React.memo(CustomTypeCol),
-            hide: true,
+            hide: !hidden_cols.includes("custom_type"),
           },
           {
             headerName: "Tags",
             field: "tags",
+            colId: "custom_tags",
             filter: MultiCheckboxFilter,
             filterValueGetter: (params) => {
               const field = params.column.getColDef().field;
@@ -189,7 +194,7 @@ export function useWorkItemsDetailTableColumns({
             },
             menuTabs: MenuTabs,
             cellRenderer: React.memo(TagsCol),
-            hide: true,
+            hide: !hidden_cols.includes("custom_tags"),
           },
         ]
       : [];
@@ -205,7 +210,7 @@ export function useWorkItemsDetailTableColumns({
         maxNumConditions: 1,
       },
       menuTabs: MenuTabs,
-      hide: true,
+      hide: !hidden_cols.includes("displayId"),
     },
     {
       field: "epicName",
@@ -217,7 +222,7 @@ export function useWorkItemsDetailTableColumns({
         maxNumConditions: 1,
       },
       menuTabs: MenuTabs,
-      hide: true,
+      hide: !hidden_cols.includes("epicName"),
     },
     {
       headerName: "Workstream",
@@ -229,7 +234,7 @@ export function useWorkItemsDetailTableColumns({
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
-      hide: true,
+      hide: !hidden_cols.includes("workItemsSourceName"),
     },
     {
       field: "teams",
@@ -243,7 +248,7 @@ export function useWorkItemsDetailTableColumns({
         },
       },
       menuTabs: MenuTabs,
-      hide: "true",
+      hide: !hidden_cols.includes("teams"),
     },
     {
       field: "url",
@@ -255,7 +260,7 @@ export function useWorkItemsDetailTableColumns({
         maxNumConditions: 1,
       },
       menuTabs: MenuTabs,
-      hide: "true",
+      hide: !hidden_cols.includes("url"),
       cellClass: "hyperlinks",
     },
     ...optionalCustomCols,
@@ -355,6 +360,7 @@ export const WorkItemsDetailTable = ({
   onGridReady
 }) => {
   const intl = useIntl();
+  const [hidden_cols, setHiddenCols] = useLocalStorage("WorkItemsDetailTable_hidden_cols", []);
 
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -380,7 +386,8 @@ export const WorkItemsDetailTable = ({
     selectedFilter,
     selectedMetric,
     supportsFilterOnCard,
-    workTrackingIntegrationType
+    workTrackingIntegrationType,
+    hidden_cols
   });
 
   const _defaultColDef = useDefaultColDef();
@@ -419,7 +426,14 @@ export const WorkItemsDetailTable = ({
       columnDefs={columns}
       rowData={dataSource}
       statusBar={statusBar}
-      onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])}
+      onSortChanged={getOnSortChanged([
+        "cycleTimeOrLatency",
+        "leadTimeOrAge",
+        "effort",
+        "duration",
+        "latency",
+        "delivery",
+      ])}
       enableRangeSelection={true}
       defaultExcelExportParams={{
         fileName: "Work_In_Progress",
@@ -452,6 +466,17 @@ export const WorkItemsDetailTable = ({
       testId="work-items-detail-table"
       onGridReady={onGridReady}
       defaultColDef={defaultColDef}
+      onColumnVisible={(params) => {
+        const colId = params.column.getColId();
+        if (params.visible) {
+          if (!hidden_cols.includes(colId)) {
+            setHiddenCols([...hidden_cols, colId]);
+          }
+        } else {
+          const remainingCols = hidden_cols.filter((x) => x !== colId);
+          setHiddenCols(remainingCols);
+        }
+      }}
     />
   );
 };
