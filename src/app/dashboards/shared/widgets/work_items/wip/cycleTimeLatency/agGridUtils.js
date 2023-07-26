@@ -175,13 +175,13 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
 
 function renderFilterItems({filters, prefixCls, filteredKeys}) {
   return filters.map((filter, index) => {
-    const key = String(filter.value);
+    const key = filter.value !== undefined ? String(filter.value) : index;
 
     const Component = Checkbox;
 
     return (
-      <Menu.Item key={filter.value !== undefined ? key : index} className="!tw-leading-3">
-        <Component checked={filteredKeys.includes(key)} />
+      <Menu.Item key={key} className="!tw-leading-3">
+        <Component checked={filteredKeys.includes(filter.value)} />
         <span className="tw-ml-2 tw-textXs">{filter.text}</span>
       </Menu.Item>
     );
