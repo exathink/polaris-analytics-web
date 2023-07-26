@@ -162,8 +162,11 @@ export function useWorkItemsDetailTableColumns({
               return customTypeTags;
             },
             filterParams: {
-              values: filters.customTypeTags.map((b) => ({text: b, value: b})),
+              values: ["(Blanks)", ...filters.customTypeTags].map((b) => ({text: b, value: b})),
               onFilter: ({value, record}) => {
+                if (value==="(Blanks)" && parseTags(record.tags).custom_type.length===0) {
+                  return true;
+                }
                 return parseTags(record.tags).custom_type.includes(value);
               },
             },
