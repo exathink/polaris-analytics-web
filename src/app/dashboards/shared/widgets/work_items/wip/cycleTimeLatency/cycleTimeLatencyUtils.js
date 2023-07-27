@@ -240,11 +240,27 @@ export let filterFns = {
     const re = new RegExp(filterVal, "i");
     return w.name?.match?.(re) || w.displayId?.match?.(re) || w.epicName?.match?.(re);
   },
-  [FILTERS.LATENCY]: (w, [filter, filterTo]) => {
-    return w.latency > filter && w.latency <= filterTo;
+  [FILTERS.LATENCY]: (w, [filter, filterTo, type]) => {
+    if (type === "inRange") {
+      return w.latency > filter && w.latency <= filterTo;
+    }
+    if (type === "lessThanOrEqual") {
+      return w.latency <= filter;
+    }
+    if (type === "greaterThanOrEqual") {
+      return w.latency >= filter
+    }
   },
-  [FILTERS.EFFORT]: (w, [filter, filterTo]) => {
-    return w.effort > filter && w.effort <= filterTo;
+  [FILTERS.EFFORT]: (w, [filter, filterTo, type]) => {
+    if (type === "inRange") {
+      return w.effort > filter && w.effort <= filterTo;
+    }
+    if (type === "lessThanOrEqual") {
+      return w.effort <= filter;
+    }
+    if (type === "greaterThanOrEqual") {
+      return w.effort >= filter
+    }
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
