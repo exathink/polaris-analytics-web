@@ -241,8 +241,12 @@ export let filterFns = {
     return w.name?.match?.(re) || w.displayId?.match?.(re) || w.epicName?.match?.(re);
   },
   [FILTERS.LATENCY]: (w, [filter, filterTo, type]) => {
+    if (w.latency == null) {
+      return false;
+    }
+
     if (type === "inRange") {
-      return w.latency > filter && w.latency <= filterTo;
+      return w.latency >= filter && w.latency <= filterTo;
     }
     if (type === "lessThanOrEqual") {
       return w.latency <= filter;
@@ -252,8 +256,12 @@ export let filterFns = {
     }
   },
   [FILTERS.EFFORT]: (w, [filter, filterTo, type]) => {
+    if (w.effort == null) {
+      return false;
+    }
+
     if (type === "inRange") {
-      return w.effort > filter && w.effort <= filterTo;
+      return w.effort >= filter && w.effort <= filterTo;
     }
     if (type === "lessThanOrEqual") {
       return w.effort <= filter;
