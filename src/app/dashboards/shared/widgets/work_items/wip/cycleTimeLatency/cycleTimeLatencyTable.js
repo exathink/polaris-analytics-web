@@ -152,7 +152,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       },
       {
         field: "latency",
-        headerName: "Latency",
+        headerName: "Last Moved",
         cellRenderer: TextWithUom,
         comparator: SORTER.number_compare,
         filter: "agNumberColumnFilter",
