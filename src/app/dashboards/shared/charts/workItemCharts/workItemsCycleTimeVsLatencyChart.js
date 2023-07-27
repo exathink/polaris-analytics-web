@@ -196,7 +196,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           }
         },
         title: {
-          text: "Latency in Days"
+          text: "Last Moved in Days"
         },
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
