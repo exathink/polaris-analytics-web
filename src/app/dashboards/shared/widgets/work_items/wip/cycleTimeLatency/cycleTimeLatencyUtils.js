@@ -244,10 +244,10 @@ export let filterFns = {
     return w.name?.match?.(re) || w.displayId?.match?.(re) || w.epicName?.match?.(re);
   },
   [FILTERS.LATENCY]: (w, [filter, filterTo]) => {
-    return w.latency >= filter && w.latency <= filterTo;
+    return w.latency > filter && w.latency <= filterTo;
   },
   [FILTERS.EFFORT]: (w, [filter, filterTo]) => {
-    return w.effort >= filter && w.effort <= filterTo;
+    return w.effort > filter && w.effort <= filterTo;
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
