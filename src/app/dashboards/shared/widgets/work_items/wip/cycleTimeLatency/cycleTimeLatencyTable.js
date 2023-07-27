@@ -293,7 +293,17 @@ export const CycleTimeLatencyTable = React.forwardRef(
             }, {});
 
           const filtersMap = new Map(Object.entries(cleanFilters));
-          callBacks.setAppliedFilters((prev) => new Map([...prev, ...filtersMap]));
+          callBacks.setAppliedFilters((prev) => {
+            // delete all table related filters here
+            // as they are applied from filterModel
+            for (const [key, val] of prev) {
+              if (val.source === "table") {
+                prev.delete(key);
+              }
+            }
+
+            return new Map([...prev, ...filtersMap]);
+          });
         }
       },
       [callBacks]
