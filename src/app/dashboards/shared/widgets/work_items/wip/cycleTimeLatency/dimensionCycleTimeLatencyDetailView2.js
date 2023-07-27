@@ -65,7 +65,6 @@ export const DimensionCycleTimeLatencyDetailView = ({
   // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, FILTERS.QUADRANT_PANEL);
   const [chartCategory] = getFilterValue(appliedFilters, FILTERS.CATEGORY);
-  const [currentInteraction, secondaryData] = getFilterValue(appliedFilters, FILTERS.CURRENT_INTERACTION);
 
   // dropdown filters state
   const [selectedWorkStream = defaultOptionType] = getFilterValue(appliedFilters, FILTERS.WORK_STREAM);
@@ -334,8 +333,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     if (appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket) {
       selectedFilter = appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket
     }
-    if (currentInteraction === "cycleTime") {
-      selectedFilter = appliedFilters.get(FILTERS.CYCLETIME);
+    if (appliedFilters.get(FILTERS.CYCLETIME)?.source === "table") {
+      selectedFilter = appliedFilters.get(FILTERS.CYCLETIME)?.value;
     }
     const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeClearClick} />;
 
@@ -350,7 +349,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       }
     }
 
-    if (currentInteraction === "cycleTime") {
+    if (appliedFilters.get(FILTERS.CYCLETIME)?.source === "table") {
       engineeringFilterElement = ageFilterElement;
       deliveryFilterElement = ageFilterElement;
     }
@@ -457,7 +456,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     </div>
   );
   if (ageLatencyFeatureFlag) {
-    if (currentInteraction === "histogram") {
+    if (appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket) {
       codingQuadrantSummaryElement = React.cloneElement(codingQuadrantSummaryElement, {
         workItems: latestData,
         onQuadrantClick: undefined,
