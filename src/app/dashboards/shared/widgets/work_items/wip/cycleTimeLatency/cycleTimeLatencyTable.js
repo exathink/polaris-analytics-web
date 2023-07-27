@@ -2,15 +2,14 @@ import React from "react";
 import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
   StateTypeCol,
 } from "../../../../../projects/shared/helper/renderers";
-import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
-import {COL_WIDTH_BOUNDARIES} from "./cycleTimeLatencyUtils";
+import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 
@@ -97,11 +96,6 @@ function getFilterValue(key, value) {
 const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters}) {
 
-  function testMetric(value, record, metric) {
-    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
-    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
-  }
-
   const columns = React.useMemo(
     () => [
       {field: "displayId", headerName: "ID", hide: true},
@@ -156,9 +150,9 @@ export function useCycleTimeLatencyTableColumns({filters}) {
         comparator: SORTER.number_compare,
         filter: MultiCheckboxFilter,
         filterParams: {
-          values: filters.categories.map((b) => ({text: b, value: b})),
+          values: categories.map((b) => ({text: b, value: b})),
           onFilter: ({value, record}) => {     
-            return testMetric(value, record, "cycleTime");
+            return doesPairWiseFilterPass({value, record, metric: "cycleTime"});
           },
         },
         menuTabs: MenuTabs,
@@ -236,8 +230,6 @@ export const CycleTimeLatencyTable = React.forwardRef(
     const intl = useIntl();
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
-    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
-    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 
     const dataSource = React.useMemo(
       () => getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget}),
@@ -245,7 +237,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const {columnDefs} = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData}
+      filters: {workItemTypes, stateTypes, quadrants, teams}
     });
 
     const statusBar = React.useMemo(() => {
