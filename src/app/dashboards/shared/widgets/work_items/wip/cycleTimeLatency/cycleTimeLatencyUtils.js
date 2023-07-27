@@ -211,6 +211,7 @@ export const FILTERS = {
   CATEGORY: "category",
   PRIMARY_CATEGORY: "primary_category",
   CURRENT_INTERACTION: "currentInteraction",
+  HISTOGRAM_BUCKET: "histogram_bucket"
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -253,6 +254,9 @@ export let filterFns = {
     (chartCategory === "engineering"
       ? engineeringStateTypes.indexOf(w.stateType) !== -1
       : deliveryStateTypes.indexOf(w.stateType) !== -1),
+  [FILTERS.HISTOGRAM_BUCKET]: (w, bucketRecords) => {
+    return bucketRecords.some(b => b.cycleTime === w.cycleTime);
+  }
 };
 
 /**

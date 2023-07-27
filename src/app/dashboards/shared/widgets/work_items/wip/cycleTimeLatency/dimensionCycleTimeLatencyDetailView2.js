@@ -129,6 +129,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   function handleAgeClearClick() {
     appliedFilters.delete(FILTERS.CYCLETIME);
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    appliedFilters.delete(FILTERS.HISTOGRAM_BUCKET);
     appliedFilters.delete(FILTERS.CATEGORY);
 
     // resets all filters of the ag-grid table
@@ -202,7 +203,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           return new Map(
             prev
               .set(FILTERS.CATEGORY, {value: ["engineering"]})
-              .set(FILTERS.CURRENT_INTERACTION, {value: ["histogram", {histogramBucket: category, selectedChartData: bucket}]})
+              .set(FILTERS.HISTOGRAM_BUCKET, {value: bucket, histogramBucket: category, source: "chart" })
           );
         });
         updateWipChartType("motion");
@@ -232,7 +233,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           return new Map(
             prev
               .set(FILTERS.CATEGORY, {value: ["delivery"]})
-              .set(FILTERS.CURRENT_INTERACTION, {value: ["histogram", {histogramBucket: category, selectedChartData: bucket}]})
+              .set(FILTERS.HISTOGRAM_BUCKET, {value: bucket, histogramBucket: category, source: "chart" })
           );
         });
         updateWipChartType("motion");
@@ -330,8 +331,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     const originalDeliveryChartElement = deliveryChartElement;
 
     let selectedFilter = "";
-    if (currentInteraction === "histogram") {
-      selectedFilter = secondaryData.histogramBucket;
+    if (appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket) {
+      selectedFilter = appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket
     }
     if (currentInteraction === "cycleTime") {
       selectedFilter = appliedFilters.get(FILTERS.CYCLETIME);
@@ -340,7 +341,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
     let engineeringFilterElement, deliveryFilterElement;
 
-    if (currentInteraction === "histogram") {
+    if (appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket) {
       if (chartCategory === "engineering") {
         engineeringFilterElement = ageFilterElement;
       }
