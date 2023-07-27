@@ -49,7 +49,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   // the UI and for non-closed we call this the latency.
   // The next two entries encapsulate this logic in metricsMeta
   latency: {
-    display: "Latency",
+    display: "Last Moved",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
