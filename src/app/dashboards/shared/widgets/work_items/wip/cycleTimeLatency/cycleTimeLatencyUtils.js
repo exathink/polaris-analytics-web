@@ -204,11 +204,14 @@ export const FILTERS = {
   QUADRANT_PANEL: "quadrantpanel",
   QUADRANT: "quadrant",
   CYCLETIME: "cycleTime",
+  LATENCY: "latency",
+  EFFORT: "effort",
   NAME: "name",
   STATE: "state",
   CATEGORY: "category",
   PRIMARY_CATEGORY: "primary_category",
   CURRENT_INTERACTION: "currentInteraction",
+  HISTOGRAM_BUCKET: "histogram_bucket"
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -229,17 +232,43 @@ export let filterFns = {
     return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
   },
   [FILTERS.CYCLETIME]: (w, filterVals) => {
-    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
-    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
-
     return filterVals.some((filterVal) => {
-      const [part1, part2] = allPairsData[categories.indexOf(filterVal)];
-      return Number(w["cycleTime"]) >= part1 && Number(w["cycleTime"]) < part2;
+      return doesPairWiseFilterPass({value: filterVal, record: w, metric: "cycleTime"});
     });
   },
   [FILTERS.NAME]: (w, [filterVal]) => {
     const re = new RegExp(filterVal, "i");
-    return w.name.match(re);
+    return w.name?.match?.(re) || w.displayId?.match?.(re) || w.epicName?.match?.(re);
+  },
+  [FILTERS.LATENCY]: (w, [filter, filterTo, type]) => {
+    if (w.latency == null) {
+      return false;
+    }
+
+    if (type === "inRange") {
+      return w.latency >= filter && w.latency <= filterTo;
+    }
+    if (type === "lessThanOrEqual") {
+      return w.latency <= filter;
+    }
+    if (type === "greaterThanOrEqual") {
+      return w.latency >= filter
+    }
+  },
+  [FILTERS.EFFORT]: (w, [filter, filterTo, type]) => {
+    if (w.effort == null) {
+      return false;
+    }
+
+    if (type === "inRange") {
+      return w.effort >= filter && w.effort <= filterTo;
+    }
+    if (type === "lessThanOrEqual") {
+      return w.effort <= filter;
+    }
+    if (type === "greaterThanOrEqual") {
+      return w.effort >= filter
+    }
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
@@ -249,6 +278,9 @@ export let filterFns = {
     (chartCategory === "engineering"
       ? engineeringStateTypes.indexOf(w.stateType) !== -1
       : deliveryStateTypes.indexOf(w.stateType) !== -1),
+  [FILTERS.HISTOGRAM_BUCKET]: (w, bucketRecords) => {
+    return bucketRecords.some(b => b.cycleTime === w.cycleTime);
+  }
 };
 
 /**
@@ -271,7 +303,7 @@ export let filterFns = {
  */
 export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
-  const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION) ?? [];
+  const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION)?.value ?? [];
 
   if (interaction === "histogram" || interaction === "zoom_selection") {
     return secondaryData.selectedChartData;
@@ -286,7 +318,7 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   initData.forEach((item) => {
     // apply all filters
     const allFiltersPassed = remainingFilters.every((filterKey) => {
-      const filterValues = appliedFilters.get(filterKey);
+      const filterValues = appliedFilters.get(filterKey)?.value;
       return filterFns[filterKey](item, filterValues);
     });
 
@@ -306,6 +338,13 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
  * @returns any
  */
 export function getFilterValue(appliedFilters, filterKey) {
-  const filterValues = appliedFilters.get(filterKey) ?? [];
+  const filterValues = appliedFilters.get(filterKey)?.value ?? [];
   return filterValues;
+}
+
+const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
+export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+export function doesPairWiseFilterPass({value, record, metric}) {
+  const [part1, part2] = allPairsData[categories.indexOf(value)];
+  return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
 }
