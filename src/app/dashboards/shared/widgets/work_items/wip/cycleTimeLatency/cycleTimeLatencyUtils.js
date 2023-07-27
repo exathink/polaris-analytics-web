@@ -231,12 +231,8 @@ export let filterFns = {
     return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
   },
   [FILTERS.CYCLETIME]: (w, filterVals) => {
-    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
-    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
-
     return filterVals.some((filterVal) => {
-      const [part1, part2] = allPairsData[categories.indexOf(filterVal)];
-      return Number(w["cycleTime"]) >= part1 && Number(w["cycleTime"]) < part2;
+      return doesPairWiseFilterPass({value: filterVal, record: w, metric: "cycleTime"});
     });
   },
   [FILTERS.NAME]: (w, [filterVal]) => {
@@ -316,4 +312,11 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
 export function getFilterValue(appliedFilters, filterKey) {
   const filterValues = appliedFilters.get(filterKey)?.value ?? [];
   return filterValues;
+}
+
+const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
+export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+export function doesPairWiseFilterPass({value, record, metric}) {
+  const [part1, part2] = allPairsData[categories.indexOf(value)];
+  return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
 }
