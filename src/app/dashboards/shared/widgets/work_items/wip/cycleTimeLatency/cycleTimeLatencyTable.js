@@ -13,18 +13,11 @@ import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 
-const getNumber = (num, intl) => {
-  return intl.formatNumber(num, {maximumFractionDigits: 2});
-};
 
 function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
   return data.map((item) => {
     return {
       ...item,
-      cycleTime: getNumber(item.cycleTime, intl),
-      latency: getNumber(item.latency, intl),
-      duration: getNumber(item.duration, intl),
-      effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
@@ -85,8 +78,8 @@ const valueAccessor = {
   cycleTime: (data) => data.values,
   quadrant: (data) => data.values,
   name: (data) => [data.filter],
-  latency: (data) => [data.filter, data.filterTo],
-  effort: (data) => [data.filter, data.filterTo],
+  latency: ({filter, filterTo, type}) => [filter, filterTo, type],
+  effort: ({filter, filterTo, type}) => [filter, filterTo, type],
 };
 
 function getFilterValue(key, value) {
@@ -167,6 +160,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
           maxNumConditions: 1,
           filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
           buttons: ["reset"],
+          inRangeInclusive: true
         },
         menuTabs: MenuTabs,
       },
@@ -179,6 +173,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
           maxNumConditions: 1,
           filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
           buttons: ["reset"],
+          inRangeInclusive: true
         },
         cellRendererParams: {
           uom: "FTE Days",
