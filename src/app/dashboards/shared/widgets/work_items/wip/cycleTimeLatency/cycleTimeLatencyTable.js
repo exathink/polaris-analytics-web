@@ -1,31 +1,23 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
   StateTypeCol,
 } from "../../../../../projects/shared/helper/renderers";
-import {allPairs, getHistogramCategories} from "../../../../../projects/shared/helper/utils";
-import {COL_WIDTH_BOUNDARIES, FILTERS} from "./cycleTimeLatencyUtils";
+import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 
-const getNumber = (num, intl) => {
-  return intl.formatNumber(num, {maximumFractionDigits: 2});
-};
 
 function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
   return data.map((item) => {
     return {
       ...item,
-      cycleTime: getNumber(item.cycleTime, intl),
-      latency: getNumber(item.latency, intl),
-      duration: getNumber(item.duration, intl),
-      effort: getNumber(item.effort, intl),
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       latestTransitionDate: item.workItemStateDetails.currentStateTransition.eventDate,
@@ -86,6 +78,8 @@ const valueAccessor = {
   cycleTime: (data) => data.values,
   quadrant: (data) => data.values,
   name: (data) => [data.filter],
+  latency: ({filter, filterTo, type}) => [filter, filterTo, type],
+  effort: ({filter, filterTo, type}) => [filter, filterTo, type],
 };
 
 function getFilterValue(key, value) {
@@ -94,11 +88,6 @@ function getFilterValue(key, value) {
 
 const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters}) {
-
-  function testMetric(value, record, metric) {
-    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
-    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
-  }
 
   const columns = React.useMemo(
     () => [
@@ -154,9 +143,9 @@ export function useCycleTimeLatencyTableColumns({filters}) {
         comparator: SORTER.number_compare,
         filter: MultiCheckboxFilter,
         filterParams: {
-          values: filters.categories.map((b) => ({text: b, value: b})),
+          values: categories.map((b) => ({text: b, value: b})),
           onFilter: ({value, record}) => {     
-            return testMetric(value, record, "cycleTime");
+            return doesPairWiseFilterPass({value, record, metric: "cycleTime"});
           },
         },
         menuTabs: MenuTabs,
@@ -171,6 +160,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
           maxNumConditions: 1,
           filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
           buttons: ["reset"],
+          inRangeInclusive: true
         },
         menuTabs: MenuTabs,
       },
@@ -183,6 +173,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
           maxNumConditions: 1,
           filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
           buttons: ["reset"],
+          inRangeInclusive: true
         },
         cellRendererParams: {
           uom: "FTE Days",
@@ -193,7 +184,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       {
         field: "latestCommitDisplay",
         headerName: "Latest Commit",
-        cellRenderer: TextWithUom,
+        cellRenderer: TextWithStyle,
         cellRendererParams: {
           uom: "",
         },
@@ -228,15 +219,12 @@ function getUniqueItems(data) {
   };
 }
 
-const COLS_TO_SYNC = ["quadrant", "cycleTime"];
 
 export const CycleTimeLatencyTable = React.forwardRef(
   ({tableData, callBacks, cycleTimeTarget, latencyTarget, specsOnly}, gridRef) => {
     const intl = useIntl();
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
-    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
-    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 
     const dataSource = React.useMemo(
       () => getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget}),
@@ -244,7 +232,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const {columnDefs} = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams, categories, allPairsData}
+      filters: {workItemTypes, stateTypes, quadrants, teams}
     });
 
     const statusBar = React.useMemo(() => {
@@ -267,50 +255,51 @@ export const CycleTimeLatencyTable = React.forwardRef(
       };
     }, []);
 
+    const handleFilterOpen = React.useCallback(
+      params => {
+        if (params.source==="COLUMN_MENU") {
+          callBacks.setEventSource("table");
+        }
+      },
+      [callBacks]
+    );
+
     const handleFilterChange = React.useCallback(
       (params) => {
-
         const filterModel = params.api.getFilterModel();
 
-        if (params.columns) {
-          // get latest applied filter
-          const [currentCol] = params.columns;
-          if (currentCol) {
-            if (currentCol.getColId() === "cycleTime" && filterModel["cycleTime"] != null) {
-              callBacks.setEventSource("table");
-              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["cycleTime"])));
-              callBacks.setWipChartType("age");
+        if (isObjectEmpty(filterModel)) {
+          callBacks.setAppliedFilters((prev) => {
+            for (const [key, val] of prev) {
+              if (val.source === "table") {
+                prev.delete(key);
+              }
             }
 
-            if (currentCol.getColId() === "quadrant" && filterModel["quadrant"] != null) {
-              callBacks.setEventSource("table");
-              callBacks.setAppliedFilters((prev) => new Map(prev.set(FILTERS.CURRENT_INTERACTION, ["quadrant"])));
-            }
-          }
-        }
-
-
-        // remove keys which have null values (eg: {filterKey1: null})
-        const cleanFilters = Object.entries(filterModel).reduce((acc, [itemKey, itemVal]) => {
-          if (itemVal != null && COLS_TO_SYNC.includes(itemKey)) {
-            acc[itemKey] = getFilterValue(itemKey, itemVal);
-          }
-          return acc;
-        }, {});
-
-        const filtersMap = new Map(Object.entries(cleanFilters));
-
-        callBacks.setAppliedFilters((prev) => {
-          if (filtersMap.size === 0) {
-            prev.delete(FILTERS.QUADRANT);
-            prev.delete(FILTERS.CYCLETIME);
-            prev.delete(FILTERS.NAME);
-            prev.delete(FILTERS.CURRENT_INTERACTION);
             return new Map(prev);
-          }
+          });
+        } else {
+          // remove keys which have null values (eg: {filterKey1: null})
+          const cleanFilters = Object.entries(filterModel)
+            .filter(([_itemKey, itemVal]) => itemVal != null)
+            .reduce((acc, [itemKey, itemVal]) => {
+              acc[itemKey] = {value: getFilterValue(itemKey, itemVal), source: "table"};
+              return acc;
+            }, {});
 
-          return new Map([...prev, ...filtersMap]);
-        });
+          const filtersMap = new Map(Object.entries(cleanFilters));
+          callBacks.setAppliedFilters((prev) => {
+            // delete all table related filters here
+            // as they are applied from filterModel
+            for (const [key, val] of prev) {
+              if (val.source === "table") {
+                prev.delete(key);
+              }
+            }
+
+            return new Map([...prev, ...filtersMap]);
+          });
+        }
       },
       [callBacks]
     );
@@ -349,6 +338,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
           }
         }}
         onFilterChanged={handleFilterChange}
+        onFilterOpened={handleFilterOpen}
       />
     );
   }
