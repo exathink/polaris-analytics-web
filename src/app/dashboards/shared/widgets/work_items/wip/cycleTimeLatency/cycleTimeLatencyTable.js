@@ -1,6 +1,6 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {AgGridStripeTable, SORTER, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {categories, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
@@ -184,7 +184,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
       {
         field: "latestCommitDisplay",
         headerName: "Latest Commit",
-        cellRenderer: TextWithUom,
+        cellRenderer: TextWithStyle,
         cellRendererParams: {
           uom: "",
         },
