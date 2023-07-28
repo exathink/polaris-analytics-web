@@ -25,11 +25,11 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
     return Quadrants.latency;
   }
 
-  if (cycleTime > cycleTimeTarget && latency <= latencyTarget) {
+  if (cycleTime > cycleTimeTarget && latency <= cycleTimeTarget) {
     return Quadrants.age;
   }
 
-  if (cycleTime > cycleTimeTarget && latency > latencyTarget) {
+  if (cycleTime > cycleTimeTarget && latency > cycleTimeTarget) {
     return Quadrants.critical;
   }
 };
