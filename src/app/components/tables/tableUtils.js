@@ -397,6 +397,33 @@ export function TagsCol({value}) {
   return renderTags(tags_list);
 }
 
+export const getHandleColumnVisible = (hidden_cols, setHiddenCols) => (params) => {
+  if (params.column != null && params.column.getUserProvidedColDef().hide != null) {
+    const colId = params.column.getColId();
+    if (params.visible) {
+      if (!hidden_cols.includes(colId)) {
+        setHiddenCols([...hidden_cols, colId]);
+      }
+    } else {
+      const remainingCols = hidden_cols.filter((x) => x !== colId);
+      setHiddenCols(remainingCols);
+    }
+  }
+
+  // if we check off all-checkbox
+  if (params.column == null && params.source === "columnMenu" && params.visible === false) {
+    setHiddenCols([]);
+  }
+  // if we check on all-checkbox
+  if (params.column == null && params.source === "columnMenu" && params.visible === true) {
+    setHiddenCols(
+      params.columnApi
+        .getColumns()
+        .filter((c) => c.getUserProvidedColDef().hide != null)
+        .map((c) => c.getColId())
+    );
+  }
+};
 
   /**
    * columns for which we need to show aggregation component
