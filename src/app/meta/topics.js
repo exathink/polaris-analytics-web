@@ -79,7 +79,7 @@ export const Topics = {
   },
   valueBook: {
     name: 'valueBook',
-    display: () => (<FormattedMessage id='topics.valueBook' defaultMessage="Value Book"/>),
+    display: () => (<FormattedMessage id='topics.valueBook' defaultMessage="Alignment"/>),
     icon: 'ion-social-usd'
   },
   contributors: {
