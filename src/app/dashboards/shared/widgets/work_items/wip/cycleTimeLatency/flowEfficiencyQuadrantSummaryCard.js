@@ -1,18 +1,18 @@
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
-import {useFlowEfficiency} from "../../clientSideFlowMetrics";
+import { useFlowEfficiency, useMotionEfficiency } from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
 export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
-  const flowEfficiency = useFlowEfficiency(workItems, stateTypes);
+  const motionEfficiency = useMotionEfficiency(workItems, stateTypes);
 
   return (
     <PlainCard
-      title="Flow Efficiency"
+      title="Motion Efficiency"
       className={className}
-      value={flowEfficiency}
-      info={{title: "Flow Efficiency"}}
+      value={motionEfficiency}
+      info={{title: "Motion Efficiency"}}
       detailsView={{
         title: (
           <div className="tw-text-lg tw-text-gray-300">
