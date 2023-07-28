@@ -345,7 +345,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
 
   return (
     <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-h-full tw-grid-rows-[auto_1fr]">
-      <MetricsGroupTitle>Work in Progress</MetricsGroupTitle>
+      <MetricsGroupTitle>Flow Metrics, Work In Process</MetricsGroupTitle>
       <Wip
         title={<span>Total</span>}
         currentMeasurement={pipelineCycleMetrics}
