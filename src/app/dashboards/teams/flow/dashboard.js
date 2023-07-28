@@ -78,7 +78,7 @@ function WipDashboard({
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
-          title={"Work In Progress"}
+          title={"Work In Process"}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={"team"}
