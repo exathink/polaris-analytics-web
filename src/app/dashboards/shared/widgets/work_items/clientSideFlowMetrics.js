@@ -103,6 +103,29 @@ export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
   return getPercentage(flowEfficiencyFraction, intl);
 }
 
+export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget }) {
+  return workItems.reduce((acc, item) => {
+    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    if (acc[quadrant]) {
+      acc[quadrant] += 1;
+    } else {
+      acc[quadrant] = 1;
+    }
+    return acc;
+  }, {});
+}
+
+function getMotionEfficiencyFraction(workItems, latencyTarget) {
+  return workItems?.filter(workItem => workItem.latency < latencyTarget).length/workItems?.length
+}
+
+export function useMotionEfficiency(workItems, latencyTarget) {
+  const motionEfficiencyFraction = getMotionEfficiencyFraction(workItems, latencyTarget);
+
+  const intl = useIntl();
+  return getPercentage(motionEfficiencyFraction, intl);
+}
+
 function getCurrentFlowType(workItemStateDetails, currentState) {
   return workItemStateDetails.currentDeliveryCycleDurations.find(d => d.state === currentState)?.flowType
 }
@@ -141,14 +164,3 @@ export function getWorkItemDurations(workItems) {
   });
 }
 
-export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget }) {
-  return workItems.reduce((acc, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
-    if (acc[quadrant]) {
-      acc[quadrant] += 1;
-    } else {
-      acc[quadrant] = 1;
-    }
-    return acc;
-  }, {});
-}
