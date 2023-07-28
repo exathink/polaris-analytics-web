@@ -1,5 +1,5 @@
 import React from "react";
-import {useLocalStorage} from "../../helpers/hooksUtil";
+import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 import {CustomComponentCol, CustomTypeCol, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
@@ -11,7 +11,7 @@ const MenuTabs = ["filterMenuTab", "generalMenuTab"];
  * @returns
  */
 export function useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType}) {
-  const [hidden_cols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
+  const hidden_cols = readLocalStorage(HIDDEN_COLUMNS_KEY, []);
 
   const hasDisplayId = hidden_cols.includes("displayId");
   const col1 = React.useMemo(

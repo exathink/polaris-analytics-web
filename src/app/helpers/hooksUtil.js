@@ -63,3 +63,12 @@ export function useLocalStorage(key, initialValue) {
 
   return [storedValue, setValue];
 }
+
+export function readLocalStorage(key, initialValue) {
+  if (typeof window === 'undefined') {
+    return initialValue;
+  }
+
+  const item = window.localStorage.getItem(key);
+  return item ? JSON.parse(item) : initialValue;
+}
