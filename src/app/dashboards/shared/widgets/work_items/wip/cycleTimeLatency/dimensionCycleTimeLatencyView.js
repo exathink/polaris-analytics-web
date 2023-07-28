@@ -1,7 +1,7 @@
 import React from "react";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import {VizItem, VizRow} from "../../../../containers/layout";
-import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
+import {MotionEfficiencyQuadrantSummaryCard} from "./motionEfficiencyQuadrantSummaryCard";
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
@@ -174,7 +174,7 @@ export const DimensionCycleTimeLatencyView = ({
   );
 
   let flowEfficiencyQuadrantSummaryElement = (
-    <FlowEfficiencyQuadrantSummaryCard
+    <MotionEfficiencyQuadrantSummaryCard
       workItems={appliedFilters.size === 0 ? initialData : latestData}
       stateTypes={stateTypes}
       specsOnly={specsOnly}

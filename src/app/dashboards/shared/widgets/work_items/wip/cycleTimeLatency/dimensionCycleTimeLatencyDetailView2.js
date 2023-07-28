@@ -21,7 +21,7 @@ import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpe
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import classNames from "classnames";
-import {FlowEfficiencyQuadrantSummaryCard} from "./flowEfficiencyQuadrantSummaryCard";
+import {MotionEfficiencyQuadrantSummaryCard} from "./motionEfficiencyQuadrantSummaryCard";
 import {WorkItemsDetailHistogramChart} from "../../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import {useIntl} from "react-intl";
 import {useCycleTimeLatencyHook, getSubTitleForHistogram} from "./cycleTimeLatencyUtils";
@@ -273,7 +273,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   );
 
   let codingQuadrantSummaryElement = (
-    <FlowEfficiencyQuadrantSummaryCard
+    <MotionEfficiencyQuadrantSummaryCard
       workItems={latestData}
       stateTypes={engineeringStateTypes}
       specsOnly={specsOnly}
@@ -299,7 +299,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   );
 
   let deliveryQuadrantSummaryElement = (
-    <FlowEfficiencyQuadrantSummaryCard
+    <MotionEfficiencyQuadrantSummaryCard
       workItems={latestData}
       stateTypes={deliveryStateTypes}
       specsOnly={specsOnly}

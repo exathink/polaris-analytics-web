@@ -4,7 +4,7 @@ import {AppTerms} from "../../../../config";
 import { useFlowEfficiency, useMotionEfficiency } from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 
-export function FlowEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
+export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
   const motionEfficiency = useMotionEfficiency(workItems, stateTypes);
 
   return (
