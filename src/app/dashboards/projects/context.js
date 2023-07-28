@@ -41,23 +41,17 @@ const context : Context = {
         ContextControl: ProjectValueStreamsWidget,
         routes: [
           {
-
-            match: '360-view',
-            topic: Trends
-          },
-          {
             match: 'flow',
             topic: Flow
-          },
-
-          {
-            disallowedFeatures: [UI_NEW_CARD_DESIGN],
-            match: 'wip',
-            topic: Wip
           },
           {
             match: 'quality',
             topic: Quality
+          },
+          {
+
+            match: '360-view',
+            topic: Trends
           },
           {
             match: 'repositories',
@@ -78,7 +72,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: '360-view'
+            redirect: 'flow'
           }
         ]
       }
