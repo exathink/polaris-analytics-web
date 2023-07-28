@@ -4,15 +4,12 @@ import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {
   AgGridStripeTable,
-  CustomComponentCol,
-  CustomTypeCol,
   parseTags,
   getOnSortChanged,
   SORTER,
-  TextWithStyle,
   TextWithUom,
   useDefaultColDef,
-  TagsCol,
+  getHandleColumnVisible,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
 import {useLocalStorage} from "../../../../helpers/hooksUtil";
@@ -26,6 +23,7 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
+import { HIDDEN_COLUMNS_KEY, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -69,7 +67,7 @@ export function useWorkItemsDetailTableColumns({
   hidden_cols
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
-
+  const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
   function testMetric(value, record, metric) {
     const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
     return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
@@ -128,142 +126,8 @@ export function useWorkItemsDetailTableColumns({
     };
   }
 
-  const optionalCustomCols =
-    workTrackingIntegrationType === "jira"
-      ? [
-          {
-            headerName: "Component",
-            field: "tags",
-            colId: "component",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const componentTags = parseTags(fieldValue).component.join(", ");
-              return componentTags;
-            },
-            filterParams: {
-              values: filters.componentTags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).component.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(CustomComponentCol),
-            autoHeight: true,
-            wrapText: true,
-            hide: !hidden_cols.includes("component"),
-          },
-          {
-            headerName: "Custom Type",
-            field: "tags",
-            colId: "custom_type",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const customTypeTags = parseTags(fieldValue).custom_type;
-              return customTypeTags;
-            },
-            filterParams: {
-              values: filters.customTypeTags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).custom_type.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(CustomTypeCol),
-            hide: !hidden_cols.includes("custom_type"),
-          },
-          {
-            headerName: "Tags",
-            field: "tags",
-            colId: "custom_tags",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const tags = parseTags(fieldValue).tags;
-              return tags;
-            },
-            filterParams: {
-              values: filters.tags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).tags.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(TagsCol),
-            hide: !hidden_cols.includes("custom_tags"),
-          },
-        ]
-      : [];
-
   const columns = [
-    {
-      field: "displayId",
-      headerName: "ID",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: !hidden_cols.includes("displayId"),
-    },
-    {
-      field: "epicName",
-      headerName: "Epic",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: !hidden_cols.includes("epicName"),
-    },
-    {
-      headerName: "Workstream",
-      field: "workItemsSourceName",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.workItemsSourceName === value,
-      },
-      menuTabs: MenuTabs,
-      cellRenderer: React.memo(TextWithStyle),
-      hide: !hidden_cols.includes("workItemsSourceName"),
-    },
-    {
-      field: "teams",
-      headerName: "Teams",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.teams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          const _teams = record.teamNodeRefs.map((t) => t.teamName);
-          return _teams.includes(value);
-        },
-      },
-      menuTabs: MenuTabs,
-      hide: !hidden_cols.includes("teams"),
-    },
-    {
-      field: "url",
-      headerName: "URL",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: !hidden_cols.includes("url"),
-      cellClass: "hyperlinks",
-    },
-    ...optionalCustomCols,
+    ...optionalColumns,
     {
       headerName: "Work Item",
       field: "name",
@@ -360,7 +224,7 @@ export const WorkItemsDetailTable = ({
   onGridReady
 }) => {
   const intl = useIntl();
-  const [hidden_cols, setHiddenCols] = useLocalStorage("WorkItemsDetailTable_hidden_cols", []);
+  const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
 
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -466,17 +330,7 @@ export const WorkItemsDetailTable = ({
       testId="work-items-detail-table"
       onGridReady={onGridReady}
       defaultColDef={defaultColDef}
-      onColumnVisible={(params) => {
-        const colId = params.column.getColId();
-        if (params.visible) {
-          if (!hidden_cols.includes(colId)) {
-            setHiddenCols([...hidden_cols, colId]);
-          }
-        } else {
-          const remainingCols = hidden_cols.filter((x) => x !== colId);
-          setHiddenCols(remainingCols);
-        }
-      }}
+      onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
     />
   );
 };
