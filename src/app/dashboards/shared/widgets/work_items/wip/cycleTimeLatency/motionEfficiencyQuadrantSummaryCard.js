@@ -3,9 +3,11 @@ import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms} from "../../../../config";
 import { useFlowEfficiency, useMotionEfficiency } from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
+import { filterByStateTypes } from "./cycleTimeLatencyUtils";
 
 export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
-  const motionEfficiency = useMotionEfficiency(workItems, stateTypes);
+  const filteredWorkItems = filterByStateTypes(workItems, stateTypes)
+  const motionEfficiency = useMotionEfficiency(filteredWorkItems, latencyTarget);
 
   return (
     <PlainCard
@@ -27,8 +29,7 @@ export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, spec
       }}
     >
       <QuadrantSummaryPanel
-        workItems={workItems}
-        stateTypes={stateTypes}
+        workItems={filteredWorkItems}
         cycleTimeTarget={cycleTimeTarget}
         latencyTarget={latencyTarget}
         onQuadrantClick={onQuadrantClick}

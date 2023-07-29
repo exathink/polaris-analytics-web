@@ -25,8 +25,9 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const motionEfficiencyPercentage = useMotionEfficiency(workItems, latencyTarget);
+
   const initTransformedData = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
+  const motionEfficiencyPercentage = useMotionEfficiency(initTransformedData, latencyTarget);
 
   return (
     <PlainCard

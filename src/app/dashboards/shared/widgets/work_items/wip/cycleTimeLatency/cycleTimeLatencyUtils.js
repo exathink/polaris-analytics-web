@@ -4,7 +4,7 @@ import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, WorkItemStateTypes, workItemFlowTypeColor } from "../../../../config";
+import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -347,4 +347,10 @@ export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
 export function doesPairWiseFilterPass({value, record, metric}) {
   const [part1, part2] = allPairsData[categories.indexOf(value)];
   return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+}
+
+export function filterByStateTypes(workItems, stateTypes) {
+  return workItems.filter((workItem) =>
+    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
+  );
 }

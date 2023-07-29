@@ -23,7 +23,7 @@ import {
   getFilterValue,
   FILTERS,
   filterFns,
-  getFilteredData,
+  getFilteredData, filterByStateTypes
 } from "./cycleTimeLatencyUtils";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
@@ -210,8 +210,7 @@ export const DimensionCycleTimeLatencyView = ({
         flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
-          workItems={initialData}
-          stateTypes={stateTypes}
+          workItems={filterByStateTypes(initialData, stateTypes)}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           className="tw-mx-auto tw-w-[98%]"

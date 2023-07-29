@@ -3,6 +3,7 @@ import { getQuadrantCounts } from "../../widgets/work_items/clientSideFlowMetric
 import { Popover } from "antd";
 
 import {
+  filterByStateTypes,
   getQuadrant,
   getQuadrantDescription,
   QuadrantColors,
@@ -114,7 +115,6 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
 
 export function QuadrantSummaryPanel({
   workItems,
-  stateTypes,
   cycleTimeTarget,
   latencyTarget,
   className,
@@ -124,29 +124,27 @@ export function QuadrantSummaryPanel({
   size
 }) {
   const intl = useIntl();
-  const workItemsWithAggregateDurations = workItems.filter((workItem) =>
-    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-  );
+
   const quadrantCounts = getQuadrantCounts({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantAge = getTotalAgeByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantLatency = getTotalLatencyByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantEffort = getTotalEffortByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
