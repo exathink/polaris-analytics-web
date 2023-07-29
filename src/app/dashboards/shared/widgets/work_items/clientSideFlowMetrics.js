@@ -116,14 +116,14 @@ export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget })
 }
 
 function getMotionEfficiencyFraction(workItems, latencyTarget) {
-  return workItems?.filter(workItem => workItem.latency < latencyTarget).length/workItems?.length
+  return workItems.length > 0 ? workItems.filter(workItem => workItem.latency < latencyTarget).length/workItems.length: 0
 }
 
 export function useMotionEfficiency(workItems, latencyTarget) {
   const motionEfficiencyFraction = getMotionEfficiencyFraction(workItems, latencyTarget);
 
   const intl = useIntl();
-  return getPercentage(motionEfficiencyFraction, intl);
+  return motionEfficiencyFraction > 0 ? getPercentage(motionEfficiencyFraction, intl): "N/A";
 }
 
 function getCurrentFlowType(workItemStateDetails, currentState) {
