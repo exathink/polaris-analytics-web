@@ -305,8 +305,8 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
   const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION)?.value ?? [];
 
-  if (interaction === "histogram" || interaction === "zoom_selection") {
-    return secondaryData.selectedChartData;
+  if (interaction === "zoom_selection") {
+    return secondaryData?.selectedChartData;
   }
   if (interaction === "zoom_reset_selection") {
     return initData;

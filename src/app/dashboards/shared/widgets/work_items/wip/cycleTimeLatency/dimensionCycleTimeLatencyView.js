@@ -75,7 +75,8 @@ export const DimensionCycleTimeLatencyView = ({
   // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, FILTERS.QUADRANT_PANEL);
   const [chartCategory] = getFilterValue(appliedFilters, FILTERS.PRIMARY_CATEGORY);
-  const [currentInteraction, secondaryData] = getFilterValue(appliedFilters, FILTERS.CURRENT_INTERACTION);
+  const [currentInteraction] = getFilterValue(appliedFilters, FILTERS.CURRENT_INTERACTION);
+  const histogramBucket = appliedFilters.get(FILTERS.HISTOGRAM_BUCKET)?.histogramBucket;
 
   // Update the state filter based on exclude flag
   filterFns[FILTERS.STATE] = (w, [selectedState]) => {
@@ -142,8 +143,9 @@ export const DimensionCycleTimeLatencyView = ({
         setAppliedFilters((prev) => {
           return new Map(
             prev
-              .set(FILTERS.PRIMARY_CATEGORY, [chart_category])
-              .set(FILTERS.CURRENT_INTERACTION, ["histogram", {histogramBucket: category, selectedChartData: bucket}])
+              .set(FILTERS.PRIMARY_CATEGORY, {value: [chart_category]})
+              .set(FILTERS.CURRENT_INTERACTION, {value: ["histogram"]})
+              .set(FILTERS.HISTOGRAM_BUCKET, {value: bucket, histogramBucket: category, source: "chart" })
           );
         });
         displayBag?.setWipChartType("motion");
@@ -187,7 +189,7 @@ export const DimensionCycleTimeLatencyView = ({
         } else {
           setAppliedFilters((prev) => {
             return new Map(
-              prev.set(FILTERS.QUADRANT_PANEL, [quadrant]).set(FILTERS.PRIMARY_CATEGORY, [chart_category])
+              prev.set(FILTERS.QUADRANT_PANEL, {value: [quadrant]}).set(FILTERS.PRIMARY_CATEGORY, {value: [chart_category]})
             );
           });
         }
@@ -226,10 +228,10 @@ export const DimensionCycleTimeLatencyView = ({
 
     let selectedFilter = "";
     if (currentInteraction === "histogram") {
-      selectedFilter = secondaryData.histogramBucket;
+      selectedFilter = histogramBucket;
     }
     if (currentInteraction === "queuesize") {
-      selectedFilter = appliedFilters.get(FILTERS.STATE)[0].value;
+      selectedFilter = getFilterValue(appliedFilters, FILTERS.STATE)[0].value;
     }
 
     const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />;
@@ -265,9 +267,9 @@ export const DimensionCycleTimeLatencyView = ({
             setAppliedFilters((prev) => {
               return new Map(
                 prev
-                  .set(FILTERS.PRIMARY_CATEGORY, [chart_category])
-                  .set(FILTERS.CURRENT_INTERACTION, ["queuesize"])
-                  .set(FILTERS.STATE, [{value: obj.options.name, label: obj.options.name}])
+                  .set(FILTERS.PRIMARY_CATEGORY, {value: [chart_category]})
+                  .set(FILTERS.CURRENT_INTERACTION, {value: ["queuesize"]})
+                  .set(FILTERS.STATE, {value: [{value: obj.options.name, label: obj.options.name}]})
               );
             });
             displayBag?.setWipChartType("age");
