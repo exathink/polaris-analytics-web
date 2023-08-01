@@ -31,9 +31,9 @@ export const DimensionQuadrantSummaryView = ({
 
   return (
     <PlainCard
-      title="Motion Efficiency"
+      title="Work in Motion"
       value={motionEfficiencyPercentage}
-      info={{title: "Motion Efficiency"}}
+      info={{title: "Work in Motion"}}
       detailsView={{
         title: (
           <div className="tw-text-lg tw-text-gray-300">

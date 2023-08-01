@@ -123,7 +123,7 @@ export function useMotionEfficiency(workItems, latencyTarget) {
   const motionEfficiencyFraction = getMotionEfficiencyFraction(workItems, latencyTarget);
 
   const intl = useIntl();
-  return motionEfficiencyFraction > 0 ? getPercentage(motionEfficiencyFraction, intl): "N/A";
+  return motionEfficiencyFraction > 0 ? getPercentage(motionEfficiencyFraction, intl): "None";
 }
 
 function getCurrentFlowType(workItemStateDetails, currentState) {
