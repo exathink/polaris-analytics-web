@@ -105,7 +105,7 @@ function ValueDashboard({
         <DashboardWidget
           name="pipeline"
           className={styles.workInProgress}
-          title={"Work In Progress"}
+          title={"Work In Process"}
           subtitle={`${specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}`}
 
           render={({view}) => (

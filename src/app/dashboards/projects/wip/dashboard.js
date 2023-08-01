@@ -78,7 +78,7 @@ function WipDashboard({
     >
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Flow Efficiency, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+          {specsOnly ? `All ${AppTerms.specs.display} in Process` : `All ${AppTerms.cards.display} in Process`}
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
@@ -139,7 +139,7 @@ function WipDashboard({
         />
         <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite" data-testid="completed-work">
           <div className="tw-grid tw-grid-cols-2 tw-gap-1">
-            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Completed Work, Last {flowAnalysisPeriod} Days</div>
+            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Flow Metrics, Last {flowAnalysisPeriod} Days</div>
 
             <DashboardWidget
               name="throughput-summary-card"
