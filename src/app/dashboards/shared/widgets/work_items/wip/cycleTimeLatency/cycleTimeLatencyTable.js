@@ -1,15 +1,15 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {AgGridStripeTable, SORTER, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
   StateTypeCol,
 } from "../../../../../projects/shared/helper/renderers";
-import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
 import { HIDDEN_COLUMNS_KEY, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
@@ -91,10 +91,6 @@ function getFilterValue(key, value) {
 const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
 export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegrationType}) {
   const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
-  function testMetric(value, record, metric) {
-    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
-    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
-  }
 
   const columnDefs = React.useMemo(
     () => [
@@ -351,6 +347,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
           }
         }}
         onFilterChanged={handleFilterChange}
+        onFilterOpened={handleFilterOpen}
         onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
       />
     );
