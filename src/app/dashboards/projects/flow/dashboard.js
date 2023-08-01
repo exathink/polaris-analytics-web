@@ -69,7 +69,7 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
-          title={"Work In Progress"}
+          title={"Work In Process"}
           subtitle={AppTerms.specs.display}
 
           render={({view}) => (

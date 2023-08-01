@@ -48,7 +48,7 @@ function WipDashboard({
       <DashboardRow h="15%">
         <DashboardWidget
           name="flow-metrics-response-time"
-          title={"Response Time"}
+          title={"Flow Time"}
           className={styles.responseTimeSLA}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -78,7 +78,7 @@ function WipDashboard({
         <DashboardWidget
           name="pipeline"
           className={styles.pipeline}
-          title={"Work In Progress"}
+          title={"Work In Process"}
           render={({view}) => (
             <DimensionWipFlowMetricsWidget
               dimension={"team"}
@@ -103,7 +103,7 @@ function WipDashboard({
         />
         <DashboardWidget
           name="flow-metrics-throughput"
-          title={"Throughput"}
+          title={"Flow Velocity"}
           className={styles.flowMetrics}
           subtitle={`Last ${wipAnalysisPeriod} days`}
           hideTitlesInDetailView={true}
@@ -131,7 +131,7 @@ function WipDashboard({
           showDetail={false}
         />
       </DashboardRow>
-      <DashboardRow h="30%" title={"Wip Age & Latency"} className={styles.wipAge}>
+      <DashboardRow h="30%" title={"WIP Motion"} className={styles.wipAge}>
         <DashboardWidget
           name="engineering"
           className={styles.engineering}

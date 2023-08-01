@@ -27,7 +27,7 @@ export const DimensionWipFlowMetricsDetailDashboard = ({
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={"15%"}
-        title={`Work In Progress`}
+        title={`Work In Process`}
         controls={[
           () => (
             <div style={{padding: "10px"}}>

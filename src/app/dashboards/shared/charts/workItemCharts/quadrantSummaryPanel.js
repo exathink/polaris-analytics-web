@@ -1,27 +1,16 @@
 import classNames from "classnames";
-import { getWorkItemDurations } from "../../widgets/work_items/clientSideFlowMetrics";
+import { getQuadrantCounts } from "../../widgets/work_items/clientSideFlowMetrics";
 import { Popover } from "antd";
 
 import {
+  filterByStateTypes,
   getQuadrant,
   getQuadrantDescription,
   QuadrantColors,
-  QuadrantNames,
+  QuadrantNames
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
-
-function getQuadrantCounts({workItems, cycleTimeTarget, latencyTarget}) {
-  return workItems.reduce((acc, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
-    if (acc[quadrant]) {
-      acc[quadrant] += 1;
-    } else {
-      acc[quadrant] = 1;
-    }
-    return acc;
-  }, {});
-}
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
@@ -126,7 +115,6 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
 
 export function QuadrantSummaryPanel({
   workItems,
-  stateTypes,
   cycleTimeTarget,
   latencyTarget,
   className,
@@ -136,29 +124,27 @@ export function QuadrantSummaryPanel({
   size
 }) {
   const intl = useIntl();
-  const workItemsWithAggregateDurations = workItems.filter((workItem) =>
-    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
-  );
+
   const quadrantCounts = getQuadrantCounts({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantAge = getTotalAgeByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantLatency = getTotalLatencyByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
 
   const quadrantEffort = getTotalEffortByQuadrant({
-    workItems: workItemsWithAggregateDurations,
+    workItems,
     cycleTimeTarget,
     latencyTarget,
   });
