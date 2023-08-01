@@ -103,12 +103,12 @@ export const DimensionCycleTimeLatencyView = ({
     setAppliedFilters(new Map(appliedFilters));
   }
 
-  const initialData = getWorkItemDurations(initWorkItems).map((w) => ({
+  const initTransformedData = React.useMemo(() => getWorkItemDurations(initWorkItems).map((w) => ({
     ...w,
     quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
-  }));
+  })), [initWorkItems, cycleTimeTarget, latencyTarget]);
 
-  const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
+  // const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
 
   // this data is always up-to-date with all the applied filters
   const latestData =
@@ -177,7 +177,7 @@ export const DimensionCycleTimeLatencyView = ({
 
   let flowEfficiencyQuadrantSummaryElement = (
     <MotionEfficiencyQuadrantSummaryCard
-      workItems={appliedFilters.size === 0 ? initialData : latestData}
+      workItems={appliedFilters.size === 0 ? initTransformedData : latestData}
       stateTypes={stateTypes}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
@@ -212,7 +212,7 @@ export const DimensionCycleTimeLatencyView = ({
         flowEfficiencyQuadrantSummaryElement
       ) : (
         <QuadrantSummaryPanel
-          workItems={filterByStateTypes(initialData, stateTypes)}
+          workItems={filterByStateTypes(initTransformedData, stateTypes)}
           cycleTimeTarget={cycleTimeTarget}
           latencyTarget={latencyTarget}
           className="tw-mx-auto tw-w-[98%]"
@@ -259,7 +259,7 @@ export const DimensionCycleTimeLatencyView = ({
     if (displayBag?.wipChartType === "queue") {
       const queueSizeElement = (
         <WipQueueSizeChart
-          items={appliedFilters.size > 0 ? latestData : initialData}
+          items={appliedFilters.size > 0 ? latestData : initTransformedData}
           stageName={stageName}
           phases={stateTypes}
           specsOnly={specsOnly}
