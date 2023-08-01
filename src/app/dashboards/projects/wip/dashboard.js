@@ -96,15 +96,15 @@ function WipDashboard({
             groupings={[
               {
                 key: "queue",
-                display: "Queue Size",
+                display: "Where",
               },
               {
                 key: "age",
-                display: "Age",
+                display: "How long",
               },
               {
                 key: "motion",
-                display: "Motion",
+                display: "Last Moved",
               },
             ]}
             layout="col"

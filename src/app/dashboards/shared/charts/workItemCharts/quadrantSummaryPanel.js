@@ -87,7 +87,7 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
   const tooltipContent = val > 0 && (
     <div className="tw-p-2 tw-grid tw-gap-2 tw-text-gray-300">
       {pairRender(`Avg. Age:`, averageAgeDisplay, `Days`)}
-      {pairRender(`Avg. Latency:`, averageLatencyDisplay, `Days`)}
+      {pairRender(`Avg. Days Since Last Move:`, averageLatencyDisplay, ``)}
       {pairRender(`Effort:`, wipEffortDisplay, `FTE Days (${i18nNumber(intl,(quadrantEffort/totalEffort)*100, 0 ) }%)`)}
     </div>
   )
