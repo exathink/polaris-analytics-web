@@ -15,7 +15,7 @@ import {LicenseManager} from "ag-grid-enterprise";
 import {getFilteredRowCountValue} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 import { useIntl } from "react-intl";
 // enter your license key here to suppress license message in the console and watermark
-LicenseManager.setLicenseKey("[TRIAL]_this_AG_Grid_Enterprise_key_( AG-043118 )_is_granted_for_evaluation_only___Use_in_production_is_not_permitted___Please_report_misuse_to_( legal@ag-grid.com )___For_help_with_purchasing_a_production_key_please_contact_( info@ag-grid.com )___All_Front-End_JavaScript_developers_working_on_the_application_would_need_to_be_licensed___This_key_will_deactivate_on_( 31 July 2023 )____[v2]_MTY5MDc1ODAwMDAwMA==f7deb9985cb10bc1921d8a43ac3c1b44");
+LicenseManager.setLicenseKey("Using_this_AG_Grid_Enterprise_key_( AG-045772 )_in_excess_of_the_licence_granted_is_not_permitted___Please_report_misuse_to_( legal@ag-grid.com )___For_help_with_changing_this_key_please_contact_( info@ag-grid.com )___( Exathink, LLC )_is_granted_a_( Single Application )_Developer_License_for_the_application_( Polaris Flow )_only_for_( 1 )_Front-End_JavaScript_developer___All_Front-End_JavaScript_developers_working_on_( Polaris Flow )_need_to_be_licensed___( Polaris Flow )_has_been_granted_a_Deployment_License_Add-on_for_( 1 )_Production_Environment___This_key_works_with_AG_Grid_Enterprise_versions_released_before_( 26 August 2024 )____[v2]_MTcyNDYyNjgwMDAwMA==0060e77c7f9ed4497edee3f4f9864373");
 
 export const DEFAULT_PAGE_SIZE = 200;
 export const TABLE_HEIGHTS = {
