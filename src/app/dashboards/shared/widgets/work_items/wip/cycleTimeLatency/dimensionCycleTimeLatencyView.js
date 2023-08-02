@@ -103,12 +103,12 @@ export const DimensionCycleTimeLatencyView = ({
     setAppliedFilters(new Map(appliedFilters));
   }
 
-  const initTransformedData = React.useMemo(() => getWorkItemDurations(initWorkItems).map((w) => ({
+  const initialData = React.useMemo(() => getWorkItemDurations(initWorkItems).map((w) => ({
     ...w,
     quadrant: getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget),
   })), [initWorkItems, cycleTimeTarget, latencyTarget]);
 
-  // const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
+  const initTransformedData = initialData.filter((w) => stateTypes.indexOf(w.stateType) !== -1);
 
   // this data is always up-to-date with all the applied filters
   const latestData =
