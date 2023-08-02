@@ -24,6 +24,7 @@ import {
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
 import { HIDDEN_COLUMNS_KEY, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -87,8 +88,7 @@ export function useWorkItemsDetailTableColumns({
     filterParams: {
       values: effortCategories,
       onFilter: ({value, record}) => {
-        const [part1, part2] = filters.allPairsData[effortCategories.map((x) => x.value).indexOf(value)];
-        return Number(record["effort"]) >= part1 && Number(record["effort"]) < part2;
+        return doesPairWiseFilterPass({value, record, metric: "effort"});
       }
     },
     menuTabs: MenuTabs,
