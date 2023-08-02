@@ -115,14 +115,18 @@ export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget })
   }, {});
 }
 
-function getMotionEfficiencyFraction(workItems, latencyTarget) {
-  return workItems.length > 0 ? workItems.filter(workItem => workItem.latency < latencyTarget).length/workItems.length: 0
+function getWorkInMotion(workItems, latencyTarget) {
+  return workItems.length > 0 ? workItems.filter(workItem => workItem.latency < latencyTarget).length: 0
 }
 
 export function useMotionEfficiency(workItems, latencyTarget) {
-  const motionEfficiencyFraction = getMotionEfficiencyFraction(workItems, latencyTarget);
+  const workInMotion = getWorkInMotion(workItems, latencyTarget);
   const intl = useIntl();
-  return motionEfficiencyFraction > 0 ? getPercentage(motionEfficiencyFraction, intl): "None";
+  if (workInMotion > 0) {
+    return [workInMotion, getPercentage(workInMotion/workItems.length, intl)]
+  } else {
+    return [0, 'None']
+  }
 }
 
 function getCurrentFlowType(workItemStateDetails, currentState) {
