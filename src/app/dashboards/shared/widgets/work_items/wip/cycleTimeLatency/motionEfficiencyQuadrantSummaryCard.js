@@ -11,10 +11,10 @@ export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, spec
 
   return (
     <PlainCard
-      title="Motion Efficiency"
+      title="Work In Motion"
       className={className}
       value={motionEfficiency}
-      info={{title: "Motion Efficiency"}}
+      info={{title: "Work in Motion"}}
       detailsView={{
         title: (
           <div className="tw-text-lg tw-text-gray-300">
