@@ -82,6 +82,7 @@ const valueAccessor = {
   name: (data) => [data.filter],
   latency: ({filter, filterTo, type}) => [filter, filterTo, type],
   effort: ({filter, filterTo, type}) => [filter, filterTo, type],
+  state: (data) => data.values.map(x => ({value: x, label: x}))
 };
 
 function getFilterValue(key, value) {
@@ -118,8 +119,12 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         headerName: "State",
         cellRenderer: StateTypeCol,
         autoHeight: true,
-        comparator: (_valA, _valB, nodeA, nodeB) => {
-          return SORTER.string_compare(nodeA.data.state, nodeB.data.state);
+        width: 250,
+        comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
+        filter: MultiCheckboxFilter,
+        filterParams: {
+          values: filters.states.map((b) => ({text: b, value: b})),
+          onFilter: ({value, record}) => record.state.indexOf(value) === 0,
         },
         menuTabs: MenuTabs,
       },
@@ -231,6 +236,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     const customTypeTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).custom_type))];
     const tags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).tags))];
     const workTrackingIntegrationType = tableData[0]?.["workTrackingIntegrationType"];
+    const states = [...new Set(tableData.map((x) => x.state))];
 
     const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
     const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
@@ -240,7 +246,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columnDefs = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams, workItemStreams, componentTags, customTypeTags, tags, categories, allPairsData},
+      filters: {workItemTypes, stateTypes, quadrants, teams, states, workItemStreams, componentTags, customTypeTags, tags, categories, allPairsData},
       workTrackingIntegrationType
     });
 
