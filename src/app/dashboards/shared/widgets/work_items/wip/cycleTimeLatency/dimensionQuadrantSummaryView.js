@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React from "react";
-import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
-import {PlainCard} from "../../../../components/cards/plainCard";
-import {AppTerms} from "../../../../config";
-import {getWorkItemDurations, useFlowEfficiency} from "../../clientSideFlowMetrics";
-import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
+import { QuadrantSummaryPanel } from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import { PlainCard } from "../../../../components/cards/plainCard";
+import { AppTerms } from "../../../../config";
+import { getWorkItemDurations, useMotionEfficiency } from "../../clientSideFlowMetrics";
+import { FlowEfficiencyDetailsView } from "./flowEfficiencyDetailsView";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
@@ -25,18 +25,19 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
-  const flowEfficiencyPercentage = useFlowEfficiency(workItems, stateTypes);
+
   const initTransformedData = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
+  const motionEfficiencyPercentage = useMotionEfficiency(initTransformedData, latencyTarget);
 
   return (
     <PlainCard
-      title="WIP Flow Efficiency"
-      value={flowEfficiencyPercentage}
-      info={{title: "Flow Efficiency"}}
+      title="Work in Motion"
+      value={motionEfficiencyPercentage}
+      info={{title: "Work in Motion"}}
       detailsView={{
         title: (
           <div className="tw-text-lg tw-text-gray-300">
-            WIP Flow Efficiency,{" "}
+            Flow Efficiency,{" "}
             <span className="tw-text-base tw-italic">
               {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
             </span>

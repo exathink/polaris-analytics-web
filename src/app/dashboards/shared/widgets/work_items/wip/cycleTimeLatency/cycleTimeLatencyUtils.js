@@ -4,7 +4,7 @@ import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, WorkItemStateTypes, workItemFlowTypeColor } from "../../../../config";
+import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -25,11 +25,11 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
     return Quadrants.latency;
   }
 
-  if (cycleTime > cycleTimeTarget && latency <= latencyTarget) {
+  if (cycleTime > cycleTimeTarget && latency <= cycleTimeTarget) {
     return Quadrants.age;
   }
 
-  if (cycleTime > cycleTimeTarget && latency > latencyTarget) {
+  if (cycleTime > cycleTimeTarget && latency > cycleTimeTarget) {
     return Quadrants.critical;
   }
 };
@@ -305,8 +305,8 @@ export function getFilteredData({initData, appliedFilters, filterFns}) {
   let result = [];
   const [interaction, secondaryData] = appliedFilters.get(FILTERS.CURRENT_INTERACTION)?.value ?? [];
 
-  if (interaction === "histogram" || interaction === "zoom_selection") {
-    return secondaryData.selectedChartData;
+  if (interaction === "zoom_selection") {
+    return secondaryData?.selectedChartData;
   }
   if (interaction === "zoom_reset_selection") {
     return initData;
@@ -347,4 +347,10 @@ export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
 export function doesPairWiseFilterPass({value, record, metric}) {
   const [part1, part2] = allPairsData[categories.indexOf(value)];
   return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+}
+
+export function filterByStateTypes(workItems, stateTypes) {
+  return workItems.filter((workItem) =>
+    stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
+  );
 }

@@ -1,7 +1,8 @@
-import {useIntl} from "react-intl";
-import {daysFromNow, fromNow, toMoment} from "../../../../helpers/utility";
-import {getPercentage} from "../../../projects/shared/helper/utils";
-import {ALL_PHASES, FlowTypeStates, WorkItemStateTypes} from "../../config";
+import { useIntl } from "react-intl";
+import { daysFromNow, fromNow, toMoment } from "../../../../helpers/utility";
+import { getPercentage } from "../../../projects/shared/helper/utils";
+import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
+import { getQuadrant } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -102,6 +103,28 @@ export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
   return getPercentage(flowEfficiencyFraction, intl);
 }
 
+export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget }) {
+  return workItems.reduce((acc, item) => {
+    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    if (acc[quadrant]) {
+      acc[quadrant] += 1;
+    } else {
+      acc[quadrant] = 1;
+    }
+    return acc;
+  }, {});
+}
+
+function getMotionEfficiencyFraction(workItems, latencyTarget) {
+  return workItems.length > 0 ? workItems.filter(workItem => workItem.latency < latencyTarget).length/workItems.length: 0
+}
+
+export function useMotionEfficiency(workItems, latencyTarget) {
+  const motionEfficiencyFraction = getMotionEfficiencyFraction(workItems, latencyTarget);
+  const intl = useIntl();
+  return motionEfficiencyFraction > 0 ? getPercentage(motionEfficiencyFraction, intl): "None";
+}
+
 function getCurrentFlowType(workItemStateDetails, currentState) {
   return workItemStateDetails.currentDeliveryCycleDurations.find(d => d.state === currentState)?.flowType
 }
@@ -139,3 +162,4 @@ export function getWorkItemDurations(workItems) {
     }
   });
 }
+

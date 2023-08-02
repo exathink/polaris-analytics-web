@@ -183,7 +183,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             dashStyle: "longdashdot",
             width: 1,
             label: {
-              text: ` T= ${intl.formatNumber(cycleTimeTarget)}`
+              text: ` A= ${intl.formatNumber(cycleTimeTarget)}`
             }
           }
         ] : null
@@ -204,12 +204,21 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
         plotLines: targetLatency ? [
           {
-            color: "red",
+            color: "orange",
             value: targetLatency,
             dashStyle: "longdashdot",
             width: 1,
             label: {
-              text: ` T= ${intl.formatNumber(targetLatency)}`
+              text: ` L= ${intl.formatNumber(targetLatency)}`
+            },
+          },
+          {
+            color: "red",
+            value: cycleTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: ` L= ${intl.formatNumber(cycleTimeTarget)}`
             }
           }
         ] : null
