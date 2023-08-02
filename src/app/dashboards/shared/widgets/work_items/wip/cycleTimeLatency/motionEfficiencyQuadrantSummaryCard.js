@@ -7,13 +7,13 @@ import { filterByStateTypes } from "./cycleTimeLatencyUtils";
 
 export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
   const filteredWorkItems = filterByStateTypes(workItems, stateTypes)
-  const motionEfficiency = useMotionEfficiency(filteredWorkItems, latencyTarget);
-
+  const [workInMotion, percentage] = useMotionEfficiency(filteredWorkItems, latencyTarget);
+  const workItemsDisplay = specsOnly ? 'Dev Items' : 'Work Items'
   return (
     <PlainCard
-      title="Work In Motion"
+      title={`${workInMotion > 0 ? workInMotion : "No "} ${workItemsDisplay} in Motion `}
       className={className}
-      value={motionEfficiency}
+      value={workInMotion > 0 ? `: ${percentage}` : "" }
       info={{title: "Work in Motion"}}
       detailsView={{
         title: (
