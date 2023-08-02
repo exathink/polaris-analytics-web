@@ -69,10 +69,6 @@ export function useWorkItemsDetailTableColumns({
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
   const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
-  function testMetric(value, record, metric) {
-    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
-    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
-  }
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
@@ -101,7 +97,7 @@ export function useWorkItemsDetailTableColumns({
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => testMetric(value, record, "duration"),
+        onFilter: ({value, record}) => doesPairWiseFilterPass({value, record, metric: "duration"})
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithUom),
@@ -118,7 +114,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, latencyKey);
+          return doesPairWiseFilterPass({value, record, metric: latencyKey});
         },
       },
       menuTabs: MenuTabs,
@@ -181,7 +177,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, "leadTimeOrAge");
+          return doesPairWiseFilterPass({value, record,metric: "leadTimeOrAge"});
         },
       },
       menuTabs: MenuTabs,
@@ -195,7 +191,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, "cycleTimeOrLatency");
+          return doesPairWiseFilterPass({value, record, metric: "cycleTimeOrLatency"});
         },
       },
       menuTabs: MenuTabs,
