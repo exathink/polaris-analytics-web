@@ -27,12 +27,12 @@ export const DimensionQuadrantSummaryView = ({
 
 
   const initTransformedData = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
-  const motionEfficiencyPercentage = useMotionEfficiency(initTransformedData, latencyTarget);
-
+  const [workInMotion, percentage] = useMotionEfficiency(initTransformedData, latencyTarget);
+  const workItemsDisplay = specsOnly ? 'Dev Items' : 'Work Items'
   return (
     <PlainCard
-      title="Work in Motion"
-      value={motionEfficiencyPercentage}
+      title={`${workInMotion > 0 ? workInMotion : "No "} ${workItemsDisplay} in Motion `}
+      value={workInMotion > 0 ? `: ${percentage}` : "" }
       info={{title: "Work in Motion"}}
       detailsView={{
         title: (
