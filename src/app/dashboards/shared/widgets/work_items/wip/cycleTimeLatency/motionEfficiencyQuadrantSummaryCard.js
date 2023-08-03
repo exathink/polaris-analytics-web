@@ -1,14 +1,15 @@
 import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
-import {AppTerms} from "../../../../config";
-import { useFlowEfficiency, useMotionEfficiency } from "../../clientSideFlowMetrics";
+import {AppTerms, itemsDesc} from "../../../../config";
+import { useMotionEfficiency } from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 import { filterByStateTypes } from "./cycleTimeLatencyUtils";
 
-export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className}) {
+export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, specsOnly, cycleTimeTarget, latencyTarget, onQuadrantClick, selectedQuadrant, className, displayBag}) {
   const filteredWorkItems = filterByStateTypes(workItems, stateTypes)
   const [workInMotion, percentage] = useMotionEfficiency(filteredWorkItems, latencyTarget);
-  const workItemsDisplay = specsOnly ? 'Dev Items' : 'Work Items'
+  const workItemsDisplay = itemsDesc(specsOnly);
+  
   return (
     <PlainCard
       title={`${workInMotion > 0 ? workInMotion : "No "} ${workItemsDisplay} in Motion `}
@@ -34,9 +35,7 @@ export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, spec
         latencyTarget={latencyTarget}
         onQuadrantClick={onQuadrantClick}
         selectedQuadrant={selectedQuadrant}
-        className="tw-mx-auto tw-w-[98%]"
-        valueFontClass="tw-text-3xl"
-        size="small"
+        {...displayBag}
       />
     </PlainCard>
   );
