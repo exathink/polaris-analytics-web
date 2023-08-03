@@ -12,7 +12,7 @@ import {
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { HIDDEN_COLUMNS_KEY, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 
 
@@ -97,20 +97,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
     () => [
       ...optionalColumns,
       getWorkItemNameCol(),
-      {
-        field: "state",
-        headerName: "State",
-        cellRenderer: StateTypeCol,
-        autoHeight: true,
-        width: 250,
-        comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
-        filter: MultiCheckboxFilter,
-        filterParams: {
-          values: filters.states.map((b) => ({text: b, value: b})),
-          onFilter: ({value, record}) => record.state.indexOf(value) === 0,
-        },
-        menuTabs: MenuTabs,
-      },
+      getStateCol({filters}),
       {
         field: "quadrant",
         headerName: "Status",

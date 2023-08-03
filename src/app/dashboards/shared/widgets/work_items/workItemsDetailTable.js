@@ -23,7 +23,7 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { HIDDEN_COLUMNS_KEY, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 function getLeadTimeOrAge(item, intl) {
@@ -136,20 +136,7 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
       // comparator: SORTER.number_compare,
     },
-    {
-      headerName: "State",
-      field: "state",
-      autoHeight: true,
-      width: 250,
-      cellRenderer: React.memo(StateTypeCol),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.states.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.state.indexOf(value) === 0,
-      },
-      menuTabs: MenuTabs,
-    },
+    getStateCol({filters}),
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",

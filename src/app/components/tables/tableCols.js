@@ -2,7 +2,7 @@ import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
-import { CardCol } from "../../dashboards/projects/shared/helper/renderers";
+import { CardCol, StateTypeCol } from "../../dashboards/projects/shared/helper/renderers";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
@@ -189,8 +189,8 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
 
 export function getWorkItemNameCol() {
   return {
-    headerName: "Work Item",
     field: "name",
+    headerName: "Work Item",
     width: 320,
     filter: "agTextColumnFilter",
     floatingFilter: false,
@@ -207,5 +207,22 @@ export function getWorkItemNameCol() {
     autoHeight: true,
     comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.displayId, b.data.displayId),
     menuTabs: [...MenuTabs, "columnsMenuTab"],
+  };
+}
+
+export function getStateCol({filters}) {
+  return {
+    field: "state",
+    headerName: "State",
+    autoHeight: true,
+    width: 250,
+    cellRenderer: React.memo(StateTypeCol),
+    comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
+    filter: MultiCheckboxFilter,
+    filterParams: {
+      values: filters.states.map((b) => ({text: b, value: b})),
+      onFilter: ({value, record}) => record.state.indexOf(value) === 0,
+    },
+    menuTabs: MenuTabs,
   };
 }
