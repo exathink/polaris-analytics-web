@@ -23,7 +23,7 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { HIDDEN_COLUMNS_KEY, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { HIDDEN_COLUMNS_KEY, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 function getLeadTimeOrAge(item, intl) {
@@ -124,26 +124,7 @@ export function useWorkItemsDetailTableColumns({
 
   const columns = [
     ...optionalColumns,
-    {
-      headerName: "Work Item",
-      field: "name",
-      width: 320,
-      filter: "agTextColumnFilter",
-      floatingFilter: false,
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      filterValueGetter: (params) => {
-        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
-      },
-      pinned: "left",
-      cellRenderer: React.memo(CardCol),
-      autoHeight: true,
-      comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
-      menuTabs: [...MenuTabs, "columnsMenuTab"],
-    },
+    getWorkItemNameCol(),
     {
       headerName: "Work Item Type",
       field: "workItemType",

@@ -1,7 +1,8 @@
 import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
-import {CustomComponentCol, CustomTypeCol, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
+import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
+import { CardCol } from "../../dashboards/projects/shared/helper/renderers";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
@@ -184,4 +185,27 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
   return [col1, col2, col3, col4, col5, ...optionalCustomCols];
+}
+
+export function getWorkItemNameCol() {
+  return {
+    headerName: "Work Item",
+    field: "name",
+    width: 320,
+    filter: "agTextColumnFilter",
+    floatingFilter: false,
+    filterParams: {
+      filterOptions: ["contains", "startsWith"],
+      buttons: ["reset"],
+      maxNumConditions: 1,
+    },
+    filterValueGetter: (params) => {
+      return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
+    },
+    pinned: "left",
+    cellRenderer: React.memo(CardCol),
+    autoHeight: true,
+    comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.displayId, b.data.displayId),
+    menuTabs: [...MenuTabs, "columnsMenuTab"],
+  };
 }

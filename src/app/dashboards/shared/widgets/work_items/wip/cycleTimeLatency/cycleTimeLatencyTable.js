@@ -12,7 +12,7 @@ import {
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { HIDDEN_COLUMNS_KEY, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { HIDDEN_COLUMNS_KEY, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 
 
@@ -96,24 +96,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
   const columnDefs = React.useMemo(
     () => [
       ...optionalColumns,
-      {
-        field: "name",
-        headerName: "Work Item",
-        pinned: 'left',
-        cellRenderer: React.memo(CardCol),
-        width: 320,
-        filter: "agTextColumnFilter",
-        filterParams: {
-          filterOptions: ["contains", "startsWith"],
-          buttons: ["reset"],
-          maxNumConditions: 1,
-        },
-        filterValueGetter: (params) => {
-          return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
-        },
-        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.displayId, nodeB.data.displayId),
-        menuTabs: [...MenuTabs, 'columnsMenuTab'],
-      },
+      getWorkItemNameCol(),
       {
         field: "state",
         headerName: "State",
