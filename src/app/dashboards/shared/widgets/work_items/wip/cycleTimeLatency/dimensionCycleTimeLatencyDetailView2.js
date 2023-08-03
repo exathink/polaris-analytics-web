@@ -295,6 +295,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         }
       }}
       selectedQuadrant={chartCategory === "engineering" ? selectedQuadrant : undefined}
+      displayBag={{className: "tw-mx-auto tw-w-[98%]", valueFontClass: "tw-text-3xl", size: "small"}}
     />
   );
 
@@ -321,6 +322,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
         }
       }}
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
+      displayBag={{className: "tw-mx-auto tw-w-[98%]", valueFontClass: "tw-text-3xl", size: "small"}}
     />
   );
 
