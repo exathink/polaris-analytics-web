@@ -195,6 +195,7 @@ export const DimensionCycleTimeLatencyView = ({
         }
       }}
       selectedQuadrant={selectedQuadrant}
+      displayBag={{className: "tw-mx-auto tw-w-[98%]", valueFontClass: "tw-text-3xl", size: "small"}}
     />
   );
 
