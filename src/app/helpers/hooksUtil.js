@@ -38,7 +38,7 @@ export function useLocalStorage(key, initialValue) {
     }
 
     const item = window.localStorage.getItem(key);
-    return item || initialValue;
+    return item ? JSON.parse(item) : initialValue;
   };
 
   const [storedValue, setStoredValue] = React.useState(readValue);
@@ -49,17 +49,21 @@ export function useLocalStorage(key, initialValue) {
     }
 
     try {
-      window.localStorage.setItem(key, value);
+      window.localStorage.setItem(key, JSON.stringify(value));
       setStoredValue(value);
     } catch (error) {
       console.warn(`Error setting localStorage key “${key}”:`, error);
     }
   };
 
-  React.useEffect(() => {
-    setStoredValue(readValue());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
-
   return [storedValue, setValue];
+}
+
+export function readLocalStorage(key, initialValue) {
+  if (typeof window === 'undefined') {
+    return initialValue;
+  }
+
+  const item = window.localStorage.getItem(key);
+  return item ? JSON.parse(item) : initialValue;
 }
