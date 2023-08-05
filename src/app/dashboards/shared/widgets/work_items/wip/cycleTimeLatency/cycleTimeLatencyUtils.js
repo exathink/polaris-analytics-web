@@ -345,7 +345,12 @@ export function getFilterValue(appliedFilters, filterKey) {
 const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
 export function doesPairWiseFilterPass({value, record, metric}) {
-  const [part1, part2] = allPairsData[categories.indexOf(value)];
+  let effortCategories
+  if (metric === "effort") {
+    effortCategories = categories.map((b) => String(b).replace("day", "FTE Day"));
+  }
+  const allCategories = effortCategories ?? categories;
+  const [part1, part2] = allPairsData[allCategories.indexOf(value)];
   return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
 }
 

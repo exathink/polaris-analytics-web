@@ -4,17 +4,15 @@ import {WorkItemStateTypeDisplayName} from "../../config";
 import {joinTeams} from "../../helpers/teamUtils";
 import {
   AgGridStripeTable,
-  CustomComponentCol,
-  CustomTypeCol,
   parseTags,
   getOnSortChanged,
   SORTER,
-  TextWithStyle,
   TextWithUom,
   useDefaultColDef,
-  TagsCol,
+  getHandleColumnVisible,
 } from "../../../../components/tables/tableUtils";
 import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {useLocalStorage} from "../../../../helpers/hooksUtil";
 import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
@@ -25,6 +23,8 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
+import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
@@ -65,13 +65,10 @@ export function useWorkItemsDetailTableColumns({
   selectedMetric,
   workTrackingIntegrationType,
   supportsFilterOnCard,
+  hidden_cols
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
-
-  function testMetric(value, record, metric) {
-    const [part1, part2] = filters.allPairsData[filters.categories.indexOf(value)];
-    return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
-  }
+  const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
@@ -87,8 +84,7 @@ export function useWorkItemsDetailTableColumns({
     filterParams: {
       values: effortCategories,
       onFilter: ({value, record}) => {
-        const [part1, part2] = filters.allPairsData[effortCategories.map((x) => x.value).indexOf(value)];
-        return Number(record["effort"]) >= part1 && Number(record["effort"]) < part2;
+        return doesPairWiseFilterPass({value, record, metric: "effort"});
       }
     },
     menuTabs: MenuTabs,
@@ -101,7 +97,7 @@ export function useWorkItemsDetailTableColumns({
       filter: MultiCheckboxFilter,
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => testMetric(value, record, "duration"),
+        onFilter: ({value, record}) => doesPairWiseFilterPass({value, record, metric: "duration"})
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithUom),
@@ -118,7 +114,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, latencyKey);
+          return doesPairWiseFilterPass({value, record, metric: latencyKey});
         },
       },
       menuTabs: MenuTabs,
@@ -126,159 +122,9 @@ export function useWorkItemsDetailTableColumns({
     };
   }
 
-  const optionalCustomCols =
-    workTrackingIntegrationType === "jira"
-      ? [
-          {
-            headerName: "Component",
-            field: "tags",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const componentTags = parseTags(fieldValue).component.join(", ");
-              return componentTags;
-            },
-            filterParams: {
-              values: filters.componentTags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).component.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(CustomComponentCol),
-            autoHeight: true,
-            wrapText: true,
-            hide: true,
-          },
-          {
-            headerName: "Custom Type",
-            field: "tags",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const customTypeTags = parseTags(fieldValue).custom_type;
-              return customTypeTags;
-            },
-            filterParams: {
-              values: filters.customTypeTags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).custom_type.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(CustomTypeCol),
-            hide: true,
-          },
-          {
-            headerName: "Tags",
-            field: "tags",
-            filter: MultiCheckboxFilter,
-            filterValueGetter: (params) => {
-              const field = params.column.getColDef().field;
-              const fieldValue = params.data[field];
-              const tags = parseTags(fieldValue).tags;
-              return tags;
-            },
-            filterParams: {
-              values: filters.tags.map((b) => ({text: b, value: b})),
-              onFilter: ({value, record}) => {
-                return parseTags(record.tags).tags.includes(value);
-              },
-            },
-            menuTabs: MenuTabs,
-            cellRenderer: React.memo(TagsCol),
-            hide: true,
-          },
-        ]
-      : [];
-
   const columns = [
-    {
-      field: "displayId",
-      headerName: "ID",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: true,
-    },
-    {
-      field: "epicName",
-      headerName: "Epic",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: true,
-    },
-    {
-      headerName: "Workstream",
-      field: "workItemsSourceName",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.workItemsSourceName === value,
-      },
-      menuTabs: MenuTabs,
-      cellRenderer: React.memo(TextWithStyle),
-      hide: true,
-    },
-    {
-      field: "teams",
-      headerName: "Teams",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.teams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          const _teams = record.teamNodeRefs.map((t) => t.teamName);
-          return _teams.includes(value);
-        },
-      },
-      menuTabs: MenuTabs,
-      hide: "true",
-    },
-    {
-      field: "url",
-      headerName: "URL",
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: "true",
-      cellClass: "hyperlinks",
-    },
-    ...optionalCustomCols,
-    {
-      headerName: "Work Item",
-      field: "name",
-      width: 320,
-      filter: "agTextColumnFilter",
-      floatingFilter: false,
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      filterValueGetter: (params) => {
-        return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
-      },
-      pinned: "left",
-      cellRenderer: React.memo(CardCol),
-      autoHeight: true,
-      comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.workItemType, b.data.workItemType),
-      menuTabs: [...MenuTabs, "columnsMenuTab"],
-    },
+    ...optionalColumns,
+    getWorkItemNameCol(),
     {
       headerName: "Work Item Type",
       field: "workItemType",
@@ -290,20 +136,7 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
       // comparator: SORTER.number_compare,
     },
-    {
-      headerName: "State",
-      field: "state",
-      autoHeight: true,
-      width: 250,
-      cellRenderer: React.memo(StateTypeCol),
-      comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.states.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.state.indexOf(value) === 0,
-      },
-      menuTabs: MenuTabs,
-    },
+    getStateCol({filters}),
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
@@ -312,7 +145,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, "leadTimeOrAge");
+          return doesPairWiseFilterPass({value, record,metric: "leadTimeOrAge"});
         },
       },
       menuTabs: MenuTabs,
@@ -326,7 +159,7 @@ export function useWorkItemsDetailTableColumns({
       filterParams: {
         values: filters.categories.map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
-          return testMetric(value, record, "cycleTimeOrLatency");
+          return doesPairWiseFilterPass({value, record, metric: "cycleTimeOrLatency"});
         },
       },
       menuTabs: MenuTabs,
@@ -355,6 +188,7 @@ export const WorkItemsDetailTable = ({
   onGridReady
 }) => {
   const intl = useIntl();
+  const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
 
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
@@ -380,7 +214,8 @@ export const WorkItemsDetailTable = ({
     selectedFilter,
     selectedMetric,
     supportsFilterOnCard,
-    workTrackingIntegrationType
+    workTrackingIntegrationType,
+    hidden_cols
   });
 
   const _defaultColDef = useDefaultColDef();
@@ -419,7 +254,14 @@ export const WorkItemsDetailTable = ({
       columnDefs={columns}
       rowData={dataSource}
       statusBar={statusBar}
-      onSortChanged={getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])}
+      onSortChanged={getOnSortChanged([
+        "cycleTimeOrLatency",
+        "leadTimeOrAge",
+        "effort",
+        "duration",
+        "latency",
+        "delivery",
+      ])}
       enableRangeSelection={true}
       defaultExcelExportParams={{
         fileName: "Work_In_Progress",
@@ -452,6 +294,7 @@ export const WorkItemsDetailTable = ({
       testId="work-items-detail-table"
       onGridReady={onGridReady}
       defaultColDef={defaultColDef}
+      onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
     />
   );
 };

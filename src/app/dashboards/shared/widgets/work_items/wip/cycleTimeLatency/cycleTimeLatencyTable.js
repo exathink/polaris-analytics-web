@@ -1,17 +1,19 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getOnSortChanged} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {
   CardCol,
   StateTypeCol,
 } from "../../../../../projects/shared/helper/renderers";
-import {isObjectEmpty} from "../../../../../projects/shared/helper/utils";
+import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
+import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 
 
 function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
@@ -80,6 +82,7 @@ const valueAccessor = {
   name: (data) => [data.filter],
   latency: ({filter, filterTo, type}) => [filter, filterTo, type],
   effort: ({filter, filterTo, type}) => [filter, filterTo, type],
+  state: (data) => data.values.map(x => ({value: x, label: x}))
 };
 
 function getFilterValue(key, value) {
@@ -87,43 +90,14 @@ function getFilterValue(key, value) {
 }
 
 const MenuTabs = ["filterMenuTab",  "generalMenuTab"];
-export function useCycleTimeLatencyTableColumns({filters}) {
+export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegrationType}) {
+  const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
 
-  const columns = React.useMemo(
+  const columnDefs = React.useMemo(
     () => [
-      {field: "displayId", headerName: "ID", hide: true},
-      {field: "epicName", headerName: "Epic", hide: true},
-      {field: 'workItemsSourceName', headerName: "WorkStream", hide: true},
-      {field: 'teams', headerName: 'Teams', hide: "true"},
-      {field: 'url', headerName: 'URL', hide: "true", cellClass: 'hyperlinks'},
-      {
-        field: "name",
-        headerName: "Work Item",
-        pinned: 'left',
-        cellRenderer: React.memo(CardCol),
-        width: 320,
-        filter: "agTextColumnFilter",
-        filterParams: {
-          filterOptions: ["contains", "startsWith"],
-          buttons: ["reset"],
-          maxNumConditions: 1,
-        },
-        filterValueGetter: (params) => {
-          return `${params.getValue("name")} ${params.getValue("displayId")} ${params.getValue("epicName")}`;
-        },
-        comparator: (_valA, _valB, nodeA, nodeB) => SORTER.string_compare(nodeA.data.displayId, nodeB.data.displayId),
-        menuTabs: [...MenuTabs, 'columnsMenuTab'],
-      },
-      {
-        field: "state",
-        headerName: "State",
-        cellRenderer: StateTypeCol,
-        autoHeight: true,
-        comparator: (_valA, _valB, nodeA, nodeB) => {
-          return SORTER.string_compare(nodeA.data.state, nodeB.data.state);
-        },
-        menuTabs: MenuTabs,
-      },
+      ...optionalColumns,
+      getWorkItemNameCol(),
+      getStateCol({filters}),
       {
         field: "quadrant",
         headerName: "Status",
@@ -200,7 +174,7 @@ export function useCycleTimeLatencyTableColumns({filters}) {
     []
   );
 
-  return {columnDefs: columns};
+  return columnDefs;
 }
 
 function getUniqueItems(data) {
@@ -223,16 +197,27 @@ function getUniqueItems(data) {
 export const CycleTimeLatencyTable = React.forwardRef(
   ({tableData, callBacks, cycleTimeTarget, latencyTarget, specsOnly}, gridRef) => {
     const intl = useIntl();
+    const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
+
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
+    const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+    const componentTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).component))];
+    const customTypeTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).custom_type))];
+    const tags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).tags))];
+    const workTrackingIntegrationType = tableData[0]?.["workTrackingIntegrationType"];
+    const states = [...new Set(tableData.map((x) => x.state))];
 
+    const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+    const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
     const dataSource = React.useMemo(
       () => getTransformedData(tableData, intl, {cycleTimeTarget, latencyTarget}),
       [tableData, cycleTimeTarget, latencyTarget, intl]
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
-    const {columnDefs} = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams}
+    const columnDefs = useCycleTimeLatencyTableColumns({
+      filters: {workItemTypes, stateTypes, quadrants, teams, states, workItemStreams, componentTags, customTypeTags, tags, categories, allPairsData},
+      workTrackingIntegrationType
     });
 
     const statusBar = React.useMemo(() => {
@@ -339,6 +324,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
         }}
         onFilterChanged={handleFilterChange}
         onFilterOpened={handleFilterOpen}
+        onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
       />
     );
   }
