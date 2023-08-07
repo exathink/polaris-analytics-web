@@ -373,9 +373,13 @@ export function doesPairWiseFilterPass({value, record, metric}) {
   if (metric === "effort") {
     effortCategories = EFFORT_CATEGORIES;
   }
+  if (value === BLANKS) {
+    return record[metric] == null;
+  }
+
   const allCategories = effortCategories ?? categories;
   const [part1, part2] = allPairsData[allCategories.indexOf(value)];
-  return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  return record[metric] != null && Number(record[metric]) >= part1 && Number(record[metric]) < part2;
 }
 
 export function filterByStateTypes(workItems, stateTypes) {
