@@ -2,10 +2,10 @@ import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
-import { CardCol, StateTypeCol } from "../../dashboards/projects/shared/helper/renderers";
+import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
-
+const BLANKS = "(Blanks)";
 /**
  * get optional cols with given colIds
  * @param {{colIds: string[]}} obj
@@ -116,8 +116,11 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
         return componentTags;
       },
       filterParams: {
-        values: filters.componentTags.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.componentTags].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
+          if (value === BLANKS && parseTags(record.tags).component.length === 0) {
+            return true;
+          }
           return parseTags(record.tags).component.includes(value);
         },
       },
@@ -144,8 +147,11 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
         return customTypeTags;
       },
       filterParams: {
-        values: filters.customTypeTags.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.customTypeTags].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
+          if (value === BLANKS && parseTags(record.tags).custom_type.length === 0) {
+            return true;
+          }
           return parseTags(record.tags).custom_type.includes(value);
         },
       },
@@ -170,8 +176,11 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
         return tags;
       },
       filterParams: {
-        values: filters.tags.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.tags].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
+          if (value === BLANKS && parseTags(record.tags).tags.length === 0) {
+            return true;
+          }
           return parseTags(record.tags).tags.includes(value);
         },
       },
