@@ -367,10 +367,11 @@ export function getFilterValue(appliedFilters, filterKey) {
 
 const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+export const EFFORT_CATEGORIES = categories.map((b) => String(b).replace("day", "FTE Day"));
 export function doesPairWiseFilterPass({value, record, metric}) {
   let effortCategories
   if (metric === "effort") {
-    effortCategories = categories.map((b) => String(b).replace("day", "FTE Day"));
+    effortCategories = EFFORT_CATEGORIES;
   }
   const allCategories = effortCategories ?? categories;
   const [part1, part2] = allPairsData[allCategories.indexOf(value)];
