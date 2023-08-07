@@ -3,7 +3,8 @@ import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
 import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
-export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
+import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
+
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "(Blanks)";
 /**
