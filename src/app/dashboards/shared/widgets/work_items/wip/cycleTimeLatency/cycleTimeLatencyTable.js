@@ -138,7 +138,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         },
         menuTabs: MenuTabs,
       },
-      getEffortCol({effortCategories: EFFORT_CATEGORIES.map(x => ({text: x, value: x}))}),
+      getEffortCol(),
       {
         field: "latestCommitDisplay",
         headerName: "Latest Commit",

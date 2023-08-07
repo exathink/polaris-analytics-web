@@ -4,7 +4,7 @@ import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wi
 import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, TextWithUom, parseTags} from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
-import {doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "(Blanks)";
@@ -238,7 +238,8 @@ export function getStateCol({filters}) {
   };
 }
 
-export function getEffortCol({effortCategories}) {
+export function getEffortCol() {
+  const effortCategories = EFFORT_CATEGORIES.map(x => ({text: x, value: x}));
   return {
     field: "effort",
     headerName: "Effort",

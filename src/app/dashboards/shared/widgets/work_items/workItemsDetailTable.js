@@ -73,8 +73,7 @@ export function useWorkItemsDetailTableColumns({
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
-  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("day", "FTE Day"), value: String(b).replace("day", "FTE Day")}));
-  let defaultOptionalCol = getEffortCol({effortCategories});
+  let defaultOptionalCol = getEffortCol();
   if (selectedMetric === "duration") {
     defaultOptionalCol = {
       headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
