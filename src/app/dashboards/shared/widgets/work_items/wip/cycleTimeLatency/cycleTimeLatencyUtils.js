@@ -6,6 +6,7 @@ import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../.
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
+import {parseTags} from "../../../../../../components/tables/tableUtils";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -211,7 +212,10 @@ export const FILTERS = {
   CATEGORY: "category",
   PRIMARY_CATEGORY: "primary_category",
   CURRENT_INTERACTION: "currentInteraction",
-  HISTOGRAM_BUCKET: "histogram_bucket"
+  HISTOGRAM_BUCKET: "histogram_bucket",
+  COMPONENT: "component",
+  CUSTOM_TYPE: "custom_type",
+  CUSTOM_TAGS: "custom_tags",
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -280,7 +284,16 @@ export let filterFns = {
       : deliveryStateTypes.indexOf(w.stateType) !== -1),
   [FILTERS.HISTOGRAM_BUCKET]: (w, bucketRecords) => {
     return bucketRecords.some(b => b.cycleTime === w.cycleTime);
-  }
+  },
+  [FILTERS.COMPONENT]: (w, values) => {
+    return values.some(v => parseTags(w.tags).component.includes(v));
+  },
+  [FILTERS.CUSTOM_TYPE]: (w, values) => {
+    return values.some(v => parseTags(w.tags).custom_type.includes(v));
+  },
+  [FILTERS.CUSTOM_TAGS]: (w, values) => {
+    return values.some(v => parseTags(w.tags).tags.includes(v));
+  },
 };
 
 /**

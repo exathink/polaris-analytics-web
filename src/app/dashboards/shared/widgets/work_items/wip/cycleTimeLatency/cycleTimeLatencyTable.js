@@ -5,10 +5,6 @@ import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
-import {
-  CardCol,
-  StateTypeCol,
-} from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
@@ -82,7 +78,10 @@ const valueAccessor = {
   name: (data) => [data.filter],
   latency: ({filter, filterTo, type}) => [filter, filterTo, type],
   effort: ({filter, filterTo, type}) => [filter, filterTo, type],
-  state: (data) => data.values.map(x => ({value: x, label: x}))
+  state: (data) => data.values.map(x => ({value: x, label: x})),
+  component: (data) => data.values,
+  custom_type: (data) => data.values,
+  custom_tags: (data) => data.values
 };
 
 function getFilterValue(key, value) {
