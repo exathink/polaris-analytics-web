@@ -7,6 +7,7 @@ import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
 import {parseTags} from "../../../../../../components/tables/tableUtils";
+import { BLANKS } from "../../../../../../components/tables/tableCols";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -286,12 +287,21 @@ export let filterFns = {
     return bucketRecords.some(b => b.cycleTime === w.cycleTime);
   },
   [FILTERS.COMPONENT]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).component.length === 0;
+    }
     return values.some(v => parseTags(w.tags).component.includes(v));
   },
   [FILTERS.CUSTOM_TYPE]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).custom_type.length === 0;
+    }
     return values.some(v => parseTags(w.tags).custom_type.includes(v));
   },
   [FILTERS.CUSTOM_TAGS]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).tags.length === 0;
+    }
     return values.some(v => parseTags(w.tags).tags.includes(v));
   },
 };

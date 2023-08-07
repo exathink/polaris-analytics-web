@@ -5,7 +5,7 @@ import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parse
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
-const BLANKS = "(Blanks)";
+export const BLANKS = "(Blanks)";
 /**
  * get optional cols with given colIds
  * @param {{colIds: string[]}} obj
