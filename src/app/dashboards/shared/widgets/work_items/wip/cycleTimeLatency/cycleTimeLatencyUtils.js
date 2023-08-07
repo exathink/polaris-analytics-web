@@ -260,20 +260,10 @@ export let filterFns = {
       return w.latency >= filter
     }
   },
-  [FILTERS.EFFORT]: (w, [filter, filterTo, type]) => {
-    if (w.effort == null) {
-      return false;
-    }
-
-    if (type === "inRange") {
-      return w.effort >= filter && w.effort <= filterTo;
-    }
-    if (type === "lessThanOrEqual") {
-      return w.effort <= filter;
-    }
-    if (type === "greaterThanOrEqual") {
-      return w.effort >= filter
-    }
+  [FILTERS.EFFORT]: (w, filterVals) => {
+    return filterVals.some((filterVal) => {
+      return doesPairWiseFilterPass({value: filterVal, record: w, metric: "effort"});
+    });
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},

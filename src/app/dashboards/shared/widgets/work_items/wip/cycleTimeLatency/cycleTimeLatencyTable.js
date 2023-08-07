@@ -78,7 +78,7 @@ const valueAccessor = {
   quadrant: (data) => data.values,
   name: (data) => [data.filter],
   latency: ({filter, filterTo, type}) => [filter, filterTo, type],
-  effort: ({filter, filterTo, type}) => [filter, filterTo, type],
+  effort: (data) => data.values,
   state: (data) => data.values.map(x => ({value: x, label: x})),
   component: (data) => data.values,
   custom_type: (data) => data.values,
