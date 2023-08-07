@@ -239,7 +239,7 @@ export function getStateCol({filters}) {
 }
 
 export function getEffortCol() {
-  const effortCategories = EFFORT_CATEGORIES.map(x => ({text: x, value: x}));
+  const effortCategories = [BLANKS, ...EFFORT_CATEGORIES].map(x => ({text: x, value: x}));
   return {
     field: "effort",
     headerName: "Effort",
