@@ -2,13 +2,13 @@ import React from "react";
 import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, EFFORT_CATEGORIES, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 import {HIDDEN_COLUMNS_KEY} from "../../../../../../helpers/localStorageUtils";
 
@@ -138,23 +138,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         },
         menuTabs: MenuTabs,
       },
-      {
-        field: "effort",
-        headerName: "Effort",
-        cellRenderer: TextWithUom,
-        filter: "agNumberColumnFilter",
-        filterParams: {
-          maxNumConditions: 1,
-          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
-          buttons: ["reset"],
-          inRangeInclusive: true
-        },
-        cellRendererParams: {
-          uom: "FTE Days",
-        },
-        comparator: SORTER.number_compare,
-        menuTabs: MenuTabs,
-      },
+      getEffortCol({effortCategories: EFFORT_CATEGORIES.map(x => ({text: x, value: x}))}),
       {
         field: "latestCommitDisplay",
         headerName: "Latest Commit",

@@ -23,7 +23,7 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 
@@ -74,23 +74,7 @@ export function useWorkItemsDetailTableColumns({
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
   const effortCategories = filters.categories.map((b) => ({text: String(b).replace("day", "FTE Day"), value: String(b).replace("day", "FTE Day")}));
-  let defaultOptionalCol = {
-    headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
-    field: "effort",
-    cellRenderer: React.memo(TextWithUom),
-    cellRendererParams: {
-      uom: "FTE Days",
-    },
-    filter: MultiCheckboxFilter,
-    filterParams: {
-      values: effortCategories,
-      onFilter: ({value, record}) => {
-        return doesPairWiseFilterPass({value, record, metric: "effort"});
-      }
-    },
-    menuTabs: MenuTabs,
-    comparator: SORTER.number_compare,
-  };
+  let defaultOptionalCol = getEffortCol({effortCategories});
   if (selectedMetric === "duration") {
     defaultOptionalCol = {
       headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
