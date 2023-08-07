@@ -28,11 +28,11 @@ import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyU
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 
 function getLeadTimeOrAge(item, intl) {
-  return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
+  return isClosed(item.stateType) ? item.leadTime : item.cycleTime;
 }
 
 function getCycleTimeOrLatency(item, intl) {
-  return isClosed(item.stateType) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
+  return isClosed(item.stateType) ? item.cycleTime : item.latency;
 }
 
 function getTransformedData(data, intl) {
@@ -43,11 +43,7 @@ function getTransformedData(data, intl) {
       ...item,
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
-      latency: getNumber(item.latency, intl),
-      delivery: getNumber(item.latency, intl),
-      commitLatency: getNumber(item.commitLatency, intl),
-      effort: getNumber(item.effort, intl),
-      duration: getNumber(item.duration, intl),
+      delivery: item.latency,
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       teams: joinTeams(item),
