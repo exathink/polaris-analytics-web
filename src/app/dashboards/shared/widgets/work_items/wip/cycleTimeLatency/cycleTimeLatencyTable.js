@@ -8,7 +8,7 @@ import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 import {HIDDEN_COLUMNS_KEY} from "../../../../../../helpers/localStorageUtils";
 
@@ -117,7 +117,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         comparator: SORTER.number_compare,
         filter: MultiCheckboxFilter,
         filterParams: {
-          values: categories.map((b) => ({text: b, value: b})),
+          values: [BLANKS, ...categories].map((b) => ({text: b, value: b})),
           onFilter: ({value, record}) => {     
             return doesPairWiseFilterPass({value, record, metric: "cycleTime"});
           },
