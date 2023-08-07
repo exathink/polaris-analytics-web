@@ -1,9 +1,10 @@
 import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
-import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
+import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, TextWithUom, parseTags} from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
+import {doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "(Blanks)";
@@ -234,5 +235,25 @@ export function getStateCol({filters}) {
       onFilter: ({value, record}) => record.state.indexOf(value) === 0,
     },
     menuTabs: MenuTabs,
+  };
+}
+
+export function getEffortCol({effortCategories}) {
+  return {
+    field: "effort",
+    headerName: "Effort",
+    cellRenderer: React.memo(TextWithUom),
+    cellRendererParams: {
+      uom: "FTE Days",
+    },
+    filter: MultiCheckboxFilter,
+    filterParams: {
+      values: effortCategories,
+      onFilter: ({value, record}) => {
+        return doesPairWiseFilterPass({value, record, metric: "effort"});
+      },
+    },
+    menuTabs: MenuTabs,
+    comparator: SORTER.number_compare,
   };
 }
