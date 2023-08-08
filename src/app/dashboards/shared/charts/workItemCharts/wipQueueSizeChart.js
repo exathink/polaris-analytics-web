@@ -39,7 +39,7 @@ function getSeries(items, specsOnly) {
       dataLabels: [
         {
           align: "right",
-          format: `{y} ${itemsDesc(specsOnly)}`,
+          format: `{y}`,
         },
       ],
       data: Object.entries(getStateCounts(items))
@@ -56,6 +56,9 @@ export const WipQueueSizeChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
   getConfig: ({items, stageName, specsOnly, phases, onPointClick, intl}) => {
+    const workItemCountsByState = Object.values(getStateCounts(items)).map(x => x.count);
+    const maximum = Math.max(...workItemCountsByState);
+
     const filteredData = items.filter(x => phases.includes(x.stateType));
 
     const series = getSeries(filteredData, specsOnly);
@@ -82,6 +85,8 @@ export const WipQueueSizeChart = Chart({
         categories: Object.entries(getStateCounts(filteredData)).sort(compare).flatMap(e => e[0])
       },
       yAxis: {
+        max: maximum + 0.3,
+        endOnTick: false,
         type: 'linear',
         allowDecimals: false,
         title: {
