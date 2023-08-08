@@ -33,6 +33,7 @@ import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../.
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
 import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
 import { DELIVERY_PHASES, ENGINEERING_PHASES } from "../../../../config";
+import {WIP_CHART_TYPE} from "../../../../../../helpers/localStorageUtils";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -75,7 +76,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   // other states
   const [exclude, setExclude] = React.useState(false);
 
-  const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage("wip_chart_type");
+  const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = React.useState(wip_chart_type_localstorage || "queue");
 
   const updateWipChartType = (value) => {

@@ -6,6 +6,8 @@ import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../.
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
+import {parseTags} from "../../../../../../components/tables/tableUtils";
+import { BLANKS } from "../../../../../../components/tables/tableCols";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -211,7 +213,10 @@ export const FILTERS = {
   CATEGORY: "category",
   PRIMARY_CATEGORY: "primary_category",
   CURRENT_INTERACTION: "currentInteraction",
-  HISTOGRAM_BUCKET: "histogram_bucket"
+  HISTOGRAM_BUCKET: "histogram_bucket",
+  COMPONENT: "component",
+  CUSTOM_TYPE: "custom_type",
+  CUSTOM_TAGS: "custom_tags",
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -255,20 +260,10 @@ export let filterFns = {
       return w.latency >= filter
     }
   },
-  [FILTERS.EFFORT]: (w, [filter, filterTo, type]) => {
-    if (w.effort == null) {
-      return false;
-    }
-
-    if (type === "inRange") {
-      return w.effort >= filter && w.effort <= filterTo;
-    }
-    if (type === "lessThanOrEqual") {
-      return w.effort <= filter;
-    }
-    if (type === "greaterThanOrEqual") {
-      return w.effort >= filter
-    }
+  [FILTERS.EFFORT]: (w, filterVals) => {
+    return filterVals.some((filterVal) => {
+      return doesPairWiseFilterPass({value: filterVal, record: w, metric: "effort"});
+    });
   },
   // would be replaced at runtime, based on exclude value
   [FILTERS.STATE]: (w) => {},
@@ -280,7 +275,25 @@ export let filterFns = {
       : deliveryStateTypes.indexOf(w.stateType) !== -1),
   [FILTERS.HISTOGRAM_BUCKET]: (w, bucketRecords) => {
     return bucketRecords.some(b => b.cycleTime === w.cycleTime);
-  }
+  },
+  [FILTERS.COMPONENT]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).component.length === 0;
+    }
+    return values.some(v => parseTags(w.tags).component.includes(v));
+  },
+  [FILTERS.CUSTOM_TYPE]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).custom_type.length === 0;
+    }
+    return values.some(v => parseTags(w.tags).custom_type.includes(v));
+  },
+  [FILTERS.CUSTOM_TAGS]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return parseTags(w.tags).tags.length === 0;
+    }
+    return values.some(v => parseTags(w.tags).tags.includes(v));
+  },
 };
 
 /**
@@ -344,14 +357,19 @@ export function getFilterValue(appliedFilters, filterKey) {
 
 const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
+export const EFFORT_CATEGORIES = categories.map((b) => String(b).replace("day", "FTE Day"));
 export function doesPairWiseFilterPass({value, record, metric}) {
   let effortCategories
   if (metric === "effort") {
-    effortCategories = categories.map((b) => String(b).replace("day", "FTE Day"));
+    effortCategories = EFFORT_CATEGORIES;
   }
+  if (value === BLANKS) {
+    return record[metric] == null;
+  }
+
   const allCategories = effortCategories ?? categories;
   const [part1, part2] = allPairsData[allCategories.indexOf(value)];
-  return Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+  return record[metric] != null && Number(record[metric]) >= part1 && Number(record[metric]) < part2;
 }
 
 export function filterByStateTypes(workItems, stateTypes) {
