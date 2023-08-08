@@ -47,6 +47,7 @@ function getSeries(items, specsOnly) {
         .map((e, index) => {
           return {name: e[0], y: e[1].count, color: workItemFlowTypeColor(e[1].flowType), totalAge: e[1].totalAge};
         }),
+      maxPointWidth: 40
     },
   ];
 }
