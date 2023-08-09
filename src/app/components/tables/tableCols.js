@@ -7,7 +7,7 @@ import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
-export const BLANKS = "(Blanks)";
+export const BLANKS = "Blank";
 /**
  * get optional cols with given colIds
  * @param {{colIds: string[]}} obj
