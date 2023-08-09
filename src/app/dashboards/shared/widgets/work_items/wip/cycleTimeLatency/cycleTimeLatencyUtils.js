@@ -55,8 +55,8 @@ export const QuadrantNames = {
 export const getQuadrantDescription = ({ intl, cycleTimeTarget, latencyTarget }) => ({
   [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, latencyTarget, 1)} days`,
   [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, latencyTarget, 1)} days`,
-  [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, latencyTarget, 1)} days`,
-  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, latencyTarget, 1)} days`
+  [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
+  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, cycleTimeTarget, 1)} days`
 });
 
 export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget) {
