@@ -38,7 +38,16 @@ export function useLocalStorage(key, initialValue) {
     }
 
     const item = window.localStorage.getItem(key);
-    return item ? JSON.parse(item) : initialValue;
+    let result;
+    try {
+      result = item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      window.localStorage.clear();
+      result = initialValue;
+      console.warn(`Error getting localStorage key “${key}”:`, error);
+    }
+
+    return result;
   };
 
   const [storedValue, setStoredValue] = React.useState(readValue);
