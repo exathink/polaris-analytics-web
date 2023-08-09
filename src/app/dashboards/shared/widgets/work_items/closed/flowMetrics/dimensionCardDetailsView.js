@@ -33,10 +33,7 @@ const getData = (data, dimension) => {
       "authorCount",
       "teamNodeRefs",
       "epicName",
-      "workItemsSourceName",
-      "storyPoints",
-      "releases",
-      "priority",
+      "workItemsSourceName"
     )
   );
 };

@@ -1,15 +1,7 @@
 import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
-import {
-  CustomComponentCol,
-  CustomTypeCol,
-  SORTER,
-  TagsCol,
-  TextWithStyle,
-  parseTags,
-  TextWithUom
-} from "./tableUtils";
+import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, parseTags} from "./tableUtils";
 import { CardCol, StateTypeCol } from "../../dashboards/projects/shared/helper/renderers";
 export const HIDDEN_COLUMNS_KEY = "all_tables_hidden_columns";
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
@@ -190,53 +182,9 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     [hasCustomTags, filters]
   );
 
-  const hasStoryPoints = hidden_cols.includes("storyPoints");
-  const col9 = React.useMemo(
-    () => ({
-      field: "storyPoints",
-      headerName: "Story Points",
-      cellRenderer: React.memo(TextWithStyle),
-      menuTabs: MenuTabs,
-      hide: !hasStoryPoints,
-      comparator: SORTER.number_compare,
-    }),
-    [hasStoryPoints]
-  );
-
-  const hasReleases = hidden_cols.includes("releases");
-  const col10 = React.useMemo(
-    () => ({
-      field: "releases",
-      headerName: "Releases",
-      cellRenderer: React.memo(TextWithStyle),
-      menuTabs: MenuTabs,
-      hide: !hasReleases,
-    }),
-    [hasReleases]
-  );
-
-  const hasPriority = hidden_cols.includes("priority");
-  const col11 = React.useMemo(
-    () => ({
-      field: "priority",
-      headerName: "Priority",
-      cellRenderer: React.memo(TextWithStyle),
-      filter: "agSetColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
-      menuTabs: MenuTabs,
-      hide: !hasPriority,
-
-    }),
-    [hasPriority]
-  );
-
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
-  return [col1, col2, col3, col4, col5, col9, col10, col11, ...optionalCustomCols];
+  return [col1, col2, col3, col4, col5, ...optionalCustomCols];
 }
 
 export function getWorkItemNameCol() {
