@@ -42,6 +42,10 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             workItemKey
             workItemType
             isBug
+            storyPoints
+            releases
+            priority
+
 
             state
             stateType
