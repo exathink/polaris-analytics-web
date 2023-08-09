@@ -11,9 +11,9 @@ import {
   useDefaultColDef,
   getHandleColumnVisible,
 } from "../../../../components/tables/tableUtils";
-import {getNumber, useBlurClass} from "../../../../helpers/utility";
+import {useBlurClass} from "../../../../helpers/utility";
 import {useLocalStorage} from "../../../../helpers/hooksUtil";
-import {CardCol, StateTypeCol, IssueTypeCol} from "../../../projects/shared/helper/renderers";
+import {IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -23,15 +23,16 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 
 function getLeadTimeOrAge(item, intl) {
-  return isClosed(item.stateType) ? getNumber(item.leadTime, intl) : getNumber(item.cycleTime, intl);
+  return isClosed(item.stateType) ? item.leadTime : item.cycleTime;
 }
 
 function getCycleTimeOrLatency(item, intl) {
-  return isClosed(item.stateType) ? getNumber(item.cycleTime, intl) : getNumber(item.latency, intl);
+  return isClosed(item.stateType) ? item.cycleTime : item.latency;
 }
 
 function getTransformedData(data, intl) {
@@ -42,11 +43,7 @@ function getTransformedData(data, intl) {
       ...item,
       leadTimeOrAge: getLeadTimeOrAge(item, intl),
       cycleTimeOrLatency: getCycleTimeOrLatency(item, intl),
-      latency: getNumber(item.latency, intl),
-      delivery: getNumber(item.latency, intl),
-      commitLatency: getNumber(item.commitLatency, intl),
-      effort: getNumber(item.effort, intl),
-      duration: getNumber(item.duration, intl),
+      delivery: item.latency,
       stateType: WorkItemStateTypeDisplayName[item.stateType],
       stateTypeInternal: item.stateType,
       teams: joinTeams(item),
@@ -72,24 +69,7 @@ export function useWorkItemsDetailTableColumns({
 
   const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 
-  const effortCategories = filters.categories.map((b) => ({text: String(b).replace("day", "FTE Day"), value: String(b).replace("day", "FTE Day")}));
-  let defaultOptionalCol = {
-    headerName: projectDeliveryCycleFlowMetricsMeta["effort"].display,
-    field: "effort",
-    cellRenderer: React.memo(TextWithUom),
-    cellRendererParams: {
-      uom: "FTE Days",
-    },
-    filter: MultiCheckboxFilter,
-    filterParams: {
-      values: effortCategories,
-      onFilter: ({value, record}) => {
-        return doesPairWiseFilterPass({value, record, metric: "effort"});
-      }
-    },
-    menuTabs: MenuTabs,
-    comparator: SORTER.number_compare,
-  };
+  let defaultOptionalCol = getEffortCol();
   if (selectedMetric === "duration") {
     defaultOptionalCol = {
       headerName: projectDeliveryCycleFlowMetricsMeta["duration"].display,
@@ -112,7 +92,7 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
-        values: filters.categories.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.categories].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
           return doesPairWiseFilterPass({value, record, metric: latencyKey});
         },
@@ -143,7 +123,7 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
-        values: filters.categories.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.categories].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
           return doesPairWiseFilterPass({value, record,metric: "leadTimeOrAge"});
         },
@@ -157,7 +137,7 @@ export function useWorkItemsDetailTableColumns({
       cellRenderer: React.memo(TextWithUom),
       filter: MultiCheckboxFilter,
       filterParams: {
-        values: filters.categories.map((b) => ({text: b, value: b})),
+        values: [BLANKS, ...filters.categories].map((b) => ({text: b, value: b})),
         onFilter: ({value, record}) => {
           return doesPairWiseFilterPass({value, record, metric: "cycleTimeOrLatency"});
         },

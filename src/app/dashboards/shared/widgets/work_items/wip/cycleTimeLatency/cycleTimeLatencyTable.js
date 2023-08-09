@@ -5,15 +5,12 @@ import {WorkItemStateTypeDisplayName} from "../../../../config";
 import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
-import {
-  CardCol,
-  StateTypeCol,
-} from "../../../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { HIDDEN_COLUMNS_KEY, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
+import {HIDDEN_COLUMNS_KEY} from "../../../../../../helpers/localStorageUtils";
 
 
 function getTransformedData(data, intl, {cycleTimeTarget, latencyTarget}) {
@@ -81,8 +78,11 @@ const valueAccessor = {
   quadrant: (data) => data.values,
   name: (data) => [data.filter],
   latency: ({filter, filterTo, type}) => [filter, filterTo, type],
-  effort: ({filter, filterTo, type}) => [filter, filterTo, type],
-  state: (data) => data.values.map(x => ({value: x, label: x}))
+  effort: (data) => data.values,
+  state: (data) => data.values.map(x => ({value: x, label: x})),
+  component: (data) => data.values,
+  custom_type: (data) => data.values,
+  custom_tags: (data) => data.values
 };
 
 function getFilterValue(key, value) {
@@ -117,7 +117,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         comparator: SORTER.number_compare,
         filter: MultiCheckboxFilter,
         filterParams: {
-          values: categories.map((b) => ({text: b, value: b})),
+          values: [BLANKS, ...categories].map((b) => ({text: b, value: b})),
           onFilter: ({value, record}) => {     
             return doesPairWiseFilterPass({value, record, metric: "cycleTime"});
           },
@@ -138,23 +138,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         },
         menuTabs: MenuTabs,
       },
-      {
-        field: "effort",
-        headerName: "Effort",
-        cellRenderer: TextWithUom,
-        filter: "agNumberColumnFilter",
-        filterParams: {
-          maxNumConditions: 1,
-          filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
-          buttons: ["reset"],
-          inRangeInclusive: true
-        },
-        cellRendererParams: {
-          uom: "FTE Days",
-        },
-        comparator: SORTER.number_compare,
-        menuTabs: MenuTabs,
-      },
+      getEffortCol(),
       {
         field: "latestCommitDisplay",
         headerName: "Latest Commit",

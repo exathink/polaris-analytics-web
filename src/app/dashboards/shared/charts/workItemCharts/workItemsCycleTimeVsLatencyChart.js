@@ -158,7 +158,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         align: "left"
       },
       subtitle: {
-        text: `Age & Latency: ${localNow(intl)} `,
+        text: `Age & Last Moved: ${localNow(intl)} `,
         align: "left"
       },
       xAxis: {
@@ -276,7 +276,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               [`Entered:`, `${timeInStateDisplay}`],
               [],
               [`Age:`, `${intl.formatNumber(cycleTime)} days`],
-              [`Latency`, `${intl.formatNumber(latency)} days`],
+              [`Last Moved:`, `${intl.formatNumber(latency)} days`],
               effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
               ...remainingEntries
