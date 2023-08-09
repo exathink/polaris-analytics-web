@@ -19,6 +19,7 @@ import {useLocalStorage} from "../../../helpers/hooksUtil";
 import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
 import classNames from "classnames";
 import fontStyles from "../../../framework/styles/fonts.module.css";
+import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -40,7 +41,7 @@ function WipDashboard({
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
 
-  const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage("wip_chart_type");
+  const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
   const specsOnly = workItemScope === "specs";
 
