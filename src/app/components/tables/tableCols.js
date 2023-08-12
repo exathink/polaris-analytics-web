@@ -230,6 +230,7 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       field: "priority",
       headerName: "Priority",
       cellRenderer: React.memo(TextWithStyle),
+      sortable: false,
       filter: "agSetColumnFilter",
       filterParams: {
         filterOptions: ["contains", "startsWith"],
