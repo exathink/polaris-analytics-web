@@ -212,6 +212,12 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       field: "releases",
       headerName: "Releases",
       cellRenderer: React.memo(TextWithStyle),
+      filter: "agTextColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
       menuTabs: MenuTabs,
       hide: !hasReleases,
     }),
