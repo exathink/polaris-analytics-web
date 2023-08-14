@@ -21,6 +21,7 @@ import classNames from "classnames";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 import { Checkbox } from "antd";
+import { FILTERS } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -56,7 +57,7 @@ function WipDashboard({
   const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
 
   const {
     cycleTimeTarget,
@@ -87,6 +88,7 @@ function WipDashboard({
           <Checkbox
             onChange={(e) => {
               setExclude(e.target.checked);
+              setAppliedFilters(prev => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
             }}
             name="state-exclude"
             checked={exclude}
