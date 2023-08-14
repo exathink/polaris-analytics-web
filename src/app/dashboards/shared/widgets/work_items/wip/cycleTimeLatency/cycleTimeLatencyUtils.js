@@ -15,7 +15,8 @@ export const Quadrants = {
   ok: "ok",
   latency: "latency",
   age: "age",
-  critical: "critical"
+  critical: "critical",
+  abandoned: "abandoned"
 };
 
 export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
@@ -31,8 +32,18 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
     return Quadrants.age;
   }
 
-  if (cycleTime > cycleTimeTarget && latency > cycleTimeTarget) {
+  const abandoned_threshold = 2*cycleTimeTarget;
+  if (
+    cycleTime > cycleTimeTarget &&
+    cycleTime <= abandoned_threshold &&
+    latency > cycleTimeTarget &&
+    latency <= abandoned_threshold
+  ) {
     return Quadrants.critical;
+  }
+
+  if (cycleTime > abandoned_threshold && latency > abandoned_threshold) {
+    return Quadrants.abandoned;
   }
 };
 
@@ -217,6 +228,7 @@ export const FILTERS = {
   COMPONENT: "component",
   CUSTOM_TYPE: "custom_type",
   CUSTOM_TAGS: "custom_tags",
+  EXCLUDE_ABANDONED: "exclude_abandoned"
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -294,6 +306,9 @@ export let filterFns = {
     }
     return values.some(v => parseTags(w.tags).tags.includes(v));
   },
+  [FILTERS.EXCLUDE_ABANDONED]: (w, [value]) => {
+    return value ? w.quadrant !== Quadrants.abandoned : true;
+  }
 };
 
 /**
