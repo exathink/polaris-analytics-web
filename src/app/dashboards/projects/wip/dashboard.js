@@ -20,6 +20,7 @@ import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowM
 import classNames from "classnames";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
+import { Checkbox } from "antd";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -40,6 +41,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
+  const [exclude, setExclude] = React.useState(true);
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -77,9 +79,21 @@ function WipDashboard({
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
+      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300 tw-flex tw-items-center">
         <div className="tw-flex tw-justify-start">
           {specsOnly ? `All ${AppTerms.specs.display} in Process` : `All ${AppTerms.cards.display} in Process`}
+        </div>
+        <div className="tw-text-gray-300 tw-ml-8">
+          <Checkbox
+            onChange={(e) => {
+              setExclude(e.target.checked);
+            }}
+            name="state-exclude"
+            checked={exclude}
+            className="!tw-mb-1 tw-self-end"
+          >
+            Exclude Abandoned
+          </Checkbox>
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
@@ -113,7 +127,7 @@ function WipDashboard({
         )}
       </div>
       <DashboardRow>
-      <DashboardWidget
+        <DashboardWidget
           name="summary-wip"
           className="tw-col-span-3 tw-col-start-1"
           title={""}
@@ -140,7 +154,9 @@ function WipDashboard({
         />
         <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite" data-testid="completed-work">
           <div className="tw-grid tw-grid-cols-2 tw-gap-1">
-            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Flow Metrics, Last {flowAnalysisPeriod} Days</div>
+            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>
+              Flow Metrics, Last {flowAnalysisPeriod} Days
+            </div>
 
             <DashboardWidget
               name="throughput-summary-card"
@@ -209,8 +225,6 @@ function WipDashboard({
             />
           </div>
         </div>
-
-
       </DashboardRow>
       <DashboardRow title={" "}>
         <DashboardWidget
