@@ -199,6 +199,7 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       field: "storyPoints",
       headerName: "Story Points",
       cellRenderer: React.memo(TextWithStyle),
+      filter: "agNumberColumnFilter",
       menuTabs: MenuTabs,
       hide: !hasStoryPoints,
       comparator: SORTER.number_compare,
