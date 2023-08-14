@@ -17,7 +17,7 @@ import {
   TotalEffort,
 } from "../../../../components/flowStatistics/flowStatistics";
 import {withViewerContext} from "../../../../../../framework/viewer/viewerContext";
-import {getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
+import {average, getItemSuffix, i18nNumber} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 
 import grid from "../../../../../../framework/styles/grids.module.css";
@@ -26,6 +26,7 @@ import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import { useSelectWithDelegate } from "../../../../../../helpers/hooksUtil";
 import { metricsMapping } from "../../../../helpers/teamUtils";
+import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -336,7 +337,17 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
 
   const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
   const intl = useIntl();
-  const {pipelineCycleMetrics} = data[dimension];
+  const workItems = React.useMemo(() => {
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [data, dimension]);
+  const workItemAggregateDurations = getWorkItemDurations(workItems);
+  const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
+
+  const pipelineCycleMetrics = {
+    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItems.length,
+    avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
+  };
 
   const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
   const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
