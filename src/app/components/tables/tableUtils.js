@@ -410,6 +410,24 @@ export function TagsCol({value}) {
   return renderTags(tags_list);
 }
 
+
+export function renderArray(array_list) {
+  const classes = "tw-flex tw-flex-col tw-items-start";
+
+  return (
+    <div className={classes}>
+      {array_list.map((x) => (
+        <span className="tw-textXs">{x}</span>
+      ))}
+    </div>
+  );
+
+}
+
+export function ArrayCol({value}) {
+  return renderArray(value);
+}
+
 export const getHandleColumnVisible = (hidden_cols, setHiddenCols) => (params) => {
   if (params.column != null && params.column.getUserProvidedColDef().hide != null) {
     const colId = params.column.getColId();

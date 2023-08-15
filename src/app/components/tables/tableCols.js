@@ -1,7 +1,16 @@
 import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
-import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, TextWithUom, parseTags} from "./tableUtils";
+import {
+  CustomComponentCol,
+  CustomTypeCol,
+  SORTER,
+  TagsCol,
+  TextWithStyle,
+  TextWithUom,
+  parseTags,
+  ReleasesCol, renderTags, ArrayCol
+} from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
@@ -212,13 +221,8 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     () => ({
       field: "releases",
       headerName: "Releases",
-      cellRenderer: React.memo(TextWithStyle),
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
-      },
+      cellRenderer: React.memo(ArrayCol),
+      filter: "agSetColumnFilter",
       menuTabs: MenuTabs,
       hide: !hasReleases,
     }),
