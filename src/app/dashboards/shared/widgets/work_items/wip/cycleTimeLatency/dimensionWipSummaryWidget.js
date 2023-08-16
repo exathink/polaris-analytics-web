@@ -2,7 +2,7 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import { useQueryDimensionFlowMetrics } from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
-import {useQueryDimensionPipelineCycleMetrics} from "../../hooks/useQueryDimensionPipelineCycleMetrics";
+import { useQueryDimensionPipelineStateDetails } from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {WorkInProgressSummaryView} from "../flowMetrics/wipFlowMetricsSummaryView";
 
 export function DimensionWipSummaryWidget({
@@ -23,17 +23,15 @@ export function DimensionWipSummaryWidget({
   displayProps
 }) {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
-  const {loading, error, data} = useQueryDimensionPipelineCycleMetrics({
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
     dimension,
     instanceKey,
     tags,
-    targetPercentile,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
     specsOnly: limitToSpecsOnly,
+    activeOnly: true,
     includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
-  });
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
+  })
 
   const {loading: loading1, error: error1, data: flowMetricsData} = useQueryDimensionFlowMetrics({
     dimension,

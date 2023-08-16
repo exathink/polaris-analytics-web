@@ -1,10 +1,24 @@
+import React from "react";
 import { useIntl } from "react-intl";
-import { i18nNumber } from "../../../../../../helpers/utility";
+import { average, i18nNumber } from "../../../../../../helpers/utility";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
+import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 
 export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, cycleTimeTarget, specsOnly, days}) {
   const intl = useIntl();
-  const {pipelineCycleMetrics} = data[dimension];
+
+  const workItems = React.useMemo(() => {
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [data, dimension]);
+  const workItemAggregateDurations = getWorkItemDurations(workItems);
+  const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
+
+  const pipelineCycleMetrics = {
+    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItems.length,
+    avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
+  };
+
   const {displayType, metric, displayProps} = displayBag;
 
   function getWipLimit() {
