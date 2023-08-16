@@ -280,7 +280,7 @@ export function getWorkItemNameCol() {
     cellRenderer: React.memo(CardCol),
     autoHeight: true,
     comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.displayId, b.data.displayId),
-    menuTabs: [...MenuTabs, "columnsMenuTab"],
+    menuTabs: ["columnsMenuTab", ...MenuTabs],
   };
 }
 
