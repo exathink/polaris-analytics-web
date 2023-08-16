@@ -411,21 +411,16 @@ export function TagsCol({value}) {
 }
 
 
-export function renderArray(array_list) {
+export function ArrayCol({value}) {
   const classes = "tw-flex tw-flex-col tw-items-start";
 
   return (
     <div className={classes}>
-      {array_list.map((x) => (
+      {value.map((x) => (
         <span className="tw-textXs">{x}</span>
       ))}
     </div>
   );
-
-}
-
-export function ArrayCol({value}) {
-  return renderArray(value);
 }
 
 export const getHandleColumnVisible = (hidden_cols, setHiddenCols) => (params) => {
