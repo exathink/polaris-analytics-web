@@ -76,7 +76,10 @@ const DeliveryCyclesFlowMetricsView = ({
           "teamNodeRefs",
           "epicName",
           "workItemsSourceName",
-          "workTrackingIntegrationType"
+          "workTrackingIntegrationType",
+          "storyPoints",
+          "releases",
+          "priority"
         )
       ),
     [data, dimension]
@@ -239,7 +242,10 @@ export function DimensionCycleTimeHistogramView({data, dimension, specsOnly, day
       "effort",
       "authorCount",
       "teamNodeRefs",
-      "epicName"
+      "epicName",
+      "storyPoints",
+      "releases",
+      "priority"
     )
   );
 
