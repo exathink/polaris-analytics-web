@@ -9,7 +9,7 @@ import {
   TextWithStyle,
   TextWithUom,
   parseTags,
-  ReleasesCol, renderTags, ArrayCol
+  ArrayCol
 } from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
@@ -209,6 +209,12 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       headerName: "Story Points",
       cellRenderer: React.memo(TextWithStyle),
       filter: "agNumberColumnFilter",
+      filterParams: {
+        maxNumConditions: 1,
+        filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+        buttons: ["reset"],
+        inRangeInclusive: true
+      },
       menuTabs: MenuTabs,
       hide: !hasStoryPoints,
       comparator: SORTER.number_compare,
