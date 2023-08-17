@@ -19,6 +19,24 @@ export const Quadrants = {
   abandoned: "abandoned"
 };
 
+export const getQuadrantLegacy = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
+  if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
+    return Quadrants.ok;
+  }
+
+  if (cycleTime <= cycleTimeTarget && latency > latencyTarget) {
+    return Quadrants.latency;
+  }
+
+  if (cycleTime > cycleTimeTarget && latency <= cycleTimeTarget) {
+    return Quadrants.age;
+  }
+
+  if (cycleTime > cycleTimeTarget && latency > cycleTimeTarget) {
+    return Quadrants.critical;
+  }
+};
+
 export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
   if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
     return Quadrants.ok;

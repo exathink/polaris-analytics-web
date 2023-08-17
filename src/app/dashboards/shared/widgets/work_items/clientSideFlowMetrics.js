@@ -2,7 +2,7 @@ import { useIntl } from "react-intl";
 import { daysFromNow, fromNow, toMoment } from "../../../../helpers/utility";
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
-import { getQuadrant } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -105,7 +105,7 @@ export function useFlowEfficiency(workItems, phases = ALL_PHASES) {
 
 export function getQuadrantCounts({ workItems, cycleTimeTarget, latencyTarget }) {
   return workItems.reduce((acc, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (acc[quadrant]) {
       acc[quadrant] += 1;
     } else {

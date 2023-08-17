@@ -4,8 +4,8 @@ import { Popover } from "antd";
 
 import {
   filterByStateTypes,
-  getQuadrant,
   getQuadrantDescription,
+  getQuadrantLegacy,
   QuadrantColors,
   QuadrantNames,
   Quadrants
@@ -15,7 +15,7 @@ import { i18nNumber } from "../../../../helpers/utility";
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalAge[quadrant]) {
       totalAge[quadrant] += item.cycleTime;
     } else {
@@ -27,7 +27,7 @@ function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadr
 
 function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalLatency, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalLatency[quadrant]) {
       totalLatency[quadrant] += item.latency;
     } else {
@@ -39,7 +39,7 @@ function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, q
 
 function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalEffort, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalEffort[quadrant]) {
       totalEffort[quadrant] += item.effort;
     } else {
