@@ -2,7 +2,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { average, i18nNumber } from "../../../../../../helpers/utility";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
-import {getWorkItemDurations} from "../../clientSideFlowMetrics";
+import {getWipLimit, getWorkItemDurations} from "../../clientSideFlowMetrics";
 
 export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, cycleTimeTarget, specsOnly, days}) {
   const intl = useIntl();
@@ -20,15 +20,8 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
   };
 
   const {displayType, metric, displayProps} = displayBag;
-
-  function getWipLimit() {
-    const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-    const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
-    const throughputRate = flowItems / days;
-    return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
-  }
   
-  const wipLimit = getWipLimit();
+  const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
 
   const metricMap = {
     volume: (
