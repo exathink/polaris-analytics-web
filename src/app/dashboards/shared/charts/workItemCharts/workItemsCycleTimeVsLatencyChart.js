@@ -148,7 +148,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const abandonedPlotLine = excludeAbandoned===false
       ? [
           {
-            color: "green",
+            color: "red",
             value: 2 * cycleTimeTarget,
             dashStyle: "longdashdot",
             width: 1,
