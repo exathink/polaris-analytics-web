@@ -47,6 +47,13 @@ function getQuadrantIcon(quadrant) {
       <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
     );
   }
+
+  if (quadrant === Quadrants.abandoned) {
+    return (
+      <InfoCircleFilled color={QuadrantColors[quadrant]} title={QuadrantNames[quadrant]} style={{fontSize: "10px"}} />
+    );
+  }
+
 }
 
 

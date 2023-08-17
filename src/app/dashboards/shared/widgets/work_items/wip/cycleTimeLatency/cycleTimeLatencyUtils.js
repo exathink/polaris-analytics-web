@@ -52,7 +52,8 @@ export const QuadrantColors = {
   [Quadrants.ok]: "#4ade80",
   [Quadrants.latency]: "#facc15",
   [Quadrants.age]: "#fb923c",
-  [Quadrants.critical]: "#f87171"
+  [Quadrants.critical]: "#f87171",
+  [Quadrants.abandoned]: "#6b7280"
 };
 
 export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget) {
