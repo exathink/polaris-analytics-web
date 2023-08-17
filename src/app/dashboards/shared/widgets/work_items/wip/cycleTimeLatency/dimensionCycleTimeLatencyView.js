@@ -166,6 +166,7 @@ export const DimensionCycleTimeLatencyView = ({
       tick={tick}
       tooltipType={tooltipType}
       blurClass={blurClass}
+      excludeAbandoned={displayBag.excludeAbandoned}
       onSelectionChange={(workItems, eventType) => {
         if (eventType === EVENT_TYPES.POINT_CLICK) {
           setWorkItemKey(workItems[0].key);

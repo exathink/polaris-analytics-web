@@ -130,7 +130,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 tooltipType,
                 selectedQuadrant,
                 blurClass,
-                fullScreen
+                fullScreen,
+                excludeAbandoned
               }) => {
                 
     const workItemsWithAggregateDurations = workItems;
@@ -143,6 +144,20 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
+
+    const abandonedPlotLine = excludeAbandoned===false
+      ? [
+          {
+            color: "green",
+            value: 2 * cycleTimeTarget,
+            dashStyle: "longdashdot",
+            width: 1,
+            label: {
+              text: ` L= ${intl.formatNumber(2 * cycleTimeTarget)}`,
+            },
+          },
+        ]
+      : [];
 
     return {
       chart: {
@@ -220,7 +235,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             label: {
               text: ` L= ${intl.formatNumber(cycleTimeTarget)}`
             }
-          }
+          },
+          ...abandonedPlotLine
         ] : null
       },
 

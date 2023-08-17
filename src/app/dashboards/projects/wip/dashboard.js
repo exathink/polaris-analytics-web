@@ -259,6 +259,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
+                excludeAbandoned: exclude
               }}
             />
           )}
@@ -295,6 +296,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
+                excludeAbandoned: exclude
               }}
             />
           )}
