@@ -37,6 +37,7 @@ export function DimensionWipSummaryWidget({
     dimension,
     instanceKey,
     leadTimeTarget,
+    tags,
     cycleTimeTarget,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
