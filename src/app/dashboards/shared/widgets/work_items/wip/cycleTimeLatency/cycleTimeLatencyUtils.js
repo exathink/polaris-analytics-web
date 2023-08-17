@@ -265,7 +265,7 @@ export let filterFns = {
     return selectedTeam.value === "all" || _teams.includes(selectedTeam.value);
   },
   [FILTERS.QUADRANT_PANEL]: (w, [selectedQuadrant]) =>
-    selectedQuadrant === undefined || selectedQuadrant === w.quadrant,
+    selectedQuadrant === undefined || selectedQuadrant === w.quadrant || (selectedQuadrant===Quadrants.critical && w.quadrant === Quadrants.abandoned),
   [FILTERS.QUADRANT]: (w, filterVals) => {
     return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
   },
