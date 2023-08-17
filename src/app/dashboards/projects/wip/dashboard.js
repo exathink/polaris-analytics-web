@@ -88,7 +88,14 @@ function WipDashboard({
           <Checkbox
             onChange={(e) => {
               setExclude(e.target.checked);
-              setAppliedFilters(prev => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
+              if(e.target.checked){
+                setAppliedFilters(prev => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
+              } else {
+                setAppliedFilters(prev => {
+                  prev.delete(FILTERS.EXCLUDE_ABANDONED);
+                  return new Map(prev);
+                });
+              }
             }}
             name="state-exclude"
             checked={exclude}
