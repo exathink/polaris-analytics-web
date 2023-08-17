@@ -7,7 +7,8 @@ import {
   getQuadrant,
   getQuadrantDescription,
   QuadrantColors,
-  QuadrantNames
+  QuadrantNames,
+  Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
@@ -156,7 +157,10 @@ export function QuadrantSummaryPanel({
 
   const selectedBorderClasses = "tw-border-2 tw-border-solid tw-border-gray-300";
   const quadrantDescription = getQuadrantDescription({intl, cycleTimeTarget, latencyTarget});
-  const allQuadrants = Object.entries(QuadrantNames).map(([key, value]) => ({
+
+  //TODO: remove abandoned for now, from the quadrant summary panel
+  const {[Quadrants.abandoned]: _ignore, ...restQuadrants} = QuadrantNames;
+  const allQuadrants = Object.entries(restQuadrants).map(([key, value]) => ({
     quadKey: key,
     name: value,
     val: quadrantCounts[key] ?? 0,
