@@ -4,17 +4,18 @@ import { Popover } from "antd";
 
 import {
   filterByStateTypes,
-  getQuadrant,
   getQuadrantDescription,
+  getQuadrantLegacy,
   QuadrantColors,
-  QuadrantNames
+  QuadrantNames,
+  Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalAge[quadrant]) {
       totalAge[quadrant] += item.cycleTime;
     } else {
@@ -26,7 +27,7 @@ function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadr
 
 function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalLatency, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalLatency[quadrant]) {
       totalLatency[quadrant] += item.latency;
     } else {
@@ -38,7 +39,7 @@ function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, q
 
 function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalEffort, item) => {
-    const quadrant = getQuadrant(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
+    const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalEffort[quadrant]) {
       totalEffort[quadrant] += item.effort;
     } else {
@@ -156,7 +157,10 @@ export function QuadrantSummaryPanel({
 
   const selectedBorderClasses = "tw-border-2 tw-border-solid tw-border-gray-300";
   const quadrantDescription = getQuadrantDescription({intl, cycleTimeTarget, latencyTarget});
-  const allQuadrants = Object.entries(QuadrantNames).map(([key, value]) => ({
+
+  //TODO: remove abandoned for now, from the quadrant summary panel
+  const {[Quadrants.abandoned]: _ignore, ...restQuadrants} = QuadrantNames;
+  const allQuadrants = Object.entries(restQuadrants).map(([key, value]) => ({
     quadKey: key,
     name: value,
     val: quadrantCounts[key] ?? 0,

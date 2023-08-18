@@ -17,9 +17,11 @@ export function DimensionWipSummaryWidget({
   leadTimeTarget,
   cycleTimeTargetPercentile,
   cycleTimeTarget,
+  latencyTarget,
   includeSubTasks,
   days,
   view,
+  displayBag,
   displayProps
 }) {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
@@ -37,6 +39,7 @@ export function DimensionWipSummaryWidget({
     dimension,
     instanceKey,
     leadTimeTarget,
+    tags,
     cycleTimeTarget,
     leadTimeTargetPercentile,
     cycleTimeTargetPercentile,
@@ -61,8 +64,9 @@ export function DimensionWipSummaryWidget({
       dimension={dimension}
       specsOnly={specsOnly}
       cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
       days={days}
-      displayProps={displayProps}
+      displayBag={displayBag}
     />
   );
 }

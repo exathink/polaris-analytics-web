@@ -125,7 +125,7 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
     : "N/A";
   return {
     metricValue: (
-      <span style={{color: color}} data-testid="metricValue">
+      <span style={{color: metricValue !== "N/A" ? color : undefined}} data-testid="metricValue">
         {metricValue}
       </span>
     ),
@@ -134,7 +134,7 @@ export function getMetricUtils({target, value, uom, good, valueRender, precision
         {suffix}
       </span>
     ),
-    value: metricValue
+    value: metricValue,
   };
 }
 
