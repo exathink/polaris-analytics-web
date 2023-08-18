@@ -145,7 +145,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
-    const abandonedPlotLine = excludeAbandoned===false
+    const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
           {
             color: "red",
@@ -158,6 +158,21 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           },
         ]
       : [];
+
+    const abandonedPlotLineXAxis =
+      excludeAbandoned === false
+        ? [
+            {
+              color: "red",
+              value: 2 * cycleTimeTarget,
+              dashStyle: "longdashdot",
+              width: 1,
+              label: {
+                text: ` A= ${intl.formatNumber(2 * cycleTimeTarget)}`,
+              },
+            },
+          ]
+        : [];
 
     return {
       chart: {
@@ -200,7 +215,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             label: {
               text: ` A= ${intl.formatNumber(cycleTimeTarget)}`
             }
-          }
+          },
+          ...abandonedPlotLineXAxis
         ] : null
       },
       yAxis: {
@@ -236,7 +252,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               text: ` L= ${intl.formatNumber(cycleTimeTarget)}`
             }
           },
-          ...abandonedPlotLine
+          ...abandonedPlotLineYAxis
         ] : null
       },
 
