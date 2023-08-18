@@ -34,6 +34,7 @@ import {workItemTypeImageMap} from "../../../../../projects/shared/helper/render
 import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
 import { DELIVERY_PHASES, ENGINEERING_PHASES } from "../../../../config";
 import {WIP_CHART_TYPE} from "../../../../../../helpers/localStorageUtils";
+import { ResetAllFilterIcon } from "../../../../../../components/misc/customIcons";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -603,65 +604,65 @@ export const DimensionCycleTimeLatencyDetailView = ({
           </div>
         </div>
 
-      <div id="rightControls" className="tw-flex tw-ml-auto tw-gap-2">
-        <div className="tw-self-center tw-text-gray-300">
-          <Checkbox
-            onChange={(e) => {
-              if (e.target.checked) {
-                setAppliedFilters((prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
-              } else {
-                setAppliedFilters((prev) => {
-                  prev.delete(FILTERS.EXCLUDE_ABANDONED);
-                  return new Map(prev);
-                });
-              }
-            }}
-            name="state-exclude"
-            checked={excludeAbandoned}
-          >
-            Exclude Abandoned
-          </Checkbox>
-        </div>
-
-        <WorkItemScopeSelector
-          workItemScope={workItemScope}
-          setWorkItemScope={setWorkItemScope}
-          layout="col"
-        />
-
-        {ageLatencyFeatureFlag && (
-          <div>
-            <GroupingSelector
-              label="Show"
-              value={wipChartType}
-              onGroupingChanged={updateWipChartType}
-              groupings={[
-                {
-                  key: "queue",
-                  display: "Where",
-                },
-                {
-                  key: "age",
-                  display: "How long",
-                },
-                {
-                  key: "motion",
-                  display: "Last Moved",
-                },
-              ]}
-              layout="col"
-            />
+        <div id="rightControls" className="tw-ml-auto tw-flex tw-gap-2">
+          <div className="tw-self-center tw-text-gray-300">
+            <Checkbox
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setAppliedFilters(
+                    (prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]}))
+                  );
+                } else {
+                  setAppliedFilters((prev) => {
+                    prev.delete(FILTERS.EXCLUDE_ABANDONED);
+                    return new Map(prev);
+                  });
+                }
+              }}
+              name="state-exclude"
+              checked={excludeAbandoned}
+              style={{alignItems: "center"}}
+            >
+              <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4 tw-mt-2">
+                <div>Exclude</div>
+                <div>Abandoned</div>
+              </div>
+            </Checkbox>
           </div>
-        )}
 
-        <div className="tw-mr-14 tw-w-8">
-          <div className="tw-invisible">dummy</div>
-          {appliedFilters.size > 0 && (
-            <Button onClick={handleResetAll} type="secondary" size="small" className={styles.resetAll}>
-              Clear Filters
-            </Button>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
+
+          {ageLatencyFeatureFlag && (
+            <div>
+              <GroupingSelector
+                label="Show"
+                value={wipChartType}
+                onGroupingChanged={updateWipChartType}
+                groupings={[
+                  {
+                    key: "queue",
+                    display: "Where",
+                  },
+                  {
+                    key: "age",
+                    display: "How long",
+                  },
+                  {
+                    key: "motion",
+                    display: "Last Moved",
+                  },
+                ]}
+                layout="col"
+              />
+            </div>
           )}
-        </div>
+
+          <div className="tw-mr-8 tw-w-8">
+            <div className="tw-invisible">dummy</div>
+            {appliedFilters.size > 0 && (
+              <ResetAllFilterIcon onClick={handleResetAll} style={{color: "grey"}} title="Clear Filters" />
+            )}
+          </div>
         </div>
       </div>
 
