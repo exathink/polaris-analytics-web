@@ -61,7 +61,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [eventSource, setEventSource] = React.useState("init");
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
 
   // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, FILTERS.QUADRANT_PANEL);
@@ -72,6 +72,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [selectedTeam = defaultOptionType] = getFilterValue(appliedFilters, FILTERS.TEAM);
   const [selectedIssueType = defaultOptionType] = getFilterValue(appliedFilters, FILTERS.ISSUE_TYPE);
   const selectedStateValues = getFilterValue(appliedFilters, FILTERS.STATE);
+  const [excludeAbandoned] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
 
   // other states
   const [exclude, setExclude] = React.useState(false);
@@ -599,11 +600,31 @@ export const DimensionCycleTimeLatencyDetailView = ({
             </Checkbox>
           </div>
         </div>
+
+      <div id="rightControls" className="tw-flex tw-ml-auto tw-gap-2">
+        <div className="tw-self-center tw-text-gray-300">
+          <Checkbox
+            onChange={(e) => {
+              if (e.target.checked) {
+                setAppliedFilters((prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
+              } else {
+                setAppliedFilters((prev) => {
+                  prev.delete(FILTERS.EXCLUDE_ABANDONED);
+                  return new Map(prev);
+                });
+              }
+            }}
+            name="state-exclude"
+            checked={excludeAbandoned}
+          >
+            Exclude Abandoned
+          </Checkbox>
+        </div>
+
         <WorkItemScopeSelector
           workItemScope={workItemScope}
           setWorkItemScope={setWorkItemScope}
           layout="col"
-          className="tw-ml-auto"
         />
 
         {ageLatencyFeatureFlag && (
@@ -638,6 +659,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               Clear Filters
             </Button>
           )}
+        </div>
         </div>
       </div>
 
