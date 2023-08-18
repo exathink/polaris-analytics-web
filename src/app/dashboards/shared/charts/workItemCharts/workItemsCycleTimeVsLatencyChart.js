@@ -192,7 +192,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         align: "left"
       },
       xAxis: {
-        type: excludeAbandoned === false ? "logarithmic" : "linear",
+        type: "logarithmic",
         softMin: 0.5,
         //1.2 is a fudge factor - otherwise the point gets cut off when it is at max.
         // softMax causes the log axis to blow up
