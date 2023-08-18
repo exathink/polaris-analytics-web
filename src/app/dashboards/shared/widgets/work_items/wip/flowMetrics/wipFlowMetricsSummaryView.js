@@ -24,9 +24,8 @@ import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
-import { useSelectWithDelegate } from "../../../../../../helpers/hooksUtil";
-import { metricsMapping } from "../../../../helpers/teamUtils";
 import { getWipLimit, getWorkItemDurations } from "../../clientSideFlowMetrics";
+import { Quadrants, getQuadrant } from "../cycleTimeLatency/cycleTimeLatencyUtils";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -332,27 +331,32 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, specsOnly, days, flowMetricsData, displayProps={}}) {
-  const {initialSelection, onSelectionChanged} = displayProps;
+export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
+  const {excludeAbandoned} = displayBag;
 
-  const [selectedMetric, setSelectedMetric] = useSelectWithDelegate(initialSelection, onSelectionChanged);
   const intl = useIntl();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-  const workItemAggregateDurations = getWorkItemDurations(workItems);
+  const workItemsDurations = getWorkItemDurations(workItems);
+  const workItemAggregateDurations = excludeAbandoned
+    ? workItemsDurations.filter(
+        (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
+      )
+    : workItemsDurations;
+
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 
   const pipelineCycleMetrics = {
-    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItems.length,
+    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItemAggregateDurations.length,
     avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
   };
 
   const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
 
   return (
-    <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-h-full tw-grid-rows-[auto_1fr]">
+    <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_1fr] tw-gap-1">
       <MetricsGroupTitle>Flow Metrics, Work In Process</MetricsGroupTitle>
       <Wip
         title={<span>Total</span>}
@@ -364,8 +368,6 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
           testId: "wip-total",
-          showHighlighted: selectedMetric === metricsMapping.WIP_TOTAL,
-          onClick: initialSelection != null ? () => setSelectedMetric(metricsMapping.WIP_TOTAL) : null,
         }}
       />
       <AvgAge
@@ -376,8 +378,6 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
           className: "tw-p-2",
           supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
           testId: "wip-age",
-          showHighlighted: selectedMetric === metricsMapping.AVG_AGE,
-          onClick: initialSelection != null ? () => setSelectedMetric(metricsMapping.AVG_AGE) : null,
         }}
       />
     </div>

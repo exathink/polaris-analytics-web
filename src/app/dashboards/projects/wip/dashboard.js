@@ -148,8 +148,10 @@ function WipDashboard({
               tags={workItemSelectors}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
+              displayBag={{excludeAbandoned: exclude}}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
