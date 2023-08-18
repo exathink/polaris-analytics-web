@@ -5,7 +5,7 @@ import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
 import Flow from './flow/topic';
-
+import Code from './code/topic';
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
@@ -36,6 +36,10 @@ const context : Context = {
             topic: Flow
           },
           {
+            match: 'code',
+            topic: Code
+          },
+          {
 
             match: 'response-time',
             topic: ResponseTime
@@ -51,7 +55,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'flow'
+            redirect: 'code'
           }
         ]
       }
