@@ -255,6 +255,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "engineering" ? selectedQuadrant : undefined}
+      excludeAbandoned={Boolean(excludeAbandoned)}
     />
   );
 
@@ -271,6 +272,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
+      excludeAbandoned={Boolean(excludeAbandoned)}
     />
   );
 
