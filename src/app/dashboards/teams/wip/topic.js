@@ -6,7 +6,7 @@ const topic = {
   routes: [
     {
       match: '',
-      component: React.lazy(() => import('./wip_dashboard'))
+      component: React.lazy(() => import('./dashboard'))
     }
   ]
 };

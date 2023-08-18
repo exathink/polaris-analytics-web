@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl.macro';
 import FourZeroFour from "../../../containers/Page/404";
 import type {Context} from '../../framework/navigation/context/context';
 
-import Flow from './flow/topic';
+import Wip from './wip/topic';
 import Code from './code/topic';
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
@@ -32,8 +32,8 @@ const context : Context = {
         display: match => messages.instanceDisplay(match.params.team),
         routes: [
           {
-            match: 'flow',
-            topic: Flow
+            match: 'wip',
+            topic: Wip
           },
           {
             match: 'code',
@@ -55,7 +55,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'code'
+            redirect: 'wip'
           }
         ]
       }
