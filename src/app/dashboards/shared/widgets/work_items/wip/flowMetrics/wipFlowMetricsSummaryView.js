@@ -26,7 +26,7 @@ import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
 import { useSelectWithDelegate } from "../../../../../../helpers/hooksUtil";
 import { metricsMapping } from "../../../../helpers/teamUtils";
-import { getWorkItemDurations } from "../../clientSideFlowMetrics";
+import { getWipLimit, getWorkItemDurations } from "../../clientSideFlowMetrics";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -349,10 +349,7 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, spe
     avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
   };
 
-  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"];
-  const throughputRate = flowItems / days;
-  const wipLimit = i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
 
   return (
     <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-h-full tw-grid-rows-[auto_1fr]">

@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import { daysFromNow, fromNow, toMoment } from "../../../../helpers/utility";
+import { daysFromNow, fromNow, i18nNumber, toMoment } from "../../../../helpers/utility";
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
 import { getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
@@ -167,3 +167,10 @@ export function getWorkItemDurations(workItems) {
   });
 }
 
+
+export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days}) {
+  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
+  const throughputRate = flowItems / days;
+  return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+}
