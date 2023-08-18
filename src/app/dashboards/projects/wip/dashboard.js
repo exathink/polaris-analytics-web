@@ -42,7 +42,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
-  const [exclude, setExclude] = React.useState(true);
+  const [exclude, setExclude] = React.useState(false);
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -57,7 +57,7 @@ function WipDashboard({
   const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));
 
   const {
     cycleTimeTarget,
