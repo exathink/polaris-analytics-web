@@ -1,7 +1,16 @@
 import React from "react";
 import {readLocalStorage} from "../../helpers/hooksUtil";
 import {MultiCheckboxFilter} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/agGridUtils";
-import {CustomComponentCol, CustomTypeCol, SORTER, TagsCol, TextWithStyle, TextWithUom, parseTags} from "./tableUtils";
+import {
+  CustomComponentCol,
+  CustomTypeCol,
+  SORTER,
+  TagsCol,
+  TextWithStyle,
+  TextWithUom,
+  parseTags,
+  ArrayCol
+} from "./tableUtils";
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
@@ -193,9 +202,63 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     [hasCustomTags, filters]
   );
 
+  const hasStoryPoints = hidden_cols.includes("storyPoints");
+  const col9 = React.useMemo(
+    () => ({
+      field: "storyPoints",
+      headerName: "Story Points",
+      cellRenderer: React.memo(TextWithStyle),
+      filter: "agNumberColumnFilter",
+      filterParams: {
+        maxNumConditions: 1,
+        filterOptions: ["inRange", "lessThanOrEqual", "greaterThanOrEqual"],
+        buttons: ["reset"],
+        inRangeInclusive: true
+      },
+      menuTabs: MenuTabs,
+      hide: !hasStoryPoints,
+      comparator: SORTER.number_compare,
+    }),
+    [hasStoryPoints]
+  );
+
+  const hasReleases = hidden_cols.includes("releases");
+  const col10 = React.useMemo(
+    () => ({
+      field: "releases",
+      headerName: "Releases",
+      cellRenderer: React.memo(ArrayCol),
+      filter: "agSetColumnFilter",
+      menuTabs: MenuTabs,
+      hide: !hasReleases,
+    }),
+    [hasReleases]
+  );
+
+  const hasPriority = hidden_cols.includes("priority");
+  const col11 = React.useMemo(
+    () => ({
+      field: "priority",
+      headerName: "Priority",
+      cellRenderer: React.memo(TextWithStyle),
+      sortable: false,
+      filter: "agSetColumnFilter",
+      filterParams: {
+        filterOptions: ["contains", "startsWith"],
+        buttons: ["reset"],
+        maxNumConditions: 1,
+      },
+      menuTabs: MenuTabs,
+      hide: !hasPriority,
+
+    }),
+    [hasPriority]
+  );
+
+
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
-  return [col1, col2, col3, col4, col5, ...optionalCustomCols];
+  return [col1, col2, col3, col4, col5, col9, col10, col11, ...optionalCustomCols];
 }
 
 export function getWorkItemNameCol() {
@@ -217,7 +280,7 @@ export function getWorkItemNameCol() {
     cellRenderer: React.memo(CardCol),
     autoHeight: true,
     comparator: (valA, valB, a, b) => SORTER.string_compare(a.data.displayId, b.data.displayId),
-    menuTabs: [...MenuTabs, "columnsMenuTab"],
+    menuTabs: ["columnsMenuTab", ...MenuTabs],
   };
 }
 
