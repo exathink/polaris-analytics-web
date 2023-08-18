@@ -80,18 +80,24 @@ function WipDashboard({
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300 tw-flex tw-items-center">
+      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
           {specsOnly ? `All ${AppTerms.specs.display} in Process` : `All ${AppTerms.cards.display} in Process`}
         </div>
-        <div className="tw-text-gray-300 tw-ml-8">
+      </div>
+      <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Age Limit</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+      </div>
+      <div className="tw-col-span-3 tw-col-start-4 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
+        <div className="tw-self-center tw-text-gray-300">
           <Checkbox
             onChange={(e) => {
               setExclude(e.target.checked);
-              if(e.target.checked){
-                setAppliedFilters(prev => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
+              if (e.target.checked) {
+                setAppliedFilters((prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
               } else {
-                setAppliedFilters(prev => {
+                setAppliedFilters((prev) => {
                   prev.delete(FILTERS.EXCLUDE_ABANDONED);
                   return new Map(prev);
                 });
@@ -104,12 +110,7 @@ function WipDashboard({
             Exclude Abandoned
           </Checkbox>
         </div>
-      </div>
-      <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Age Limit</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
-      </div>
-      <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
+
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
         {ageLatencyFeatureFlag && (
@@ -266,7 +267,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude
+                excludeAbandoned: exclude,
               }}
             />
           )}
@@ -303,7 +304,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude
+                excludeAbandoned: exclude,
               }}
             />
           )}
