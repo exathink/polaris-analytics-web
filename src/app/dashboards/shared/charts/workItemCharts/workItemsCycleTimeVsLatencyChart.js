@@ -130,7 +130,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 tooltipType,
                 selectedQuadrant,
                 blurClass,
-                fullScreen
+                fullScreen,
+                excludeAbandoned
               }) => {
                 
     const workItemsWithAggregateDurations = workItems;
@@ -143,6 +144,35 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
+
+    const abandonedPlotLineYAxis = excludeAbandoned===false
+      ? [
+          {
+            color: "red",
+            value: 2 * cycleTimeTarget,
+            dashStyle: "solid",
+            width: 1,
+            label: {
+              text: ` L= ${intl.formatNumber(2 * cycleTimeTarget)}d`,
+            },
+          },
+        ]
+      : [];
+
+    const abandonedPlotLineXAxis =
+      excludeAbandoned === false
+        ? [
+            {
+              color: "red",
+              value: 2 * cycleTimeTarget,
+              dashStyle: "solid",
+              width: 1.5,
+              label: {
+                text: ` A= ${intl.formatNumber(2 * cycleTimeTarget)}d`,
+              },
+            },
+          ]
+        : [];
 
     return {
       chart: {
@@ -162,7 +192,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         align: "left"
       },
       xAxis: {
-        type: "logarithmic",
+        type: excludeAbandoned === false ? "logarithmic" : "linear",
         softMin: 0.5,
         //1.2 is a fudge factor - otherwise the point gets cut off when it is at max.
         // softMax causes the log axis to blow up
@@ -178,14 +208,15 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         },
         plotLines: cycleTimeTarget ? [
           {
-            color: "red",
+            color: "green",
             value: cycleTimeTarget,
-            dashStyle: "longdashdot",
-            width: 1,
+            dashStyle: "solid",
+            width: 1.5,
             label: {
-              text: ` A= ${intl.formatNumber(cycleTimeTarget)}`
+              text: ` A= ${intl.formatNumber(cycleTimeTarget)}d`
             }
-          }
+          },
+          ...abandonedPlotLineXAxis
         ] : null
       },
       yAxis: {
@@ -204,23 +235,24 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
         plotLines: targetLatency ? [
           {
-            color: "orange",
+            color: "green",
             value: targetLatency,
-            dashStyle: "longdashdot",
+            dashStyle: "solid",
             width: 1,
             label: {
-              text: ` L= ${intl.formatNumber(targetLatency)}`
+              text: ` L= ${intl.formatNumber(targetLatency)}d`
             },
           },
           {
-            color: "red",
+            color: excludeAbandoned ? "red" : "orange",
             value: cycleTimeTarget,
-            dashStyle: "longdashdot",
+            dashStyle: "solid",
             width: 1,
             label: {
-              text: ` L= ${intl.formatNumber(cycleTimeTarget)}`
+              text: ` L= ${intl.formatNumber(cycleTimeTarget)}d`
             }
-          }
+          },
+          ...abandonedPlotLineYAxis
         ] : null
       },
 

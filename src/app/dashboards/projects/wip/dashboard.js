@@ -20,6 +20,8 @@ import {FlowMetricsTrendsWidget} from "../shared/widgets/flowMetricsTrends/flowM
 import classNames from "classnames";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
+import { Checkbox } from "antd";
+import { FILTERS } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -40,6 +42,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
+  const [exclude, setExclude] = React.useState(false);
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -54,7 +57,7 @@ function WipDashboard({
   const {state: {workItemSelectors=[]}} = useQueryParamState();
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map());
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));
 
   const {
     cycleTimeTarget,
@@ -77,7 +80,7 @@ function WipDashboard({
       className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-text-2xl tw-text-gray-300">
+      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
           {specsOnly ? `All ${AppTerms.specs.display} in Process` : `All ${AppTerms.cards.display} in Process`}
         </div>
@@ -86,7 +89,28 @@ function WipDashboard({
         <div className="tw-flex tw-justify-start">Age Limit</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
+      <div className="tw-col-span-3 tw-col-start-4 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
+        <div className="tw-self-center tw-text-gray-300">
+          <Checkbox
+            onChange={(e) => {
+              setExclude(e.target.checked);
+              if (e.target.checked) {
+                setAppliedFilters((prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
+              } else {
+                setAppliedFilters((prev) => {
+                  prev.delete(FILTERS.EXCLUDE_ABANDONED);
+                  return new Map(prev);
+                });
+              }
+            }}
+            name="state-exclude"
+            checked={exclude}
+            className="!tw-mb-1 tw-self-end"
+          >
+            Exclude Abandoned
+          </Checkbox>
+        </div>
+
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
         {ageLatencyFeatureFlag && (
@@ -113,7 +137,7 @@ function WipDashboard({
         )}
       </div>
       <DashboardRow>
-      <DashboardWidget
+        <DashboardWidget
           name="summary-wip"
           className="tw-col-span-3 tw-col-start-1"
           title={""}
@@ -124,8 +148,10 @@ function WipDashboard({
               tags={workItemSelectors}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
+              displayBag={{excludeAbandoned: exclude}}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
               targetPercentile={responseTimeConfidenceTarget}
               leadTimeTargetPercentile={leadTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
@@ -140,7 +166,9 @@ function WipDashboard({
         />
         <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite" data-testid="completed-work">
           <div className="tw-grid tw-grid-cols-2 tw-gap-1">
-            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>Flow Metrics, Last {flowAnalysisPeriod} Days</div>
+            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>
+              Flow Metrics, Last {flowAnalysisPeriod} Days
+            </div>
 
             <DashboardWidget
               name="throughput-summary-card"
@@ -209,8 +237,6 @@ function WipDashboard({
             />
           </div>
         </div>
-
-
       </DashboardRow>
       <DashboardRow title={" "}>
         <DashboardWidget
@@ -243,6 +269,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
+                excludeAbandoned: exclude,
               }}
             />
           )}
@@ -279,6 +306,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
+                excludeAbandoned: exclude,
               }}
             />
           )}

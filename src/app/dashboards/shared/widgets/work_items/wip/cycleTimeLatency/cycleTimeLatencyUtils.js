@@ -15,10 +15,11 @@ export const Quadrants = {
   ok: "ok",
   latency: "latency",
   age: "age",
-  critical: "critical"
+  critical: "critical",
+  abandoned: "abandoned"
 };
 
-export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
+export const getQuadrantLegacy = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
   if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
     return Quadrants.ok;
   }
@@ -36,12 +37,41 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
   }
 };
 
+export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) => {
+  if (cycleTime <= cycleTimeTarget && latency <= latencyTarget) {
+    return Quadrants.ok;
+  }
+
+  if (cycleTime <= cycleTimeTarget && latency > latencyTarget) {
+    return Quadrants.latency;
+  }
+
+  if (cycleTime > cycleTimeTarget && latency <= cycleTimeTarget) {
+    return Quadrants.age;
+  }
+
+  const abandoned_threshold = 2*cycleTimeTarget;
+  if (
+    cycleTime > cycleTimeTarget &&
+    cycleTime <= abandoned_threshold &&
+    latency > cycleTimeTarget &&
+    latency <= abandoned_threshold
+  ) {
+    return Quadrants.critical;
+  }
+
+  if (cycleTime > abandoned_threshold && latency > abandoned_threshold) {
+    return Quadrants.abandoned;
+  }
+};
+
 
 export const QuadrantColors = {
   [Quadrants.ok]: "#4ade80",
   [Quadrants.latency]: "#facc15",
   [Quadrants.age]: "#fb923c",
-  [Quadrants.critical]: "#f87171"
+  [Quadrants.critical]: "#f87171",
+  [Quadrants.abandoned]: "#6b7280"
 };
 
 export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget) {
@@ -52,13 +82,15 @@ export const QuadrantNames = {
   [Quadrants.ok]: "Moving",
   [Quadrants.latency]: "Slowing",
   [Quadrants.age]: "Delayed",
-  [Quadrants.critical]: "Stalled"
+  [Quadrants.critical]: "Stalled",
+  [Quadrants.abandoned]: "Abandoned",
 };
 export const getQuadrantDescription = ({ intl, cycleTimeTarget, latencyTarget }) => ({
   [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, latencyTarget, 1)} days`,
   [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, latencyTarget, 1)} days`,
   [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
-  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, cycleTimeTarget, 1)} days`
+  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
+  [Quadrants.abandoned]: `Age > ${i18nNumber(intl, 2*cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, 2*cycleTimeTarget, 1)} days`
 });
 
 export function getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget) {
@@ -217,6 +249,7 @@ export const FILTERS = {
   COMPONENT: "component",
   CUSTOM_TYPE: "custom_type",
   CUSTOM_TAGS: "custom_tags",
+  EXCLUDE_ABANDONED: "exclude_abandoned"
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -232,7 +265,7 @@ export let filterFns = {
     return selectedTeam.value === "all" || _teams.includes(selectedTeam.value);
   },
   [FILTERS.QUADRANT_PANEL]: (w, [selectedQuadrant]) =>
-    selectedQuadrant === undefined || selectedQuadrant === w.quadrant,
+    selectedQuadrant === undefined || selectedQuadrant === w.quadrant || (selectedQuadrant===Quadrants.critical && w.quadrant === Quadrants.abandoned),
   [FILTERS.QUADRANT]: (w, filterVals) => {
     return filterVals.some((filterVal) => w.quadrant.indexOf(filterVal) === 0);
   },
@@ -294,6 +327,9 @@ export let filterFns = {
     }
     return values.some(v => parseTags(w.tags).tags.includes(v));
   },
+  [FILTERS.EXCLUDE_ABANDONED]: (w, [value]) => {
+    return value ? w.quadrant !== Quadrants.abandoned : true;
+  }
 };
 
 /**
