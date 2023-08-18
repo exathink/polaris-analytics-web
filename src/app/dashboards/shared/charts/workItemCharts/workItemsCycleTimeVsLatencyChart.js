@@ -150,10 +150,10 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           {
             color: "red",
             value: 2 * cycleTimeTarget,
-            dashStyle: "longdashdot",
+            dashStyle: "solid",
             width: 1,
             label: {
-              text: ` L= ${intl.formatNumber(2 * cycleTimeTarget)}`,
+              text: ` L= ${intl.formatNumber(2 * cycleTimeTarget)}d`,
             },
           },
         ]
@@ -165,10 +165,10 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             {
               color: "red",
               value: 2 * cycleTimeTarget,
-              dashStyle: "longdashdot",
-              width: 1,
+              dashStyle: "solid",
+              width: 1.5,
               label: {
-                text: ` A= ${intl.formatNumber(2 * cycleTimeTarget)}`,
+                text: ` A= ${intl.formatNumber(2 * cycleTimeTarget)}d`,
               },
             },
           ]
@@ -192,7 +192,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         align: "left"
       },
       xAxis: {
-        type: "logarithmic",
+        type: excludeAbandoned === false ? "logarithmic" : "linear",
         softMin: 0.5,
         //1.2 is a fudge factor - otherwise the point gets cut off when it is at max.
         // softMax causes the log axis to blow up
@@ -208,12 +208,12 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         },
         plotLines: cycleTimeTarget ? [
           {
-            color: excludeAbandoned ? "red" : "orange",
+            color: "green",
             value: cycleTimeTarget,
-            dashStyle: "longdashdot",
-            width: 1,
+            dashStyle: "solid",
+            width: 1.5,
             label: {
-              text: ` A= ${intl.formatNumber(cycleTimeTarget)}`
+              text: ` A= ${intl.formatNumber(cycleTimeTarget)}d`
             }
           },
           ...abandonedPlotLineXAxis
@@ -237,19 +237,19 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           {
             color: "green",
             value: targetLatency,
-            dashStyle: "longdashdot",
+            dashStyle: "solid",
             width: 1,
             label: {
-              text: ` L= ${intl.formatNumber(targetLatency)}`
+              text: ` L= ${intl.formatNumber(targetLatency)}d`
             },
           },
           {
             color: excludeAbandoned ? "red" : "orange",
             value: cycleTimeTarget,
-            dashStyle: "longdashdot",
+            dashStyle: "solid",
             width: 1,
             label: {
-              text: ` L= ${intl.formatNumber(cycleTimeTarget)}`
+              text: ` L= ${intl.formatNumber(cycleTimeTarget)}d`
             }
           },
           ...abandonedPlotLineYAxis
