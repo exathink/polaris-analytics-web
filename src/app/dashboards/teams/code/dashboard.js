@@ -45,6 +45,36 @@ function WipDashboard({
   const DIMENSION = "team";
   return (
     <Dashboard dashboard={`${dashboard_id}`} >
+      <DashboardRow h="45%" >
+        <DashboardWidget
+          name={"code-reviews"}
+          title={"Pending Code Reviews"}
+          w={1}
+          render={({view}) => (
+            <DimensionPullRequestsWidget
+              dimension={"team"}
+              instanceKey={key}
+              view={view}
+              context={context}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              latestPullRequestEvent={latestPullRequestEvent}
+              asStatistic={false}
+              activeOnly={true}
+              specsOnly={true}
+              days={wipAnalysisPeriod}
+              measurementWindow={wipAnalysisPeriod}
+              samplingFrequency={wipAnalysisPeriod}
+              latencyTarget={latencyTarget}
+              display="histogram"
+              title={"Open Pull Requests"}
+
+            />
+          )}
+          showDetail={true}
+          hideTitlesInDetailView={true}
+        />
+      </DashboardRow>
       <DashboardRow h={"55%"} >
         <DashboardWidget
           name="commits"
@@ -68,35 +98,7 @@ function WipDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h="45%" >
 
-        <DashboardWidget
-          name={"code-reviews"}
-          title={"Pending Code Reviews"}
-          w={1}
-          render={({view}) => (
-            <DimensionPullRequestsWidget
-              dimension={"team"}
-              instanceKey={key}
-              view={view}
-              context={context}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              latestPullRequestEvent={latestPullRequestEvent}
-              asStatistic={false}
-              activeOnly={true}
-              specsOnly={true}
-              days={wipAnalysisPeriod}
-              measurementWindow={wipAnalysisPeriod}
-              samplingFrequency={wipAnalysisPeriod}
-              latencyTarget={latencyTarget}
-              display="histogram"
-              title={"Open Pull Requests"}
-            />
-          )}
-          showDetail={true}
-        />
-      </DashboardRow>
 
     </Dashboard>
   );
