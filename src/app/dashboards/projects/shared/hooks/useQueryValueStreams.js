@@ -7,6 +7,7 @@ query with_project_instance($key: String!) {
     name
     key
     tags
+    releases
     valueStreams {
       edges {
          node {
