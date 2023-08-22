@@ -29,11 +29,16 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
       }
     }
 
+    let queryString = "";
     if (valueIndex === 0) {
-      history.push({search: "", state: uniqueItems[valueIndex]});
+      queryParams.delete(queryParamKey);
     } else {
-      history.push({search: `?${queryParamKey}=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
+      queryParams.set(queryParamKey, uniqueItems[valueIndex].key);
     }
+    queryString = queryParams.toString();
+
+    history.push({search: `?${queryString}`, state: uniqueItems[valueIndex]});
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
 
