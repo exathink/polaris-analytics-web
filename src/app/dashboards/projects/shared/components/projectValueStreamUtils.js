@@ -10,25 +10,14 @@ import {useQueryReleases} from "../hooks/useQueryReleases";
 const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
-let firstRender = true
 
-export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam, queryParamKey=""}) {
+export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey=""}) {
   const location = useLocation();
   const history = useHistory();
 
   const {queryParams} = useQueryParamState();
-  const valueStreamKey = queryParams.get(queryParamKey);
 
   React.useEffect(() => {
-    // check if we have refreshed the page, then update the dropdown from url query param.
-    if (firstRender) {
-      const urlSyncedItem = uniqueItems.find(item => item.key === valueStreamKey);
-      if (urlSyncedItem) {
-        updateFromQueryParam(urlSyncedItem);
-        return;
-      }
-    }
-
     let queryString = "";
     if (valueIndex === 0) {
       queryParams.delete(queryParamKey);
@@ -42,16 +31,23 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
 
-  React.useEffect(() => {
-    firstRender = false
-  }, []);
-
   // clear url on unmount of this component
   React.useEffect(() => {
     return () => {
       history.push({search: ""});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+}
+
+function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamKey}) {
+  const {queryParams} = useQueryParamState();
+  const queryParamVal = queryParams.get(queryParamKey);
+  const urlSyncedItem = uniqueItems.find(item => item.key === queryParamVal);
+  React.useEffect(() => {
+    if (urlSyncedItem) {
+      updateFromQueryParam(urlSyncedItem);
+    }
   }, []);
 }
 
@@ -63,8 +59,9 @@ export function ValueStreamsDropdown() {
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
+  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey: "vs"});
   // sync dropdown value from url query-param
-  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal, queryParamKey: "vs"});
+  useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "vs"});
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
@@ -87,8 +84,10 @@ export function ReleasesDropdown() {
   const uniqueItems = [defaultItemRelease, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
+  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey: "release"});
+
   // sync dropdown value from url query-param
-  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal, queryParamKey: "release"});
+  useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "release"});
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
