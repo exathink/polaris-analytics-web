@@ -15,7 +15,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey=""}) {
   const location = useLocation();
   const history = useHistory();
 
-  const {queryParams} = useQueryParamState();
+  const {queryParams, state} = useQueryParamState();
 
   React.useEffect(() => {
     let queryString = "";
@@ -26,7 +26,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey=""}) {
     }
     queryString = queryParams.toString();
 
-    history.push({search: `?${queryString}`, state: uniqueItems[valueIndex]});
+    history.push({search: `?${queryString}`, state: {...state, [queryParamKey]: uniqueItems[valueIndex]}});
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
