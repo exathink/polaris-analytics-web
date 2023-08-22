@@ -45,6 +45,7 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
             storyPoints
             releases
             priority
+            sprints
 
             state
             stateType
