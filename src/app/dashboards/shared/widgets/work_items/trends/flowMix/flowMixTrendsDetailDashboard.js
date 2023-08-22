@@ -35,7 +35,8 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
   const specsOnly = workItemScope === "specs";
   const [before, setBefore] = React.useState();
   const [workItemTypeFilter, setFilter] = React.useState(null);
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],

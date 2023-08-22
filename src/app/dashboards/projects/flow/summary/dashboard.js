@@ -21,7 +21,8 @@ export function NewFlowDashboard({
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {

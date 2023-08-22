@@ -26,7 +26,8 @@ export function DimensionCycleTimeDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   return (
     <Dashboard

@@ -32,7 +32,8 @@ function TrendsDashboard({
   const specsOnly = workItemScope === "specs";
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
 
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>

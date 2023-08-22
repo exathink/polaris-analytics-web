@@ -42,7 +42,8 @@ export function DimensionResponseTimeDetailDashboard({
 
   const limitToSpecsOnly = workItemScope === 'specs';
   const [tabSelection, setTab] = React.useState("histogram");
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   return (
     <Dashboard

@@ -31,7 +31,8 @@ export function DimensionThroughputDetailDashboard({
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className="tw-bg-ghostwhite tw-grid tw-grid-cols-6 tw-grid-rows-[7%_auto_auto_auto_5%_50%] tw-gap-2 tw-p-2" gridLayout={true}>

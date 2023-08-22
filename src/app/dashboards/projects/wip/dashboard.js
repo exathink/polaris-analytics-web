@@ -54,7 +54,8 @@ function WipDashboard({
   }
 
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));

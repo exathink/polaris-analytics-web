@@ -54,7 +54,8 @@ export const VolumeTrendsDetailDashboard = ({
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const intl = useIntl();
-  const { state: { workItemSelectors = [] } } = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
 
   function handleClearClick() {
     setSeriesName("workItemsInScope");
