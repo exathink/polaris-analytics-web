@@ -100,15 +100,15 @@ export function ReleasesDropdown() {
 export function ProjectValueStreamsWidget({context}) {
   const instanceKey = context.getInstanceKey("project");
 
-  const result1 = useQueryProjectValueStreams({instanceKey});
-  const result2 = useQueryReleases({projectKey: instanceKey, releasesWindow: 90});
+  const valueStreamsResult = useQueryProjectValueStreams({instanceKey});
+  const releasesResult = useQueryReleases({projectKey: instanceKey, releasesWindow: 90});
 
   return (
     <div className="tw-flex tw-items-center">
-      <WidgetCore result={result1} errorContext="ValueStreamsWidget.useQueryValueStreams">
+      <WidgetCore result={valueStreamsResult} errorContext="ValueStreamsWidget.useQueryValueStreams">
         <ValueStreamsDropdown />
       </WidgetCore>
-      <WidgetCore result={result2} errorContext="ValueStreamsWidget.useQueryValueStreams">
+      <WidgetCore result={releasesResult} errorContext="ValueStreamsWidget.useQueryReleases">
         <ReleasesDropdown />
       </WidgetCore>
     </div>
