@@ -6,17 +6,18 @@ import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 import {useQueryParamState} from "../helper/hooks";
 import { Col, Drawer, Form, Input, Row, Select } from "antd";
 import Button from "../../../../../components/uielements/button";
+import {useQueryReleases} from "../hooks/useQueryReleases";
 const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 let firstRender = true
 
-export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam}) {
+export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam, queryParamKey=""}) {
   const location = useLocation();
   const history = useHistory();
 
   const {queryParams} = useQueryParamState();
-  const valueStreamKey = queryParams.get('vs');
+  const valueStreamKey = queryParams.get(queryParamKey);
 
   React.useEffect(() => {
     // check if we have refreshed the page, then update the dropdown from url query param.
@@ -31,7 +32,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam
     if (valueIndex === 0) {
       history.push({search: "", state: uniqueItems[valueIndex]});
     } else {
-      history.push({search: `?vs=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
+      history.push({search: `?${queryParamKey}=${uniqueItems[valueIndex].key}`, state: uniqueItems[valueIndex]});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
@@ -58,7 +59,7 @@ export function ValueStreamsDropdown() {
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
   // sync dropdown value from url query-param
-  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal})
+  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal, queryParamKey: "vs"});
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
@@ -72,14 +73,45 @@ export function ValueStreamsDropdown() {
   );
 }
 
-export function ProjectValueStreamsWidget({context}) {
-  const instanceKey = context.getInstanceKey("project");
-  const result = useQueryProjectValueStreams({instanceKey});
+const defaultItemRelease = {key: "all", name: "Releases"};
+export function ReleasesDropdown() {
+  const {data} = useWidget();
+
+  const releases = data.project.releases ?? [];
+  const items = releases.map(x => ({key: x, name: x}))
+  const uniqueItems = [defaultItemRelease, ...items];
+  const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
+
+  // sync dropdown value from url query-param
+  useQueryParamSync({uniqueItems, valueIndex, updateFromQueryParam: setSelectedVal, queryParamKey: "release"});
+
+  // when there are no value streams under project, we don't show the dropdown for valuestream
+  if (items.length === 0) {
+    return null;
+  }
 
   return (
-    <WidgetCore result={result} errorContext="ValueStreamsWidget.useQueryValueStreams">
-      <ValueStreamsDropdown />
-    </WidgetCore>
+    <div className="tw-ml-2">
+      <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} value={valueIndex} />
+    </div>
+  );
+}
+
+export function ProjectValueStreamsWidget({context}) {
+  const instanceKey = context.getInstanceKey("project");
+
+  const result1 = useQueryProjectValueStreams({instanceKey});
+  const result2 = useQueryReleases({projectKey: instanceKey, releasesWindow: 90});
+
+  return (
+    <div className="tw-flex tw-items-center">
+      <WidgetCore result={result1} errorContext="ValueStreamsWidget.useQueryValueStreams">
+        <ValueStreamsDropdown />
+      </WidgetCore>
+      <WidgetCore result={result2} errorContext="ValueStreamsWidget.useQueryValueStreams">
+        <ReleasesDropdown />
+      </WidgetCore>
+    </div>
   );
 }
 
