@@ -12,6 +12,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
   {
     dimension,
     tags,
+    release,
     instanceKey,
     view,
     display,
@@ -41,6 +42,7 @@ export const DimensionVolumeTrendsWidget = React.memo((
       {
         dimension,
         tags,
+        release,
         instanceKey,
         days,
         measurementWindow,
