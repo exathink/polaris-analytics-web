@@ -10,6 +10,7 @@ export const DimensionFlowMixTrendsWidget = (
   {
     dimension,
     tags,
+    release,
     instanceKey,
     title,
     subTitle,
@@ -40,6 +41,7 @@ export const DimensionFlowMixTrendsWidget = (
       {
         dimension,
         tags,
+        release,
         instanceKey,
         days,
         measurementWindow,

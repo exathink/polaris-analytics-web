@@ -37,6 +37,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
   const [workItemTypeFilter, setFilter] = React.useState(null);
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],
@@ -85,6 +86,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={workItemSelectors}
+              release={release}
               measurementWindow={measurementWindowRange}
               days={daysRange}
               samplingFrequency={frequencyRange}
@@ -129,6 +131,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={workItemSelectors}
+              release={release}
               days={measurementWindowRange}
               specsOnly={specsOnly}
               before={before}
