@@ -15,9 +15,10 @@ export const queryDimensionClosedDeliveryCycleDetail = (dimension) =>  gql`
     $first: Int
     $after: String
   ) {
-    ${dimension}(key: $key, release: $release, referenceString: $referenceString) {
+    ${dimension}(key: $key, referenceString: $referenceString) {
       workItemDeliveryCycles(
         tags: $tags
+        release: $release
         closedBefore: $before
         closedWithinDays: $days
         defectsOnly: $defectsOnly
