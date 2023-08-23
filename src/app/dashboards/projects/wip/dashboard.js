@@ -56,6 +56,7 @@ function WipDashboard({
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));
@@ -147,6 +148,7 @@ function WipDashboard({
               dimension={DIMENSION}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
               displayBag={{excludeAbandoned: exclude}}
@@ -181,6 +183,7 @@ function WipDashboard({
                     dimension="project"
                     instanceKey={key}
                     tags={workItemSelectors}
+                    release={release}
                     // Summary Card Data
                     // Throughput for a single measurement period
                     // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
@@ -219,6 +222,7 @@ function WipDashboard({
                     dimension="project"
                     instanceKey={key}
                     tags={workItemSelectors}
+                    release={release}
                     days={flowAnalysisPeriod}
                     measurementWindow={flowAnalysisPeriod}
                     samplingFrequency={flowAnalysisPeriod}
@@ -249,6 +253,7 @@ function WipDashboard({
                 dimension: DIMENSION,
                 instanceKey: key,
                 tags: workItemSelectors,
+                release: release,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
@@ -286,6 +291,7 @@ function WipDashboard({
                 dimension: DIMENSION,
                 instanceKey: key,
                 tags: workItemSelectors,
+                release: release,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
