@@ -75,7 +75,7 @@ export function ValueStreamsDropdown() {
   );
 }
 
-const defaultItemRelease = {key: "all", name: "Releases"};
+const defaultItemRelease = {key: "all", name: "All Releases"};
 export function ReleasesDropdown() {
   const {data} = useWidget();
 
