@@ -1,18 +1,9 @@
-import React, {useState} from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/dashboard";
-import {TeamDashboard} from "../teamDashboard";
-import {withViewerContext} from "../../../framework/viewer/viewerContext";
-import styles from "./dashboard.module.css";
-import {DimensionCommitsNavigatorWidget} from "../../shared/widgets/accountHierarchy";
-import {
-  DimensionPipelineCycleTimeLatencyWidget,
-  DimensionWipFlowMetricsWidget,
-} from "../../shared/widgets/work_items/wip";
-import {WorkItemStateTypes} from "../../shared/config";
-import {DimensionPullRequestsWidget} from "../../shared/widgets/pullRequests/openPullRequests";
-import {DimensionResponseTimeWidget} from "../../shared/widgets/work_items/responseTime/dimensionResponseTimeWidget";
-import {DimensionThroughputWidget} from "../../shared/widgets/work_items/throughput/dimensionThroughputWidget";
-import {getReferenceString} from "../../../helpers/utility";
+import React from "react";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
+import { TeamDashboard } from "../teamDashboard";
+import { withViewerContext } from "../../../framework/viewer/viewerContext";
+import { DimensionCommitsNavigatorWidget } from "../../shared/widgets/accountHierarchy";
+import { DimensionPullRequestsWidget } from "../../shared/widgets/pullRequests/openPullRequests";
 
 const dashboard_id = "dashboards.activity.teams.instance";
 
@@ -28,19 +19,11 @@ function WipDashboard({
   context,
   viewerContext,
 }) {
-  const [workItemScope, setWorkItemScope] = useState("specs");
-  const specsOnly = workItemScope === "specs";
+
+
   const {
-    leadTimeTarget,
-    cycleTimeTarget,
-    responseTimeConfidenceTarget,
-    leadTimeConfidenceTarget,
-    cycleTimeConfidenceTarget,
-    wipLimit,
     wipAnalysisPeriod,
-    includeSubTasksWipInspector,
-    includeSubTasksFlowMetrics,
-    latencyTarget,
+    latencyTarget
   } = settingsWithDefaults;
   const DIMENSION = "team";
   return (
@@ -52,7 +35,7 @@ function WipDashboard({
           w={1}
           render={({view}) => (
             <DimensionPullRequestsWidget
-              dimension={"team"}
+              dimension={DIMENSION}
               instanceKey={key}
               view={view}
               context={context}

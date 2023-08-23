@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {PullRequestsCompletedTrendsWidget} from "../trends/pullRequestsCompleted";
-import {PullRequestsReviewTimeTrendsWidget, ClosedPullRequestsCardWidget} from "../trends/pullRequestsReviewTime";
-import {
-  getTrendsControlBarControls,
-  useTrendsControlBarState,
-} from "../../../components/trendingControlBar/trendingControlBar";
-import {DimensionPullRequestsWidget} from "./dimensionPullRequestsWidget";
-import {OpenPullRequestsCardWidget} from "./openPullRequestsCardWidget";
-import {getTodayDate, toMoment} from "../../../../../helpers/utility";
-import { Flex } from "reflexbox";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../../../framework/viz/dashboard";
+import { DimensionPullRequestsWidget } from "./dimensionPullRequestsWidget";
+import { getTodayDate, toMoment } from "../../../../../helpers/utility";
 import { GroupingSelector } from "../../../components/groupingSelector/groupingSelector";
 
 const dashboard_id = "dashboards.projects.wip.pullrequests.detail";
@@ -28,15 +20,11 @@ export const DimensionOpenPullRequestsTrendsDashboard = ({
   latestWorkItemEvent,
   latencyTarget
 }) => {
-  const [
-    [daysRange, setDaysRange],
-    [measurementWindowRange, setMeasurementWindowRange],
-    [frequencyRange, setFrequencyRange],
-  ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
+
 
   const [before, setBefore] = React.useState();
   const [selectedFilter, setFilter] = React.useState(null);
-  const [cardSelection, setCardSelection] = React.useState("open");
+  const [cardSelection] = React.useState("open");
   const [traceableOrAll, setTraceableOrAll] = useState(specsOnly ? "traceable" : "all");
   const traceableOnly = traceableOrAll === 'traceable'
 
@@ -92,7 +80,7 @@ export const DimensionOpenPullRequestsTrendsDashboard = ({
               specsOnly={traceableOnly}
               before={before}
               setBefore={setBefore}
-              closedWithinDays={cardSelection === "closed" || before ? measurementWindowRange : undefined}
+              closedWithinDays={cardSelection === "closed" || before ? measurementWindow : undefined}
               display="histogram"
             />
           )}
@@ -119,9 +107,9 @@ export const DimensionOpenPullRequestsTrendsDashboard = ({
               setBefore={setBefore}
               closedWithinDays={
                 cardSelection === "closed" && before === undefined
-                  ? daysRange
+                  ? days
                   : before
-                  ? measurementWindowRange
+                  ? measurementWindow
                   : undefined
               }
               display="table"
