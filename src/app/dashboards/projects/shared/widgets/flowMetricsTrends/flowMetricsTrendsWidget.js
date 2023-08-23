@@ -9,6 +9,7 @@ export const FlowMetricsTrendsWidget = ({
   dimension,
   instanceKey,
   tags,
+  release,
   displayBag,
 
   days,
@@ -31,6 +32,7 @@ export const FlowMetricsTrendsWidget = ({
     dimension,
     instanceKey,
     tags,
+    release,
     days: days,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,

@@ -5,6 +5,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
   query ${dimension}FlowMetricsTrends(
     $key: String!
     $tags: [String]
+    $release: String
     $days: Int!
     $measurementWindow: Int!
     $samplingFrequency: Int!
@@ -19,6 +20,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
     ${dimension}(
       key: $key
       tags: $tags
+      release: $release,
       interfaces: [CycleMetricsTrends]
       cycleMetricsTrendsArgs: {
         before: $before
@@ -98,6 +100,7 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
 export function useQueryDimensionFlowMetricsTrends({
   dimension,
   tags,
+  release,
   instanceKey,
   before,
   days,
@@ -116,6 +119,7 @@ export function useQueryDimensionFlowMetricsTrends({
     variables: {
       key: instanceKey,
       tags,
+      release,
       days: days,
       before: before,
       measurementWindow: measurementWindow,
