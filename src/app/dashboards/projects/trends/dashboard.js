@@ -34,6 +34,7 @@ function TrendsDashboard({
 
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
@@ -76,6 +77,7 @@ function TrendsDashboard({
               title={`Roadmap Focus: Last ${daysRange} Days`}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               context={context}
               days={daysRange}
               specsOnly={specsOnly}
@@ -96,6 +98,7 @@ function TrendsDashboard({
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
               tags={workItemSelectors}
+              release={release}
               title={`Allocations: Last ${daysRange} Days`}
               subTitle={`% Capacity and % Volume`}
               instanceKey={key}
@@ -123,6 +126,7 @@ function TrendsDashboard({
             <DimensionResponseTimeTrendsWidget
               dimension={"project"}
               tags={workItemSelectors}
+              release={release}
               title={"Flow Time, All Dev Items"}
               instanceKey={key}
               measurementWindow={30}
@@ -150,6 +154,7 @@ function TrendsDashboard({
             <DimensionVolumeTrendsWidget
               dimension={"project"}
               tags={workItemSelectors}
+              release={release}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
