@@ -75,12 +75,12 @@ export function ValueStreamsDropdown() {
   );
 }
 
-const defaultItemRelease = {key: "all", name: "All Releases"};
+const defaultItemRelease = {key: "all", name: "All Releases", releaseValue: undefined};
 export function ReleasesDropdown() {
   const {data} = useWidget();
 
   const releases = data.project.releases ?? [];
-  const items = releases.map(x => ({key: x, name: x}))
+  const items = releases.map(x => ({key: x, name: x, releaseValue: x}))
   const uniqueItems = [defaultItemRelease, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
