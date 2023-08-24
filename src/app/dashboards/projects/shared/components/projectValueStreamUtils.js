@@ -4,14 +4,15 @@ import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetC
 import {SelectDropdown, useSelect} from "../../../shared/components/select/selectDropdown";
 import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
 import {useQueryParamState} from "../helper/hooks";
-import { Col, Drawer, Form, Input, Row, Select } from "antd";
+import {Col, Drawer, Form, Input, Row, Select} from "antd";
 import Button from "../../../../../components/uielements/button";
 import {useQueryReleases} from "../hooks/useQueryReleases";
+import {ProjectDashboard} from "../../projectDashboard";
 const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 
-export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey=""}) {
+export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""}) {
   const location = useLocation();
   const history = useHistory();
 
@@ -28,22 +29,22 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey=""}) {
 
     history.push({search: `?${queryString}`, state: {...state, [queryParamKey]: uniqueItems[valueIndex]}});
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
 
   // clear url on unmount of this component
   React.useEffect(() => {
     return () => {
       history.push({search: ""});
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
 function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamKey}) {
   const {queryParams} = useQueryParamState();
   const queryParamVal = queryParams.get(queryParamKey);
-  const urlSyncedItem = uniqueItems.find(item => item.key === queryParamVal);
+  const urlSyncedItem = uniqueItems.find((item) => item.key === queryParamVal);
   React.useEffect(() => {
     if (urlSyncedItem) {
       updateFromQueryParam(urlSyncedItem);
@@ -54,7 +55,7 @@ function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamK
 export function ValueStreamsDropdown() {
   const {data} = useWidget();
 
-  const edges = data.project.valueStreams?.edges??[];
+  const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
@@ -67,7 +68,7 @@ export function ValueStreamsDropdown() {
   if (items.length === 0) {
     return null;
   }
-  
+
   return (
     <div className="tw-ml-2">
       <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} value={valueIndex} />
@@ -80,7 +81,7 @@ export function ReleasesDropdown() {
   const {data} = useWidget();
 
   const releases = data.project.releases ?? [];
-  const items = releases.map(x => ({key: x, name: x, releaseValue: x}))
+  const items = releases.map((x) => ({key: x, name: x, releaseValue: x}));
   const uniqueItems = [defaultItemRelease, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
@@ -108,20 +109,29 @@ export function ProjectValueStreamsWidget({context}) {
   const releasesResult = useQueryReleases({projectKey: instanceKey, releasesWindow: 90});
 
   return (
-    <div className="tw-flex tw-items-center">
-      <WidgetCore result={valueStreamsResult} errorContext="ValueStreamsWidget.useQueryValueStreams">
-        <ValueStreamsDropdown />
-      </WidgetCore>
-      <WidgetCore result={releasesResult} errorContext="ValueStreamsWidget.useQueryReleases">
-        <ReleasesDropdown />
-      </WidgetCore>
-    </div>
+    <ProjectDashboard
+      pollInterval={60 * 1000}
+      render={({project, context}) => {
+        const {enableReleases} = project.settingsWithDefaults;
+
+        return (
+          <div className="tw-flex tw-items-center">
+            <WidgetCore result={valueStreamsResult} errorContext="ValueStreamsWidget.useQueryValueStreams">
+              <ValueStreamsDropdown />
+            </WidgetCore>
+            {enableReleases && (
+              <WidgetCore result={releasesResult} errorContext="ValueStreamsWidget.useQueryReleases">
+                <ReleasesDropdown />
+              </WidgetCore>
+            )}
+          </div>
+        );
+      }}
+    />
   );
 }
 
-
 export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {
-  
   let title = "";
   if (formType === "NEW_FORM") {
     title = "New Value Stream";
@@ -144,7 +154,7 @@ export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItem
             </Form.Item>
           </Col>
           <Col span={24}>
-          <Form.Item
+            <Form.Item
               name={"description"}
               label="Description"
               rules={[{required: true, message: "Description is required"}]}
