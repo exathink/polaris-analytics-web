@@ -16,8 +16,8 @@ export function useQueryDimensionFlowMetrics(
             $days: Int!,
             $measurementWindow: Int!,
             $samplingFrequency: Int!,
-            $leadTimeTargetPercentile: Float!,
-            $cycleTimeTargetPercentile: Float!,
+            $leadTimeTargetPercentile: Float,
+            $cycleTimeTargetPercentile: Float,
             $specsOnly: Boolean,
             $includeSubTasks: Boolean,
             $referenceString: String
