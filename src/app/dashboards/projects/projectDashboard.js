@@ -19,7 +19,8 @@ function PROJECT_DEFAULT_SETTINGS() {
     FLOW_ANALYSIS_PERIOD: 30,
     TRENDS_ANALYSIS_PERIOD: 45,
     INCLUDE_SUBTASKS_FLOW_METRICS: false,
-    INCLUDE_SUBTASKS_WIP_INSPECTOR: true
+    INCLUDE_SUBTASKS_WIP_INSPECTOR: true,
+    ENABLE_RELEASES: false,
   };
   return {
     ...BASE_DEFAULTS,
@@ -29,7 +30,7 @@ function PROJECT_DEFAULT_SETTINGS() {
   };
 }
 
-function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}, wipInspectorSettings = {}} = {}}) {
+function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}, wipInspectorSettings = {}, releasesSettings = {}} = {}}) {
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -51,6 +52,8 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     includeSubTasks: includeSubTasksWipInspector
   } = wipInspectorSettings;
 
+  const {enableReleases} = releasesSettings;
+
   const defaults = PROJECT_DEFAULT_SETTINGS();
   return {
     leadTimeTarget: leadTimeTarget || defaults.LEAD_TIME_TARGET_DEFAULT,
@@ -65,7 +68,8 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
     trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
     includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
     includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector,
-    latencyTarget: cycleTimeTarget*0.1 || defaults.LATENCY_TARGET
+    latencyTarget: cycleTimeTarget*0.1 || defaults.LATENCY_TARGET,
+    enableReleases: enableReleases || defaults.ENABLE_RELEASES
   };
 }
 
