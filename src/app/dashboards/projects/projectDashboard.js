@@ -135,6 +135,9 @@ class WithProject extends React.Component {
                 wipInspectorSettings {
                   includeSubTasks
                 }
+                releasesSettings {
+                  enableReleases
+                }
               }
             }
           }
