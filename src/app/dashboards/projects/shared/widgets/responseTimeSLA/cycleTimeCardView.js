@@ -1,7 +1,8 @@
 import { AvgCycleTime } from "../../../../shared/components/flowStatistics/flowStatistics";
 import { AppTerms } from "../../../../shared/config";
-import { DimensionCycleTimeDetailDashboard } from "../../../../shared/widgets/work_items/responseTime/dimensionCycleTimeDetailDashboard";
-import { ProjectDashboard } from "../../../projectDashboard";
+import {
+  DimensionCycleTimeDetailDashboard
+} from "../../../../shared/widgets/work_items/responseTime/dimensionCycleTimeDetailDashboard";
 
 
 export function CycleTimeCardView({
@@ -37,12 +38,7 @@ export function CycleTimeCardView({
               </div>
             ),
             content: (
-              <ProjectDashboard
-                pollInterval={1000 * 60}
-                render={({project, ...rest}) => (
-                  <DimensionCycleTimeDetailDashboard dimension={"project"} dimensionData={project} specsOnly={specsOnly} {...rest} />
-                )}
-              />
+              <DimensionCycleTimeDetailDashboard dimension={dimension} dimensionData={{key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults: {flowAnalysisPeriod, trendAnalysisPeriod, cycleTimeTarget}}} specsOnly={specsOnly} />
             ),
             placement: "top",
           },

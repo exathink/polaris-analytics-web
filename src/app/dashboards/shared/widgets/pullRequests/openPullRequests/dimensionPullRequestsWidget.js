@@ -3,7 +3,7 @@ import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionPullRequests} from "../hooks/useQueryDimensionPullRequests";
 import {OpenPullRequestsView} from "./openPullRequestsView";
 import {getReferenceString} from "../../../../../helpers/utility";
-import {DimensionPullRequestsDetailDashboard} from "./dimensionPullRequestsDetailDashboard";
+import {DimensionOpenPullRequestsTrendsDashboard} from "./dimensionOpenPullRequestsTrendsDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {PullRequestsView} from "../pullRequestsUtils/pullRequestsView";
 
@@ -58,7 +58,7 @@ export const DimensionPullRequestsWidget = ({
 
   if (view === "detail") {
     return (
-      <DimensionPullRequestsDetailDashboard
+      <DimensionOpenPullRequestsTrendsDashboard
         dimension={dimension}
         instanceKey={instanceKey}
         specsOnly={specsOnly}

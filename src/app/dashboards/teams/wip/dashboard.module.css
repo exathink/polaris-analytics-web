@@ -1,0 +1,55 @@
+.teamsFlowDashboard {
+  height: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto 3% 38% 4% 41%;
+  gap: 0.25rem 0.5rem;
+  grid-template-areas:
+    " responseTimeSLA responseTimeSLA responseTimeSLA responseTimeSLA pipeline pipeline pipeline pipeline  flowMetrics  flowMetrics flowMetrics flowMetrics"
+    "wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge wipAge"
+    "engineering engineering engineering engineering codeReviews codeReviews codeReviews codeReviews delivery delivery delivery delivery"
+    "latestCommitsTitle latestCommitsTitle latestCommitsTitle latestCommitsTitle scopeSelector scopeSelector scopeSelector scopeSelector . . . ."
+    "commits commits commits commits commits commits commits commits commits commits commits commits";
+}
+
+.responseTimeSLA {
+  grid-area: responseTimeSLA;
+  padding: 0.25rem;
+}
+.pipeline {
+  grid-area: pipeline;
+  padding: 0.25rem;
+}
+.flowMetrics {
+  grid-area: flowMetrics;
+  padding: 0.25rem;
+}
+
+.engineering {
+  grid-area: engineering;
+}
+.codeReviews {
+  grid-area: codeReviews;
+}
+.wipAge {
+  grid-area: wipAge;
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+.delivery {
+  grid-area: delivery;
+}
+.scopeSelector {
+  grid-area: scopeSelector;
+  align-self: flex-end;
+  margin-top: 0.25rem;
+}
+.commits {
+  grid-area: commits;
+}
+.latestCommitsTitle {
+  grid-area: latestCommitsTitle;
+  padding-left: 0.25rem;
+  margin-top: 0.25rem;
+}

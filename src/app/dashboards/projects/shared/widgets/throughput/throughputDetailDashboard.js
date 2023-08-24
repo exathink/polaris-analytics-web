@@ -34,7 +34,7 @@ export const ThroughputDetailDashboard = ({
           className={"tw-p-2"}
           render={({view}) => (
             <FlowMetricsTrendsWidget
-              dimension="project"
+              dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
               displayBag={{displayType: "cardAdvanced", metric: "volume"}}
@@ -58,7 +58,7 @@ export const ThroughputDetailDashboard = ({
           className="tw-p-2"
           render={({view}) => (
             <FlowMetricsTrendsWidget
-              dimension="project"
+              dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
               displayBag={{displayType: "cardAdvanced", metric: "throughput", detailsView: null}}
