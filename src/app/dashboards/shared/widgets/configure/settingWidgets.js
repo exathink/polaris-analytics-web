@@ -93,7 +93,7 @@ export function MeasurementSettingsDashboard({dimension}) {
               <DashboardWidget
                 w={1}
                 name="measurement-settings-widget"
-                className="tw-bg-white tw-p-4"
+                className={dimension==="project" ? "tw-bg-white tw-p-4" : "tw-bg-white tw-p-4 tw-row-span-2"}
                 render={({view}) => {
                   return (
                     <MeasurementSettingsWidget
@@ -106,7 +106,7 @@ export function MeasurementSettingsDashboard({dimension}) {
                 }}
                 showDetail={false}
               />
-              <DashboardWidget
+              {dimension==="project" && <DashboardWidget
                 w={1}
                 name="releases-settings-widget"
                 className="tw-bg-white tw-p-4 tw-col-start-2 tw-row-start-2"
@@ -120,7 +120,7 @@ export function MeasurementSettingsDashboard({dimension}) {
                   );
                 }}
                 showDetail={false}
-              />
+              />}
             </DashboardRow>
           </Dashboard>
         );
