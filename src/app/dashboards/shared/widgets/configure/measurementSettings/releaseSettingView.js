@@ -129,7 +129,7 @@ export function ReleaseSettingView({dimension, instanceKey, releaseSettingFlag})
         <div>Releases</div>
       </div>
 
-      <div className="tw-mt-4 tw-w-4/5 tw-border tw-border-solid tw-border-gray-100 tw-p-1">
+      <div className="tw-mt-4 tw-w-4/5 tw-border tw-border-solid tw-border-black tw-border-opacity-10 tw-p-4">
         <div className="tw-p-1">
           <Checkbox onChange={handleReleaseSettingChange} name="releaseSetting" checked={state.releaseSetting}>
             Enable
