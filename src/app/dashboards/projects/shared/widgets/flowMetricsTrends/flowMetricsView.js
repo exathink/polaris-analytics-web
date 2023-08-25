@@ -8,6 +8,7 @@ export function FlowMetricsView({
   data,
   dimension,
   tags,
+  release,
   instanceKey,
   displayBag,
   flowAnalysisPeriod,
@@ -31,6 +32,7 @@ export function FlowMetricsView({
           dimension={dimension}
           instanceKey={instanceKey}
           tags={tags}
+          release={release}
           flowAnalysisPeriod={flowAnalysisPeriod}
           trendAnalysisPeriod={trendAnalysisPeriod}
           latestCommit={latestCommit}
@@ -45,6 +47,7 @@ export function FlowMetricsView({
           data={data}
           dimension={dimension}
           tags={tags}
+          release={release}
           instanceKey={instanceKey}
           displayType={displayType}
           displayProps={{iconsShiftLeft, ...displayProps}}
@@ -78,6 +81,7 @@ export function FlowMetricsView({
                 dimension={dimension}
                 instanceKey={instanceKey}
                 tags={tags}
+                release={release}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 trendAnalysisPeriod={trendAnalysisPeriod}
                 latestCommit={latestCommit}

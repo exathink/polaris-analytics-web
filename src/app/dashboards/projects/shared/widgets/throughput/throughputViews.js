@@ -40,6 +40,7 @@ export function ThroughputCardView({
   data,
   dimension,
   tags,
+  release,
   displayType,
   displayProps,
   instanceKey,
@@ -80,6 +81,7 @@ export function ThroughputCardView({
                 dimension={dimension}
                 instanceKey={instanceKey}
                 tags={tags}
+                release={release}
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 trendAnalysisPeriod={trendAnalysisPeriod}
                 latestCommit={latestCommit}
@@ -99,6 +101,7 @@ export function ThroughputCardView({
                 dimension={dimension}
                 instanceKey={instanceKey}
                 tags={tags}
+                release={release}
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
