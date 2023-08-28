@@ -5,6 +5,7 @@ export function useQueryDimensionFlowMixTrends(
   {
     dimension,
     tags,
+    release,
     instanceKey,
     before,
     days,
@@ -19,6 +20,7 @@ export function useQueryDimensionFlowMixTrends(
      query ${dimension}FlowMixTrends(
           $key: String!, 
           $tags: [String],
+          $release: String
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
@@ -30,6 +32,7 @@ export function useQueryDimensionFlowMixTrends(
       ${dimension}(
             key: $key, 
             tags: $tags,
+            release: $release,
             interfaces: [FlowMixTrends],
              flowMixTrendsArgs: {
               before: $before,
@@ -57,6 +60,7 @@ export function useQueryDimensionFlowMixTrends(
       variables: {
         key: instanceKey,
         tags: tags,
+        release: release,
         days: days,
         before: before,
         measurementWindow: measurementWindow,

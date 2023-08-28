@@ -10,6 +10,7 @@ export function VolumeTrendsTableWidget({
   dimension,
   instanceKey,
   tags,
+  release,
   days,
   measurementWindow,
   samplingFrequency,
@@ -27,6 +28,7 @@ export function VolumeTrendsTableWidget({
     dimension,
     instanceKey,
     tags,
+    release,
     days,
     measurementWindow,
     samplingFrequency,
@@ -46,6 +48,7 @@ export function VolumeTrendsTableWidget({
       dimension={dimension}
       instanceKey={instanceKey}
       tags={tags}
+      release={release}
       days={measurementWindow}
       initialDays={days}
       specsOnly={specsOnly}

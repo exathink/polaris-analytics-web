@@ -54,7 +54,9 @@ export const VolumeTrendsDetailDashboard = ({
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const intl = useIntl();
-  const { state: { workItemSelectors = [] } } = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   function handleClearClick() {
     setSeriesName("workItemsInScope");
@@ -76,6 +78,7 @@ export const VolumeTrendsDetailDashboard = ({
       dimension={dimension}
       instanceKey={instanceKey}
       tags={workItemSelectors}
+      release={release}
       specsOnly={specsOnly}
       view={view}
       context={context}
@@ -182,6 +185,7 @@ export const VolumeTrendsDetailDashboard = ({
                 dimension={dimension}
                 instanceKey={instanceKey}
                 tags={workItemSelectors}
+                release={release}
                 view={view}
                 setBefore={setBefore}
                 setSeriesName={setSeriesName}

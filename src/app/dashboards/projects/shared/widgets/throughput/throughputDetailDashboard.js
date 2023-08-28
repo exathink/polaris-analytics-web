@@ -11,6 +11,7 @@ export const ThroughputDetailDashboard = ({
   dimension,
   instanceKey,
   tags,
+  release,
   flowAnalysisPeriod,
   trendAnalysisPeriod,
   latestCommit,
@@ -37,6 +38,7 @@ export const ThroughputDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
+              release={release}
               displayBag={{displayType: "cardAdvanced", metric: "volume"}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
@@ -61,6 +63,7 @@ export const ThroughputDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
+              release={release}
               displayBag={{displayType: "cardAdvanced", metric: "throughput", detailsView: null}}
               days={flowAnalysisPeriod}
               measurementWindow={flowAnalysisPeriod}
@@ -85,6 +88,7 @@ export const ThroughputDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
+              release={release}
               displayType="cardAdvanced"
               flowAnalysisPeriod={flowAnalysisPeriod}
               latestCommit={latestCommit}
@@ -107,6 +111,7 @@ export const ThroughputDetailDashboard = ({
               dimension={dimension}
               instanceKey={instanceKey}
               tags={tags}
+              release={release}
               days={flowAnalysisPeriod}
               measurementWindow={1}
               samplingFrequency={1}

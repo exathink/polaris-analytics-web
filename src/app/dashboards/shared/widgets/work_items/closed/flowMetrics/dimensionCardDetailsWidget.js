@@ -11,6 +11,7 @@ export function CardDetailsWidget({
   dimension,
   instanceKey,
   tags,
+  release,
   days,
   initialDays=days,
   specsOnly,
@@ -28,6 +29,7 @@ export function CardDetailsWidget({
   const {loading, error, data, fetchMore} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     tags,
+    release,
     instanceKey,
     days: _days,
     defectsOnly,
