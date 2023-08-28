@@ -224,6 +224,8 @@ export function NewFlowDashboard({
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              excludeAbandoned={exclude}
               includeSubTasks={{
                 includeSubTasksInClosedState: includeSubTasksFlowMetrics,
                 includeSubTasksInNonClosedState: includeSubTasksWipInspector,
