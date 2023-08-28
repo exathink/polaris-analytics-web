@@ -103,7 +103,7 @@ export function NewFlowDashboard({
           </Checkbox>
         </div>
 
-        <Flex justify={"center"}>
+        <Flex justify={"center"} className="tw-mr-2">
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
         </Flex>
       </div>
