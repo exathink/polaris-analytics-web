@@ -9,6 +9,7 @@ export function DimensionWipMetricsWidget({
   dimension,
   instanceKey,
   tags,
+  release,
   displayBag,
 
   targetPercentile,
@@ -30,6 +31,7 @@ export function DimensionWipMetricsWidget({
     dimension,
     instanceKey,
     tags,
+    release,
     specsOnly: limitToSpecsOnly,
     activeOnly: true,
     includeSubTasks: includeSubTasks,

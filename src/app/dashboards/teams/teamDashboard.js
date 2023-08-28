@@ -18,7 +18,8 @@ function TEAM_DEFAULT_SETTINGS() {
     FLOW_ANALYSIS_PERIOD: 30,
     TRENDS_ANALYSIS_PERIOD: 90,
     INCLUDE_SUBTASKS_FLOW_METRICS: false,
-    INCLUDE_SUBTASKS_WIP_INSPECTOR: false
+    INCLUDE_SUBTASKS_WIP_INSPECTOR: false,
+    ENABLE_RELEASES: false,
   };
   return {
     ...BASE_DEFAULTS,
@@ -28,7 +29,7 @@ function TEAM_DEFAULT_SETTINGS() {
   };
 }
 
-function getTeamSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}, wipInspectorSettings = {}} = {}}) {
+function getTeamSettings({settings: {flowMetricsSettings = {}, analysisPeriods = {}, wipInspectorSettings = {}, releasesSettings = {}} = {}}) {
 
   const {
     leadTimeTarget,
@@ -51,6 +52,8 @@ function getTeamSettings({settings: {flowMetricsSettings = {}, analysisPeriods =
     includeSubTasks: includeSubTasksWipInspector
   } = wipInspectorSettings;
 
+  const {enableReleases} = releasesSettings;
+
   const defaults = TEAM_DEFAULT_SETTINGS();
   return {
     leadTimeTarget: leadTimeTarget || defaults.LEAD_TIME_TARGET_DEFAULT,
@@ -65,7 +68,8 @@ function getTeamSettings({settings: {flowMetricsSettings = {}, analysisPeriods =
     trendsAnalysisPeriod: trendsAnalysisPeriod || defaults.TRENDS_ANALYSIS_PERIOD,
     includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
     includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector,
-    latencyTarget: cycleTimeTarget* 0.1 || defaults.LATENCY_TARGET
+    latencyTarget: cycleTimeTarget* 0.1 || defaults.LATENCY_TARGET,
+    enableReleases: enableReleases || defaults.ENABLE_RELEASES
   };
 }
 
@@ -105,6 +109,9 @@ class WithTeam extends React.Component {
                 }
                 wipInspectorSettings {
                   includeSubTasks
+                }
+                releasesSettings {
+                  enableReleases
                 }
               }
             }

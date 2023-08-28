@@ -1,12 +1,13 @@
 import {useQuery, gql, useMutation} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export function useQueryProjectEpicEffort({instanceKey, tags, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
+export function useQueryProjectEpicEffort({instanceKey, tags, release, activeOnly, specsOnly, days, includeSubTasks, referenceString}) {
   return useQuery(
     gql`
         query getProjectImplementationCost(
             $projectKey: String!, 
             $tags: [String],
+            $release: String,
             $activeOnly: Boolean,
             $specsOnly: Boolean,
             $days: Int,
@@ -18,6 +19,7 @@ export function useQueryProjectEpicEffort({instanceKey, tags, activeOnly, specsO
                     interfaces: [ImplementationCost, EpicNodeRef],
                     activeOnly: $activeOnly, 
                     tags: $tags,
+                    release: $release,
                     specsOnly: $specsOnly,
                     activeWithinDays: $days,
                     includeSubTasks: $includeSubTasks
@@ -43,6 +45,7 @@ export function useQueryProjectEpicEffort({instanceKey, tags, activeOnly, specsO
       variables: {
         projectKey: instanceKey,
         tags,
+        release,
         activeOnly: activeOnly,
         specsOnly: specsOnly,
         days: days,

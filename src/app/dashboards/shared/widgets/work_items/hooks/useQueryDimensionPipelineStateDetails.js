@@ -5,6 +5,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
   query ${dimension}PipelineStateDetails(
     $key: String!
     $tags: [String]
+    $release: String
     $specsOnly: Boolean
     $referenceString: String
     $closedWithinDays: Int
@@ -19,6 +20,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
       workItems(
         activeOnly: $activeOnly
         tags: $tags
+        release: $release
         closedWithinDays: $closedWithinDays
         interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs, EpicNodeRef]
         specsOnly: $specsOnly
@@ -82,6 +84,7 @@ export function useQueryDimensionPipelineStateDetails({
   dimension,
   instanceKey,
   tags,
+  release,
   specsOnly,
   referenceString,
   closedWithinDays,
@@ -101,6 +104,7 @@ export function useQueryDimensionPipelineStateDetails({
       variables: {
         key: instanceKey,
         tags: tags,
+        release: release,
         specsOnly: specsOnly,
         referenceString: referenceString,
         closedWithinDays: closedWithinDays,

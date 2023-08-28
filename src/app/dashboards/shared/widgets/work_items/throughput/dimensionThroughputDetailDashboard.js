@@ -31,7 +31,9 @@ export function DimensionThroughputDetailDashboard({
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className="tw-bg-ghostwhite tw-grid tw-grid-cols-6 tw-grid-rows-[7%_auto_auto_auto_5%_50%] tw-gap-2 tw-p-2" gridLayout={true}>
@@ -55,6 +57,7 @@ export function DimensionThroughputDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               view={view}
               display={"throughputDetail"}
               displayProps={{
@@ -87,6 +90,7 @@ export function DimensionThroughputDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               view={view}
               display={"cadenceDetail"}
               twoRows={true}
@@ -116,6 +120,7 @@ export function DimensionThroughputDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               days={daysRange}
               measurementWindow={1}
               samplingFrequency={1}
@@ -142,6 +147,7 @@ export function DimensionThroughputDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               view={view}
               display="withCardDetails"
               showAllTrends={true}

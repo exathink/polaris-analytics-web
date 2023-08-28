@@ -11,6 +11,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
   {
     dimension,
     tags,
+    release,
     instanceKey,
     title,
     view,
@@ -39,6 +40,7 @@ export const DimensionResponseTimeTrendsWidget = React.memo((
     {
       dimension,
       tags,
+      release,
       instanceKey,
       days,
       measurementWindow,
