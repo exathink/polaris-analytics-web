@@ -24,7 +24,7 @@ export function NewFlowDashboard({
 
   const {state: {workItemSelectors=[]}} = useQueryParamState();
 
-  const [exclude, setExclude] = React.useState(false);
+  const [exclude, setExclude] = React.useState(true);
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {

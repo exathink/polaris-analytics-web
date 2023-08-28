@@ -42,7 +42,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
-  const [exclude, setExclude] = React.useState(false);
+  const [exclude, setExclude] = React.useState(true);
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
