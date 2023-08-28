@@ -97,9 +97,12 @@ export function NewFlowDashboard({
             }}
             name="state-exclude"
             checked={exclude}
-            className="!tw-mb-1 tw-self-end"
+            style={{alignItems: "center"}}
           >
-            Exclude Abandoned
+            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4 tw-mt-2">
+                <div>Exclude</div>
+                <div>Abandoned</div>
+              </div>
           </Checkbox>
         </div>
 
