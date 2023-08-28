@@ -3,19 +3,22 @@ import { useIntl } from "react-intl";
 import { average, i18nNumber } from "../../../../../../helpers/utility";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
 import {getWipLimit, getWorkItemDurations} from "../../clientSideFlowMetrics";
+import { Quadrants, getQuadrant } from "./cycleTimeLatencyUtils";
 
-export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, cycleTimeTarget, specsOnly, days}) {
+export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-  const workItemAggregateDurations = getWorkItemDurations(workItems);
+  const workItemAggregateDurations = excludeAbandoned
+    ? getWorkItemDurations(workItems).filter((w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned)
+    : getWorkItemDurations(workItems);
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 
   const pipelineCycleMetrics = {
-    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItems.length,
+    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItemAggregateDurations.length,
     avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
   };
 

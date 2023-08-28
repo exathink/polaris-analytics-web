@@ -10,6 +10,7 @@ import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSel
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
+import {Checkbox} from "antd";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -22,6 +23,8 @@ export function NewFlowDashboard({
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
   const {state: {workItemSelectors=[]}} = useQueryParamState();
+
+  const [exclude, setExclude] = React.useState(false);
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {
@@ -65,13 +68,8 @@ export function NewFlowDashboard({
           {cycleTimeTarget} Days
         </div>
       </div>
-      <div className="tw-text-base tw-col-start-7 tw-row-start-1 tw-col-span-2">
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
-        </Flex>
-      </div>
-      <div className="tw-col-span-2 tw-col-start-6 tw-row-start-1">
-        {specsOnly && (
+      <div className="tw-text-base tw-col-start-6 tw-row-start-1 tw-col-span-3 tw-flex tw-items-center tw-justify-end tw-gap-4">
+      {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
               label={"Show"}
@@ -91,6 +89,23 @@ export function NewFlowDashboard({
             />
           </Flex>
         )}
+
+      <div className="tw-self-center tw-text-gray-300">
+          <Checkbox
+            onChange={(e) => {
+              setExclude(e.target.checked);
+            }}
+            name="state-exclude"
+            checked={exclude}
+            className="!tw-mb-1 tw-self-end"
+          >
+            Exclude Abandoned
+          </Checkbox>
+        </div>
+
+        <Flex justify={"center"}>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
+        </Flex>
       </div>
       <DashboardRow>
         <DashboardWidget
@@ -107,10 +122,12 @@ export function NewFlowDashboard({
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
                 leadTimeTarget={leadTimeTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
+                excludeAbandoned={exclude}
                 includeSubTasks={includeSubTasksWipInspector}
                 displayBag={{
                   metric: "volume",
@@ -150,6 +167,7 @@ export function NewFlowDashboard({
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              excludeAbandoned={exclude}
               displayBag={{fontSize: "tw-text-xl"}}
             />
           )}
@@ -170,10 +188,12 @@ export function NewFlowDashboard({
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksWipInspector}
+                excludeAbandoned={exclude}
                 displayBag={{
                   metric: "avgAge",
                   displayType: "cardAdvanced",
