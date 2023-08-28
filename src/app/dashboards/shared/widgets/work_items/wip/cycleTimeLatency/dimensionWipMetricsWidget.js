@@ -11,11 +11,12 @@ export function DimensionWipMetricsWidget({
   tags,
   release,
   displayBag,
-
+  excludeAbandoned,
   targetPercentile,
   leadTimeTargetPercentile,
   cycleTimeTargetPercentile,
   cycleTimeTarget,
+  latencyTarget,
   leadTimeTarget,
 
   specsOnly,
@@ -72,7 +73,9 @@ export function DimensionWipMetricsWidget({
       dimension={dimension}
       instanceKey={instanceKey}
       displayBag={displayBag}
+      excludeAbandoned={excludeAbandoned}
       cycleTimeTarget={cycleTimeTarget}
+      latencyTarget={latencyTarget}
       days={flowAnalysisPeriod}
     />
   );

@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { MotionEfficiencyQuadrantSummaryCard } from "./motionEfficiencyQuadrantSummaryCard";
+import {Quadrants, getQuadrant} from "./cycleTimeLatencyUtils";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
@@ -13,6 +14,7 @@ export const DimensionQuadrantSummaryView = ({
   latencyTarget,
   displayBag,
   specsOnly,
+  excludeAbandoned,
   tooltipType,
   view,
   context,
@@ -22,8 +24,12 @@ export const DimensionQuadrantSummaryView = ({
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
 
+  const initTransformedData = excludeAbandoned
+    ? getWorkItemDurations(workItems).filter(
+        (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
+      )
+    : getWorkItemDurations(workItems);
 
-  const initTransformedData = React.useMemo(() => getWorkItemDurations(workItems), [workItems]);
   return (
     <MotionEfficiencyQuadrantSummaryCard
       workItems={initTransformedData}
