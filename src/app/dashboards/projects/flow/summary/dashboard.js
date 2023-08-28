@@ -10,6 +10,7 @@ import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSel
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
+import {Checkbox} from "antd";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -24,6 +25,8 @@ export function NewFlowDashboard({
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors??[];
   const release = state?.release?.releaseValue;
+
+  const [exclude, setExclude] = React.useState(true);
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {
@@ -67,13 +70,8 @@ export function NewFlowDashboard({
           {cycleTimeTarget} Days
         </div>
       </div>
-      <div className="tw-text-base tw-col-start-7 tw-row-start-1 tw-col-span-2">
-        <Flex w={1} justify={"center"}>
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
-        </Flex>
-      </div>
-      <div className="tw-col-span-2 tw-col-start-6 tw-row-start-1">
-        {specsOnly && (
+      <div className="tw-text-base tw-col-start-6 tw-row-start-1 tw-col-span-3 tw-flex tw-items-center tw-justify-end tw-gap-4">
+      {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
               label={"Show"}
@@ -93,6 +91,26 @@ export function NewFlowDashboard({
             />
           </Flex>
         )}
+
+        <div className="tw-text-gray-300 tw-justify-self-end">
+          <Checkbox
+            onChange={(e) => {
+              setExclude(e.target.checked);
+            }}
+            name="state-exclude"
+            checked={exclude}
+            style={{alignItems: "center"}}
+          >
+            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
+              <div>Exclude</div>
+              <div>Abandoned</div>
+            </div>
+          </Checkbox>
+        </div>
+
+        <Flex justify={"center"} className="tw-mr-2">
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
+        </Flex>
       </div>
       <DashboardRow>
         <DashboardWidget
@@ -110,10 +128,12 @@ export function NewFlowDashboard({
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
                 leadTimeTarget={leadTimeTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
+                excludeAbandoned={exclude}
                 includeSubTasks={includeSubTasksWipInspector}
                 displayBag={{
                   metric: "volume",
@@ -154,6 +174,7 @@ export function NewFlowDashboard({
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
+              excludeAbandoned={exclude}
               displayBag={{fontSize: "tw-text-xl"}}
             />
           )}
@@ -175,10 +196,12 @@ export function NewFlowDashboard({
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksWipInspector}
+                excludeAbandoned={exclude}
                 displayBag={{
                   metric: "avgAge",
                   displayType: "cardAdvanced",
@@ -210,6 +233,8 @@ export function NewFlowDashboard({
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              excludeAbandoned={exclude}
               includeSubTasks={{
                 includeSubTasksInClosedState: includeSubTasksFlowMetrics,
                 includeSubTasksInNonClosedState: includeSubTasksWipInspector,
@@ -219,7 +244,7 @@ export function NewFlowDashboard({
                 title: "Flow, All Phases",
                 subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
                 series: {dataLabels: {fontSize: "14px"}},
-                legend: {title: {fontSize: "14px"}, fontSize: "14px"}
+                legend: {title: {fontSize: "14px"}, fontSize: "14px"},
               }}
             />
           )}
@@ -254,7 +279,12 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{metric: "volumeWithThroughput", displayType: "cardAdvanced", iconsShiftLeft: false, trendValueClass: "tw-text-2xl"}}
+                displayBag={{
+                  metric: "volumeWithThroughput",
+                  displayType: "cardAdvanced",
+                  iconsShiftLeft: false,
+                  trendValueClass: "tw-text-2xl",
+                }}
               />
             );
           }}
