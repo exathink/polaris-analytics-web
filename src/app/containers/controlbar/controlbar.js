@@ -8,7 +8,8 @@ import { withNavigationContext } from "../../framework/navigation/components/wit
 import {useQueryParamState} from "../../dashboards/projects/shared/helper/hooks";
 
 export const DashboardControlBar = withNavigationContext(({fullScreen, context}) => {
-  const {state: {key, name}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const {key, name} = state?.vs ?? {};
 
   let childValueStream;
   if (key === "all") {

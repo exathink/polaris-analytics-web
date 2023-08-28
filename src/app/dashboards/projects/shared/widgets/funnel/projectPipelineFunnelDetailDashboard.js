@@ -6,12 +6,12 @@ import { DimensionValueStreamPhaseDetailWidget } from "../../../../shared/widget
 import { Box, Flex } from "reflexbox";
 import { WorkItemScopeSelector } from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import { GroupingSelector } from "../../../../shared/components/groupingSelector/groupingSelector";
+import { useQueryParamState } from "../../helper/hooks";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
 export const ProjectPipelineFunnelDetailDashboard = ({
                                                        instanceKey,
-                                                       tags,
                                                        latestWorkItemEvent,
                                                        latestCommit,
                                                        days,
@@ -27,6 +27,10 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   const [daysRange] = React.useState(days);
   const [workItemScope, setWorkItemScope] = useState("all");
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
+
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   const specsOnly = workItemScope === "specs";
 
@@ -56,7 +60,8 @@ export const ProjectPipelineFunnelDetailDashboard = ({
             <DimensionValueStreamPhaseDetailWidget
               dimension={"project"}
               instanceKey={instanceKey}
-              tags={tags}
+              tags={workItemSelectors}
+              release={release}
               context={context}
               funnelView={true}
               specsOnly={specsOnly}

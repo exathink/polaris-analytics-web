@@ -54,7 +54,9 @@ export const ResponseTimeTrendsDetailDashboard = (
     [measurementWindowRange, setMeasurementWindowRange],
     [frequencyRange, setFrequencyRange]
   ] = useTrendsControlBarState(days, measurementWindow, samplingFrequency);
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard
@@ -84,6 +86,7 @@ export const ResponseTimeTrendsDetailDashboard = (
                 dimension={dimension}
                 instanceKey={instanceKey}
                 tags={workItemSelectors}
+                release={release}
                 view={view}
                 latestWorkItemEvent={latestWorkItemEvent}
                 days={daysRange}
@@ -110,6 +113,7 @@ export const ResponseTimeTrendsDetailDashboard = (
               dimension={dimension}
               instanceKey={instanceKey}
               tags={workItemSelectors}
+              release={release}
               specsOnly={true}
               view={view}
               context={context}

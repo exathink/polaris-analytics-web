@@ -26,7 +26,9 @@ export function DimensionCycleTimeDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard
@@ -43,6 +45,7 @@ export function DimensionCycleTimeDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               view={view}
               initialSelection={""}
               twoRows={true}
@@ -72,6 +75,7 @@ export function DimensionCycleTimeDetailDashboard({
               dimension={dimension}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               specsOnly={specsOnly}
               latestWorkItemEvent={latestWorkItemEvent}
               days={flowAnalysisPeriod}

@@ -5,6 +5,7 @@ import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASett
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import {TeamDashboard} from "../../../teams/teamDashboard";
+import { ReleaseSettingsWidget } from "./measurementSettings/releaseSettingsWidget";
 
 const componentMap = {
   team: TeamDashboard,
@@ -66,14 +67,15 @@ export function MeasurementSettingsDashboard({dimension}) {
           wipAnalysisPeriod,
           flowAnalysisPeriod,
           trendsAnalysisPeriod,
+          enableReleases
         } = settingsWithDefaults;
         return (
-          <Dashboard gridLayout={true} className="tw-grid tw-grid-cols-2 tw-gap-1">
+          <Dashboard gridLayout={true} className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-gap-1">
             <DashboardRow>
               <DashboardWidget
                 w={1}
                 name="analysis-periods-widget"
-                className="tw-bg-white tw-p-4"
+                className="tw-bg-white tw-p-4 tw-row-span-2"
                 render={({view}) => {
                   return (
                     <ProjectAnalysisPeriodsWidget
@@ -91,7 +93,7 @@ export function MeasurementSettingsDashboard({dimension}) {
               <DashboardWidget
                 w={1}
                 name="measurement-settings-widget"
-                className="tw-bg-white tw-p-4"
+                className={dimension==="project" ? "tw-bg-white tw-p-4" : "tw-bg-white tw-p-4 tw-row-span-2"}
                 render={({view}) => {
                   return (
                     <MeasurementSettingsWidget
@@ -104,6 +106,21 @@ export function MeasurementSettingsDashboard({dimension}) {
                 }}
                 showDetail={false}
               />
+              {dimension==="project" && <DashboardWidget
+                w={1}
+                name="releases-settings-widget"
+                className="tw-bg-white tw-p-4 tw-col-start-2 tw-row-start-2"
+                render={({view}) => {
+                  return (
+                    <ReleaseSettingsWidget 
+                      instanceKey={key}
+                      dimension={dimension}
+                      releaseSettingFlag={enableReleases}
+                    />
+                  );
+                }}
+                showDetail={false}
+              />}
             </DashboardRow>
           </Dashboard>
         );

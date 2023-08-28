@@ -10,6 +10,7 @@ import {ProjectValueBookView} from "./projectValueBookView";
 export const ProjectValueBookWidget = ({
   instanceKey,
   tags,
+  release,
   activeOnly,
   specsOnly,
   title,
@@ -28,6 +29,7 @@ export const ProjectValueBookWidget = ({
   const {loading, error, data} = useQueryProjectEpicEffort({
     instanceKey,
     tags,
+    release,
     activeOnly,
     specsOnly,
     days: days,

@@ -10,6 +10,7 @@ import {PipelineFunnelWidgetInfoConfig} from "../../../../../components/misc/inf
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
   tags,
+  release,
   latestWorkItemEvent,
   latestCommit,
   workItemScope,
@@ -30,6 +31,7 @@ export const ProjectPipelineFunnelWidget = ({
   const {loading, error, data} = useQueryProjectPipelineSummary({
     instanceKey,
     tags,
+    release,
     closedWithinDays: days,
     specsOnly: workItemScope === "specs",
     includeSubTasks,
@@ -59,7 +61,6 @@ export const ProjectPipelineFunnelWidget = ({
   ) : (
     <ProjectPipelineFunnelDetailDashboard
       instanceKey={instanceKey}
-      tags={tags}
       context={context}
       latestWorkItemEvent={latestWorkItemEvent}
       latestCommit={latestCommit}

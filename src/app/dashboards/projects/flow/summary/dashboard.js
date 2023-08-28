@@ -21,7 +21,9 @@ export function NewFlowDashboard({
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {
@@ -103,6 +105,7 @@ export function NewFlowDashboard({
                 dimension="project"
                 instanceKey={key}
                 tags={workItemSelectors}
+                release={release}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -132,6 +135,7 @@ export function NewFlowDashboard({
               dimension={"project"}
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               display={"commonWipSummary"}
               days={flowAnalysisPeriod}
               targetPercentile={responseTimeConfidenceTarget}
@@ -166,6 +170,7 @@ export function NewFlowDashboard({
                 dimension="project"
                 instanceKey={key}
                 tags={workItemSelectors}
+                release={release}
                 targetPercentile={responseTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
@@ -192,6 +197,7 @@ export function NewFlowDashboard({
             <ProjectPipelineFunnelWidget
               instanceKey={key}
               tags={workItemSelectors}
+              release={release}
               context={context}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
@@ -231,6 +237,7 @@ export function NewFlowDashboard({
                 dimension="project"
                 instanceKey={key}
                 tags={workItemSelectors}
+                release={release}
                 // Summary Card Data
                 // Throughput for a single measurement period
                 // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
@@ -264,6 +271,7 @@ export function NewFlowDashboard({
                 dimension="project"
                 instanceKey={key}
                 tags={workItemSelectors}
+                release={release}
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
