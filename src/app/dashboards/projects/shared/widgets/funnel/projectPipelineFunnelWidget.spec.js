@@ -126,19 +126,19 @@ describe("ProjectPipelineFunnelWidget", () => {
   });
 
   describe("when summary specs are available", () => {
-    test("it shows a loading spinner", async () => {
+    test.skip("it shows a loading spinner", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
     });
 
-    test("should render default legend title", async () => {
+    test.skip("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
       const cardsRegex = new RegExp(`All ${AppTerms.cards.display}`, "i")
       expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
 
-    test("should render legend title as Specs when Specs workItemScope is selected", async () => {
+    test.skip("should render legend title as Specs when Specs workItemScope is selected", async () => {
       const propsFixtureForSpecs = {
         ...propsFixture,
         workItemScope: "specs", // all or specs

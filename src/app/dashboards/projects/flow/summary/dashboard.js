@@ -28,6 +28,8 @@ export function NewFlowDashboard({
 
   const [exclude, setExclude] = React.useState(true);
 
+  const [exclude, setExclude] = React.useState(true);
+
   React.useEffect(() => {
     if (workItemScope==="all" && volumeOrEffort !== "volume") {
       setVolumeOrEffort("volume")
