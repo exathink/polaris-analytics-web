@@ -90,7 +90,7 @@ export function NewFlowDashboard({
           </Flex>
         )}
 
-      <div className="tw-self-center tw-text-gray-300">
+        <div className="tw-text-gray-300 tw-justify-self-end">
           <Checkbox
             onChange={(e) => {
               setExclude(e.target.checked);
@@ -99,15 +99,15 @@ export function NewFlowDashboard({
             checked={exclude}
             style={{alignItems: "center"}}
           >
-            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4 tw-mt-2">
-                <div>Exclude</div>
-                <div>Abandoned</div>
-              </div>
+            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
+              <div>Exclude</div>
+              <div>Abandoned</div>
+            </div>
           </Checkbox>
         </div>
 
         <Flex justify={"center"} className="tw-mr-2">
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope}/>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
         </Flex>
       </div>
       <DashboardRow>
@@ -238,7 +238,7 @@ export function NewFlowDashboard({
                 title: "Flow, All Phases",
                 subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
                 series: {dataLabels: {fontSize: "14px"}},
-                legend: {title: {fontSize: "14px"}, fontSize: "14px"}
+                legend: {title: {fontSize: "14px"}, fontSize: "14px"},
               }}
             />
           )}
@@ -272,7 +272,12 @@ export function NewFlowDashboard({
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
-                displayBag={{metric: "volumeWithThroughput", displayType: "cardAdvanced", iconsShiftLeft: false, trendValueClass: "tw-text-2xl"}}
+                displayBag={{
+                  metric: "volumeWithThroughput",
+                  displayType: "cardAdvanced",
+                  iconsShiftLeft: false,
+                  trendValueClass: "tw-text-2xl",
+                }}
               />
             );
           }}
