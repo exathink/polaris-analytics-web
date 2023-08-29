@@ -5,6 +5,7 @@ import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts
 import { AppTerms } from "../../../../shared/config";
 import {PROJECT_PIPELINE_SUMMARY_QUERY} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
+import { dimensionPipelineStateDetailsQuery } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 
 const setWorkItemScopeMock = jest.fn((scope) => ({}));
 const propsFixture = {
@@ -50,6 +51,130 @@ const mocksFixture = [
             complete: null,
             closed: 31.1666666666667,
             unmapped: null,
+          },
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: dimensionPipelineStateDetailsQuery("project"),
+      variables: {
+        key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+        specsOnly: false,
+        activeOnly: true,
+        includeSubTasks: propsFixture.includeSubTasks,
+        referenceString: "160755304200016075530612440"
+      },
+    },
+    result: {
+      data: {
+        project: {
+          id: "UHJvamVjdDo0MWFmOGI5Mi01MWY2LTRlODgtOTc2NS1jYzNkYmVhMzVlMWE=",
+          workItems: {
+            edges: [
+              {
+                node: {
+                  name: "Create top level filter by releases as a dropdown",
+                  key: "94bb3105-f39d-42c8-9470-25b701f6848d",
+                  displayId: "PP-559",
+                  workItemType: "story",
+                  epicName: "Release Support for Value Streams",
+                  state: "CODE REVIEW",
+                  stateType: "wip",
+                  workItemsSourceKey: "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+                  workItemsSourceName: "Polaris Platform",
+                  workTrackingIntegrationType: "jira",
+                  url: "https://exathinkdev.atlassian.net/rest/api/latest/issue/10702",
+                  tags: "",
+                  storyPoints: null,
+                  releases: [],
+                  priority: "Medium",
+                  teamNodeRefs: [
+                    {
+                      teamName: "App Team",
+                      teamKey: "f260ee33-c46a-4eb2-bb45-13b8c75e3c45",
+                    },
+                  ],
+                  workItemStateDetails: {
+                    currentStateTransition: {
+                      eventDate: "2023-08-22T09:32:22.270000",
+                    },
+                    currentDeliveryCycleDurations: [
+                      {
+                        state: "CODE REVIEW",
+                        stateType: "wip",
+                        flowType: "waiting",
+                        daysInState: null,
+                      },
+                      {
+                        state: "created",
+                        stateType: "backlog",
+                        flowType: null,
+                        daysInState: 0.7882175925925926,
+                      },
+                    ],
+                    earliestCommit: "2023-08-21T16:21:06",
+                    latestCommit: "2023-08-22T08:04:27",
+                    commitCount: 10,
+                    effort: 2,
+                    endDate: null,
+                    leadTime: null,
+                    cycleTime: null,
+                    duration: 0.6551041666666667,
+                    latency: null,
+                  },
+                },
+              },
+              {
+                node: {
+                  name: "Expose sprints as part of the UI",
+                  key: "e33befea-463a-4f47-9175-f3e8924726cb",
+                  displayId: "PP-560",
+                  workItemType: "story",
+                  epicName: null,
+                  state: "In Progress",
+                  stateType: "wip",
+                  workItemsSourceKey: "4ff556a6-b566-4775-8cc3-e77d406e0c16",
+                  workItemsSourceName: "Polaris Platform",
+                  workTrackingIntegrationType: "jira",
+                  url: "https://exathinkdev.atlassian.net/rest/api/latest/issue/10703",
+                  tags: "",
+                  storyPoints: null,
+                  releases: [],
+                  priority: "Medium",
+                  teamNodeRefs: [],
+                  workItemStateDetails: {
+                    currentStateTransition: {
+                      eventDate: "2023-08-22T00:03:57.138000",
+                    },
+                    currentDeliveryCycleDurations: [
+                      {
+                        state: "created",
+                        stateType: "backlog",
+                        flowType: null,
+                        daysInState: 0.0003125,
+                      },
+                      {
+                        state: "In Progress",
+                        stateType: "wip",
+                        flowType: "active",
+                        daysInState: null,
+                      },
+                    ],
+                    earliestCommit: null,
+                    latestCommit: null,
+                    commitCount: null,
+                    effort: null,
+                    endDate: null,
+                    leadTime: null,
+                    cycleTime: null,
+                    duration: null,
+                    latency: null,
+                  },
+                },
+              },
+            ],
           },
         },
       },
@@ -126,24 +251,25 @@ describe("ProjectPipelineFunnelWidget", () => {
   });
 
   describe("when summary specs are available", () => {
-    test.skip("it shows a loading spinner", async () => {
+    test("it shows a loading spinner", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
     });
 
-    test.skip("should render default legend title", async () => {
+    test("should render default legend title", async () => {
       renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixture} />, mocksFixture);
       await screen.findByTestId("loading-spinner");
       const cardsRegex = new RegExp(`All ${AppTerms.cards.display}`, "i")
       expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
 
-    test.skip("should render legend title as Specs when Specs workItemScope is selected", async () => {
+    test("should render legend title as Specs when Specs workItemScope is selected", async () => {
       const propsFixtureForSpecs = {
         ...propsFixture,
         workItemScope: "specs", // all or specs
       };
       const mocksFixtureObj = mocksFixture[0];
+      const mocksFixtureObjWip = mocksFixture[1];
       const mocksFixtureForSpecs = [
         {
           ...mocksFixtureObj,
@@ -153,8 +279,17 @@ describe("ProjectPipelineFunnelWidget", () => {
           },
         },
       ];
+      const mocksFixtureForSpecsWip = [
+        {
+          ...mocksFixtureObjWip,
+          request: {
+            ...mocksFixtureObjWip.request,
+            variables: {...mocksFixtureObjWip.request.variables, specsOnly: true},
+          },
+        },
+      ];
 
-      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />, mocksFixtureForSpecs, {
+      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />, [mocksFixtureForSpecs[0], mocksFixtureForSpecsWip[0]], {
         chartTestId: "pipeline-funnel-chart",
       });
 
