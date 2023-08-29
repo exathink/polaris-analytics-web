@@ -62,7 +62,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [eventSource, setEventSource] = React.useState("init");
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
 
   // chart related state
   const [selectedQuadrant] = getFilterValue(appliedFilters, FILTERS.QUADRANT_PANEL);
