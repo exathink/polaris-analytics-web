@@ -59,7 +59,7 @@ export const ProjectPipelineFunnelWidget = ({
     return null;
   }
   if (error1) {
-    logGraphQlError("useQueryDimensionPipelineStateDetails", error);
+    logGraphQlError("useQueryDimensionPipelineStateDetails", error1);
     return null;
   }
 
