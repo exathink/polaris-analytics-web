@@ -21,7 +21,7 @@ import classNames from "classnames";
 import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 import { Checkbox } from "antd";
-import { FILTERS } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { FILTERS, getFilterValue } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -42,7 +42,6 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
-  const [exclude, setExclude] = React.useState(true);
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -59,7 +58,8 @@ function WipDashboard({
   const release = state?.release?.releaseValue;
 
   // maintain all filters state over here
-  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [false]}]]));
+  const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
+  const [excludeAbandoned] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
 
   const {
     cycleTimeTarget,
@@ -95,7 +95,7 @@ function WipDashboard({
         <div className="tw-self-center tw-text-gray-300">
           <Checkbox
             onChange={(e) => {
-              setExclude(e.target.checked);
+              // setExclude(e.target.checked);
               if (e.target.checked) {
                 setAppliedFilters((prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]})));
               } else {
@@ -106,7 +106,7 @@ function WipDashboard({
               }
             }}
             name="state-exclude"
-            checked={exclude}
+            checked={excludeAbandoned}
             className="!tw-mb-1 tw-self-end"
           >
             Exclude Abandoned
@@ -151,7 +151,7 @@ function WipDashboard({
               release={release}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
-              displayBag={{excludeAbandoned: exclude}}
+              displayBag={{excludeAbandoned: excludeAbandoned}}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
@@ -275,7 +275,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude,
+                excludeAbandoned: excludeAbandoned,
               }}
             />
           )}
@@ -313,7 +313,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude,
+                excludeAbandoned: excludeAbandoned,
               }}
             />
           )}
