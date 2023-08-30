@@ -28,7 +28,9 @@ import {ValueStreamEditorTable} from "../shared/components/valueStreamEditorTabl
 import {useCreateValueStream} from "../shared/hooks/useCreateValueStream";
 import {logGraphQlError} from "../../../components/graphql/utils";
 import {Alert, Col, Drawer, Form, Input, Row} from "antd";
-import { WorkItemStateTypeDisplayName, WorkItemStateTypes } from "../../shared/config";
+import {WorkItemStateTypeDisplayName, WorkItemStateTypes} from "../../shared/config";
+import {useDimensionUpdateSettings} from "../../shared/hooks/useQueryProjectUpdateSettings";
+import {capitalizeFirstLetter} from "../../../helpers/utility";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -115,15 +117,89 @@ export function ValueStreamMappingInitialDashboard() {
 
 export function ValueStreamMappingDashboard() {
   const [visible, setVisible] = React.useState(false);
+  const [status, updateStatus] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {mode: "", message: ""}
+  );
 
-  const drawerElement = (
+  const dimension = "project";
+  // mutation to update project analysis periods
+  const [mutate, {loading: mutationLoading, client}] = useDimensionUpdateSettings({
+    dimension: dimension,
+    onCompleted: ({[`update${capitalizeFirstLetter(dimension)}Settings`]: {success, errorMessage}}) => {
+      if (success) {
+        updateStatus({mode: "success", message: "Updated Custom Phase Mapping Successfully."});
+        client.resetStore();
+      } else {
+        logGraphQlError("ValueStreamMappingDashboard.useProjectUpdateSettings", errorMessage);
+        updateStatus({mode: "error", message: errorMessage});
+      }
+
+      setTimeout(() => {
+        setVisible(false);
+      }, 1000);
+    },
+    onError: (error) => {
+      logGraphQlError("ValueStreamMappingDashboard.useProjectUpdateSettings", error);
+      updateStatus({mode: "error", message: error});
+
+      setTimeout(() => {
+        setVisible(false);
+      }, 1000);
+    },
+  });
+
+  function handleFinish(values, instanceKey) {
+    mutate({
+      variables: {
+        instanceKey: instanceKey,
+        customPhaseMapping: values,
+      },
+    });
+  }
+
+  const drawerElement = ({initialValues, instanceKey}) => (
     <Drawer placement="left" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
+      <div>
+        {mutationLoading && (
+          <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
+            Processing...
+          </Button>
+        )}
+        {status.mode === "success" && (
+          <Alert
+            message={status.message}
+            type="success"
+            showIcon
+            closable
+            className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+          />
+        )}
+        {status.mode === "error" && (
+          <Alert
+            message={status.message}
+            type="error"
+            showIcon
+            closable
+            className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+          />
+        )}
+      </div>
       <div className="tw-flex tw-flex-col tw-gap-8">
         <div className="tw-flex tw-flex-col tw-justify-center tw-border-0 tw-border-b tw-border-solid tw-border-b-gray-200 tw-pb-4">
           <div className="tw-text-xl">Customize Phase Names</div>
           <div className="tw-text-xs">Applies to all Workstreams in this Value Stream</div>
         </div>
-        <Form key={visible} layout="vertical" requiredMark onFinish={(values) => {}} initialValues={{}}>
+        <Form
+          key={visible}
+          layout="vertical"
+          requiredMark
+          onFinish={(values) => handleFinish(values, instanceKey)}
+          initialValues={initialValues}
+        >
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
@@ -200,12 +276,13 @@ export function ValueStreamMappingDashboard() {
 
   return (
     <ProjectDashboard
-      render={({project: {key, settingsWithDefaults}, context}) => {
+      render={({project: {key, settingsWithDefaults, settings}, context}) => {
+        const customPhaseMapping = settings?.customPhaseMapping ?? {};
         return (
           <Dashboard
             dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
             gridLayout={true}
-            className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2 tw-relative"
+            className="tw-relative tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2"
           >
             <DashboardRow
               title={" "}
@@ -255,7 +332,7 @@ export function ValueStreamMappingDashboard() {
                 }}
               />
             </DashboardRow>
-            {drawerElement}
+            {drawerElement({initialValues: customPhaseMapping, instanceKey: key})}
           </Dashboard>
         );
       }}
@@ -321,12 +398,18 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
   return (
     <div className="">
       {mutationLoading && (
-          <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
-            Processing...
-          </Button>
-        )}
+        <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
+          Processing...
+        </Button>
+      )}
       {status.mode === "success" && (
-        <Alert message={status.message} type="success" showIcon closable className="tw-ml-auto tw-mr-[90px] tw-w-[300px]" />
+        <Alert
+          message={status.message}
+          type="success"
+          showIcon
+          closable
+          className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
+        />
       )}
       {status.mode === "error" && (
         <Alert
@@ -430,7 +513,7 @@ export default withViewerContext(({viewerContext}) => {
                     setConfigTab={setConfigTab}
                     settingsName={"General Settings"}
                   />
-                )
+                ),
               ]}
             >
               {componentsMap[configTab] ?? null}
