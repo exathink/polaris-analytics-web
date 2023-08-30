@@ -118,73 +118,79 @@ export function ValueStreamMappingDashboard() {
 
   const drawerElement = (
     <Drawer placement="left" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
-      <Form key={visible} layout="vertical" requiredMark onFinish={(values) => {}} initialValues={{}}>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item
-              label={WorkItemStateTypeDisplayName.backlog}
-              name={WorkItemStateTypes.backlog}
-              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.backlog} is required`}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label={WorkItemStateTypeDisplayName.open}
-              name={WorkItemStateTypes.open}
-              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.open} is required`}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label={WorkItemStateTypeDisplayName.wip}
-              name={WorkItemStateTypes.make}
-              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.wip} is required`}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label={WorkItemStateTypeDisplayName.complete}
-              name={WorkItemStateTypes.deliver}
-              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.complete} is required`}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label={WorkItemStateTypeDisplayName.closed}
-              name={WorkItemStateTypes.closed}
-              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.closed} is required`}]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <div
-          className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
-          style={{borderTop: "1px solid #e9e9e9"}}
-        >
-          <Button
-            onClick={() => {
-              setVisible(false);
-            }}
-            style={{marginRight: 8}}
-          >
-            Cancel
-          </Button>
-
-          <Button htmlType="submit" type="primary">
-            Save
-          </Button>
+      <div className="tw-flex tw-flex-col tw-gap-8">
+        <div className="tw-flex tw-flex-col tw-justify-center tw-border-0 tw-border-b tw-border-solid tw-border-b-gray-200 tw-pb-4">
+          <div className="tw-text-xl">Customize Phase Names</div>
+          <div className="tw-text-xs">Applies to all Workstreams in this Value Stream</div>
         </div>
-      </Form>
+        <Form key={visible} layout="vertical" requiredMark onFinish={(values) => {}} initialValues={{}}>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                label={WorkItemStateTypeDisplayName.backlog}
+                name={WorkItemStateTypes.backlog}
+                rules={[{required: true, message: `${WorkItemStateTypeDisplayName.backlog} is required`}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={WorkItemStateTypeDisplayName.open}
+                name={WorkItemStateTypes.open}
+                rules={[{required: true, message: `${WorkItemStateTypeDisplayName.open} is required`}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={WorkItemStateTypeDisplayName.wip}
+                name={WorkItemStateTypes.make}
+                rules={[{required: true, message: `${WorkItemStateTypeDisplayName.wip} is required`}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={WorkItemStateTypeDisplayName.complete}
+                name={WorkItemStateTypes.deliver}
+                rules={[{required: true, message: `${WorkItemStateTypeDisplayName.complete} is required`}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={WorkItemStateTypeDisplayName.closed}
+                name={WorkItemStateTypes.closed}
+                rules={[{required: true, message: `${WorkItemStateTypeDisplayName.closed} is required`}]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <div
+            className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+            style={{borderTop: "1px solid #e9e9e9"}}
+          >
+            <Button
+              onClick={() => {
+                setVisible(false);
+              }}
+              style={{marginRight: 8}}
+            >
+              Cancel
+            </Button>
+
+            <Button htmlType="submit" type="primary">
+              Ok
+            </Button>
+          </div>
+        </Form>
+      </div>
     </Drawer>
   );
 
