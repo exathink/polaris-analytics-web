@@ -142,6 +142,13 @@ class WithProject extends React.Component {
                 releasesSettings {
                   enableReleases
                 }
+                customPhaseMapping {
+                 backlog
+                 open
+                 wip
+                 complete
+                 closed
+                }
               }
             }
           }
