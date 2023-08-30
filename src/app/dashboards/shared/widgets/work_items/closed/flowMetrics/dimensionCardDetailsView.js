@@ -36,7 +36,8 @@ const getData = (data, dimension) => {
       "workItemsSourceName",
       "storyPoints",
       "releases",
-      "priority"
+      "priority",
+      "sprints"
     )
   );
 };

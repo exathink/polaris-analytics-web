@@ -255,10 +255,23 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     [hasPriority]
   );
 
+  const hasSprints = hidden_cols.includes("sprints");
+  const col12 = React.useMemo(
+    () => ({
+      field: "sprints",
+      headerName: "Sprints",
+      cellRenderer: React.memo(ArrayCol),
+      filter: "agSetColumnFilter",
+      menuTabs: MenuTabs,
+      hide: !hasSprints,
+    }),
+    [hasSprints]
+  );
+
 
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
-  return [col1, col2, col3, col4, col5, col9, col10, col11, ...optionalCustomCols];
+  return [col1, col2, col3, col4, col5, col9, col10, col11, col12, ...optionalCustomCols];
 }
 
 export function getWorkItemNameCol() {
