@@ -126,7 +126,7 @@ export function ValueStreamMappingDashboard() {
               name={WorkItemStateTypes.backlog}
               rules={[{required: true, message: `${WorkItemStateTypeDisplayName.backlog} is required`}]}
             >
-              <Input placeholder={WorkItemStateTypeDisplayName.backlog} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -135,7 +135,7 @@ export function ValueStreamMappingDashboard() {
               name={WorkItemStateTypes.open}
               rules={[{required: true, message: `${WorkItemStateTypeDisplayName.open} is required`}]}
             >
-              <Input placeholder={WorkItemStateTypeDisplayName.open} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -144,7 +144,7 @@ export function ValueStreamMappingDashboard() {
               name={WorkItemStateTypes.make}
               rules={[{required: true, message: `${WorkItemStateTypeDisplayName.wip} is required`}]}
             >
-              <Input placeholder={WorkItemStateTypeDisplayName.wip} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -153,7 +153,7 @@ export function ValueStreamMappingDashboard() {
               name={WorkItemStateTypes.deliver}
               rules={[{required: true, message: `${WorkItemStateTypeDisplayName.complete} is required`}]}
             >
-              <Input placeholder={WorkItemStateTypeDisplayName.complete} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -162,7 +162,7 @@ export function ValueStreamMappingDashboard() {
               name={WorkItemStateTypes.closed}
               rules={[{required: true, message: `${WorkItemStateTypeDisplayName.closed} is required`}]}
             >
-              <Input placeholder={WorkItemStateTypeDisplayName.closed} />
+              <Input />
             </Form.Item>
           </Col>
         </Row>
@@ -171,7 +171,12 @@ export function ValueStreamMappingDashboard() {
           className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
           style={{borderTop: "1px solid #e9e9e9"}}
         >
-          <Button onClick={() => {setVisible(false)}} style={{marginRight: 8}}>
+          <Button
+            onClick={() => {
+              setVisible(false);
+            }}
+            style={{marginRight: 8}}
+          >
             Cancel
           </Button>
 
