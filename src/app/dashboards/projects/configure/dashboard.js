@@ -27,7 +27,8 @@ import {ValueStreamForm} from "../shared/components/projectValueStreamUtils";
 import {ValueStreamEditorTable} from "../shared/components/valueStreamEditorTable";
 import {useCreateValueStream} from "../shared/hooks/useCreateValueStream";
 import {logGraphQlError} from "../../../components/graphql/utils";
-import {Alert} from "antd";
+import {Alert, Col, Drawer, Form, Input, Row} from "antd";
+import { WorkItemStateTypeDisplayName, WorkItemStateTypes } from "../../shared/config";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {
@@ -113,6 +114,79 @@ export function ValueStreamMappingInitialDashboard() {
 }
 
 export function ValueStreamMappingDashboard() {
+  const [visible, setVisible] = React.useState(false);
+
+  const drawerElement = (
+    <Drawer placement="left" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
+      <Form key={visible} layout="vertical" requiredMark onFinish={(values) => {}} initialValues={{}}>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              label={WorkItemStateTypeDisplayName.backlog}
+              name={WorkItemStateTypes.backlog}
+              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.backlog} is required`}]}
+            >
+              <Input placeholder={WorkItemStateTypeDisplayName.backlog} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={WorkItemStateTypeDisplayName.open}
+              name={WorkItemStateTypes.open}
+              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.open} is required`}]}
+            >
+              <Input placeholder={WorkItemStateTypeDisplayName.open} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={WorkItemStateTypeDisplayName.wip}
+              name={WorkItemStateTypes.make}
+              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.wip} is required`}]}
+            >
+              <Input placeholder={WorkItemStateTypeDisplayName.wip} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={WorkItemStateTypeDisplayName.complete}
+              name={WorkItemStateTypes.deliver}
+              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.complete} is required`}]}
+            >
+              <Input placeholder={WorkItemStateTypeDisplayName.complete} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={WorkItemStateTypeDisplayName.closed}
+              name={WorkItemStateTypes.closed}
+              rules={[{required: true, message: `${WorkItemStateTypeDisplayName.closed} is required`}]}
+            >
+              <Input placeholder={WorkItemStateTypeDisplayName.closed} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <div
+          className="tw-absolute tw-left-0 tw-bottom-0 tw-w-full tw-bg-white tw-py-4 tw-px-4 tw-text-right"
+          style={{borderTop: "1px solid #e9e9e9"}}
+        >
+          <Button onClick={() => {setVisible(false)}} style={{marginRight: 8}}>
+            Cancel
+          </Button>
+
+          <Button htmlType="submit" type="primary">
+            Save
+          </Button>
+        </div>
+      </Form>
+    </Drawer>
+  );
+
+  function handleClick() {
+    setVisible(true);
+  }
+
   return (
     <ProjectDashboard
       render={({project: {key, settingsWithDefaults}, context}) => {
@@ -126,7 +200,7 @@ export function ValueStreamMappingDashboard() {
               title={" "}
               controls={[
                 () => (
-                  <div className="tw-absolute tw-top-4 tw-right-12 tw-z-20">
+                  <div className="tw-absolute tw-top-4 tw-right-12 tw-z-20" onClick={handleClick}>
                     <Button type="primary">Customize Phase Names</Button>
                   </div>
                 ),
@@ -170,6 +244,7 @@ export function ValueStreamMappingDashboard() {
                 }}
               />
             </DashboardRow>
+            {drawerElement}
           </Dashboard>
         );
       }}
