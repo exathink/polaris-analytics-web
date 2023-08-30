@@ -415,11 +415,13 @@ export function ArrayCol({value}) {
   const classes = "tw-flex tw-flex-col tw-items-start";
 
   return (
-    <div className={classes}>
-      {value.map((x) => (
-        <span className="tw-textXs">{x}</span>
-      ))}
-    </div>
+    value && (
+      <div className={classes}>
+        {value.map((x) => (
+          <span className="tw-textXs">{x}</span>
+        ))}
+      </div>
+    )
   );
 }
 
