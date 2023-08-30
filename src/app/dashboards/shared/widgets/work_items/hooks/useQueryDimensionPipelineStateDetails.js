@@ -49,6 +49,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
             storyPoints
             releases
             priority
+            sprints
             teamNodeRefs {
               teamName
               teamKey
