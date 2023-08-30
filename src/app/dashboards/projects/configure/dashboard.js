@@ -120,9 +120,18 @@ export function ValueStreamMappingDashboard() {
           <Dashboard
             dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
             gridLayout={true}
-            className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2"
+            className="tw-grid tw-grid-cols-[40%_60%] tw-grid-rows-6 tw-gap-2 tw-relative"
           >
-            <DashboardRow title={" "}>
+            <DashboardRow
+              title={" "}
+              controls={[
+                () => (
+                  <div className="tw-absolute tw-top-4 tw-right-12 tw-z-20">
+                    <Button type="primary">Customize Phase Names</Button>
+                  </div>
+                ),
+              ]}
+            >
               <DashboardWidget
                 className="tw-row-span-4 tw-row-start-2"
                 name="project-pipeline-detailed"
@@ -335,7 +344,7 @@ export default withViewerContext(({viewerContext}) => {
                     setConfigTab={setConfigTab}
                     settingsName={"General Settings"}
                   />
-                ),
+                )
               ]}
             >
               {componentsMap[configTab] ?? null}
