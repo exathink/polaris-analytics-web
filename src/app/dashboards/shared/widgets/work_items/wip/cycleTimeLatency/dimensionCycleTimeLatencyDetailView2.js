@@ -3,7 +3,7 @@ import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemChart
 import {getWorkItemDurations} from "../../clientSideFlowMetrics";
 import styles from "./cycleTimeLatency.module.css";
 import {CycleTimeLatencyTable} from "./cycleTimeLatencyTable";
-import {Button, Checkbox} from "antd";
+import {Checkbox} from "antd";
 import {WorkItemScopeSelector} from "../../../../components/workItemScopeSelector/workItemScopeSelector";
 import {
   AgeFilterWrapper,
@@ -31,10 +31,10 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
-import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
-import { DELIVERY_PHASES, ENGINEERING_PHASES } from "../../../../config";
+import {useCustomPhaseMapping, useLocalStorage} from "../../../../../../helpers/hooksUtil";
+import {DELIVERY_PHASES, ENGINEERING_PHASES} from "../../../../config";
 import {WIP_CHART_TYPE} from "../../../../../../helpers/localStorageUtils";
-import { ResetAllFilterIcon } from "../../../../../../components/misc/customIcons";
+import {ResetAllFilterIcon} from "../../../../../../components/misc/customIcons";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -54,6 +54,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
     data,
     variables: {specsOnly},
   } = useWidget();
+
+  const customPhaseMapping = useCustomPhaseMapping();
 
   const gridRef = React.useRef(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
@@ -186,7 +188,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let codingHistogramElement = (
     <WorkItemsDetailHistogramChart
       chartConfig={{
-        title: `Age Analysis: Coding`,
+        title: `Age Analysis: ${customPhaseMapping.wip}`,
         align: {align: "left"},
         subtitle: getSubTitleForHistogram({workItems: engineeringWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
@@ -216,7 +218,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let deliveryHistogramElement = (
     <WorkItemsDetailHistogramChart
       chartConfig={{
-        title: `Age Analysis: Shipping`,
+        title: `Age Analysis: ${customPhaseMapping.complete}`,
         align: {align: "left"},
         subtitle: getSubTitleForHistogram({workItems: deliveryWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
@@ -246,7 +248,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let codingChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
-      stageName={"Coding"}
+      stageName={customPhaseMapping.wip}
       specsOnly={specsOnly}
       workItems={chartCategory === undefined || chartCategory === "engineering" ? engineeringWorkItems : []}
       stateTypes={engineeringStateTypes}
@@ -263,7 +265,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let deliveryChartElement = (
     <WorkItemsCycleTimeVsLatencyChart
       view={view}
-      stageName={"Shipping"}
+      stageName={customPhaseMapping.complete}
       specsOnly={specsOnly}
       workItems={chartCategory === undefined || chartCategory === "delivery" ? deliveryWorkItems : []}
       stateTypes={deliveryStateTypes}
@@ -367,7 +369,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       const codingQueueSizeElement = (
         <WipQueueSizeChart
           items={chartCategory === "delivery" ? [] : latestData}
-          stageName={"Coding"}
+          stageName={customPhaseMapping.wip}
           phases={ENGINEERING_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
@@ -387,7 +389,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       const deliveryQueueSizeElement = (
         <WipQueueSizeChart
           items={chartCategory === "engineering" ? [] : latestData}
-          stageName={"Shipping"}
+          stageName={customPhaseMapping.complete}
           phases={DELIVERY_PHASES}
           specsOnly={specsOnly}
           onPointClick={(obj) => {
