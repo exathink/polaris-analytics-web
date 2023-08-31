@@ -1,5 +1,7 @@
-import {Tag} from "antd";
+import React from "react";
+import {Alert, Tag} from "antd";
 import classNames from "classnames";
+import Button from "../../components/uielements/button";
 
 export function LabelValue({label, value, uom, className, labelClassName, valueClassName}) {
   return (
@@ -21,5 +23,53 @@ export function CustomTag({children}) {
     <Tag color={TAG_COLOR} style={{marginTop: "5px"}}>
       {children}
     </Tag>
+  );
+}
+
+/**
+ * 
+ * updateStatus({mode: "success", message: "Updated Message Successfully."});
+ * updateStatus({mode: "error", message: errorMessage});
+ */
+export function useMutationStatus() {
+  const [status, updateStatus] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {mode: "", message: ""}
+  );
+
+  return [status, updateStatus];
+}
+
+export function MutationExecution({mutationLoading, status}) {
+  
+  return (
+    <div className="tw-mr-20">
+      {mutationLoading && (
+        <Button className="tw-ml-auto" type="primary" loading>
+          Processing...
+        </Button>
+      )}
+      {status.mode === "success" && (
+        <Alert
+          message={status.message}
+          type="success"
+          showIcon
+          closable
+          className="tw-ml-auto tw-w-[300px]"
+        />
+      )}
+      {status.mode === "error" && (
+        <Alert
+          message={status.message}
+          type="error"
+          showIcon
+          closable
+          className="tw-ml-auto tw-w-[300px]"
+        />
+      )}
+    </div>
   );
 }
