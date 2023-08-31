@@ -76,3 +76,14 @@ export function readLocalStorage(key, initialValue) {
   const item = window.localStorage.getItem(key);
   return item ? JSON.parse(item) : initialValue;
 }
+
+
+export const DimensionContext = React.createContext();
+
+export function useDimensionContext(getResultFn) {
+  const context = React.useContext(DimensionContext);
+  if (context === undefined) {
+    throw new Error("useDimensionContext hook must be used within a Provider");
+  }
+  return getResultFn(context);
+}
