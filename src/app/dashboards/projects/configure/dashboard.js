@@ -21,7 +21,7 @@ import {PipelineFunnelWidgetInitialInfoConfig} from "../../../components/misc/in
 import {DeliveryProcessMappingInitialInfoConfig} from "../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
 import {WidgetCore, useWidget} from "../../../framework/viz/dashboard/widgetCore";
 import {useQueryProjectValueStreams} from "../shared/hooks/useQueryValueStreams";
-import {LabelValue} from "../../../helpers/components";
+import {LabelValue, MutationExecution, useMutationStatus} from "../../../helpers/components";
 import {PlusOutlined} from "@ant-design/icons";
 import {ValueStreamForm} from "../shared/components/projectValueStreamUtils";
 import {ValueStreamEditorTable} from "../shared/components/valueStreamEditorTable";
@@ -117,13 +117,7 @@ export function ValueStreamMappingInitialDashboard() {
 
 export function ValueStreamMappingDashboard() {
   const [visible, setVisible] = React.useState(false);
-  const [status, updateStatus] = React.useReducer(
-    (data, partialData) => ({
-      ...data,
-      ...partialData,
-    }),
-    {mode: "", message: ""}
-  );
+  const [status, updateStatus] = useMutationStatus();
 
   const dimension = "project";
   // mutation to update project analysis periods
@@ -163,31 +157,7 @@ export function ValueStreamMappingDashboard() {
 
   const drawerElement = ({initialValues, instanceKey}) => (
     <Drawer placement="left" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
-      <div>
-        {mutationLoading && (
-          <Button className="tw-ml-auto tw-mr-[90px]" type="primary" loading>
-            Processing...
-          </Button>
-        )}
-        {status.mode === "success" && (
-          <Alert
-            message={status.message}
-            type="success"
-            showIcon
-            closable
-            className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
-          />
-        )}
-        {status.mode === "error" && (
-          <Alert
-            message={status.message}
-            type="error"
-            showIcon
-            closable
-            className="tw-ml-auto tw-mr-[90px] tw-w-[300px]"
-          />
-        )}
-      </div>
+      <MutationExecution mutationLoading={mutationLoading} status={status}/>
       <div className="tw-flex tw-flex-col tw-gap-8">
         <div className="tw-flex tw-flex-col tw-justify-center tw-border-0 tw-border-b tw-border-solid tw-border-b-gray-200 tw-pb-4">
           <div className="tw-text-xl">Customize Phase Names</div>

@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, Tag} from "antd";
+import {Alert, Tag, message, notification} from "antd";
 import classNames from "classnames";
 import Button from "../../components/uielements/button";
 
@@ -44,31 +44,21 @@ export function useMutationStatus() {
 }
 
 export function MutationExecution({mutationLoading, status}) {
-  
+  const [api, contextHolder] = notification.useNotification();
+
+  React.useEffect(() => {
+    if (status.mode) {
+      api[status.mode]({message: status.message})
+    }
+  }, [api, status]);
+
   return (
     <div className="tw-mr-20">
+      {contextHolder}
       {mutationLoading && (
         <Button className="tw-ml-auto" type="primary" loading>
           Processing...
         </Button>
-      )}
-      {status.mode === "success" && (
-        <Alert
-          message={status.message}
-          type="success"
-          showIcon
-          closable
-          className="tw-ml-auto tw-w-[300px]"
-        />
-      )}
-      {status.mode === "error" && (
-        <Alert
-          message={status.message}
-          type="error"
-          showIcon
-          closable
-          className="tw-ml-auto tw-w-[300px]"
-        />
       )}
     </div>
   );
