@@ -80,10 +80,20 @@ export function readLocalStorage(key, initialValue) {
 
 export const DimensionContext = React.createContext();
 
-export function useDimensionContext(getResultFn) {
+export function useDimensionContext(dimension, getResultFn) {
   const context = React.useContext(DimensionContext);
   if (context === undefined) {
     throw new Error("useDimensionContext hook must be used within a Provider");
   }
-  return getResultFn(context);
+  return getResultFn(context[dimension]);
+}
+
+// get customPhaseMapping using project dimension query
+export function useCustomPhaseMapping() {
+  const customPhaseMapping = useDimensionContext("project", (result) => {
+    const _customPhaseMapping = result?.settings?.customPhaseMapping ?? {};
+    const {__typename, ...customPhaseMapping} = _customPhaseMapping;
+    return {...customPhaseMapping, unmapped: "Unmapped"};
+  });
+  return customPhaseMapping;
 }
