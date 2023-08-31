@@ -93,7 +93,7 @@ export function useCustomPhaseMapping() {
   const customPhaseMapping = useDimensionContext("project", (result) => {
     const _customPhaseMapping = result?.settings?.customPhaseMapping ?? {};
     const {__typename, ...customPhaseMapping} = _customPhaseMapping;
-    return {...customPhaseMapping, unmapped: "Unmapped"};
+    return {unmapped: "Unmapped", ...customPhaseMapping};
   });
   return customPhaseMapping;
 }
