@@ -8,7 +8,8 @@ import { workItemReducer } from "./workItemReducer";
 import { actionTypes, mode } from "./constants";
 import { useResetComponentState } from "../../helper/hooks";
 import { useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable } from "./workItemStateTypeMapTable";
-import { sanitizeStateMappings, WorkItemStateTypeDisplayName } from "../../../../shared/config";
+import { sanitizeStateMappings } from "../../../../shared/config";
+import { useCustomPhaseMapping } from "../../../../../helpers/hooksUtil";
 
 /**
  * Initial mapping for the records
@@ -67,6 +68,8 @@ export function WorkItemStateTypeMapView({
       dispatch({ type: actionTypes.MUTATION_FAILURE, payload: error.message });
     }
   });
+
+  const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
 
   function handleSaveClick(e) {
     const { workItemStateMappings, flowTypeRecords, releaseStatusRecords, key } = state;
@@ -244,6 +247,7 @@ export function WorkItemStateTypeMapView({
             context={context}
             enableEdits={enableEdits}
             title={" "}
+            WorkItemStateTypeDisplayName={WorkItemStateTypeDisplayName}
           />
         </div>
         <div className="tw-mt-2 tw-h-1/2">
