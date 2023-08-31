@@ -1,5 +1,6 @@
 import React from "react";
 import {PipelineFunnelChart} from "./pipelineFunnelChart";
+import {useCustomPhaseMapping} from "../../../../../helpers/hooksUtil";
 
 export const ProjectPipelineFunnelView = ({
   workItemStateTypeCounts,
@@ -14,6 +15,8 @@ export const ProjectPipelineFunnelView = ({
   context,
   displayBag
 }) => {
+  const customPhaseMapping = useCustomPhaseMapping();
+
   return (
     <div data-testid="project-pipeline-funnel-view" style={{width: "100%", height: "100%"}}>
           <PipelineFunnelChart
@@ -25,6 +28,7 @@ export const ProjectPipelineFunnelView = ({
             grouping={workItemScope}
             showVolumeOrEffort={showVolumeOrEffort}
             displayBag={displayBag}
+            workItemStateTypeDisplayName={customPhaseMapping}
           />
     </div>
   );
