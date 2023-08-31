@@ -7,6 +7,10 @@ import {cloneChildrenWithProps, findFirstDescendant} from "../../../helpers/reac
 import {Tabs} from "antd";
 import {useRouteMatch} from 'react-router-dom';
 import {withNavigationContext} from '../../navigation/components/withNavigationContext';
+import { useDimensionQuery } from '../../../helpers/dimensionQueries';
+import { Loading } from '../../../components/graphql/loading';
+import { logGraphQlError } from '../../../components/graphql/utils';
+import { DimensionContext } from '../../../helpers/hooksUtil';
 
 const {TabPane} = Tabs;
 
@@ -17,22 +21,36 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
     }, []);
 
     const match = useRouteMatch();
+    const [[dimension, dimension_value], [dimension_key, dimension_key_value]] = Object.entries(match.params);
+
+    const {loading, error, data} = useDimensionQuery({dimension, key: dimension_key_value});
+    if (loading) {
+      return <Loading />
+    }
+    if (error) {
+      logGraphQlError(`${dimension}_query`, error);
+      return null;
+    }
+
     if (itemSelected != null && itemSelected) {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
-        <div className={uniqueStyles["dashboard"]}>
-          <DashboardRow h={"98%"}>
-            {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
-          </DashboardRow>
-        </div>
-
-      )
+        <DimensionContext.Provider value={data}>
+          <div className={uniqueStyles["dashboard"]}>
+            <DashboardRow h={"98%"}>
+              {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
+            </DashboardRow>
+          </div>
+        </DimensionContext.Provider>
+      );
     } else {
       const keyProp = rest.gridLayout ? {key: fullScreen} : {};
       return (
-        <div className={classNames(uniqueStyles["dashboard"], className)} {...keyProp}>
-          {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
-        </div>
+        <DimensionContext.Provider value={data}>
+          <div className={classNames(uniqueStyles["dashboard"], className)} {...keyProp}>
+            {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
+          </div>
+        </DimensionContext.Provider>
       );
     }
 });
