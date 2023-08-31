@@ -42,6 +42,7 @@ function WipDashboard({
   viewerContext,
 }) {
   const [workItemScope, setWorkItemScope] = useState("all");
+  const customPhaseMapping = settings?.customPhaseMapping ?? {}
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -259,7 +260,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName="Coding"
+              stageName={customPhaseMapping.wip}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
@@ -297,7 +298,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName={"Shipping"}
+              stageName={customPhaseMapping.complete}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.deliver]}
