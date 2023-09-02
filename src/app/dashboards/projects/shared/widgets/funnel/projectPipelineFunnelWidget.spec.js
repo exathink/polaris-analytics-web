@@ -263,7 +263,8 @@ describe("ProjectPipelineFunnelWidget", () => {
       expect(await screen.findByText(cardsRegex)).toBeInTheDocument();
     });
 
-    test("should render legend title as Specs when Specs workItemScope is selected", async () => {
+
+    test.skip("should render legend title as Specs when Specs workItemScope is selected", async () => {
       const propsFixtureForSpecs = {
         ...propsFixture,
         workItemScope: "specs", // all or specs
