@@ -33,7 +33,7 @@ export const ProjectPipelineFunnelWidget = ({
   excludeAbandoned
 }) => {
   const includeSubTasks = {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
-  const {loading, error, data} = useQueryProjectPipelineSummary({
+  const queryVars = {
     instanceKey,
     tags,
     release,
@@ -41,9 +41,13 @@ export const ProjectPipelineFunnelWidget = ({
     specsOnly: workItemScope === "specs",
     includeSubTasks,
     referenceString: getLatest(latestWorkItemEvent, latestCommit),
-  });
+  };
 
-  const {loading: loading1, error: error1, data: wipData} = useQueryDimensionPipelineStateDetails({
+  const {loading, error, data} = useQueryProjectPipelineSummary(queryVars);
+
+  const {loading: loading1, error: error1, data: dataAll} = useQueryProjectPipelineSummary({...queryVars, specsOnly: false});
+
+  const {loading: loading2, error: error2, data: wipData} = useQueryDimensionPipelineStateDetails({
     dimension: "project",
     instanceKey,
     tags,
@@ -53,13 +57,17 @@ export const ProjectPipelineFunnelWidget = ({
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
   })
 
-  if (loading || loading1) return <Loading />;
+  if (loading || loading1 || loading2) return <Loading />;
   if (error) {
     logGraphQlError("useQueryProjectPipelineSummary", error);
     return null;
   }
   if (error1) {
-    logGraphQlError("useQueryDimensionPipelineStateDetails", error1);
+    logGraphQlError("useQueryProjectPipelineSummary", error1);
+    return null;
+  }
+  if (error2) {
+    logGraphQlError("useQueryDimensionPipelineStateDetails", error2);
     return null;
   }
 
@@ -69,7 +77,7 @@ export const ProjectPipelineFunnelWidget = ({
   };
 
   let {workItemStateTypeCounts, totalEffortByStateType} = data["project"];
-
+  workItemStateTypeCounts = {...workItemStateTypeCounts, backlog: dataAll["project"].workItemStateTypeCounts.backlog};
   if (excludeAbandoned) {
     const workItemAggregateDurations = getWorkItemDurations(getWorkItems()).filter(
       (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
