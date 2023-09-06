@@ -328,7 +328,6 @@ export let filterFns = {
     return values.some(v => parseTags(w.tags).tags.includes(v));
   },
   [FILTERS.EXCLUDE_ABANDONED]: (w, [value]) => {
-    debugger;
     return value ? w.quadrant !== Quadrants.abandoned : true;
   }
 };
