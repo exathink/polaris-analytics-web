@@ -1,5 +1,5 @@
 import React from "react";
-import { ProjectDashboard } from "../projectDashboard";
+import { ProjectDashboard, useProjectContext } from "../projectDashboard";
 import { withViewerContext } from "../../../framework/viewer/viewerContext";
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
 import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
@@ -15,10 +15,10 @@ import {useQueryParamState} from "../shared/helper/hooks";
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
 function TrendsDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
   viewerContext,
 }) {
+  const {key, latestWorkItemEvent, latestCommit, settingsWithDefaults} = useProjectContext((result) => result.project);
   const {
     leadTimeTarget,
     cycleTimeTarget,
@@ -178,9 +178,8 @@ function TrendsDashboard({
 }
 
 const dashboard = ({viewerContext}) => (
-  <ProjectDashboard
-    pollInterval={1000 * 60}
-    render={(props) => <TrendsDashboard {...props} viewerContext={viewerContext} />}
-  />
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <TrendsDashboard viewerContext={viewerContext} />
+  </ProjectDashboard>
 );
 export default withViewerContext(dashboard);

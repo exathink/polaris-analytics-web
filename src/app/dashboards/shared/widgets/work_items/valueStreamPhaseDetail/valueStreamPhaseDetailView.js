@@ -2,12 +2,12 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeDisplayName, WorkItemStateTypeSortOrder} from "../../../config";
+import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
 import {getUniqItems} from "../../../../../helpers/utility";
-import {Alert, Select} from "antd";
+import {Alert} from "antd";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
@@ -15,16 +15,10 @@ import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/utils";
 import {injectIntl} from "react-intl";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
-import {useSelect} from "../../../components/select/selectDropdown";
-import {
-  defaultIssueType,
-  SelectIssueTypeDropdown,
-  uniqueIssueTypes,
-} from "../../../components/select/selectIssueTypeDropdown";
+import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
+
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
-
-const {Option} = Select;
 
 const PhaseDetailView = ({
   data,
@@ -38,6 +32,7 @@ const PhaseDetailView = ({
   context,
   intl,
 }) => {
+  const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
@@ -49,38 +44,9 @@ const PhaseDetailView = ({
   );
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
-  
-  const [selectedTeam, setSelectedTeam] = React.useState("All");
 
   const [selectedFilter, setFilter] = React.useState(null);
   const [selectedMetric, setSelectedMetric] = React.useState(null);
-
-
-  const uniqueTeams = ["All", ...new Set(workItems.flatMap((x) => x.teamNodeRefs.map((t) => t.teamName)))];
-
-  function handleTeamChange(index) {
-    setSelectedTeam(uniqueTeams[index]);
-  }
-
-  function selectTeamDropdown() {
-    return (
-      <div data-testid="pipeline-state-details-team-dropdown" className={"control"}>
-        <div className="controlLabel">Team</div>
-        <Select defaultValue={0} onChange={handleTeamChange} className="tw-w-24 lg:tw-w-36">
-          {uniqueTeams.map((teamName, index) => (
-            <Option key={teamName} value={index}>
-              {teamName}
-            </Option>
-          ))}
-        </Select>
-      </div>
-    );
-  }
-
-  const {selectedVal: {key: selectedIssueType}, valueIndex: issueTypeValueIndex, handleChange: handleIssueTypeChange} = useSelect({
-    uniqueItems: uniqueIssueTypes,
-    defaultVal: defaultIssueType,
-  });
 
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
@@ -111,26 +77,13 @@ const PhaseDetailView = ({
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
-      return workItemsByStateType[selectedStateType].filter((w) => {
-        if (selectedIssueType === "all") {
-          return true;
-        } else {
-          return w.workItemType === selectedIssueType;
-        }
-      }).filter((w) => {
-        if (selectedTeam === "All") {
-          return true;
-        } else {
-          const _teams = w.teamNodeRefs.map((t) => t.teamName);
-          return _teams.includes(selectedTeam);
-        }
-      });
+      return workItemsByStateType[selectedStateType]
     } else {
       return [];
     }
-  }, [selectedStateType, workItemsByStateType, selectedTeam, selectedIssueType]);
+  }, [selectedStateType, workItemsByStateType]);
 
-  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
+  const [resetComponentStateKey] = useResetComponentState();
 
   React.useEffect(() => {
     if (selectedFilter === null) {
@@ -142,11 +95,6 @@ const PhaseDetailView = ({
     // clear bucket and clear series
     setFilter(null);
     setSelectedMetric(null);
-  }
-
-  function handleClearClick() {
-    resetFilterAndMetric();
-    resetComponentState();
   }
 
   function getChartSubTitle() {

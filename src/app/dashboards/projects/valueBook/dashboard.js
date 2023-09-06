@@ -1,5 +1,5 @@
 import React from "react";
-import { ProjectDashboard } from "../projectDashboard";
+import { ProjectDashboard, useProjectContext } from "../projectDashboard";
 import { withViewerContext } from "../../../framework/viewer/viewerContext";
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
 import { ProjectValueBookWidget } from "../../shared/widgets/work_items/valueBook";
@@ -15,10 +15,10 @@ import { AppTerms } from "../../shared/config";
 const dashboard_id = "dashboards.value.projects.dashboard.instance";
 
 function ValueDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
   context,
   viewerContext,
 }) {
+  const {key, latestWorkItemEvent, latestCommit, settingsWithDefaults} = useProjectContext((result) => result.project);
   const {
     flowAnalysisPeriod,
     includeSubTasksFlowMetrics,
@@ -159,9 +159,8 @@ function ValueDashboard({
 }
 
 const dashboard = ({viewerContext, intl}) => (
-  <ProjectDashboard
-    pollInterval={1000 * 60}
-    render={(props) => <ValueDashboard {...props} viewerContext={viewerContext} intl={intl} />}
-  />
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <ValueDashboard viewerContext={viewerContext} intl={intl} />
+  </ProjectDashboard>
 );
 export default withViewerContext(dashboard);

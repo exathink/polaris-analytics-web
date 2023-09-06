@@ -7,7 +7,7 @@ import {useQueryParamState} from "../helper/hooks";
 import {Col, Drawer, Form, Input, Row, Select} from "antd";
 import Button from "../../../../../components/uielements/button";
 import {useQueryReleases} from "../hooks/useQueryReleases";
-import {ProjectDashboard} from "../../projectDashboard";
+import {ProjectDashboard, useProjectContext} from "../../projectDashboard";
 const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
@@ -102,33 +102,33 @@ export function ReleasesDropdown() {
   );
 }
 
-export function ProjectValueStreamsWidget({context}) {
+function ProjectValueStreams() {
+  const {project, context} = useProjectContext();
+  const {enableReleases} = project.settingsWithDefaults;
+
   const instanceKey = context.getInstanceKey("project");
 
   const valueStreamsResult = useQueryProjectValueStreams({instanceKey});
   const releasesResult = useQueryReleases({projectKey: instanceKey, releasesWindow: 90});
 
   return (
-    <ProjectDashboard
-      pollInterval={60 * 1000}
-      render={({project, context}) => {
-        const {enableReleases} = project.settingsWithDefaults;
-
-        return (
-          <div className="tw-flex tw-items-center">
-            <WidgetCore result={valueStreamsResult} errorContext="ValueStreamsWidget.useQueryValueStreams">
-              <ValueStreamsDropdown />
-            </WidgetCore>
-            {enableReleases && (
-              <WidgetCore result={releasesResult} errorContext="ValueStreamsWidget.useQueryReleases">
-                <ReleasesDropdown />
-              </WidgetCore>
-            )}
-          </div>
-        );
-      }}
-    />
+    <div className="tw-flex tw-items-center">
+      <WidgetCore result={valueStreamsResult} errorContext="ValueStreamsWidget.useQueryValueStreams">
+        <ValueStreamsDropdown />
+      </WidgetCore>
+      {enableReleases && (
+        <WidgetCore result={releasesResult} errorContext="ValueStreamsWidget.useQueryReleases">
+          <ReleasesDropdown />
+        </WidgetCore>
+      )}
+    </div>
   );
+}
+
+export function ProjectValueStreamsWidget() {
+  return <ProjectDashboard pollInterval={1000 * 60}>
+    <ProjectValueStreams />
+  </ProjectDashboard>
 }
 
 export function ValueStreamForm({formType, initialValues, onSubmit, uniqWorkItemSelectors, visible, onClose}) {

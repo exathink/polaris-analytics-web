@@ -8,7 +8,8 @@ import { workItemReducer } from "./workItemReducer";
 import { actionTypes, mode } from "./constants";
 import { useResetComponentState } from "../../helper/hooks";
 import { useWorkItemStateTypeMapColumns, WorkItemStateTypeMapTable } from "./workItemStateTypeMapTable";
-import { sanitizeStateMappings, WorkItemStateTypeDisplayName } from "../../../../shared/config";
+import { sanitizeStateMappings } from "../../../../shared/config";
+import { useCustomPhaseMapping } from "../../../projectDashboard";
 
 /**
  * Initial mapping for the records
@@ -67,6 +68,8 @@ export function WorkItemStateTypeMapView({
       dispatch({ type: actionTypes.MUTATION_FAILURE, payload: error.message });
     }
   });
+
+  const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
 
   function handleSaveClick(e) {
     const { workItemStateMappings, flowTypeRecords, releaseStatusRecords, key } = state;
@@ -228,7 +231,7 @@ export function WorkItemStateTypeMapView({
   return (
     <div data-testid="state-type-map-view" className="tw-relative tw-h-full tw-w-full" id="state-type-mapping-wrapper">
       <div
-        className="tw-absolute tw-top-2 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
+        className="tw-absolute tw-top-12 tw-left-4 tw-z-10 tw-mt-[1px] tw-mb-[10px] tw-flex tw-w-full tw-items-center">
         {getEmptyAlert()}
         {selectDropdown()}
         {getButtonElements()}
@@ -244,6 +247,7 @@ export function WorkItemStateTypeMapView({
             context={context}
             enableEdits={enableEdits}
             title={" "}
+            WorkItemStateTypeDisplayName={WorkItemStateTypeDisplayName}
           />
         </div>
         <div className="tw-mt-2 tw-h-1/2">

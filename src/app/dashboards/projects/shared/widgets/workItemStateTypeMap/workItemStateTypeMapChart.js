@@ -1,22 +1,21 @@
 import { Chart, Highcharts, tooltipHtml } from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
+import {pick} from "../../../../../helpers/utility";
 import {
   Colors,
   sanitizeStateMappings,
   WorkItemStateTypeColor,
-  WorkItemStateTypeDisplayName,
-  WorkItemTypeDisplayName
 } from "../../../../shared/config";
 import {actionTypes} from "./constants";
 
 require("highcharts/modules/draggable-points")(Highcharts);
 
-function getAllStateTypeKeys() {
+function getAllStateTypeKeys(WorkItemStateTypeDisplayName) {
   return Object.keys(WorkItemStateTypeDisplayName);
 }
 
-function getSeries(workItemStateMappings) {
-  const allStateTypeKeys = getAllStateTypeKeys();
+function getSeries(workItemStateMappings, WorkItemStateTypeDisplayName) {
+  const allStateTypeKeys = getAllStateTypeKeys(WorkItemStateTypeDisplayName);
 
   return [
     // creating a series for each item to resolve the stacking issue
@@ -60,16 +59,16 @@ function getSeries(workItemStateMappings) {
 }
 
 export const WorkItemStateTypeMapChart = Chart({
-  chartUpdateProps: (props) => props,
+  chartUpdateProps: (props) => pick(props, "workItemSource", "updateDraftState", "enableEdits", "WorkItemStateTypeDisplayName"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view, enableEdits}) => {
+  getConfig: ({workItemSource, updateDraftState, title, subtitle, intl, view, enableEdits, WorkItemStateTypeDisplayName}) => {
     const workItemStateMappings = workItemSource ? workItemSource.workItemStateMappings : [];
     const stateMappings = sanitizeStateMappings(workItemStateMappings);
-    const series = getSeries(stateMappings);
+    const series = getSeries(stateMappings, WorkItemStateTypeDisplayName);
 
-    const allStateTypeKeys = getAllStateTypeKeys();
+    const allStateTypeKeys = getAllStateTypeKeys(WorkItemStateTypeDisplayName);
     const allStateTypeDisplayValues = Object.values(WorkItemStateTypeDisplayName);
 
     return {

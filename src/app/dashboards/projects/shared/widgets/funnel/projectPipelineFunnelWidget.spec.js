@@ -264,7 +264,7 @@ describe("ProjectPipelineFunnelWidget", () => {
     });
 
 
-    test.skip("should render legend title as Specs when Specs workItemScope is selected", async () => {
+    test("should render legend title as Specs when Specs workItemScope is selected", async () => {
       const propsFixtureForSpecs = {
         ...propsFixture,
         workItemScope: "specs", // all or specs
@@ -289,10 +289,22 @@ describe("ProjectPipelineFunnelWidget", () => {
           },
         },
       ];
-
-      renderWithProviders(<ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />, [mocksFixtureForSpecs[0], mocksFixtureForSpecsWip[0]], {
-        chartTestId: "pipeline-funnel-chart",
-      });
+      const mocksFixtureForAll = [
+        {
+          ...mocksFixtureObj,
+          request: {
+            ...mocksFixtureObj.request,
+            variables: {...mocksFixtureObj.request.variables},
+          },
+        },
+      ];
+      renderWithProviders(
+        <ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />,
+        [mocksFixtureForSpecs[0], mocksFixtureForSpecsWip[0], mocksFixtureForAll[0]],
+        {
+          chartTestId: "pipeline-funnel-chart",
+        }
+      );
 
       // assert the chart existence (this also ensures chart is rendered)
       await screen.findByTestId("pipeline-funnel-chart");

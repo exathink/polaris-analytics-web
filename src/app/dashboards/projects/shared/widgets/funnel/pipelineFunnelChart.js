@@ -7,7 +7,6 @@ import {
   Colors,
   WorkItemStateTypeColor,
   WorkItemStateTypes,
-  WorkItemStateTypeDisplayName,
   AppTerms
 } from "../../../../shared/config";
 import { Highcharts } from "../../../../../framework/viz/charts/chartWrapper";
@@ -47,7 +46,7 @@ function getResidenceTime(workItemStateTypeCounts, days) {
 
 
 export const PipelineFunnelChart = Chart({
-  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days", "leadTimeTarget", "cycleTimeTarget"),
+  chartUpdateProps: (props) => pick(props, "workItemStateTypeCounts", "totalEffortByStateType", "grouping", "showVolumeOrEffort", "days", "leadTimeTarget", "cycleTimeTarget", "workItemStateTypeDisplayName"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point),
 
@@ -60,6 +59,7 @@ export const PipelineFunnelChart = Chart({
                 grouping,
                 showVolumeOrEffort = "volume",
                 displayBag = {},
+                workItemStateTypeDisplayName,
                 intl
               }) => {
 
@@ -142,11 +142,11 @@ export const PipelineFunnelChart = Chart({
       },
       series: [{
         name: grouping === "specs" ? AppTerms.specs.display : AppTerms.cards.display,
-        data: Object.keys(WorkItemStateTypeDisplayName).filter(
+        data: Object.keys(workItemStateTypeDisplayName).filter(
           stateType => selectedSummary[stateType] != null
         ).map(
           stateType => ({
-            name: WorkItemStateTypeDisplayName[stateType],
+            name: workItemStateTypeDisplayName[stateType],
             y: (selectedSummary[stateType] || 0),
 
             color: WorkItemStateTypeColor[stateType],
@@ -165,7 +165,7 @@ export const PipelineFunnelChart = Chart({
         formatter: function() {
           let timeToClear = ``;
           if (this.point.timeToClear != null) {
-            if (this.point.name === WorkItemStateTypeDisplayName.backlog) {
+            if (this.point.name === workItemStateTypeDisplayName.backlog) {
               timeToClear =  `<br/>Supply: ${humanizeDuration(this.point.timeToClear)}`;
             } else {
               timeToClear = `<br/>Avg. Residence Time: ${humanizeDuration(this.point.timeToClear)}`;

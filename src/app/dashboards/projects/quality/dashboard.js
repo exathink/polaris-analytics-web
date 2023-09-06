@@ -1,5 +1,5 @@
 import React from "react";
-import {ProjectDashboard} from "../projectDashboard";
+import {ProjectDashboard, useProjectContext} from "../projectDashboard";
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 import {
   DimensionDefectResponseTimeWidget,
@@ -13,10 +13,9 @@ import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
 function TrendsDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults},
-  context,
   viewerContext,
 }) {
+  const {project: {key, latestCommit, latestWorkItemEvent, settingsWithDefaults}, context} = useProjectContext();
   const {
     cycleTimeTarget,
     leadTimeConfidenceTarget,
@@ -119,9 +118,8 @@ function TrendsDashboard({
 }
 
 const dashboard = ({viewerContext}) => (
-  <ProjectDashboard
-    pollInterval={1000 * 60}
-    render={(props) => <TrendsDashboard {...props} viewerContext={viewerContext} />}
-  />
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <TrendsDashboard viewerContext={viewerContext} />
+  </ProjectDashboard>
 );
 export default withViewerContext(dashboard);
