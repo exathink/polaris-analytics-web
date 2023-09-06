@@ -28,7 +28,7 @@ export function DimensionWipMetricsWidget({
 }) {
   const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
 
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+  const queryVars = {
     dimension,
     instanceKey,
     tags,
@@ -37,8 +37,9 @@ export function DimensionWipMetricsWidget({
     activeOnly: true,
     includeSubTasks: includeSubTasks,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
+  };
 
+  const {loading, error, data} = useQueryDimensionPipelineStateDetails({...queryVars})
   const {
     loading: loading1,
     error: error1,
@@ -59,15 +60,26 @@ export function DimensionWipMetricsWidget({
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
 
-  if (loading || loading1) return <Loading />;
-  if (error || error1) {
+  const {loading: loading2, error: error2, data: dataForSpecs} = useQueryDimensionPipelineStateDetails({...queryVars, specsOnly: true});
+
+  if (loading || loading1 || loading2) return <Loading />;
+  if (error) {
     logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionPipelineCycleMetrics", error);
+    return null;
+  }
+  if (error1) {
+    logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionFlowMetrics", error1);
+    return null;
+  }
+  if (error2) {
+    logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionPipelineCycleMetrics", error2);
     return null;
   }
 
   return (
     <DimensionWipMetricsView
       data={data}
+      dataForSpecs={dataForSpecs}
       flowMetricsData={flowMetricsData}
       specsOnly={specsOnly}
       dimension={dimension}

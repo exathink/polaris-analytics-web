@@ -5,7 +5,22 @@ import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics"
 import {getWipLimit, getWorkItemDurations} from "../../clientSideFlowMetrics";
 import { Quadrants, getQuadrant } from "./cycleTimeLatencyUtils";
 
-export function DimensionWipMetricsView({data, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
+function DevItemRatio({devItemsCount, devItemsPercentage}) {
+  return (
+    <div className="tw-flex tw-flex-col tw-gap-2">
+      <div className="tw-flex tw-items-center tw-justify-between">
+        <div>{devItemsCount}</div>
+        <div>Dev Items</div>
+      </div>
+      <div className="tw-flex tw-items-center tw-justify-between">
+        <div>Dev Item Ratio</div>
+        <div>{devItemsPercentage}</div>
+      </div>
+    </div>
+  );
+}
+
+export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
   const workItems = React.useMemo(() => {
@@ -15,6 +30,18 @@ export function DimensionWipMetricsView({data, flowMetricsData, dimension, displ
   const workItemAggregateDurations = excludeAbandoned
     ? getWorkItemDurations(workItems).filter((w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned)
     : getWorkItemDurations(workItems);
+
+    const workItemsForSpecs = React.useMemo(() => {
+      const edges = dataForSpecs?.[dimension]?.["workItems"]?.["edges"] ?? [];
+      return edges.map((edge) => edge.node);
+    }, [dataForSpecs, dimension]);
+
+    const workItemAggregateDurationsForSpecs = excludeAbandoned
+      ? getWorkItemDurations(workItemsForSpecs).filter(
+          (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
+        )
+      : getWorkItemDurations(workItemsForSpecs);
+
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 
   const pipelineCycleMetrics = {
