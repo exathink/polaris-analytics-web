@@ -4,7 +4,7 @@ import {FlowMetricsTrendsWidget} from "../../shared/widgets/flowMetricsTrends/fl
 import {ProjectPipelineFunnelWidget} from "../../shared/widgets/funnel";
 import {DimensionWipMetricsWidget} from "../../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipMetricsWidget";
 import {DimensionPipelineQuadrantSummaryWidget} from "../../../shared/widgets/work_items/wip";
-import {ProjectDashboard} from "../../projectDashboard";
+import {ProjectDashboard, useProjectContext} from "../../projectDashboard";
 import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
@@ -14,10 +14,10 @@ import {Checkbox} from "antd";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
-export function NewFlowDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults},
-  context,
-}) {
+export function NewFlowDashboard() {
+
+  const {project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults}, context} = useProjectContext();
+
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
@@ -326,7 +326,9 @@ export function NewFlowDashboard({
 }
 
 const dashboard = ({viewerContext}) => (
-  <ProjectDashboard pollInterval={1000 * 60} render={(props) => <NewFlowDashboard {...props} />} />
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <NewFlowDashboard />
+  </ProjectDashboard>
 );
 
 export default dashboard;

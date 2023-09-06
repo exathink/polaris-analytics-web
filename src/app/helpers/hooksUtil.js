@@ -76,3 +76,4 @@ export function readLocalStorage(key, initialValue) {
   const item = window.localStorage.getItem(key);
   return item ? JSON.parse(item) : initialValue;
 }
+

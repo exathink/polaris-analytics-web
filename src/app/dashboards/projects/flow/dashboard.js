@@ -3,7 +3,7 @@ import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz
 import { DimensionPipelineQuadrantSummaryWidget } from "../../shared/widgets/work_items/wip";
 import { ProjectPipelineFunnelWidget } from "../shared/widgets/funnel";
 import { withViewerContext } from "../../../framework/viewer/viewerContext";
-import { ProjectDashboard } from "../projectDashboard";
+import { ProjectDashboard, useProjectContext } from "../projectDashboard";
 import { ProjectTraceabilityTrendsWidget } from "../../shared/widgets/commits/traceability";
 import { DimensionResponseTimeTrendsWidget } from "../../shared/widgets/work_items/trends/responseTime";
 import { DimensionVolumeTrendsWidget } from "../../shared/widgets/work_items/trends/volume";
@@ -17,7 +17,9 @@ const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
 
 
-function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults}, context}) {
+function FlowDashboard() {
+  const {project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults}, context} = useProjectContext();
+
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
 
@@ -259,7 +261,11 @@ function FlowDashboard({project: {key, latestWorkItemEvent, latestCommit, settin
     </Dashboard>
   );
 }
-export const dashboard = ({viewerContext}) => (
-  <ProjectDashboard pollInterval={1000 * 60} render={(props) => <FlowDashboard {...props} />} />
+
+const dashboard = ({viewerContext}) => (
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <FlowDashboard />
+  </ProjectDashboard>
 );
+
 export default withViewerContext(dashboard);

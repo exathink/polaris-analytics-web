@@ -1,9 +1,10 @@
 import React from "react";
 import {StripeTable} from "../../../../../components/tables/tableUtils";
 import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
-import {FlowTypeStates, ReleaseStatus, WorkItemStateTypeColorClass, WorkItemStateTypeDisplayName} from "../../../../shared/config";
+import {FlowTypeStates, ReleaseStatus, WorkItemStateTypeColorClass} from "../../../../shared/config";
 import { actionTypes } from "./constants";
 import { LabelValue } from "../../../../../helpers/components";
+import {useCustomPhaseMapping} from "../../../projectDashboard";
 
 const typeItems = [
   {value: FlowTypeStates.UNASSIGNED, label: "Unassigned"},
@@ -33,7 +34,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
     keyValuePair[state] = releaseStatusVal;
     dispatch({type: actionTypes.UPDATE_RELEASE_STATUS, payload: {keyValuePair}});
   }
-
+  const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const columns = [
     {
       title: "Phase",

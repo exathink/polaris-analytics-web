@@ -4,7 +4,7 @@ import {AppTerms, WorkItemStateTypes} from "../../shared/config";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
-import {ProjectDashboard} from "../projectDashboard";
+import {ProjectDashboard, useProjectContext} from "../projectDashboard";
 import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
 
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
@@ -37,11 +37,14 @@ WipDashboard.videoConfig = {
 };
 
 function WipDashboard({
-  project: {key, latestWorkItemEvent, latestCommit, latestPullRequestEvent, settings, settingsWithDefaults},
   context,
   viewerContext,
 }) {
+
+  const {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults} = useProjectContext((result) => result.project);
+
   const [workItemScope, setWorkItemScope] = useState("all");
+  const customPhaseMapping = settings?.customPhaseMapping ?? {}
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
@@ -259,7 +262,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName="Coding"
+              stageName={customPhaseMapping.wip}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
@@ -297,7 +300,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName={"Shipping"}
+              stageName={customPhaseMapping.complete}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.deliver]}
@@ -324,9 +327,8 @@ function WipDashboard({
   );
 }
 export const dashboard = ({viewerContext}) => (
-  <ProjectDashboard
-    pollInterval={1000 * 60}
-    render={(props) => <WipDashboard viewerContext={viewerContext} {...props} />}
-  />
+  <ProjectDashboard pollInterval={1000 * 60}>
+    <WipDashboard viewerContext={viewerContext} />
+  </ProjectDashboard>
 );
 export default withViewerContext(dashboard);

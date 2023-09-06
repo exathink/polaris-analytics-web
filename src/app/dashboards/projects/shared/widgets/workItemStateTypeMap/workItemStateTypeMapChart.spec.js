@@ -220,6 +220,7 @@ describe("WorkItemStateTypeMapChart", () => {
             workItemSource={workItemSourcesWithEmptyWorkItemMappings[0]}
             view="detail"
             enableEdits={true}
+            WorkItemStateTypeDisplayName={WorkItemStateTypeDisplayName}
           />
         )
       ).toMatchObject(expectedChartConfig);
@@ -235,6 +236,7 @@ describe("WorkItemStateTypeMapChart", () => {
         workItemSource={workItemSourcesWithMultipleWorkItemMappings[0]}
         view="detail"
         enableEdits={true}
+        WorkItemStateTypeDisplayName={WorkItemStateTypeDisplayName}
       />
     );
 
@@ -329,6 +331,7 @@ describe("WorkItemStateTypeMapChart", () => {
           workItemSource={workItemsSourceFixture[0]}
           view="detail"
           enableEdits={true}
+          WorkItemStateTypeDisplayName={WorkItemStateTypeDisplayName}
         />
       );
 

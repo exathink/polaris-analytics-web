@@ -1,12 +1,113 @@
-import {gql} from "@apollo/client";
-import {Query} from "@apollo/client/react/components"
+import {gql, useQuery} from "@apollo/client";
 import React from 'react';
 import {analytics_service} from "../../services/graphql";
 
 import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {DashboardLifecycleManager} from "../../framework/viz/dashboard";
+import { logGraphQlError } from "../../components/graphql/utils";
+import { WorkItemStateTypeDisplayName } from "../shared/config";
 
+export const ProjectContext = React.createContext();
+
+export function useProjectContext(selectorFn) {
+  const context = React.useContext(ProjectContext);
+  if (context === undefined) {
+    throw new Error("useProjectContext hook must be used within a Provider");
+  }
+  return selectorFn?.(context) ?? context;
+}
+
+// get customPhaseMapping using project dimension query
+export function useCustomPhaseMapping() {
+  const {project} = useProjectContext();
+
+  const result = React.useMemo(() => {
+    const _customPhaseMapping = project?.settings?.customPhaseMapping ?? {};
+
+    const {__typename, ...customPhaseMapping} = _customPhaseMapping;
+
+    const mapping = Object.keys(customPhaseMapping).reduce((acc, phaseKey) => {
+      if (acc[phaseKey] == null) {
+        acc[phaseKey] = WorkItemStateTypeDisplayName[phaseKey];
+      }
+      return acc;
+    }, customPhaseMapping);
+
+    return {unmapped: "Unmapped", ...mapping};
+  }, [project]);
+
+  return result;
+}
+
+export const PROJECT_QUERY = gql`
+  query with_project_instance($key: String!) {
+    project(
+      key: $key
+      interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo]
+    ) {
+      id
+      name
+      key
+      workStreamCount
+      mappedWorkStreamCount
+      earliestCommit
+      latestCommit
+      commitCount
+      latestWorkItemEvent
+      latestPullRequestEvent
+      organizationKey
+      valueStreams {
+        edges {
+          node {
+            key
+            name
+            description
+            workItemSelectors
+          }
+        }
+      }
+      settings {
+        flowMetricsSettings {
+          cycleTimeTarget
+          leadTimeTarget
+          responseTimeConfidenceTarget
+          leadTimeConfidenceTarget
+          cycleTimeConfidenceTarget
+          includeSubTasks
+        }
+        analysisPeriods {
+          wipAnalysisPeriod
+          flowAnalysisPeriod
+          trendsAnalysisPeriod
+        }
+        wipInspectorSettings {
+          includeSubTasks
+        }
+        releasesSettings {
+          enableReleases
+        }
+        customPhaseMapping {
+          backlog
+          open
+          wip
+          complete
+          closed
+        }
+      }
+    }
+  }
+`;
+
+export function useProjectQuery({key, ...restProps}) {
+  return useQuery(PROJECT_QUERY, {
+    service: analytics_service,
+    variables: {
+      key: key,
+      ...restProps,
+    },
+    errorPolicy: "all",
+  });
+}
 
 function PROJECT_DEFAULT_SETTINGS() {
   const BASE_DEFAULTS = {
@@ -73,107 +174,49 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
   };
 }
 
-class WithProject extends React.Component {
+function getContextValue(data, context) {
+  return {project: {...data.project, settingsWithDefaults: getProjectSettings(data.project)}, context};
+}
 
-  onDashboardMounted(project) {
+export function WithProject({context, navigate, children, polling, pollInterval}) {
+  const {loading, error, data} = useProjectQuery({key: context.getInstanceKey("project"), pollInterval: polling ? pollInterval : 0});
+
+  function onDashboardMounted(project) {
     const isValueStreamMappingNotDone = project.mappedWorkStreamCount === 0;
-    
-    if (isValueStreamMappingNotDone) {
-      const currentUrl = this.props.context.matchInfo.url;
 
-      if (!this.props.context.targetUrl.includes("/configure")) {
-        const targetUrl = `${currentUrl}/configure`
-        this.props.navigate.push(targetUrl);
+    if (isValueStreamMappingNotDone) {
+      const currentUrl = context.matchInfo.url;
+
+      if (!context.targetUrl.includes("/configure")) {
+        const targetUrl = `${currentUrl}/configure`;
+        navigate.push(targetUrl);
       }
     }
   }
 
-  render() {
-    const {
-      render,
-      pollInterval,
-      context,
-      polling,
-    } = this.props;
+  React.useEffect(() => {
+    if (data) {
+      onDashboardMounted(data.project);
+    }
+  }, [data]);
 
-    return (
-      <Query
-        client={analytics_service}
-        query={gql`
-          query with_project_instance($key: String!) {
-            project(key: $key, interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo]) {
-              id
-              name
-              key
-              workStreamCount
-              mappedWorkStreamCount
-              earliestCommit
-              latestCommit
-              commitCount
-              latestWorkItemEvent
-              latestPullRequestEvent
-              organizationKey
-              valueStreams {
-                edges {
-                   node {
-                    key
-                    name
-                    workItemSelectors
-                   }
-                }
-              }
-              settings {
-                flowMetricsSettings {
-                  cycleTimeTarget
-                  leadTimeTarget
-                  responseTimeConfidenceTarget
-                  leadTimeConfidenceTarget
-                  cycleTimeConfidenceTarget
-                  includeSubTasks
-                }
-                analysisPeriods {
-                  wipAnalysisPeriod
-                  flowAnalysisPeriod
-                  trendsAnalysisPeriod
-                }
-                wipInspectorSettings {
-                  includeSubTasks
-                }
-                releasesSettings {
-                  enableReleases
-                }
-              }
-            }
-          }
-        `}
-        variables={{
-          key: context.getInstanceKey('project')
-        }}
-        pollInterval={polling ? pollInterval : 0}
-      >
-        {
-          ({loading, error, data}) => {
-            if (loading) return <Loading/>;
-            if (error) return null;
-            const project = data.project;
-            const projectWithDefaultSettings = {...project, settingsWithDefaults: getProjectSettings(project)};
-
-            return (
-              <DashboardLifecycleManager
-                render={render}
-                context={context}
-                project={projectWithDefaultSettings}
-                onMount={
-                  () => this.onDashboardMounted(project)
-                }
-              />
-            )
-          }
-        }
-      </Query>
-    )
+  if (loading) {
+    return <Loading />;
   }
+  if (error) {
+    logGraphQlError(`useProjectQuery`, error);
+    return null;
+  }
+
+  const contextValue = getContextValue(data, context);
+
+  return (
+    <ProjectContext.Provider value={contextValue}>
+      {children}
+    </ProjectContext.Provider>
+  );
 }
+
 export const ProjectDashboard = withNavigationContext(WithProject);
 
 

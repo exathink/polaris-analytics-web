@@ -17,22 +17,22 @@ export const DashboardLayout =  withNavigationContext(({children, itemSelected, 
     }, []);
 
     const match = useRouteMatch();
+
     if (itemSelected != null && itemSelected) {
       const selectedChildren = [findFirstDescendant(children, 'name', match.params.selected)];
       return (
-        <div className={uniqueStyles["dashboard"]}>
-          <DashboardRow h={"98%"}>
-            {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
-          </DashboardRow>
-        </div>
-
-      )
+          <div className={uniqueStyles["dashboard"]}>
+            <DashboardRow h={"98%"}>
+              {cloneChildrenWithProps(selectedChildren, {w: 1, itemSelected, match, ...rest})}
+            </DashboardRow>
+          </div>
+      );
     } else {
       const keyProp = rest.gridLayout ? {key: fullScreen} : {};
       return (
-        <div className={classNames(uniqueStyles["dashboard"], className)} {...keyProp}>
-          {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
-        </div>
+          <div className={classNames(uniqueStyles["dashboard"], className)} {...keyProp}>
+            {cloneChildrenWithProps(children, {itemSelected, match, ...rest})}
+          </div>
       );
     }
 });
