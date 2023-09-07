@@ -40,16 +40,18 @@ export function useCustomPhaseMapping() {
 }
 
 export const PROJECT_QUERY = gql`
-  query with_project_instance($key: String!) {
+  query with_project_instance($key: String!, $contributorCountDays: Int) {
     project(
       key: $key
-      interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo]
+      contributorCountDays: $contributorCountDays
+      interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo, ContributorCount]
     ) {
       id
       name
       key
       workStreamCount
       mappedWorkStreamCount
+      contributorCount
       earliestCommit
       latestCommit
       commitCount
@@ -179,7 +181,7 @@ function getContextValue(data, context) {
 }
 
 export function WithProject({context, navigate, children, polling, pollInterval}) {
-  const {loading, error, data} = useProjectQuery({key: context.getInstanceKey("project"), pollInterval: polling ? pollInterval : 0});
+  const {loading, error, data} = useProjectQuery({key: context.getInstanceKey("project"), pollInterval: polling ? pollInterval : 0, contributorCountDays: 30});
 
   function onDashboardMounted(project) {
     const isValueStreamMappingNotDone = project.mappedWorkStreamCount === 0;
