@@ -24,8 +24,9 @@ import grid from "../../../../../../framework/styles/grids.module.css";
 import styles from "./flowMetrics.module.css";
 import fontStyles from "../../../../../../framework/styles/fonts.module.css";
 import classNames from "classnames";
-import { getWipLimit, getWorkItemDurations } from "../../clientSideFlowMetrics";
+import { DevItemRatio, getWipLimit, getWorkItemDurations, useWipMetricsCommon } from "../../clientSideFlowMetrics";
 import { Quadrants, getQuadrant } from "../cycleTimeLatency/cycleTimeLatencyUtils";
+import { getPercentage } from "../../../../../projects/shared/helper/utils";
 
 const FlowBoardSummaryView = ({
   pipelineCycleMetrics,
@@ -331,29 +332,22 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
+export function WorkInProgressSummaryView({data, dataForSpecs, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
   const {excludeAbandoned} = displayBag;
-
   const intl = useIntl();
-  const workItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
-  const workItemsDurations = getWorkItemDurations(workItems);
-  const workItemAggregateDurations = excludeAbandoned
-    ? workItemsDurations.filter(
-        (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
-      )
-    : workItemsDurations;
-
-  const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
-
-  const pipelineCycleMetrics = {
-    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItemAggregateDurations.length,
-    avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
-  };
-
-  const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
+  
+  const {wipLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
+    useWipMetricsCommon({
+      data,
+      dataForSpecs,
+      flowMetricsData,
+      dimension,
+      specsOnly,
+      days,
+      excludeAbandoned,
+      cycleTimeTarget,
+      latencyTarget,
+    });
 
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_1fr] tw-gap-1">
@@ -367,6 +361,17 @@ export function WorkInProgressSummaryView({data, dimension, cycleTimeTarget, lat
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
+          bottomRightElement: (
+            <DevItemRatio
+              devItemsCount={workItemAggregateDurationsForSpecs.length}
+              devItemsPercentage={getPercentage(
+                workItemAggregateDurations.length > 0
+                  ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
+                  : 0,
+                intl
+              )}
+            />
+          ),
           testId: "wip-total",
         }}
       />

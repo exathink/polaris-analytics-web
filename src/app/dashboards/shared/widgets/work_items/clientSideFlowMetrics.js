@@ -1,8 +1,9 @@
+import React from "react";
 import { useIntl } from "react-intl";
-import { daysFromNow, fromNow, i18nNumber, toMoment } from "../../../../helpers/utility";
+import { average, daysFromNow, fromNow, i18nNumber, toMoment } from "../../../../helpers/utility";
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
-import { getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { Quadrants, getQuadrant, getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -173,4 +174,67 @@ export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleT
   const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
   const throughputRate = flowItems / days;
   return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+}
+
+
+export function useWipMetricsCommon({
+  data,
+  dataForSpecs,
+  flowMetricsData,
+  dimension,
+  specsOnly,
+  days,
+  excludeAbandoned,
+  cycleTimeTarget,
+  latencyTarget,
+}) {
+  const intl = useIntl();
+
+  const workItems = React.useMemo(() => {
+    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [data, dimension]);
+  const workItemsDurations = getWorkItemDurations(workItems);
+  const workItemAggregateDurations = excludeAbandoned
+    ? workItemsDurations.filter(
+        (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
+      )
+    : workItemsDurations;
+
+  const workItemsForSpecs = React.useMemo(() => {
+    const edges = dataForSpecs?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    return edges.map((edge) => edge.node);
+  }, [dataForSpecs, dimension]);
+
+  const workItemAggregateDurationsForSpecs = excludeAbandoned
+    ? getWorkItemDurations(workItemsForSpecs).filter(
+        (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
+      )
+    : getWorkItemDurations(workItemsForSpecs);
+
+  const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
+
+  const pipelineCycleMetrics = {
+    [specsOnly ? "workItemsWithCommits" : "workItemsInScope"]: workItemAggregateDurations.length,
+    avgCycleTime: i18nNumber(intl, avgCycleTime, 2),
+  };
+
+  const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
+
+  return {wipLimit, pipelineCycleMetrics, workItemAggregateDurations, workItemAggregateDurationsForSpecs};
+}
+
+export function DevItemRatio({devItemsCount, devItemsPercentage}) {
+  return (
+    <div className="tw-textXl tw-flex tw-flex-col">
+      <div className="tw-flex tw-items-center tw-gap-2">
+        <div>{devItemsCount}</div>
+        <div className="tw-textSm">{devItemsCount===1 ? "Dev Item": "Dev Items"}</div>
+      </div>
+      <div className="tw-flex tw-items-center tw-gap-2">
+        <div className="tw-textSm">Dev Item Ratio</div>
+        <div className="tw-textSm tw-font-medium">{devItemsPercentage}</div>
+      </div>
+    </div>
+  );
 }
