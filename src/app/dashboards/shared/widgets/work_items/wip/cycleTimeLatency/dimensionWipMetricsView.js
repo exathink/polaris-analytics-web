@@ -4,16 +4,17 @@ import { average, i18nNumber } from "../../../../../../helpers/utility";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
 import {getWipLimit, getWorkItemDurations} from "../../clientSideFlowMetrics";
 import { Quadrants, getQuadrant } from "./cycleTimeLatencyUtils";
+import { getPercentage } from "../../../../../projects/shared/helper/utils";
 
 function DevItemRatio({devItemsCount, devItemsPercentage}) {
   return (
-    <div className="tw-flex tw-flex-col tw-gap-2">
-      <div className="tw-flex tw-items-center tw-justify-between">
+    <div className="tw-textXl tw-flex tw-flex-col">
+      <div className="tw-flex tw-items-center tw-gap-2">
         <div>{devItemsCount}</div>
-        <div>Dev Items</div>
+        <div className="tw-textSm">{devItemsCount===1 ? "Dev Item": "Dev Items"}</div>
       </div>
-      <div className="tw-flex tw-items-center tw-justify-between">
-        <div>Dev Item Ratio</div>
+      <div className="tw-flex tw-items-center tw-gap-2">
+        <div className="tw-textSm">Dev Item Ratio</div>
         <div>{devItemsPercentage}</div>
       </div>
     </div>
@@ -64,7 +65,17 @@ export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, di
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
-          trendsView: {title: "Total", content: <span>Volume Trends</span>},
+          bottomRightElement: (
+            <DevItemRatio
+              devItemsCount={workItemAggregateDurationsForSpecs.length}
+              devItemsPercentage={getPercentage(
+                workItemAggregateDurations.length > 0
+                  ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
+                  : 0,
+                intl
+              )}
+            />
+          ),
           info: {title: "Info", content: "content"},
           ...displayProps,
         }}
@@ -72,7 +83,11 @@ export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, di
     ),
     avgAge: (
       <AvgAge
-        title={<span>Work In Process: Age <sup>Avg</sup></span>}
+        title={
+          <span>
+            Work In Process: Age <sup>Avg</sup>
+          </span>
+        }
         currentMeasurement={pipelineCycleMetrics}
         target={cycleTimeTarget}
         displayType={displayType}

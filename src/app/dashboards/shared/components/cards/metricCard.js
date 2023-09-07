@@ -14,15 +14,17 @@ export function MetricCard({
   supportingMetric,
   detailsView,
   trendsView,
+  bottomRightElement,
   className,
   displayBag={}
 }) {
   const color = Colors.DashboardWidgetIcons.primary;
   const {iconsShiftLeft=false, trendValueClass="", valueClass} = displayBag;
 
+  const colSpanClass = bottomRightElement || trendValueClass ? "tw-col-span-3": "tw-col-span-2";
   const trendIndicatorElement = (
-    <div className={classNames("trendIndicator tw-self-end tw-justify-self-end", trendValueClass, trendValueClass ? "tw-col-span-3" : "tw-col-span-2", trendsView ? "tw-cursor-pointer": "")}>
-      {trendIndicator}
+    <div className={classNames("trendIndicator tw-self-end tw-justify-self-end", trendValueClass, colSpanClass, trendsView ? "tw-cursor-pointer": "")}>
+      {trendsView ? trendIndicator: bottomRightElement }
     </div>
   );
 
@@ -61,7 +63,7 @@ export function MetricCard({
         </div>
       </div>
 
-      <div className={classNames("valueSuffix tw-self-end", trendValueClass ? "tw-col-span-4" : "tw-col-span-5")}>
+      <div className={classNames("valueSuffix tw-self-end", trendValueClass || bottomRightElement ? "tw-col-span-4" : "tw-col-span-5")}>
         <div className={classNames("value tw-font-medium tw-leading-3", valueClass??"tw-text-4xl")}>
           {value} <span className="suffix tw-text-sm tw-font-normal">{suffix}</span>
           {supportingMetric && <div className="tw-text-xs tw-text-gray-300">{supportingMetric}</div>}
