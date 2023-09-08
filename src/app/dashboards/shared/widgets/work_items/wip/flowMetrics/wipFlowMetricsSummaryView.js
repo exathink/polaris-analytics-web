@@ -349,6 +349,22 @@ export function WorkInProgressSummaryView({data, dataForSpecs, dimension, cycleT
       latencyTarget,
     });
 
+    const bottomRightElement = specsOnly
+      ? {}
+      : {
+          bottomRightElement: (
+            <DevItemRatio
+              devItemsCount={workItemAggregateDurationsForSpecs.length}
+              devItemsPercentage={getPercentage(
+                workItemAggregateDurations.length > 0
+                  ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
+                  : 0,
+                intl
+              )}
+            />
+          ),
+        };
+    
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_1fr] tw-gap-1">
       <MetricsGroupTitle>Flow Metrics, Work In Process</MetricsGroupTitle>
@@ -361,17 +377,7 @@ export function WorkInProgressSummaryView({data, dataForSpecs, dimension, cycleT
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
-          bottomRightElement: (
-            <DevItemRatio
-              devItemsCount={workItemAggregateDurationsForSpecs.length}
-              devItemsPercentage={getPercentage(
-                workItemAggregateDurations.length > 0
-                  ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
-                  : 0,
-                intl
-              )}
-            />
-          ),
+          ...bottomRightElement,
           testId: "wip-total",
         }}
       />
