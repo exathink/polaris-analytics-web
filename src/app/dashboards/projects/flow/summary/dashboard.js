@@ -11,13 +11,12 @@ import {GroupingSelector} from "../../../shared/components/groupingSelector/grou
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
-import { getSingularPlural } from "../../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
 export function NewFlowDashboard() {
 
-  const {project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults, contributorCount}, context} = useProjectContext();
+  const {project: {key, latestWorkItemEvent, latestCommit, settingsWithDefaults}, context} = useProjectContext();
 
   const [workItemScope, setWorkItemScope] = useState("all");
   const specsOnly = workItemScope === "specs";
@@ -50,7 +49,6 @@ export function NewFlowDashboard() {
     wipLimit,
   } = settingsWithDefaults;
 
-  const contributorCountElement = `${contributorCount} ${getSingularPlural(contributorCount, "Contributor")}`;
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
@@ -61,13 +59,8 @@ export function NewFlowDashboard() {
         <div className="tw-flex tw-justify-start">
           Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
         </div>
-        <div className="tw-text-sm tw-flex tw-justify-start tw-gap-1">
-          <div>
-            {contributorCountElement},
-          </div> 
-          <div>
+        <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
-          </div>
         </div>
       </div>
       <div className="tw-row-start-1 tw-col-start-4 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
