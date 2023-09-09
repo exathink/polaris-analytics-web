@@ -22,6 +22,19 @@ export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, di
     });
 
   const {displayType, metric, displayProps} = displayBag;
+
+  const bottomRightElement = specsOnly ? {} : {bottomRightElement: (
+    <DevItemRatio
+      devItemsCount={workItemAggregateDurationsForSpecs.length}
+      devItemsPercentage={getPercentage(
+        workItemAggregateDurations.length > 0
+          ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
+          : 0,
+        intl
+      )}
+    />
+  )};
+
   const metricMap = {
     volume: (
       <Wip
@@ -33,17 +46,7 @@ export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, di
         displayProps={{
           className: "tw-p-2",
           supportingMetric: <span>Limit {wipLimit}</span>,
-          bottomRightElement: (
-            <DevItemRatio
-              devItemsCount={workItemAggregateDurationsForSpecs.length}
-              devItemsPercentage={getPercentage(
-                workItemAggregateDurations.length > 0
-                  ? workItemAggregateDurationsForSpecs.length / workItemAggregateDurations.length
-                  : 0,
-                intl
-              )}
-            />
-          ),
+          ...bottomRightElement,
           info: {title: "Info", content: "content"},
           ...displayProps,
         }}
