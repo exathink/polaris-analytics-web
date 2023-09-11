@@ -19,15 +19,20 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""})
   const {queryParams, state} = useQueryParamState();
 
   React.useEffect(() => {
+    let stateCopy = {...state};
     let queryString = "";
     if (valueIndex === 0) {
       queryParams.delete(queryParamKey);
+
+      const {[queryParamKey]:_discard, ...restState} = stateCopy;
+      stateCopy = restState;
     } else {
       queryParams.set(queryParamKey, uniqueItems[valueIndex].key);
+      stateCopy = {...state, [queryParamKey]: uniqueItems[valueIndex]}
     }
+    
     queryString = queryParams.toString();
-
-    history.push({search: `?${queryString}`, state: {...state, [queryParamKey]: uniqueItems[valueIndex]}});
+    history.push({search: `?${queryString}`, state: stateCopy});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
