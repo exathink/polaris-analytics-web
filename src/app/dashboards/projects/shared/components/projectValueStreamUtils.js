@@ -30,9 +30,9 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""})
       queryParams.set(queryParamKey, uniqueItems[valueIndex].key);
       stateCopy = {...state, [queryParamKey]: uniqueItems[valueIndex]}
     }
-    
+
     queryString = queryParams.toString();
-    history.push({search: `?${queryString}`, state: stateCopy});
+    history.push({search: queryString, state: stateCopy});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, valueIndex]);
@@ -40,7 +40,7 @@ export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""})
   // clear url on unmount of this component
   React.useEffect(() => {
     return () => {
-      history.push({search: ""});
+      history.push({search: "", state: {}});
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
