@@ -12,63 +12,42 @@ const {Option} = Select;
 
 const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 
-export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""}) {
-  const location = useLocation();
-  const history = useHistory();
-
-  const {queryParams, state} = useQueryParamState();
-  let queryStringDep = queryParams.toString();
-
-  React.useEffect(() => {
-    let stateCopy = {...state};
-    let queryString = "";
-    if (valueIndex === 0) {
-      queryParams.delete(queryParamKey);
-
-      const {[queryParamKey]:_discard, ...restState} = stateCopy;
-      stateCopy = restState;
-    } else {
-      queryParams.set(queryParamKey, uniqueItems[valueIndex].key);
-      stateCopy = {...state, [queryParamKey]: uniqueItems[valueIndex]}
-    }
-
-    queryString = queryParams.toString();
-    history.replace({search: queryString, state: stateCopy});
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParamKey, location.pathname, valueIndex, queryStringDep]);
-
-  // clear url on unmount of this component
-  React.useEffect(() => {
-    return () => {
-      history.replace({search: "", state: {}});
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-}
-
 function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamKey}) {
-  const {queryParams} = useQueryParamState();
+  const {queryParams, setQueryParam} = useQueryParamState();
   const queryParamVal = queryParams.get(queryParamKey);
   const urlSyncedItem = uniqueItems.find((item) => item.key === queryParamVal);
   React.useEffect(() => {
     if (urlSyncedItem) {
       updateFromQueryParam(urlSyncedItem);
+      setQueryParam({key: queryParamKey, value: urlSyncedItem.key, stateSlice: urlSyncedItem});
     }
   }, []);
 }
 
 export function ValueStreamsDropdown() {
   const {data} = useWidget();
+  const {setQueryParam, removeQueryParam} = useQueryParamState();
 
   const edges = data.project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
-  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey: "vs"});
+  const queryParamKey = "vs";
+
+  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
   // sync dropdown value from url query-param
-  useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "vs"});
+  // useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "vs"});
+  function _handleChange(index) {
+    handleChange(index);
+
+    if (index===0) {
+      removeQueryParam(queryParamKey)
+    } else {
+      setQueryParam({key: queryParamKey, value: uniqueItems[index].key, stateSlice: uniqueItems[index]});
+    }
+
+  }
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
@@ -77,7 +56,7 @@ export function ValueStreamsDropdown() {
 
   return (
     <div className="tw-ml-2">
-      <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} value={valueIndex} />
+      <SelectDropdown uniqueItems={uniqueItems} handleChange={_handleChange} value={valueIndex} />
     </div>
   );
 }
@@ -85,16 +64,28 @@ export function ValueStreamsDropdown() {
 const defaultItemRelease = {key: "all", name: "All Releases", releaseValue: undefined};
 export function ReleasesDropdown() {
   const {data} = useWidget();
+  const {setQueryParam, removeQueryParam} = useQueryParamState();
 
   const releases = data.project.releases ?? [];
   const items = releases.map((x) => ({key: x, name: x, releaseValue: x}));
   const uniqueItems = [defaultItemRelease, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
+  const queryParamKey = "release";
 
-  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey: "release"});
+  useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
 
+  function _handleChange(index) {
+    handleChange(index);
+
+    if (index===0) {
+      removeQueryParam(queryParamKey)
+    } else {
+      setQueryParam({key: queryParamKey, value: uniqueItems[index].key, stateSlice: uniqueItems[index]});
+    }
+
+  }
   // sync dropdown value from url query-param
-  useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "release"});
+  // useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "release"});
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
@@ -103,7 +94,7 @@ export function ReleasesDropdown() {
 
   return (
     <div className="tw-ml-2">
-      <SelectDropdown uniqueItems={uniqueItems} handleChange={handleChange} value={valueIndex} />
+      <SelectDropdown uniqueItems={uniqueItems} handleChange={_handleChange} value={valueIndex} />
     </div>
   );
 }
@@ -132,6 +123,16 @@ function ProjectValueStreams() {
 }
 
 export function ProjectValueStreamsWidget() {
+  const history = useHistory();
+
+  // clear url on unmount of this component
+  React.useEffect(() => {
+    return () => {
+      history.replace({search: "", state: {}});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return <ProjectDashboard pollInterval={1000 * 60}>
     <ProjectValueStreams />
   </ProjectDashboard>
