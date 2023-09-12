@@ -7,7 +7,7 @@ import cn from "classnames";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import { VolumeTrendsTableWidget } from "../trends/volume/volumeTrendsTableWidget";
 import { AppTerms } from "../../../config";
-import { useQueryParamState } from "../../../../projects/shared/helper/hooks";
+import { useGetProjectDropdownVals } from "../../../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -31,9 +31,7 @@ export function DimensionThroughputDetailDashboard({
   const [selectedMetric, setSelectedMetric] = React.useState("workItemsWithCommits");
 
   const limitToSpecsOnly = workItemScope === 'specs';
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} className="tw-bg-ghostwhite tw-grid tw-grid-cols-6 tw-grid-rows-[7%_auto_auto_auto_5%_50%] tw-gap-2 tw-p-2" gridLayout={true}>

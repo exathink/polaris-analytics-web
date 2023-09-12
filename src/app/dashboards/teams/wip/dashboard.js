@@ -14,7 +14,6 @@ import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../config/featureFlags";
-import {useQueryParamState} from "../../projects/shared/helper/hooks";
 import {useLocalStorage} from "../../../helpers/hooksUtil";
 import {FlowMetricsTrendsWidget} from "../../projects/shared/widgets/flowMetricsTrends/flowMetricsTrendsWidget";
 import classNames from "classnames";
@@ -22,6 +21,7 @@ import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 import { Checkbox } from "antd";
 import { FILTERS } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { useGetProjectDropdownVals } from "../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -54,7 +54,7 @@ function WipDashboard({
   }
 
   const ageLatencyFeatureFlag = useFeatureFlag(AGE_LATENCY_ENHANCEMENTS, true);
-  const {state: {workItemSelectors=[]}} = useQueryParamState();
+  const {workItemSelectors} = useGetProjectDropdownVals()
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));

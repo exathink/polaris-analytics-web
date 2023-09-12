@@ -12,7 +12,7 @@ import {FlowTypeWorkItemType, WorkItemStateTypes, FlowTypeDisplayName, AppTerms}
 import {getServerDate, i18nDate} from "../../../../../../helpers/utility";
 import {useIntl} from "react-intl";
 import {CardDetailsWidget} from "../../closed/flowMetrics/dimensionCardDetailsWidget";
-import { useQueryParamState } from "../../../../../projects/shared/helper/hooks";
+import { useGetProjectDropdownVals } from "../../../../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.projects.trends.flow-mix.detail";
 
@@ -35,9 +35,7 @@ export const DimensionFlowMixTrendsDetailDashboard = ({
   const specsOnly = workItemScope === "specs";
   const [before, setBefore] = React.useState();
   const [workItemTypeFilter, setFilter] = React.useState(null);
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
   const [
     [daysRange, setDaysRange],
     [measurementWindowRange, setMeasurementWindowRange],

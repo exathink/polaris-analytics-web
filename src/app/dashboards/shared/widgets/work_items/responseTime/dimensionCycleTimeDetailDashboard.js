@@ -3,7 +3,7 @@ import React from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
 import { DimensionCycleTimeHistogramWidget } from "../closed/flowMetrics/dimensionCycleTimeHistogramWidget";
 import { DimensionCycleTimeWidget } from "../closed/flowMetrics/dimensionCycleTimeWidget";
-import { useQueryParamState } from "../../../../projects/shared/helper/hooks";
+import { useGetProjectDropdownVals } from "../../../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.cycle.time.breakup";
 
@@ -26,9 +26,7 @@ export function DimensionCycleTimeDetailDashboard({
     includeSubTasksFlowMetrics,
   } = settingsWithDefaults;
 
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   return (
     <Dashboard

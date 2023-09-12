@@ -12,10 +12,11 @@ import { GroupingSelector } from "../../../../components/groupingSelector/groupi
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, WorkItemStateTypes } from "../../../../config";
 import { getServerDate, i18nDate } from "../../../../../../helpers/utility";
-import { useQueryParamState, useResetComponentState } from "../../../../../projects/shared/helper/hooks";
+import { useResetComponentState } from "../../../../../projects/shared/helper/hooks";
 import { useIntl } from "react-intl";
 import { Box, Flex } from "reflexbox";
 import { Checkbox } from "antd";
+import { useGetProjectDropdownVals } from "../../../../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.trends.projects.throughput.detail";
 
@@ -54,9 +55,7 @@ export const VolumeTrendsDetailDashboard = ({
   const [yAxisScale, setYAxisScale] = React.useState("histogram");
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
   const intl = useIntl();
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   function handleClearClick() {
     setSeriesName("workItemsInScope");

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../../../framework/viz/dashboard";
 
-import { ProjectPipelineFunnelWidget } from "./projectPipelineFunnelWidget";
 import { DimensionValueStreamPhaseDetailWidget } from "../../../../shared/widgets/work_items/valueStreamPhaseDetail";
 import { Box, Flex } from "reflexbox";
 import { WorkItemScopeSelector } from "../../../../shared/components/workItemScopeSelector/workItemScopeSelector";
-import { GroupingSelector } from "../../../../shared/components/groupingSelector/groupingSelector";
-import { useQueryParamState } from "../../helper/hooks";
+import { useGetProjectDropdownVals } from "../../components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.project.pipeline.detail";
 
@@ -28,9 +26,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   const [workItemScope, setWorkItemScope] = useState("all");
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   const specsOnly = workItemScope === "specs";
 

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../../framework/viz/dashboard";
-import {useQueryParamState} from "../../../../projects/shared/helper/hooks";
 import {DaysRangeSlider, THREE_MONTHS} from "../../../../shared/components/daysRangeSlider/daysRangeSlider";
 import {DimensionFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics";
 import {DimensionDeliveryCycleFlowMetricsWidget} from "../../../../shared/widgets/work_items/closed/flowMetrics/dimensionDeliveryCycleFlowMetricsWidget";
 import { WorkItemScopeSelector } from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import { AppTerms } from "../../../config";
 import { DimensionPullRequestsWidget } from "../../pullRequests/openPullRequests";
+import { useGetProjectDropdownVals } from "../../../../projects/shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -42,9 +42,7 @@ export function DimensionResponseTimeDetailDashboard({
 
   const limitToSpecsOnly = workItemScope === 'specs';
   const [tabSelection, setTab] = React.useState("histogram");
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   return (
     <Dashboard

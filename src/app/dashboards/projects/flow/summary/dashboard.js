@@ -9,8 +9,8 @@ import {Flex} from "reflexbox";
 import {WorkItemScopeSelector} from "../../../shared/components/workItemScopeSelector/workItemScopeSelector";
 import {GroupingSelector} from "../../../shared/components/groupingSelector/groupingSelector";
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
-import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
+import { useGetProjectDropdownVals } from "../../shared/components/projectValueStreamUtils";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -22,9 +22,7 @@ export function NewFlowDashboard() {
   const specsOnly = workItemScope === "specs";
   const [volumeOrEffort, setVolumeOrEffort] = useState(workItemScope === "all" ? 'volume' : 'volume');
 
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors??[];
-  const release = state?.release?.releaseValue;
+  const {workItemSelectors, release} = useGetProjectDropdownVals()
 
   const [exclude, setExclude] = React.useState(true);
 
