@@ -36,8 +36,7 @@ export function ValueStreamsDropdown() {
   const queryParamKey = "vs";
 
   useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
-  // sync dropdown value from url query-param
-  // useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "vs"});
+
   function _handleChange(index) {
     handleChange(index);
 
@@ -84,8 +83,6 @@ export function ReleasesDropdown() {
     }
 
   }
-  // sync dropdown value from url query-param
-  // useQueryParamSync({uniqueItems, valueIndex, queryParamKey: "release"});
 
   // when there are no value streams under project, we don't show the dropdown for valuestream
   if (items.length === 0) {
