@@ -8,6 +8,7 @@ import {Col, Drawer, Form, Input, Row, Select} from "antd";
 import Button from "../../../../../components/uielements/button";
 import {useQueryReleases} from "../hooks/useQueryReleases";
 import {ProjectDashboard, useProjectContext} from "../../projectDashboard";
+import { QUERY_PARAM_KEYS } from "../helper/utils";
 const {Option} = Select;
 
 export function useGetProjectDropdownVals() {
@@ -15,8 +16,8 @@ export function useGetProjectDropdownVals() {
   const {project} = useProjectContext();
   const edges = project.valueStreams?.edges ?? [];
   const items = edges.map((edge) => edge.node);
-  const selectedValueStream = items.find((x) => x.key === queryParams.get("vs"));
-  return {workItemSelectors: selectedValueStream?.workItemSelectors ?? [], release: queryParams.get("release")};
+  const selectedValueStream = items.find((x) => x.key === queryParams.get(QUERY_PARAM_KEYS.vs));
+  return {workItemSelectors: selectedValueStream?.workItemSelectors ?? [], release: queryParams.get(QUERY_PARAM_KEYS.release)};
 }
 
 function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamKey}) {
@@ -40,7 +41,7 @@ export function ValueStreamsDropdown() {
   const uniqueItems = [defaultItem, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
 
-  const queryParamKey = "vs";
+  const queryParamKey = QUERY_PARAM_KEYS.vs;
 
   useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
 
@@ -76,7 +77,7 @@ export function ReleasesDropdown() {
   const items = releases.map((x) => ({key: x, name: x, releaseValue: x}));
   const uniqueItems = [defaultItemRelease, ...items];
   const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItemRelease});
-  const queryParamKey = "release";
+  const queryParamKey = QUERY_PARAM_KEYS.release;
 
   useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
 
