@@ -11,6 +11,7 @@ import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import Configure from "./configure/topic";
+import Alignment from "./alignment/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -48,6 +49,11 @@ const context : Context = {
 
             match: 'throughput',
             topic: Throughput
+          },
+          {
+
+            match: 'alignment',
+            topic: Alignment
           },
           {
             match: "configure",

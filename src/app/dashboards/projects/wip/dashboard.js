@@ -4,7 +4,7 @@ import {AppTerms, WorkItemStateTypes} from "../../shared/config";
 
 import {withViewerContext} from "../../../framework/viewer/viewerContext";
 
-import {ProjectDashboard, useProjectContext} from "../projectDashboard";
+import {ProjectDashboard, useCustomPhaseMapping, useProjectContext} from "../projectDashboard";
 import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work_items/wip";
 
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
@@ -41,10 +41,10 @@ function WipDashboard({
   viewerContext,
 }) {
 
-  const {key, latestWorkItemEvent, latestCommit, settings, settingsWithDefaults} = useProjectContext((result) => result.project);
+  const {key, latestWorkItemEvent, latestCommit, settingsWithDefaults} = useProjectContext((result) => result.project);
 
   const [workItemScope, setWorkItemScope] = useState("all");
-  const customPhaseMapping = settings?.customPhaseMapping ?? {}
+  const customPhaseMapping = useCustomPhaseMapping();
 
   const [wip_chart_type_localstorage, setValueToLocalStorage] = useLocalStorage(WIP_CHART_TYPE);
   const [wipChartType, setWipChartType] = useState(wip_chart_type_localstorage || "queue");
