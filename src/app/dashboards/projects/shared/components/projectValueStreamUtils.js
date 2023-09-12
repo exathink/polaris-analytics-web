@@ -1,5 +1,5 @@
 import React from "react";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {useWidget, WidgetCore} from "../../../../framework/viz/dashboard/widgetCore";
 import {SelectDropdown, useSelect} from "../../../shared/components/select/selectDropdown";
 import {useQueryProjectValueStreams} from "../hooks/useQueryValueStreams";
@@ -10,20 +10,27 @@ import {useQueryReleases} from "../hooks/useQueryReleases";
 import {ProjectDashboard, useProjectContext} from "../../projectDashboard";
 const {Option} = Select;
 
-const defaultItem = {key: "all", name: "All", workItemSelectors: []};
+export function useGetProjectDropdownVals() {
+  const {queryParams} = useQueryParamState();
+  const {project} = useProjectContext();
+  const edges = project.valueStreams?.edges ?? [];
+  const items = edges.map((edge) => edge.node);
+  const selectedValueStream = items.find((x) => x.key === queryParams.get("vs"));
+  return {workItemSelectors: selectedValueStream?.workItemSelectors ?? [], release: queryParams.get("release")};
+}
 
 function useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam, queryParamKey}) {
-  const {queryParams, setQueryParam} = useQueryParamState();
+  const {queryParams} = useQueryParamState();
   const queryParamVal = queryParams.get(queryParamKey);
   const urlSyncedItem = uniqueItems.find((item) => item.key === queryParamVal);
   React.useEffect(() => {
     if (urlSyncedItem) {
       updateFromQueryParam(urlSyncedItem);
-      setQueryParam({key: queryParamKey, value: urlSyncedItem.key, stateSlice: urlSyncedItem});
     }
   }, []);
 }
 
+const defaultItem = {key: "all", name: "All", workItemSelectors: []};
 export function ValueStreamsDropdown() {
   const {data} = useWidget();
   const {setQueryParam, removeQueryParam} = useQueryParamState();
@@ -43,7 +50,7 @@ export function ValueStreamsDropdown() {
     if (index===0) {
       removeQueryParam(queryParamKey)
     } else {
-      setQueryParam({key: queryParamKey, value: uniqueItems[index].key, stateSlice: uniqueItems[index]});
+      setQueryParam({key: queryParamKey, value: uniqueItems[index].key});
     }
 
   }
@@ -68,7 +75,7 @@ export function ReleasesDropdown() {
   const releases = data.project.releases ?? [];
   const items = releases.map((x) => ({key: x, name: x, releaseValue: x}));
   const uniqueItems = [defaultItemRelease, ...items];
-  const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItem});
+  const {handleChange, valueIndex, setSelectedVal} = useSelect({uniqueItems, defaultVal: defaultItemRelease});
   const queryParamKey = "release";
 
   useUpdateStateOnRefresh({uniqueItems, updateFromQueryParam: setSelectedVal, queryParamKey});
@@ -79,7 +86,7 @@ export function ReleasesDropdown() {
     if (index===0) {
       removeQueryParam(queryParamKey)
     } else {
-      setQueryParam({key: queryParamKey, value: uniqueItems[index].key, stateSlice: uniqueItems[index]});
+      setQueryParam({key: queryParamKey, value: uniqueItems[index].key});
     }
 
   }
