@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { useProjectContext } from "../../projectDashboard";
 
 export function useResetComponentState() {
   const [resetComponentStateKey, setKey] = React.useState(1);
@@ -36,22 +37,19 @@ export function useUpdateQuery(dimension, list_prop) {
 // the query string for you.
 export function useQueryParamState() {
   const location = useLocation();
-  const {search, state={}} = location;
   const history = useHistory();
 
-  const queryParams = React.useMemo(() => new URLSearchParams(search), [search]);
+  const queryParams = React.useMemo(() => new URLSearchParams(location.search), [location.search]);
 
-  function setQueryParam({key, value, stateSlice}) {
+  function setQueryParam({key, value}) {
     queryParams.set(key, value);
-    const newState = {...state, [key]: stateSlice}
-    history.push({...location, search: queryParams.toString(), state: newState});
+    history.replace({...location, search: queryParams.toString()});
   }
 
   function removeQueryParam(key) {
     queryParams.delete(key);
-    const {[key]: _discard, ...remainingState} = state;
-    history.push({...location, search: queryParams.toString(), state: remainingState});
+    history.replace({...location, search: queryParams.toString()});
   }
 
-  return {queryParams, state: location.state, setQueryParam, removeQueryParam};
+  return {queryParams, setQueryParam, removeQueryParam};
 }
