@@ -108,3 +108,8 @@ export function getPercentage(fractionVal, intl) {
   const percentVal = i18nNumber(intl, fractionVal * 100, 2);
   return `${percentVal}%`;
 }
+
+export const QUERY_PARAM_KEYS = {
+  vs: "vs",
+  release: "release"
+}
