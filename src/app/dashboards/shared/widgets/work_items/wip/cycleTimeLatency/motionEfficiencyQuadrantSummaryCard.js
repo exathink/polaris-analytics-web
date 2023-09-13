@@ -35,6 +35,7 @@ export function MotionEfficiencyQuadrantSummaryCard({workItems, stateTypes, spec
         latencyTarget={latencyTarget}
         onQuadrantClick={onQuadrantClick}
         selectedQuadrant={selectedQuadrant}
+        popupProps={{specsOnly, cycleTimeTarget, latencyTarget, stateTypes}}
         {...displayBag}
       />
     </PlainCard>
