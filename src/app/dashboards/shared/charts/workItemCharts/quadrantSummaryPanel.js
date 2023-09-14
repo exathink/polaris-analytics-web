@@ -3,7 +3,6 @@ import { getQuadrantCounts } from "../../widgets/work_items/clientSideFlowMetric
 import { Popover } from "antd";
 
 import {
-  filterByStateTypes,
   getQuadrantDescription,
   getQuadrantLegacy,
   QuadrantColors,
