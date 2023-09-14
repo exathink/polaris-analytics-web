@@ -82,7 +82,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     );
     popoverContent = (
       <WorkItemsCycleTimeVsLatencyChart
-        stageName={"Coding"}
+        stageName={"Wip"}
         workItems={quadrantWorkItems}
         groupByState={true}
         tooltipType={"small"}
