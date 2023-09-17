@@ -1,5 +1,5 @@
-import { ClockCircleFilled, PlusCircleFilled } from "@ant-design/icons";
-import {Popover} from "antd";
+import { ClockCircleFilled, BarChartOutlined, DotChartOutlined } from "@ant-design/icons";
+import {Popover, Tooltip} from "antd";
 import classNames from "classnames";
 import {InfoCard} from "../../../../components/misc/info";
 import {LabelValue} from "../../../../helpers/components";
@@ -15,29 +15,33 @@ export function PlainCard({title, value, children, info, detailsView,latencyView
           className="tw-pl-2"
         />
         {latencyView && (
-          <div className="detailIcon tw-cursor-pointer tw-rounded-full tw-ml-auto">
-            <Popover
-              placement={latencyView.placement}
-              title={latencyView.title}
-              content={latencyView.content}
-              trigger="click"
-            >
-              <ClockCircleFilled style={{fontSize: "2.5vh", color: "rgba(3, 21, 49, 0.63)"}} />
-            </Popover>
-          </div>
+          <Tooltip title={"Motion Analysis"}>
+            <div className="detailIcon tw-cursor-pointer tw-rounded-full tw-ml-auto">
+              <Popover
+                placement={latencyView.placement}
+                title={latencyView.title}
+                content={latencyView.content}
+                trigger="click"
+              >
+                 <DotChartOutlined style={{fontSize: "2.5vh", color: "rgba(3, 21, 49, 0.63)"}} />
+              </Popover>
+            </div>
+          </Tooltip>
         )}
 
         {detailsView && (
-          <div className={classNames("detailIcon tw-cursor-pointer tw-rounded-full", !latencyView ? "tw-ml-auto": "")}>
-            <Popover
-              placement={detailsView.placement}
-              title={detailsView.title}
-              content={detailsView.content}
-              trigger="click"
-            >
-              <PlusCircleFilled style={{fontSize: "2.5vh", color: "rgba(3, 21, 49, 0.63)"}} />
-            </Popover>
-          </div>
+          <Tooltip title={"Flow Efficiency"}>
+            <div className={classNames("detailIcon tw-cursor-pointer tw-rounded-full", !latencyView ? "tw-ml-auto": "")}>
+              <Popover
+                placement={detailsView.placement}
+                title={detailsView.title}
+                content={detailsView.content}
+                trigger="click"
+              >
+                <BarChartOutlined style={{fontSize: "2.5vh", color: "rgba(3, 21, 49, 0.63)"}} />
+              </Popover>
+            </div>
+          </Tooltip>
         )}
         <div className="tw-cursor-pointer tw-rounded-full">
           {info && <InfoCard title={info.title} content={info.content} drawerContent={info.drawerContent} />}

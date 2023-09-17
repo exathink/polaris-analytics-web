@@ -42,14 +42,14 @@ export function MotionEfficiencyQuadrantSummaryCard({
       latencyView={displayBag?.showLatencyPopup ? {
         title: (
           <div className="tw-text-lg tw-text-gray-300">
-            Overall Motion Analysis
+            Motion Analysis, All {specsOnly? "Dev Items" : "Work Items"}
           </div>
         ),
         placement: "bottom",
         content: (
           <div className="tw-w-[500px]">
             <WorkItemsCycleTimeVsLatencyChart
-              stageName={"Wip"}
+              stageName={"Process"}
               workItems={filteredWorkItems}
               groupByState={true}
               tooltipType={"small"}
