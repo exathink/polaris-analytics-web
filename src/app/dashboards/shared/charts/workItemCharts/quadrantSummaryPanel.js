@@ -3,7 +3,6 @@ import { getQuadrantCounts } from "../../widgets/work_items/clientSideFlowMetric
 import { Popover } from "antd";
 
 import {
-  filterByStateTypes,
   getQuadrantDescription,
   getQuadrantLegacy,
   QuadrantColors,
@@ -12,6 +11,7 @@ import {
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
+import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
@@ -49,7 +49,7 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
   }, {});
 }
 
-function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId, size}) {
+function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId, size, popupProps, workItems}) {
   const intl = useIntl();
 
   const percentageCount = total === 0 ? 0 : (val / total) * 100;
@@ -74,11 +74,41 @@ function QuadrantBox({name, val, total, totalAge, totalLatency, quadrantEffort, 
     </div>
   );
 
+  let popoverContent;
+  if (popupProps && popupProps.showQuadrantPopup) {
+    const quadrantWorkItems = workItems.filter(
+      (w) => getQuadrantLegacy(w.cycleTime, w.latency, popupProps.cycleTimeTarget, popupProps.latencyTarget) === quadKey
+    );
+    popoverContent = (
+      <WorkItemsCycleTimeVsLatencyChart
+        stageName={"Wip"}
+        workItems={quadrantWorkItems}
+        groupByState={true}
+        tooltipType={"small"}
+        specsOnly={popupProps.specsOnly}
+        stateTypes={popupProps.stateTypes}
+        cycleTimeTarget={popupProps.cycleTimeTarget}
+        latencyTarget={popupProps.latencyTarget}
+      />
+    );
+  } else {
+    popoverContent = (
+      <>
+        {pairRender(`Avg. Age:`, averageAgeDisplay, `Days`)}
+        {pairRender(`Avg. Days Since Last Move:`, averageLatencyDisplay, ``)}
+        {pairRender(
+          `Effort:`,
+          wipEffortDisplay,
+          `FTE Days (${i18nNumber(intl, (quadrantEffort / totalEffort) * 100, 0)}%)`
+        )}
+      </>
+    );
+  }
+
+
   const tooltipContent = val > 0 && (
-    <div className="tw-p-2 tw-grid tw-gap-2 tw-text-gray-300">
-      {pairRender(`Avg. Age:`, averageAgeDisplay, `Days`)}
-      {pairRender(`Avg. Days Since Last Move:`, averageLatencyDisplay, ``)}
-      {pairRender(`Effort:`, wipEffortDisplay, `FTE Days (${i18nNumber(intl,(quadrantEffort/totalEffort)*100, 0 ) }%)`)}
+    <div className={classNames("tw-p-2 tw-grid tw-gap-2 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[500px]")}>
+      {popoverContent}
     </div>
   )
   const tooltipTitle = (
@@ -122,7 +152,8 @@ export function QuadrantSummaryPanel({
   onQuadrantClick,
   selectedQuadrant,
   valueFontClass = "tw-text-2xl",
-  size
+  size,
+  popupProps
 }) {
   const intl = useIntl();
 
@@ -183,6 +214,8 @@ export function QuadrantSummaryPanel({
         totalEffort={totalEffort}
         onQuadrantClick={() => onQuadrantClick(q.quadKey)}
         size={size}
+        popupProps={popupProps}
+        workItems={workItems}
       />
     );
   });
