@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { getQuadrantCounts } from "../../widgets/work_items/clientSideFlowMetrics";
 import { Popover } from "antd";
 
+import React from "react";
 import {
   getQuadrantDescription,
   getQuadrantLegacy,
@@ -12,6 +13,7 @@ import {
 import { useIntl } from "react-intl";
 import { i18nNumber } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
+
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
@@ -119,6 +121,9 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
         {quadrantDescription}
       </div>
+      <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
+        Motion is indicated by a change in workflow state or commit activity for a work item.
+      </div>
     </div>
   )
   return (
@@ -137,7 +142,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
             val === 0 ? "tw-invisible" : ""
           )}
         >
-          {val > 0 ? `Avg. Age ${averageAgeDisplay} Days` : "random text"}
+          {val > 0 ? `Avg. Age ${averageAgeDisplay} Days` : ""}
         </div>
       </div>
     </Popover>
@@ -191,7 +196,7 @@ export function QuadrantSummaryPanel({
 
   //TODO: remove abandoned for now, from the quadrant summary panel
   const {[Quadrants.abandoned]: _ignore, ...restQuadrants} = QuadrantNames;
-  const allQuadrants = Object.entries(restQuadrants).map(([key, value]) => ({
+  const allQuadrantsProps = Object.entries(restQuadrants).map(([key, value]) => ({
     quadKey: key,
     name: value,
     val: quadrantCounts[key] ?? 0,
@@ -203,16 +208,16 @@ export function QuadrantSummaryPanel({
     className: selectedQuadrant === key ? selectedBorderClasses : "",
   }));
 
-  const allElements = allQuadrants.map((q) => {
+  const allElements = allQuadrantsProps.map((quadrantProps) => {
     return (
       <QuadrantBox
-        key={q.quadKey}
-        testId={q.quadKey}
-        {...q}
+        key={quadrantProps.quadKey}
+        testId={quadrantProps.quadKey}
+        {...quadrantProps}
         fontClass={valueFontClass}
         total={workItems.length}
         totalEffort={totalEffort}
-        onQuadrantClick={() => onQuadrantClick(q.quadKey)}
+        onQuadrantClick={() => onQuadrantClick(quadrantProps.quadKey)}
         size={size}
         popupProps={popupProps}
         workItems={workItems}

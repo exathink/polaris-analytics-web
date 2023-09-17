@@ -86,10 +86,10 @@ export const QuadrantNames = {
   [Quadrants.abandoned]: "Abandoned",
 };
 export const getQuadrantDescription = ({ intl, cycleTimeTarget, latencyTarget }) => ({
-  [Quadrants.ok]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, latencyTarget, 1)} days`,
-  [Quadrants.latency]: `Age <= ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, latencyTarget, 1)} days`,
-  [Quadrants.age]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved <= ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
-  [Quadrants.critical]: `Age > ${i18nNumber(intl, cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
+  [Quadrants.ok]: `These items are younger than ${i18nNumber(intl, cycleTimeTarget, 0)} days, and have moved within the last ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.latency]: `These items are younger than ${i18nNumber(intl, cycleTimeTarget, 0)} days but have not moved in the  last ${i18nNumber(intl, latencyTarget, 1)} days`,
+  [Quadrants.age]: `The items are older than ${i18nNumber(intl, cycleTimeTarget, 0)} days, but they have moved within the last ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
+  [Quadrants.critical]: `These items are older than  ${i18nNumber(intl, cycleTimeTarget, 0)} days, and have not moved in the last ${i18nNumber(intl, cycleTimeTarget, 1)} days`,
   [Quadrants.abandoned]: `Age > ${i18nNumber(intl, 2*cycleTimeTarget, 0)} days, Last Moved > ${i18nNumber(intl, 2*cycleTimeTarget, 1)} days`
 });
 
