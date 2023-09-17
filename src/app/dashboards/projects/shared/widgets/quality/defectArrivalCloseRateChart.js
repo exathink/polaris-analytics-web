@@ -54,7 +54,7 @@ export const DefectArrivalCloseRateChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: "Defect Volume",
+        text: "Defect Arrival/Close Rate",
       },
       subtitle: {
         text: `${measurementPeriod} day trend`,

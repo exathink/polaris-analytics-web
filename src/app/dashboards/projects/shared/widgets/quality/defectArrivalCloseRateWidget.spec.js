@@ -108,7 +108,7 @@ describe("DefectArrivalCloseRateWidget", () => {
   describe("when there is series data", () => {
     test("should render correct chart title", async () => {
       renderWithProviders(<DefectArrivalCloseRateWidget {...propsFixture} />, mocksFixture);
-      expect(await screen.findByText(/Defect Volume/i)).toBeInTheDocument();
+      expect(await screen.findByText(/Defect Arrival/i)).toBeInTheDocument();
     });
 
     test("makes sure chart is rendered from widget, with correct legend titles", async () => {
@@ -119,7 +119,7 @@ describe("DefectArrivalCloseRateWidget", () => {
       // assert the chart existence (this also ensures chart is rendered)
       await screen.findByTestId("arrival-close-rate-chart");
 
-      expect(await screen.findByText(/Defect Volume/i)).toBeInTheDocument();
+      expect(await screen.findByText(/Defect Arrival/i)).toBeInTheDocument();
     });
   });
 });

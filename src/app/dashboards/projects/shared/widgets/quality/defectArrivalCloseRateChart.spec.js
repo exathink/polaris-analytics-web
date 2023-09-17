@@ -53,7 +53,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: "Defect Volume",
+    text: "Defect Arrival/Close Rate",
   },
   subtitle: {
     text: `${commonMeasurementProps.measurementPeriod} day trend`,
