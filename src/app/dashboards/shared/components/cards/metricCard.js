@@ -1,5 +1,5 @@
-import {PlusCircleFilled} from "@ant-design/icons";
-import {Popover} from "antd";
+import {BarChartOutlined} from "@ant-design/icons";
+import {Popover, Tooltip} from "antd";
 import classNames from "classnames";
 import { InfoCard } from "../../../../components/misc/info";
 import {Colors} from "../../config";
@@ -46,17 +46,19 @@ export function MetricCard({
         )}
       >
         {detailsView && (
-          <div className="detailIcon tw-cursor-pointer tw-rounded-full">
-            <Popover
-              placement={detailsView.placement}
-              title={detailsView.title}
-              content={detailsView.content}
-              trigger="click"
-              // destroyTooltipOnHide
-            >
-              <PlusCircleFilled style={{fontSize: "2.5vh", color: color}} />
-            </Popover>
-          </div>
+          <Tooltip title={"Show Details"}>
+            <div className="detailIcon tw-cursor-pointer tw-rounded-full">
+              <Popover
+                placement={detailsView.placement}
+                title={detailsView.title}
+                content={detailsView.content}
+                trigger="click"
+                // destroyTooltipOnHide
+              >
+                <BarChartOutlined style={{ fontSize: "2.5vh", color: color }} />
+              </Popover>
+            </div>
+          </Tooltip>
         )}
         <div className="infoIcon tw-cursor-pointer tw-rounded-full">
           {info && <InfoCard title={info.title} content={info.content} drawerContent={info.drawerContent} />}
