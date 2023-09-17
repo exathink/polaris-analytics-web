@@ -176,7 +176,7 @@ export function NewFlowDashboard() {
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
               excludeAbandoned={exclude}
-              displayBag={{fontSize: "tw-text-xl"}}
+              displayBag={{fontSize: "tw-text-xl", showLatencyPopup: true, showQuadrantPopup: true}}
             />
           )}
           showDetail={false}
