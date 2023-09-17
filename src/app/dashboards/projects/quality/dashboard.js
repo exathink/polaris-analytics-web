@@ -47,7 +47,7 @@ function TrendsDashboard({
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={30}
               view={view}
             />
           )}
@@ -62,7 +62,7 @@ function TrendsDashboard({
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={30}
               leadTimeConfidenceTarget={leadTimeConfidenceTarget}
               cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
               cycleTimeTarget={cycleTimeTarget}
@@ -76,30 +76,16 @@ function TrendsDashboard({
         h={"45%"}
       >
         <DashboardWidget
-          w={1 / 2}
-          name="backlog-trends-widget"
-          render={({view}) => (
-            <DefectBacklogTrendsWidget
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={7}
-              view={view}
-            />
-          )}
-          showDetail={false}
-        />
-        <DashboardWidget
-          w={1 / 2}
+          w={1}
           name="flow-mix"
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
-              title={"Cost of Defects"}
+              title={`Capacity Allocated to Defects, Last ${daysRange} Days`}
               instanceKey={key}
               measurementWindow={30}
               days={daysRange}
-              samplingFrequency={7}
+              samplingFrequency={30}
               context={context}
               view={view}
               latestWorkItemEvent={latestWorkItemEvent}
