@@ -32,10 +32,9 @@ import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeC
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
 import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
-import {DELIVERY_PHASES, ENGINEERING_PHASES} from "../../../../config";
+import {DELIVERY_PHASES, ENGINEERING_PHASES, WorkItemStateTypeDisplayName} from "../../../../config";
 import {WIP_CHART_TYPE} from "../../../../../../helpers/localStorageUtils";
 import {ResetAllFilterIcon} from "../../../../../../components/misc/customIcons";
-import {useCustomPhaseMapping} from "../../../../../projects/projectDashboard";
 
 export const DimensionCycleTimeLatencyDetailView = ({
   dimension,
@@ -49,6 +48,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   tooltipType,
   view,
   context,
+  displayBag
 }) => {
   const intl = useIntl();
   const {
@@ -56,7 +56,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
     variables: {specsOnly},
   } = useWidget();
 
-  const customPhaseMapping = useCustomPhaseMapping();
+  const {customPhaseMapping = WorkItemStateTypeDisplayName} = displayBag;
 
   const gridRef = React.useRef(null);
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
