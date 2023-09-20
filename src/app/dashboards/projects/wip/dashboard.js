@@ -279,6 +279,7 @@ function WipDashboard({
                 appliedFilters,
                 setAppliedFilters,
                 excludeAbandoned: excludeAbandoned,
+                customPhaseMapping
               }}
             />
           )}
@@ -317,6 +318,7 @@ function WipDashboard({
                 appliedFilters,
                 setAppliedFilters,
                 excludeAbandoned: excludeAbandoned,
+                customPhaseMapping
               }}
             />
           )}
