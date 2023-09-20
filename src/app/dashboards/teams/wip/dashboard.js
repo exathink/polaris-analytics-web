@@ -253,7 +253,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName="Coding"
+              stageName="Code"
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.open, WorkItemStateTypes.make]}
@@ -290,7 +290,7 @@ function WipDashboard({
                 includeSubTasks: includeSubTasksWipInspector,
                 referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
               }}
-              stageName={"Shipping"}
+              stageName={"Ship"}
               workItemScope={workItemScope}
               setWorkItemScope={setWorkItemScope}
               stateTypes={[WorkItemStateTypes.deliver]}
