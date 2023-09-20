@@ -11,8 +11,9 @@ import {
   Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
-import { i18nNumber } from "../../../../helpers/utility";
+import { EVENT_TYPES, i18nNumber } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
+import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
@@ -75,6 +76,14 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       </div>
     </div>
   );
+  
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
+  function handleSelectionChange(items, eventType) {
+    if (eventType === EVENT_TYPES.POINT_CLICK) {
+      setWorkItemKey(items[0].key);
+      setShowPanel(true);
+    }
+  }
 
   let popoverContent;
   if (popupProps && popupProps.showQuadrantPopup) {
@@ -82,16 +91,26 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       (w) => getQuadrantLegacy(w.cycleTime, w.latency, popupProps.cycleTimeTarget, popupProps.latencyTarget) === quadKey
     );
     popoverContent = (
-      <WorkItemsCycleTimeVsLatencyChart
-        stageName={"Wip"}
-        workItems={quadrantWorkItems}
-        groupByState={true}
-        tooltipType={"small"}
-        specsOnly={popupProps.specsOnly}
-        stateTypes={popupProps.stateTypes}
-        cycleTimeTarget={popupProps.cycleTimeTarget}
-        latencyTarget={popupProps.latencyTarget}
-      />
+      <>
+        <WorkItemsCycleTimeVsLatencyChart
+          stageName={"Wip"}
+          workItems={quadrantWorkItems}
+          groupByState={true}
+          tooltipType={"small"}
+          specsOnly={popupProps.specsOnly}
+          stateTypes={popupProps.stateTypes}
+          cycleTimeTarget={popupProps.cycleTimeTarget}
+          latencyTarget={popupProps.latencyTarget}
+          onSelectionChange={handleSelectionChange}
+        />
+        <CardInspectorWithDrawer
+          workItemKey={workItemKey}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          context={popupProps.context}
+          drawerOptions={{placement: "top"}}
+        />
+      </>
     );
   } else {
     popoverContent = (
