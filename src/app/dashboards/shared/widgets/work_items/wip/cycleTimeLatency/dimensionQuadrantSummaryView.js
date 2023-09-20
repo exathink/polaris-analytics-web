@@ -38,6 +38,7 @@ export const DimensionQuadrantSummaryView = ({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       className="tw-h-full"
+      context={context}
       displayBag={{...displayBag, className: classNames("tw-mx-auto tw-h-full tw-w-[98%]", displayBag?.fontSize)}}
      />
   );
