@@ -51,6 +51,7 @@ export const ProjectPipelineFunnelWidget = ({
     dimension: "project",
     instanceKey,
     tags,
+    release,
     specsOnly: workItemScope === "specs",
     activeOnly: true,
     includeSubTasks: includeSubTasks,
