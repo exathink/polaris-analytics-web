@@ -50,19 +50,13 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
     return Quadrants.age;
   }
 
-  const abandoned_threshold = 2*cycleTimeTarget;
-  if (
-    cycleTime > cycleTimeTarget &&
-    cycleTime <= abandoned_threshold &&
-    latency > cycleTimeTarget &&
-    latency <= abandoned_threshold
-  ) {
+  // here cycle time > cycleTimeTarget && latency > cycleTimeTarget
+  const abandoned_threshold = 2 * cycleTimeTarget;
+  if (cycleTime <= abandoned_threshold && latency <= abandoned_threshold) {
     return Quadrants.critical;
   }
 
-  if (cycleTime > abandoned_threshold && latency > abandoned_threshold) {
-    return Quadrants.abandoned;
-  }
+  return Quadrants.abandoned;
 };
 
 
