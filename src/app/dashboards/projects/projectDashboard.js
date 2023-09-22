@@ -24,7 +24,7 @@ export function useWipData({wipDataAll, specsOnly, dimension}) {
   const wipItems = React.useMemo(() => {
     const edges = wipDataAll?.[dimension]?.["workItems"]?.["edges"] ?? [];
     const nodes = edges.map((edge) => edge.node);
-    const wipSpecsWorkItems = nodes.filter((node) => node.latestCommit != null);
+    const wipSpecsWorkItems = nodes.filter((node) => node.workItemStateDetails.latestCommit != null);
     const wipWorkItems = specsOnly ? wipSpecsWorkItems : nodes;
     return {wipWorkItems, wipSpecsWorkItems};
   }, [wipDataAll, dimension, specsOnly]);
@@ -36,7 +36,7 @@ export function useWipData({wipDataAll, specsOnly, dimension}) {
  * Keep the wip query in single place, so that its logic remains consistent
  */
 export function useWipQuery() {
-  const {project, settingsWithDefaults} = useProjectContext();
+  const {project} = useProjectContext();
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors ?? [];
   const release = state?.release?.releaseValue;
@@ -49,7 +49,7 @@ export function useWipQuery() {
     specsOnly: false,
     activeOnly: true,
     referenceString: getReferenceString(project.latestWorkItemEvent, project.latestCommit),
-    includeSubTasks: settingsWithDefaults.includeSubTasksWipInspector,
+    includeSubTasks: project.settingsWithDefaults.includeSubTasksWipInspector,
   };
 
   return useQueryDimensionPipelineStateDetails(queryVars);
