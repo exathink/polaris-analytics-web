@@ -24,7 +24,7 @@ export function useProjectContext(selectorFn) {
  * 
  * Keep the wip query in single place, so that its logic remains consistent
  */
-export function useWipQuery({specsOnly}) {
+export function useWipQuery() {
   const {project, settingsWithDefaults} = useProjectContext();
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors ?? [];
@@ -35,7 +35,7 @@ export function useWipQuery({specsOnly}) {
     instanceKey: project.key,
     tags: workItemSelectors,
     release,
-    specsOnly,
+    specsOnly: false,
     activeOnly: true,
     referenceString: getReferenceString(project.latestWorkItemEvent, project.latestCommit),
     includeSubTasks: settingsWithDefaults.includeSubTasksWipInspector,
