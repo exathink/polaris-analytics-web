@@ -8,7 +8,8 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {PipelineFunnelWidgetInfoConfig} from "../../../../../components/misc/info";
 import { Quadrants, getQuadrant } from "../../../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { getWorkItemDurations } from "../../../../shared/widgets/work_items/clientSideFlowMetrics";
-import { useWipData, useWipQuery } from "../../../projectDashboard";
+import { useWipData, useWipQuery } from "../../../../../helpers/hooksUtil";
+import { useProjectContext } from "../../../projectDashboard";
 
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
@@ -47,7 +48,8 @@ export const ProjectPipelineFunnelWidget = ({
 
   const {loading: loading1, error: error1, data: dataAll} = useQueryProjectPipelineSummary({...queryVars, specsOnly: false});
 
-  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery();
+  const {project: dimensionSettings} = useProjectContext();
+  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery({dimensionSettings});
   const {wipWorkItems} = useWipData({wipDataAll, specsOnly: workItemScope === "specs", dimension: "project"});
 
   if (loading || loading1 || loading2) return <Loading />;
