@@ -58,12 +58,12 @@ export const DimensionCycleTimeLatencyView = ({
   tooltipType,
   view,
   context,
+  specsOnly,
   displayBag = {},
 }) => {
   const intl = useIntl();
   const {
     data: wipDataAll,
-    variables: {specsOnly},
   } = useWidget();
 
   const blurClass = useBlurClass();

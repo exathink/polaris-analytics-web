@@ -48,12 +48,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
   tooltipType,
   view,
   context,
+  specsOnly,
   displayBag
 }) => {
   const intl = useIntl();
   const {
     data: wipDataAll,
-    variables: {specsOnly},
   } = useWidget();
 
   const {customPhaseMapping = WorkItemStateTypeDisplayName} = displayBag;
