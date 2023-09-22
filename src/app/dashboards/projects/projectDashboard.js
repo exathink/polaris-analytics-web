@@ -174,10 +174,6 @@ function getProjectSettings({settings: {flowMetricsSettings = {}, analysisPeriod
   };
 }
 
-function getContextValue(data, context) {
-  return {project: {...data.project, settingsWithDefaults: getProjectSettings(data.project)}, context};
-}
-
 export function WithProject({context, navigate, children, polling, pollInterval}) {
   const {loading, error, data} = useProjectQuery({key: context.getInstanceKey("project"), pollInterval: polling ? pollInterval : 0});
 
@@ -208,10 +204,13 @@ export function WithProject({context, navigate, children, polling, pollInterval}
     return null;
   }
 
-  const contextValue = getContextValue(data, context);
-
   return (
-    <ProjectContext.Provider value={contextValue}>
+    <ProjectContext.Provider
+      value={{
+        project: {...data.project, settingsWithDefaults: getProjectSettings(data.project), dimension: "project"},
+        context,
+      }}
+    >
       {children}
     </ProjectContext.Provider>
   );
