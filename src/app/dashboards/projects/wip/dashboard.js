@@ -91,7 +91,7 @@ function WipDashboard({
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Age Limit</div>
+        <div className="tw-flex tw-justify-start">TimeBox</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
       <div className="tw-col-span-3 tw-col-start-4 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
