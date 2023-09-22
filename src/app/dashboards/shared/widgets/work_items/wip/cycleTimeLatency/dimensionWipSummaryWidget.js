@@ -1,7 +1,8 @@
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import { useWipQuery } from "../../../../../../helpers/hooksUtil";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import { useWipQuery } from "../../../../../projects/projectDashboard";
+
 import { useQueryDimensionFlowMetrics } from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {WorkInProgressSummaryView} from "../flowMetrics/wipFlowMetricsSummaryView";
 
@@ -26,7 +27,8 @@ export function DimensionWipSummaryWidget({
   displayProps
 }) {
 
-  const {loading, error, data: wipDataAll} = useWipQuery();
+  const dimensionSettings = {dimension, key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults: {includeSubTasksWipInspector: includeSubTasks}};
+  const {loading, error, data: wipDataAll} = useWipQuery({dimensionSettings});
 
   const {loading: loading1, error: error1, data: flowMetricsData} = useQueryDimensionFlowMetrics({
     dimension,

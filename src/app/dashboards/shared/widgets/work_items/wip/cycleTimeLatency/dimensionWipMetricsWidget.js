@@ -1,7 +1,7 @@
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import { useWipQuery } from "../../../../../../helpers/hooksUtil";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import { useWipQuery } from "../../../../../projects/projectDashboard";
 import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {DimensionWipMetricsView} from "./dimensionWipMetricsView";
 
@@ -47,7 +47,8 @@ export function DimensionWipMetricsWidget({
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
 
-  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery();
+  const dimensionSettings = {dimension, key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults: {includeSubTasksWipInspector: includeSubTasks}};
+  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery({dimensionSettings});
 
   if (loading1 || loading2) return <Loading />;
 
