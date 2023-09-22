@@ -4,7 +4,7 @@ import { average, daysFromNow, fromNow, i18nNumber, toMoment } from "../../../..
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
 import { Quadrants, getQuadrant, getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
-import { useWipData } from "../../../projects/projectDashboard";
+import { useWipData } from "../../../../helpers/hooksUtil";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
