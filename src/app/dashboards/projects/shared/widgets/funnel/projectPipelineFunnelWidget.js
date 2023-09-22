@@ -2,13 +2,13 @@ import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
 import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
-import {buildIndex, getLatest, getReferenceString} from "../../../../../helpers/utility";
+import {buildIndex, getLatest} from "../../../../../helpers/utility";
 import {ProjectPipelineFunnelDetailDashboard} from "./projectPipelineFunnelDetailDashboard";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {PipelineFunnelWidgetInfoConfig} from "../../../../../components/misc/info";
-import { useQueryDimensionPipelineStateDetails } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 import { Quadrants, getQuadrant } from "../../../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { getWorkItemDurations } from "../../../../shared/widgets/work_items/clientSideFlowMetrics";
+import { useWipData, useWipQuery } from "../../../projectDashboard";
 
 export const ProjectPipelineFunnelWidget = ({
   instanceKey,
@@ -47,16 +47,8 @@ export const ProjectPipelineFunnelWidget = ({
 
   const {loading: loading1, error: error1, data: dataAll} = useQueryProjectPipelineSummary({...queryVars, specsOnly: false});
 
-  const {loading: loading2, error: error2, data: wipData} = useQueryDimensionPipelineStateDetails({
-    dimension: "project",
-    instanceKey,
-    tags,
-    release,
-    specsOnly: workItemScope === "specs",
-    activeOnly: true,
-    includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
+  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery();
+  const {wipWorkItems} = useWipData({wipDataAll, specsOnly: workItemScope === "specs", dimension: "project"});
 
   if (loading || loading1 || loading2) return <Loading />;
   if (error) {
@@ -72,15 +64,10 @@ export const ProjectPipelineFunnelWidget = ({
     return null;
   }
 
-  const getWorkItems = () => {
-    const edges = wipData?.["project"]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  };
-
   let {workItemStateTypeCounts, totalEffortByStateType} = data["project"];
   workItemStateTypeCounts = {...workItemStateTypeCounts, backlog: dataAll["project"].workItemStateTypeCounts.backlog};
   if (excludeAbandoned) {
-    const workItemAggregateDurations = getWorkItemDurations(getWorkItems()).filter(
+    const workItemAggregateDurations = getWorkItemDurations(wipWorkItems).filter(
       (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
     );
     const abandonedWorkItemsByState = buildIndex(workItemAggregateDurations, (workItem) => workItem.stateType);
