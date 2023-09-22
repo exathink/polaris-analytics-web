@@ -189,7 +189,7 @@ export function useWipMetricsCommon({
   latencyTarget,
 }) {
   const intl = useIntl();
-  const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension: "project"});
+  const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension});
 
   const workItemsDurations = getWorkItemDurations(wipWorkItems);
   const workItemAggregateDurations = excludeAbandoned
