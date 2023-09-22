@@ -4,6 +4,7 @@ import { average, daysFromNow, fromNow, i18nNumber, toMoment } from "../../../..
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
 import { Quadrants, getQuadrant, getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { useWipData } from "../../../projects/projectDashboard";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -178,8 +179,7 @@ export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleT
 
 
 export function useWipMetricsCommon({
-  data,
-  dataForSpecs,
+  wipDataAll,
   flowMetricsData,
   dimension,
   specsOnly,
@@ -189,28 +189,21 @@ export function useWipMetricsCommon({
   latencyTarget,
 }) {
   const intl = useIntl();
+  const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension: "project"});
 
-  const workItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
-  const workItemsDurations = getWorkItemDurations(workItems);
+  const workItemsDurations = getWorkItemDurations(wipWorkItems);
   const workItemAggregateDurations = excludeAbandoned
     ? workItemsDurations.filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
     : workItemsDurations;
 
-  const workItemsForSpecs = React.useMemo(() => {
-    const edges = dataForSpecs?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [dataForSpecs, dimension]);
 
   const workItemAggregateDurationsForSpecs = excludeAbandoned
-    ? getWorkItemDurations(workItemsForSpecs).filter(
+    ? getWorkItemDurations(wipSpecsWorkItems).filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
-    : getWorkItemDurations(workItemsForSpecs);
+    : getWorkItemDurations(wipSpecsWorkItems);
 
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 
