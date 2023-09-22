@@ -6,9 +6,6 @@ import {Loading} from "../../components/graphql/loading";
 import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
 import { logGraphQlError } from "../../components/graphql/utils";
 import { WorkItemStateTypeDisplayName } from "../shared/config";
-import { useQueryParamState } from "./shared/helper/hooks";
-import { getReferenceString } from "../../helpers/utility";
-import { useQueryDimensionPipelineStateDetails } from "../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 
 export const ProjectContext = React.createContext();
 
@@ -18,41 +15,6 @@ export function useProjectContext(selectorFn) {
     throw new Error("useProjectContext hook must be used within a Provider");
   }
   return selectorFn?.(context) ?? context;
-}
-
-export function useWipData({wipDataAll, specsOnly, dimension}) {
-  const wipItems = React.useMemo(() => {
-    const edges = wipDataAll?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    const nodes = edges.map((edge) => edge.node);
-    const wipSpecsWorkItems = nodes.filter((node) => node.workItemStateDetails.latestCommit != null);
-    const wipWorkItems = specsOnly ? wipSpecsWorkItems : nodes;
-    return {wipWorkItems, wipSpecsWorkItems};
-  }, [wipDataAll, dimension, specsOnly]);
-
-  return wipItems;
-}
-/**
- * 
- * Keep the wip query in single place, so that its logic remains consistent
- */
-export function useWipQuery() {
-  const {project} = useProjectContext();
-  const {state} = useQueryParamState();
-  const workItemSelectors = state?.vs?.workItemSelectors ?? [];
-  const release = state?.release?.releaseValue;
-
-  const queryVars = {
-    dimension: "project",
-    instanceKey: project.key,
-    tags: workItemSelectors,
-    release,
-    specsOnly: false,
-    activeOnly: true,
-    referenceString: getReferenceString(project.latestWorkItemEvent, project.latestCommit),
-    includeSubTasks: project.settingsWithDefaults.includeSubTasksWipInspector,
-  };
-
-  return useQueryDimensionPipelineStateDetails(queryVars);
 }
 
 // get customPhaseMapping using project dimension query
