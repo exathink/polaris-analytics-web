@@ -20,6 +20,17 @@ export function useProjectContext(selectorFn) {
   return selectorFn?.(context) ?? context;
 }
 
+export function useWipData({wipDataAll, specsOnly, dimension}) {
+  const wipItems = React.useMemo(() => {
+    const edges = wipDataAll?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    const nodes = edges.map((edge) => edge.node);
+    const wipSpecsWorkItems = nodes.filter((node) => node.latestCommit != null);
+    const wipWorkItems = specsOnly ? wipSpecsWorkItems : nodes;
+    return {wipWorkItems, wipSpecsWorkItems};
+  }, [wipDataAll, dimension, specsOnly]);
+
+  return wipItems;
+}
 /**
  * 
  * Keep the wip query in single place, so that its logic remains consistent
