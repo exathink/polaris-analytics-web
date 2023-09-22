@@ -332,14 +332,13 @@ export function WorkInProgressBaseView({data, dimension}) {
   );
 }
 
-export function WorkInProgressSummaryView({data, dataForSpecs, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
+export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
   const {excludeAbandoned} = displayBag;
   const intl = useIntl();
   
   const {wipLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
     useWipMetricsCommon({
-      data,
-      dataForSpecs,
+      wipDataAll,
       flowMetricsData,
       dimension,
       specsOnly,
