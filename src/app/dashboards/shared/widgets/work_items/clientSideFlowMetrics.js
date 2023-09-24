@@ -170,15 +170,23 @@ export function getWorkItemDurations(workItems) {
 
 
 export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days}) {
-  const {contributorCount} = flowMetricsData[dimension];
-  if (contributorCount != null) {
-    return i18nNumber(intl, Math.round(contributorCount * 0.8), 0)
-  } else {
-    const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-    const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"] ?? 0;
-    const throughputRate = flowItems / days;
-    return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  const {contributorCount=0} = flowMetricsData[dimension];
+  const utilizationBasedLimit = contributorCount*1.2
+
+  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"] ?? 0;
+  const throughputRate = flowItems / days;
+  const idealAverageWip = throughputRate * cycleTimeTarget
+
+  let targetWip = null;
+  if (utilizationBasedLimit > 0 && idealAverageWip > 0) {
+     targetWip = i18nNumber(intl, Math.round(Math.min(idealAverageWip, utilizationBasedLimit)), 0);
+  } else if (utilizationBasedLimit > 0) {
+    targetWip = i18nNumber(intl, Math.round(utilizationBasedLimit), 0);
+  } else if (idealAverageWip > 0) {
+    targetWip = i18nNumber(intl, Math.round(idealAverageWip), 0);
   }
+  return i18nNumber(intl, targetWip, 0);
 }
 
 
