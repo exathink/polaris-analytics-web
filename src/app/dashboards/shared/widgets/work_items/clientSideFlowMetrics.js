@@ -170,10 +170,15 @@ export function getWorkItemDurations(workItems) {
 
 
 export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days}) {
-  const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
-  const throughputRate = flowItems / days;
-  return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  const {contributorCount} = flowMetricsData[dimension];
+  if (contributorCount != null) {
+    return i18nNumber(intl, Math.round(contributorCount * 0.8), 0)
+  } else {
+    const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
+    const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"] ?? 0;
+    const throughputRate = flowItems / days;
+    return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  }
 }
 
 
