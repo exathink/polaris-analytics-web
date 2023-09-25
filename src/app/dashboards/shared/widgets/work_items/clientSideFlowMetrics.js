@@ -4,6 +4,7 @@ import { average, daysFromNow, fromNow, i18nNumber, toMoment } from "../../../..
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
 import { Quadrants, getQuadrant, getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { useWipData } from "../../../../helpers/hooksUtil";
 
 /* TODO: It is kind of messy that we  have to do this calculation here but
   *   it is probably the most straightfoward way to do it given that this is
@@ -170,16 +171,28 @@ export function getWorkItemDurations(workItems) {
 
 
 export function getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days}) {
+  const {contributorCount=0} = flowMetricsData[dimension];
+  const utilizationBasedLimit = contributorCount*1.2
+
   const cycleMetricsTrend = flowMetricsData[dimension]["cycleMetricsTrends"][0]
-  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"]??0;
+  const flowItems = cycleMetricsTrend?.[specsOnly ? "workItemsWithCommits" : "workItemsInScope"] ?? 0;
   const throughputRate = flowItems / days;
-  return i18nNumber(intl, throughputRate * cycleTimeTarget, 0);
+  const idealAverageWip = throughputRate * cycleTimeTarget
+
+  let targetWip = null;
+  if (utilizationBasedLimit > 0 && idealAverageWip > 0) {
+     targetWip = i18nNumber(intl, Math.round(Math.min(idealAverageWip, utilizationBasedLimit)), 0);
+  } else if (utilizationBasedLimit > 0) {
+    targetWip = i18nNumber(intl, Math.round(utilizationBasedLimit), 0);
+  } else if (idealAverageWip > 0) {
+    targetWip = i18nNumber(intl, Math.round(idealAverageWip), 0);
+  }
+  return i18nNumber(intl, targetWip, 0);
 }
 
 
 export function useWipMetricsCommon({
-  data,
-  dataForSpecs,
+  wipDataAll,
   flowMetricsData,
   dimension,
   specsOnly,
@@ -189,28 +202,21 @@ export function useWipMetricsCommon({
   latencyTarget,
 }) {
   const intl = useIntl();
+  const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension});
 
-  const workItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
-  const workItemsDurations = getWorkItemDurations(workItems);
+  const workItemsDurations = getWorkItemDurations(wipWorkItems);
   const workItemAggregateDurations = excludeAbandoned
     ? workItemsDurations.filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
     : workItemsDurations;
 
-  const workItemsForSpecs = React.useMemo(() => {
-    const edges = dataForSpecs?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [dataForSpecs, dimension]);
 
   const workItemAggregateDurationsForSpecs = excludeAbandoned
-    ? getWorkItemDurations(workItemsForSpecs).filter(
+    ? getWorkItemDurations(wipSpecsWorkItems).filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
-    : getWorkItemDurations(workItemsForSpecs);
+    : getWorkItemDurations(wipSpecsWorkItems);
 
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 

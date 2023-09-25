@@ -1,10 +1,9 @@
 import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
-import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {DimensionQuadrantSummaryView} from "./dimensionQuadrantSummaryView";
-import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView2";
+import { useWipQuery } from '../../../../../../helpers/hooksUtil';
 
 
 export const DimensionPipelineQuadrantSummaryWidget = (
@@ -36,16 +35,9 @@ export const DimensionPipelineQuadrantSummaryWidget = (
 
 
 
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
-    dimension,
-    instanceKey,
-    tags,
-    release,
-    specsOnly,
-    activeOnly: true,
-    includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  })
+  const dimensionSettings = {dimension, key: instanceKey, tags, release, latestWorkItemEvent, latestCommit, settingsWithDefaults: {includeSubTasksWipInspector: includeSubTasks}}
+  const {loading, error, data: wipDataAll} = useWipQuery({dimensionSettings});
+
   if (loading) return <Loading/>;
   if (error) {
     logGraphQlError('DimensionPipelineQuadrantSummaryWidget.pipelineStateDetails', error);
@@ -61,7 +53,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         specsOnly={specsOnly}
-        data={data}
+        data={wipDataAll}
         stateTypes={stateTypes}
         stageName={stageName}
         groupByState={groupByState}
@@ -80,7 +72,7 @@ export const DimensionPipelineQuadrantSummaryWidget = (
         specsOnly={specsOnly}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
-        data={data}
+        wipDataAll={wipDataAll}
         stateTypes={stateTypes}
         groupByState={groupByState}
         cycleTimeTarget={cycleTimeTarget}

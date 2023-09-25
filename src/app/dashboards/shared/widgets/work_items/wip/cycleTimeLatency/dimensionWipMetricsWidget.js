@@ -1,8 +1,8 @@
 import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
+import { useWipQuery } from "../../../../../../helpers/hooksUtil";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
-import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {DimensionWipMetricsView} from "./dimensionWipMetricsView";
 
 export function DimensionWipMetricsWidget({
@@ -25,20 +25,7 @@ export function DimensionWipMetricsWidget({
   flowAnalysisPeriod = 30,
   includeSubTasks,
 }) {
-  const limitToSpecsOnly = specsOnly != null ? specsOnly : true;
 
-  const queryVars = {
-    dimension,
-    instanceKey,
-    tags,
-    release,
-    specsOnly: limitToSpecsOnly,
-    activeOnly: true,
-    includeSubTasks: includeSubTasks,
-    referenceString: getReferenceString(latestWorkItemEvent, latestCommit)
-  };
-
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({...queryVars})
   const {
     loading: loading1,
     error: error1,
@@ -59,26 +46,23 @@ export function DimensionWipMetricsWidget({
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
 
-  const {loading: loading2, error: error2, data: dataForSpecs} = useQueryDimensionPipelineStateDetails({...queryVars, specsOnly: true});
+  const dimensionSettings = {dimension, key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults: {includeSubTasksWipInspector: includeSubTasks}};
+  const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery({dimensionSettings});
 
-  if (loading || loading1 || loading2) return <Loading />;
-  if (error) {
-    logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionPipelineCycleMetrics", error);
-    return null;
-  }
+  if (loading1 || loading2) return <Loading />;
+
   if (error1) {
     logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionFlowMetrics", error1);
     return null;
   }
   if (error2) {
-    logGraphQlError("DimensionWipMetricsWidget.useQueryDimensionPipelineCycleMetrics", error2);
+    logGraphQlError("DimensionWipMetricsWidget.useWipQuery", error2);
     return null;
   }
 
   return (
     <DimensionWipMetricsView
-      data={data}
-      dataForSpecs={dataForSpecs}
+      wipDataAll={wipDataAll}
       flowMetricsData={flowMetricsData}
       specsOnly={specsOnly}
       dimension={dimension}

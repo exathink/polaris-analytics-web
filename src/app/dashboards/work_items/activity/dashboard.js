@@ -132,7 +132,7 @@ export const dashboard =
                         latestCommit={workItem.latestCommit}
                         latestWorkItemEvent={workItem.latestWorkItemEvent}
                         groupBy={'author'}
-                        groupings={['author', 'repository', 'branch']}
+                        groupings={['author', 'repository', 'branch', 'team']}
                         showHeader
                         showTable
                       />
