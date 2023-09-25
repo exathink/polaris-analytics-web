@@ -19,8 +19,15 @@ function AppProviders({children}) {
   );
 }
 
-const data = {
-  project: {settings: {customPhaseMapping: {backlog: "Define", open: "Open", wip: "Code", complete: "Ship", closed: "Closed"}}},
+export const data = {
+  project: {
+    key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
+    latestWorkItemEvent: "2020-12-09T22:31:01.244000",
+    latestCommit: "2020-12-09T22:30:42",
+    settings: {customPhaseMapping: {backlog: "Define", open: "Open", wip: "Code", complete: "Ship", closed: "Closed"}},
+    settingsWithDefaults: {includeSubTasksWipInspector: true},
+    dimension: "project",
+  },
 };
 
 export function AppRouterProviders({children}) {

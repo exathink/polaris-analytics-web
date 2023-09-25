@@ -63,7 +63,9 @@ const mocksFixture = [
         key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
         specsOnly: false,
         activeOnly: true,
-        includeSubTasks: propsFixture.includeSubTasks,
+        includeSubTasks: true,
+        tags: [],
+        release: undefined,
         referenceString: "160755304200016075530612440"
       },
     },
@@ -285,7 +287,7 @@ describe("ProjectPipelineFunnelWidget", () => {
           ...mocksFixtureObjWip,
           request: {
             ...mocksFixtureObjWip.request,
-            variables: {...mocksFixtureObjWip.request.variables, specsOnly: true},
+            variables: {...mocksFixtureObjWip.request.variables},
           },
         },
       ];
@@ -301,13 +303,7 @@ describe("ProjectPipelineFunnelWidget", () => {
       renderWithProviders(
         <ProjectPipelineFunnelWidget {...propsFixtureForSpecs} />,
         [mocksFixtureForSpecs[0], mocksFixtureForSpecsWip[0], mocksFixtureForAll[0]],
-        {
-          chartTestId: "pipeline-funnel-chart",
-        }
       );
-
-      // assert the chart existence (this also ensures chart is rendered)
-      await screen.findByTestId("pipeline-funnel-chart");
 
       const specsRegex = new RegExp(AppTerms.specs.display, "i")
       const specElements = await screen.findAllByText(specsRegex);

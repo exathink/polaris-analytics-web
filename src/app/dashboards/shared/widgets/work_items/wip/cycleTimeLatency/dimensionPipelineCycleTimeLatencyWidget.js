@@ -1,8 +1,8 @@
 import React from "react";
 import {WidgetCore} from "../../../../../../framework/viz/dashboard/widgetCore";
-import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
 import {DimensionCycleTimeLatencyDetailView} from "./dimensionCycleTimeLatencyDetailView2";
 import {DimensionCycleTimeLatencyView} from "./dimensionCycleTimeLatencyView";
+import { useWipQuery } from "../../../../../../helpers/hooksUtil";
 
 export const DimensionPipelineCycleTimeLatencyWidget = ({
   queryVars,
@@ -18,7 +18,8 @@ export const DimensionPipelineCycleTimeLatencyWidget = ({
   context,
   displayBag
 }) => {
-  const result = useQueryDimensionPipelineStateDetails(queryVars);
+  const dimensionSettings = {...queryVars, settingsWithDefaults: {includeSubTasksWipInspector: queryVars.includeSubTasks}};
+  const result = useWipQuery({dimensionSettings})
   const {dimension} = queryVars;
 
   return (
@@ -36,6 +37,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = ({
           tooltipType={tooltipType}
           view={view}
           context={context}
+          specsOnly={queryVars.specsOnly}
           displayBag={displayBag}
         />
       )}
@@ -53,6 +55,7 @@ export const DimensionPipelineCycleTimeLatencyWidget = ({
           tooltipType={tooltipType}
           view={view}
           context={context}
+          specsOnly={queryVars.specsOnly}
           displayBag={displayBag}
         />
       )}
