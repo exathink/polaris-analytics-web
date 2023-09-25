@@ -18,7 +18,7 @@ export function DimensionWipMetricsWidget({
   cycleTimeTarget,
   latencyTarget,
   leadTimeTarget,
-
+  context,
   specsOnly,
   latestCommit,
   latestWorkItemEvent,
@@ -89,6 +89,8 @@ export function DimensionWipMetricsWidget({
       cycleTimeTarget={cycleTimeTarget}
       latencyTarget={latencyTarget}
       days={flowAnalysisPeriod}
+      queryVars={{latestWorkItemEvent, latestCommit}}
+      context={context}
     />
   );
 }
