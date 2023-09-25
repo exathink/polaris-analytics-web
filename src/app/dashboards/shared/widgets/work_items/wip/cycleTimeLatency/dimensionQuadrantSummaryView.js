@@ -3,11 +3,12 @@ import React from "react";
 import { getWorkItemDurations } from "../../clientSideFlowMetrics";
 import { MotionEfficiencyQuadrantSummaryCard } from "./motionEfficiencyQuadrantSummaryCard";
 import {Quadrants, getQuadrant} from "./cycleTimeLatencyUtils";
+import { useWipData } from "../../../../../../helpers/hooksUtil";
 
 export const DimensionQuadrantSummaryView = ({
   dimension,
   stageName,
-  data,
+  wipDataAll,
   stateTypes,
   groupByState,
   cycleTimeTarget,
@@ -19,11 +20,7 @@ export const DimensionQuadrantSummaryView = ({
   view,
   context,
 }) => {
-  const workItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
-
+  const {wipWorkItems: workItems} = useWipData({wipDataAll, specsOnly, dimension});
   const initTransformedData = excludeAbandoned
     ? getWorkItemDurations(workItems).filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
