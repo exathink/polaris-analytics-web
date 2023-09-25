@@ -18,7 +18,6 @@ export function DimensionWipMetricsWidget({
   cycleTimeTarget,
   latencyTarget,
   leadTimeTarget,
-
   specsOnly,
   latestCommit,
   latestWorkItemEvent,
