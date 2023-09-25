@@ -21,7 +21,8 @@ export const ProjectTraceabilityTrendsWidget = (
     target,
     asStatistic,
     primaryStatOnly,
-    pollInterval
+    pollInterval,
+    displayBag
   }) => {
     const excludeMergesDefault = excludeMerges != null ? excludeMerges : true;
     const {loading, error, data} = useQueryProjectTraceabilityTrends(
@@ -46,6 +47,7 @@ export const ProjectTraceabilityTrendsWidget = (
           asStatistic={asStatistic}
           primaryStatOnly={primaryStatOnly}
           target={target}
+          displayBag={displayBag}
         />
         :
         <ProjectTraceabilityTrendsDetailDashboard

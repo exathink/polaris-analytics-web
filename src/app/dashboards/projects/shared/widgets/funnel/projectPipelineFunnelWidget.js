@@ -69,15 +69,15 @@ export const ProjectPipelineFunnelWidget = ({
   let {workItemStateTypeCounts, totalEffortByStateType} = data["project"];
   workItemStateTypeCounts = {...workItemStateTypeCounts, backlog: dataAll["project"].workItemStateTypeCounts.backlog};
   if (excludeAbandoned) {
-    const workItemAggregateDurations = getWorkItemDurations(wipWorkItems).filter(
+    const nonAbandonedWorkItemDurations = getWorkItemDurations(wipWorkItems).filter(
       (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
     );
-    const abandonedWorkItemsByState = buildIndex(workItemAggregateDurations, (workItem) => workItem.stateType);
+    const nonAbandonedWorkItemsByState = buildIndex(nonAbandonedWorkItemDurations, (workItem) => workItem.stateType);
 
     workItemStateTypeCounts = {
       ...workItemStateTypeCounts,
-      wip: abandonedWorkItemsByState?.["wip"]?.length,
-      complete: abandonedWorkItemsByState?.["complete"]?.length,
+      wip: nonAbandonedWorkItemsByState?.["wip"]?.length,
+      complete: nonAbandonedWorkItemsByState?.["complete"]?.length,
     };
   }
 

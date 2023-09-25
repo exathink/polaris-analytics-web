@@ -76,10 +76,24 @@ export const ProjectTraceabilityTrendsView = (
     primaryStatOnly,
     title,
     target,
+    displayBag={}
   }) => {
   // trends come back in descending order so this is canonical pattern to
   // extract the current and previous value.
   const [current, previous] = traceabilityTrends;
+
+  if (displayBag.displayType === "trendsCompareCard") {
+    return (
+      <Traceability
+        title={title}
+        current={current}
+        previous={previous}
+        target={target}
+        displayType={displayBag.displayType}
+        displayProps={{measurementWindow: measurementWindow}}
+      />
+    );
+  }
 
   return (
     asStatistic ?
