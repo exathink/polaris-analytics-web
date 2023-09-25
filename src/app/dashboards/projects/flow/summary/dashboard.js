@@ -136,6 +136,7 @@ export function NewFlowDashboard() {
                 latestWorkItemEvent={latestWorkItemEvent}
                 excludeAbandoned={exclude}
                 includeSubTasks={includeSubTasksWipInspector}
+                context={context}
                 displayBag={{
                   metric: "volume",
                   displayType: "cardAdvanced",
