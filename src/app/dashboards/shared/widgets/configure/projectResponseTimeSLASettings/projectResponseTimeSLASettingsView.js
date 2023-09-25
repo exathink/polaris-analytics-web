@@ -189,7 +189,7 @@ export const ProjectResponseTimeSLASettingsView = ({
             label={" "}
             groupings={groupings.map((grouping) => ({
               key: grouping,
-              display: "TimeBox",
+              display: "Work Items TimeBox",
             }))}
             initialValue={selectedMetric}
             onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
