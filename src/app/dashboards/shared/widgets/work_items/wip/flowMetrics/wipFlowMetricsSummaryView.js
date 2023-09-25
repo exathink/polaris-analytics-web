@@ -351,6 +351,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
     const bottomRightElement = specsOnly
       ? {}
       : {
+        bottomRightView: {
           bottomRightElement: (
             <DevItemRatio
               devItemsCount={workItemAggregateDurationsForSpecs.length}
@@ -362,7 +363,11 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
               )}
             />
           ),
-        };
+          title: null,
+          content: displayBag?.traceability,
+          placement: "top",
+        },
+      };
     
   return (
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_1fr] tw-gap-1">

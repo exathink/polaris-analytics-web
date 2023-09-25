@@ -22,6 +22,7 @@ import fontStyles from "../../../framework/styles/fonts.module.css";
 import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 import { Checkbox } from "antd";
 import { FILTERS, getFilterValue } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { ProjectTraceabilityTrendsWidget } from "../../shared/widgets/commits/traceability";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -154,7 +155,22 @@ function WipDashboard({
               release={release}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
-              displayBag={{excludeAbandoned: excludeAbandoned}}
+              displayBag={{
+                excludeAbandoned: excludeAbandoned,
+                traceability: (
+                  <ProjectTraceabilityTrendsWidget
+                    instanceKey={key}
+                    measurementWindow={flowAnalysisPeriod}
+                    days={flowAnalysisPeriod}
+                    samplingFrequency={flowAnalysisPeriod}
+                    context={context}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                    displayBag={{displayType: "trendsCompareCard"}}
+                    target={0.9}
+                  />
+                ),
+              }}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
@@ -261,7 +277,7 @@ function WipDashboard({
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
                 latestWorkItemEvent,
-                latestCommit
+                latestCommit,
               }}
               stageName={customPhaseMapping.wip}
               workItemScope={workItemScope}
@@ -280,7 +296,7 @@ function WipDashboard({
                 appliedFilters,
                 setAppliedFilters,
                 excludeAbandoned: excludeAbandoned,
-                customPhaseMapping
+                customPhaseMapping,
               }}
             />
           )}
@@ -301,7 +317,7 @@ function WipDashboard({
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
                 latestWorkItemEvent,
-                latestCommit
+                latestCommit,
               }}
               stageName={customPhaseMapping.complete}
               workItemScope={workItemScope}
@@ -320,7 +336,7 @@ function WipDashboard({
                 appliedFilters,
                 setAppliedFilters,
                 excludeAbandoned: excludeAbandoned,
-                customPhaseMapping
+                customPhaseMapping,
               }}
             />
           )}
