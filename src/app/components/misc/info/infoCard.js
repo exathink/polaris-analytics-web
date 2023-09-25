@@ -5,7 +5,7 @@ import React from "react";
 import styles from "./info.module.css";
 import {Colors} from "../../../dashboards/shared/config";
 
-export function InfoCard({title, content, drawerContent, moreLinkText, drawerHeight, drawerWidth, showDrawer = true, showDrawerTitle= true, className = "", drawerOptions={}}) {
+export function InfoCard({title, content, drawerContent, moreLinkText, drawerHeight, drawerWidth, showDrawer = true, showDrawerTitle= true, className = "", drawerOptions={}, inline=false}) {
   const color = Colors.DashboardWidgetIcons.primary;
   return (
     <Popover
@@ -22,9 +22,13 @@ export function InfoCard({title, content, drawerContent, moreLinkText, drawerHei
         </div>
       }
     >
-      <div className={className}>
-        <InfoCircleFilled style={{ fontSize: '2.5vh', color: color }}/>
-      </div>
+      {
+        inline
+          ? <InfoCircleFilled style={{ fontSize: '2.5vh', color: color }}/>
+          : <div className={className}>
+              <InfoCircleFilled style={{ fontSize: '2.5vh', color: color }}/>
+            </div>
+      }
     </Popover>
   );
 }

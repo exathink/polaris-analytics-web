@@ -11,7 +11,10 @@ import {GroupingSelector} from "../../../shared/components/groupingSelector/grou
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
+
 import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
+import { InfoCard } from "../../../../components/misc/info";
+import {StabilityInfoCard, TimeboxInfoCard} from "../../../../components/misc/info/infoContent/flowMetrics/infoConfig";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -58,7 +61,11 @@ export function NewFlowDashboard() {
     >
       <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+          <span>
+            Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display} `}
+            <sup><StabilityInfoCard/></sup>
+          </span>
+
         </div>
         <div className="tw-text-sm tw-flex tw-justify-start">
           Last {flowAnalysisPeriod} Days
@@ -66,7 +73,8 @@ export function NewFlowDashboard() {
       </div>
       <div className="tw-row-start-1 tw-col-start-4 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">
-          TimeBox
+          <span>TimeBox  </span>
+          <sup><TimeboxInfoCard/></sup>
         </div>
         <div className="tw-text-base tw-flex tw-justify-start">
           {cycleTimeTarget} Days
