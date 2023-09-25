@@ -11,6 +11,7 @@ import {GroupingSelector} from "../../../shared/components/groupingSelector/grou
 import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
+import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -136,10 +137,22 @@ export function NewFlowDashboard() {
                 latestWorkItemEvent={latestWorkItemEvent}
                 excludeAbandoned={exclude}
                 includeSubTasks={includeSubTasksWipInspector}
-                context={context}
                 displayBag={{
                   metric: "volume",
                   displayType: "cardAdvanced",
+                  traceability: (
+                    <ProjectTraceabilityTrendsWidget
+                      instanceKey={key}
+                      measurementWindow={flowAnalysisPeriod}
+                      days={flowAnalysisPeriod}
+                      samplingFrequency={flowAnalysisPeriod}
+                      context={context}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      displayBag={{displayType: "trendsCompareCard"}}
+                      target={0.9}
+                    />
+                  ),
                 }}
                 flowAnalysisPeriod={flowAnalysisPeriod}
               />

@@ -3,10 +3,9 @@ import { useIntl } from "react-intl";
 import {AvgAge, Wip} from "../../../../components/flowStatistics/flowStatistics";
 import {DevItemRatio, useWipMetricsCommon} from "../../clientSideFlowMetrics";
 import { getPercentage } from "../../../../../projects/shared/helper/utils";
-import { ProjectTraceabilityTrendsWidget } from "../../../commits/traceability";
 
 
-export function DimensionWipMetricsView({data, dataForSpecs, instanceKey, context, queryVars, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
+export function DimensionWipMetricsView({data, dataForSpecs, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
   const {wipLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
@@ -40,19 +39,7 @@ export function DimensionWipMetricsView({data, dataForSpecs, instanceKey, contex
             />
           ),
           title: null,
-          content: (
-            <ProjectTraceabilityTrendsWidget
-              instanceKey={instanceKey}
-              measurementWindow={days}
-              days={days}
-              samplingFrequency={days}
-              context={context}
-              latestWorkItemEvent={queryVars.latestWorkItemEvent}
-              latestCommit={queryVars.latestCommit}
-              displayBag={{displayType: "trendsCompareCard"}}
-              target={0.9}
-            />
-          ),
+          content: displayBag?.traceability,
           placement: "top",
         },
       };
