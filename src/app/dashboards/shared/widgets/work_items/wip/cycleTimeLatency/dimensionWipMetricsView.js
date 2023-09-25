@@ -72,7 +72,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
         displayType={displayType}
         displayProps={{
           className: "tw-p-2",
-          supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
+          supportingMetric: <span>Limit {cycleTimeTarget} Days</span>,
           trendsView: {title: "Age", content: <span>Trends</span>},
           info: {title: "Info", content: "content"},
           ...displayProps,
