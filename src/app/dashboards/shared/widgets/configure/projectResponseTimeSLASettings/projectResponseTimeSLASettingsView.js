@@ -14,7 +14,7 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/
 import {capitalizeFirstLetter, pick} from "../../../../../helpers/utility";
 import Button from "../../../../../../components/uielements/button";
 
-const groupings = [METRICS.LEAD_TIME, METRICS.CYCLE_TIME];
+const groupings = [METRICS.CYCLE_TIME];
 
 export const ProjectResponseTimeSLASettingsView = ({
   data,
@@ -52,7 +52,7 @@ export const ProjectResponseTimeSLASettingsView = ({
   );
 
   const initialState = {
-    selectedMetric: METRICS.LEAD_TIME,
+    selectedMetric: METRICS.CYCLE_TIME,
     leadTime: {
       target: targetMetrics.leadTimeTarget,
       confidence: targetMetrics.leadTimeConfidenceTarget,
@@ -182,14 +182,14 @@ export const ProjectResponseTimeSLASettingsView = ({
     <React.Fragment>
       <div className={styles["flowMetricControlsWrapper"]} data-testid="flowmetrics-setting-view">
         <Flex w={1} justify={"center"}>
-          <span>Drag sliders to update response time target and confidence %</span>
+          <span>Drag sliders to update timebox and confidence %</span>
         </Flex>
         <Flex w={1} className={styles["selectedMetricWrapper"]}>
           <GroupingSelector
             label={" "}
             groupings={groupings.map((grouping) => ({
               key: grouping,
-              display: projectDeliveryCycleFlowMetricsMeta[grouping].display,
+              display: "TimeBox",
             }))}
             initialValue={selectedMetric}
             onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
