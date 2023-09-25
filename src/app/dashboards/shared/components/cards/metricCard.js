@@ -24,7 +24,7 @@ export function MetricCard({
   const colSpanClass = bottomRightView || trendValueClass ? "tw-col-span-3": "tw-col-span-2";
   const trendIndicatorElement = (
     <div className={classNames("trendIndicator tw-self-end tw-justify-self-end", trendValueClass, colSpanClass, trendsView ? "tw-cursor-pointer": "")}>
-      {trendsView ? trendIndicator: bottomRightView.bottomRightElement }
+      {trendsView ? trendIndicator: bottomRightView?.bottomRightElement }
     </div>
   );
 
@@ -77,7 +77,7 @@ export function MetricCard({
           {trendIndicatorElement}
         </Popover>
       ) : (
-        <Popover placement={bottomRightView.placement} title={bottomRightView.title} content={bottomRightView.content} trigger="hover">
+        <Popover placement={bottomRightView?.placement} title={bottomRightView?.title} content={bottomRightView?.content} trigger="hover">
           {trendIndicatorElement}
         </Popover>
       )}
