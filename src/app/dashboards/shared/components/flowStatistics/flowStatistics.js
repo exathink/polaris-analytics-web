@@ -67,7 +67,7 @@ export const FlowStatistic = ({
       );
     }
     case "cardAdvanced": {
-      const {info, className, detailsView, trendsView, subTitle, iconsShiftLeft, supportingMetric, trendValueClass, valueClass, bottomRightElement} = displayProps;
+      const {info, className, detailsView, trendsView, subTitle, iconsShiftLeft, supportingMetric, trendValueClass, valueClass, bottomRightView} = displayProps;
       return (
         <MetricCard
           title={title}
@@ -88,7 +88,7 @@ export const FlowStatistic = ({
           supportingMetric={supportingMetric}
           detailsView={detailsView}
           trendsView={trendsView}
-          bottomRightElement={bottomRightElement}
+          bottomRightView={bottomRightView}
           displayBag={{trendValueClass, iconsShiftLeft, valueClass}}
         />
       );
@@ -1099,21 +1099,24 @@ export const TraceabilityTarget = ({title, target}) => (
   />
 );
 
-export const Traceability = ({title, displayType, current, previous, target=0.9, deltaThreshold}) => (
-  <FlowStatistic
-    title={title || "Traceability"}
-    currentMeasurement={current}
-    previousMeasurement={previous}
-    metric={'traceability'}
-    displayType={displayType}
-    currentValue={current['traceability'] * 100}
-    previousValue={previous['traceability'] * 100}
-    valueRender={value => current['totalCommits'] > 0 ? `${value?.toFixed?.(2)} %` : 'N/A'}
-    good={TrendIndicator.isPositive}
-    deltaThreshold={deltaThreshold}
-    target={target * 100}
-  />
-);
+export const Traceability = ({title, displayType, current, previous, target = 0.9, deltaThreshold, displayProps}) => {
+  return (
+    <FlowStatistic
+      title={title || "Traceability"}
+      currentMeasurement={current}
+      previousMeasurement={previous}
+      metric={"traceability"}
+      displayType={displayType}
+      displayProps={displayProps}
+      currentValue={current["traceability"] * 100}
+      previousValue={previous["traceability"] * 100}
+      valueRender={(value) => (current["totalCommits"] > 0 ? `${value?.toFixed?.(2)} %` : "N/A")}
+      good={TrendIndicator.isPositive}
+      deltaThreshold={deltaThreshold}
+      target={target * 100}
+    />
+  );
+};
 
 export const TotalCommits = ({title, displayType, current, previous, deltaThreshold}) => (
   <FlowStatistic
