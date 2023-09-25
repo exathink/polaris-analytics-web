@@ -246,12 +246,13 @@ function WipDashboard({
             <DimensionPipelineCycleTimeLatencyWidget
               queryVars={{
                 dimension: DIMENSION,
-                instanceKey: key,
+                key,
                 tags: workItemSelectors,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
-                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+                latestWorkItemEvent,
+                latestCommit
               }}
               stageName="Code"
               workItemScope={workItemScope}
@@ -283,12 +284,13 @@ function WipDashboard({
             <DimensionPipelineCycleTimeLatencyWidget
               queryVars={{
                 dimension: DIMENSION,
-                instanceKey: key,
+                key,
                 tags: workItemSelectors,
                 specsOnly,
                 activeOnly: true,
                 includeSubTasks: includeSubTasksWipInspector,
-                referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
+                latestWorkItemEvent,
+                latestCommit
               }}
               stageName={"Ship"}
               workItemScope={workItemScope}

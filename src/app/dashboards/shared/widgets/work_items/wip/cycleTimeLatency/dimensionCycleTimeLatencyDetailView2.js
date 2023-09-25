@@ -31,7 +31,7 @@ import {GroupingSelector} from "../../../../components/groupingSelector/grouping
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
 import {SelectDropdown, SelectDropdownMultiple, defaultOptionType} from "../../../../components/select/selectUtils";
 import {workItemTypeImageMap} from "../../../../../projects/shared/helper/renderers";
-import {useLocalStorage} from "../../../../../../helpers/hooksUtil";
+import {useLocalStorage, useWipData} from "../../../../../../helpers/hooksUtil";
 import {DELIVERY_PHASES, ENGINEERING_PHASES, WorkItemStateTypeDisplayName} from "../../../../config";
 import {WIP_CHART_TYPE} from "../../../../../../helpers/localStorageUtils";
 import {ResetAllFilterIcon} from "../../../../../../components/misc/customIcons";
@@ -48,12 +48,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
   tooltipType,
   view,
   context,
+  specsOnly,
   displayBag
 }) => {
   const intl = useIntl();
   const {
-    data,
-    variables: {specsOnly},
+    data: wipDataAll,
   } = useWidget();
 
   const {customPhaseMapping = WorkItemStateTypeDisplayName} = displayBag;
@@ -91,10 +91,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
 
   const callBacks = {setShowPanel, setWorkItemKey, setPlacement, setAppliedFilters, setWipChartType: updateWipChartType, setEventSource};
 
-  const initWorkItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
+  const {wipWorkItems: initWorkItems} = useWipData({wipDataAll, specsOnly, dimension});
 
   function handleSelectionChange(items, eventType) {
     if (eventType === EVENT_TYPES.POINT_CLICK) {

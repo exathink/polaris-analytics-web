@@ -30,6 +30,7 @@ import {useGenerateTicks} from "../../../../hooks/useGenerateTicks";
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../../../../config/featureFlags";
 import {useWidget} from "../../../../../../framework/viz/dashboard/widgetCore";
 import {WipQueueSizeChart} from "../../../../charts/workItemCharts/wipQueueSizeChart";
+import { useWipData } from "../../../../../../helpers/hooksUtil";
 
 export function getSubTitle({workItems, specsOnly, intl}) {
   const count = workItems.length;
@@ -57,12 +58,12 @@ export const DimensionCycleTimeLatencyView = ({
   tooltipType,
   view,
   context,
+  specsOnly,
   displayBag = {},
 }) => {
   const intl = useIntl();
   const {
-    data,
-    variables: {specsOnly},
+    data: wipDataAll,
   } = useWidget();
 
   const blurClass = useBlurClass();
@@ -83,10 +84,7 @@ export const DimensionCycleTimeLatencyView = ({
     return selectedState.value === undefined || selectedState.value === w.state;
   };
 
-  const initWorkItems = React.useMemo(() => {
-    const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
-    return edges.map((edge) => edge.node);
-  }, [data, dimension]);
+  const {wipWorkItems: initWorkItems} = useWipData({wipDataAll, specsOnly, dimension});
 
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 

@@ -1,4 +1,7 @@
 import React from "react";
+import { useQueryParamState } from "../dashboards/projects/shared/helper/hooks";
+import { getReferenceString } from "./utility";
+import { useQueryDimensionPipelineStateDetails } from "../dashboards/shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 
 
 // A utility to set a child component take a parent hook state and override it locally
@@ -77,3 +80,36 @@ export function readLocalStorage(key, initialValue) {
   return item ? JSON.parse(item) : initialValue;
 }
 
+export function useWipData({wipDataAll, specsOnly, dimension}) {
+  const wipItems = React.useMemo(() => {
+    const edges = wipDataAll?.[dimension]?.["workItems"]?.["edges"] ?? [];
+    const nodes = edges.map((edge) => edge.node);
+    const wipSpecsWorkItems = nodes.filter((node) => node.workItemStateDetails.latestCommit != null);
+    const wipWorkItems = specsOnly ? wipSpecsWorkItems : nodes;
+    return {wipWorkItems, wipSpecsWorkItems};
+  }, [wipDataAll, dimension, specsOnly]);
+
+  return wipItems;
+}
+/**
+ * 
+ * Keep the wip query in single place, so that its logic remains consistent
+ */
+export function useWipQuery({dimensionSettings}) {
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors ?? [];
+  const release = state?.release?.releaseValue;
+
+  const queryVars = {
+    dimension: dimensionSettings.dimension,
+    instanceKey: dimensionSettings.key,
+    tags: workItemSelectors,
+    release,
+    specsOnly: false,
+    activeOnly: true,
+    referenceString: getReferenceString(dimensionSettings.latestWorkItemEvent, dimensionSettings.latestCommit),
+    includeSubTasks: dimensionSettings.settingsWithDefaults.includeSubTasksWipInspector,
+  };
+
+  return useQueryDimensionPipelineStateDetails(queryVars);
+}
