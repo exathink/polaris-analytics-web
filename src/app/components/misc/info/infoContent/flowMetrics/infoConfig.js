@@ -14,7 +14,7 @@ const { Section, SubSection } = InfoCard;
 export function StabilityInfoCard({ inline = true }) {
   return (
     <InfoCard
-      title={"Stability"}
+      title={"Flow Stability"}
       content={<StabilityInfoSummary/>}
       showDrawer={false}
       drawerContent={"baz"}
@@ -45,10 +45,27 @@ export function TimeboxInfoCard({ inline = true }) {
   return (
     <InfoCard
       title={"TimeBox"}
-      content={"this is the timebox"}
-      showDrawer={true}
+      content={<TimeBoxInfoSummary/>}
+      showDrawer={false}
       drawerContent={"more timeboxing stuff"}
       inline={inline}
     />
   );
 };
+
+function TimeBoxInfoSummary() {
+  return (
+    <>
+      <Section>
+        <p>
+          The TimeBox is the key enabling constraint that we use to stabilize the flow of work items in the process.
+        </p>
+        <p>
+          This is the value of <em>N</em> that we use in our definition flow stability.
+        </p>
+        <p>We want any work item that is in an active phase: code, ship or open,  to complete <em>within N days</em></p>
+
+      </Section>
+    </>
+  )
+}

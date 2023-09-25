@@ -128,7 +128,7 @@ Glossary.LEAD_TIME = ({display="lead time", ...rest}) => {
   return (
     <TermDefinition
       name={display}
-      definition={"The cumulative time a card spent in the Define, Open, Make and Deliver phases in a delivery cycle."}
+      definition={"The cumulative time a card spent in the Define, Open, Code and Ship phases in a delivery cycle."}
       {...rest}
     />
   )
@@ -138,17 +138,29 @@ Glossary.PHASE = ({display="phase", ...rest}) => {
   return (
     <TermDefinition
       name={display}
-      definition={"The five standard phases in Polaris are Define, Open, Make, Deliver and Closed. See Model:Delivery Process Mapping"}
+      definition={"The five standard phases in Polaris are Define, Open, Code, Ship and Closed. See Model:Delivery Process Mapping"}
       {...rest}
     />
   )
 }
+
+
 
 Glossary.VOLUME = ({display="volume", ...rest}) => {
   return (
     <TermDefinition
       name={display}
       definition={"The number of completed delivery cycles within a given analysis period."}
+      {...rest}
+    />
+  )
+}
+
+Glossary.WIP_PHASE = ({display="In Process", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"The In Process phases in Polaris are Open, Code, and Ship. See Model:Delivery Process Mapping"}
       {...rest}
     />
   )
