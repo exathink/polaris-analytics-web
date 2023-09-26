@@ -29,3 +29,29 @@
   }
   /* ! END_TAILWIND_CUSTOM_COMPONENTS */
 }
+
+@layer base {
+  :root {
+    /* Font Sizes */
+    --xs: clamp(0.625rem, 0.6vw, 0.75rem);
+    --sm: clamp(0.8125rem, 0.8vw, 0.875rem);
+    --base: clamp(0.9375rem, 1vw, 1rem);
+    --lg: clamp(1.05rem, 1.2vw, 1.125rem);
+    --xl: clamp(1.1rem, 1.4vw, 1.25rem);
+    --2xl: clamp(1.15rem, 1.6vw, 1.5rem);
+    --3xl: clamp(1.2rem, 2vw, 1.875rem);
+    --4xl: clamp(1.25rem, 2.2vw, 2.25rem);
+    --5xl: clamp(1.3rem, 2.4vw, 3rem);
+
+    /* Line Heights */
+    --xsline: clamp(0.625rem, 0.9vw, 1rem);
+    --smline: clamp(0.8125rem, 1vw, 1.25rem);
+    --baseline: clamp(0.9375rem, 1.2vw, 1.5rem);
+    --lgline: clamp(1.05rem, 1.4vw, 1.75rem);
+    --xlline: clamp(1.1rem, 1.6vw, 1.75rem);
+    --2xline: clamp(1.15rem, 1.8vw, 2rem);
+    --3xline: clamp(1.2rem, 2vw, 2.25rem);
+    --4xline: clamp(1.25rem, 2.2vw, 2.5rem);
+    --5xline: clamp(1.3rem, 2.4vw, 3rem);
+  }
+}
