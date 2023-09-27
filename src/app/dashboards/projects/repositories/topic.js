@@ -13,27 +13,24 @@ const topic =  {
   ContextControl: false,
   routes: [
     {
-      requiredFeatures: [UI_NEW_CARD_DESIGN],
+      match: 'code-reviews',
+      subnav: true,
+      topic: PullRequests,
+    },
+    {
       match: 'activity',
       subnav: true,
       topic: Activity,
     },
     {
-      requiredFeatures: [UI_NEW_CARD_DESIGN],
-      match: 'pull-requests',
-      subnav: true,
-      topic: PullRequests,
-    },
 
-    {
-      requiredFeatures: [UI_NEW_CARD_DESIGN],
       match: 'repositories',
       subnav: true,
       topic: Repositories,
     },
     {
       match: '',
-      redirect: 'activity'
+      redirect: 'code-reviews'
     }
   ]
 };
