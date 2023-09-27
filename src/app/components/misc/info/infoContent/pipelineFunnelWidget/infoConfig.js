@@ -61,24 +61,28 @@ export function PipelineFunnelWidgetInfoDetail() {
       <Section heading={"Interpretation"}>
         <p>
           Each region in the funnel represents a {<Glossary.PHASE/>} in the {<Glossary.DELIVERY_PROCESS_MAPPING/>} for the
-          value stream. If you have not yet set up a mapping, the funnel will show all cards as unmapped.
+          value stream. If you have not yet set up a mapping, the funnel will show all work item
+s as unmapped.
         </p>
         <ul>
           <li>
-            For active phases: Define, Open, Make and Deliver, the chart shows the number of{" "}
-            {<Glossary.CARDS/>} that are currently in the phase.
+            For active phases: Define, Open, Code and Ship, the chart shows the number of{" "}
+            {<Glossary.CARDS
+S/>} that are currently in the phase.
           </li>
           <li>
             For the Closed phase, it shows the number of { <Glossary.DELIVERY_CYCLES/>} that completed within
-            the { <Glossary.FLOW_ANALYSIS_PERIOD append={"."}/>} This is also known as the delivery  <em> volume.</em>
+            the { <Glossary.FLOW_ANALYSIS_PERIOD append={"."}/>} This is also known as the <em>Flow Velocity</em>.
 
           </li>
         </ul>
         <SubSection heading={"Delivery Cycles and Funnel Counts"}>
         <p>
-          If a card has multiple completed delivery cycles times during the flow analysis period, it will be counted multiple times in the Closed
+          If a work item
+
+ has multiple completed delivery cycles times during the flow analysis period, it will be counted multiple times in the Closed
           phase. It may also simultaneously appear in the counts of one of the active phases if it is currently in an active phase.
-          Technically, all counts shown in the funnel are counts of delivery cycles, not cards.
+          Technically, all counts shown in the funnel are counts of delivery cycles, not work items.
         </p>
       </SubSection>
       </Section>
@@ -93,66 +97,50 @@ export function PipelineFunnelWidgetInfoDetail() {
         </p>
         <p>
           When work is flowing efficiently through the value stream, the sizes of the Define and Closed phase will be
-          balanced. In addition, the total number of cards in the Open, Make and Deliver phases will typically be less
-          than the number of team members working on the cards. This indicates an appropriate level of work in progress
+          balanced. In addition, the total number of work item
+
+s in the Open, Code and Ship phases will typically be less
+          than the number of team members working on the work item
+
+s. This indicates an appropriate level of work in progress
           in the delivery pipeline and should also be reflected in favorable outcomes like low {<Glossary.CYCLE_TIME/>} and
-          high {<Glossary.VOLUME/>}
+          high {<Glossary.THROUGHPUT/>}
         </p>
         <p>
-          Significant imbalances the sizes of the Open, Make or Deliver areas of the funnel indicate the work is
+          Significant imbalances the sizes of the Open, Code or Ship
+areas of the funnel indicate the work is
           queueing up in one or more of those phases. Cycle times will be high and throughput will be low. This will
           typically also be reflected in the <em>age</em> and <em>latency</em> of work in progress. You can dig deeper
-          to diagnose the root cause using the Flow Dashboard.
+          to diagnose the root cause using the Work In Process (WIP) Dashboard.
         </p>
       </Section>
-      <Section heading={"Lead Time and Backlog Optimization"}>
+      <Section heading={"Flow Planning"}>
         <p>
-          While internal queueing is reflected in the Open, Make and Delivery areas of the funnel, the relative sizes of
+          While internal queueing is reflected in the Open, Code and Ship areas of the funnel, the relative sizes of
           the Define and Closed areas can be used to balance the size of the backlog with the pace of delivery. The size
           of the Closed phase is proportional to the current pace of delivery. If you have a significantly larger number
           of items in the Define phase compared to the Closed phase, your have much more work queued up than you can
-          reasonably deliver in the near term, and its time prioritize and communicate your choices.
+          reasonably ship in the near term, and its time prioritize and communicate your choices.
         </p>
-        <SubSection>
+        <SubSection heading={"Days Supply"}>
           <p>
-            For example, if your flow analysis period is 30 days and ratio of Define to Closed is 5:1, then you have
-            roughly five months of work in the backlog based on the current pace of delivery. You can decide whether
-            this is an appropriate size for you, but for fast moving Agile teams, we recommend something closer to a 2:1
-            ratio of Define to Closed when sizing the backlog.
+            The days supply of work items in the Define phase, is computed by taking the current throughput (the rate at which the work is completing)
+            and estimating the number of days it would take to work through the all the items in the Define, Open, Code and Ship phases at this rate.
+            Note that this is not a forecast of when these items will complete: its only a way to size the backlog in terms of the current flow through the system.
+
           </p>
         </SubSection>
         <Section heading={"Backlog Management"}>
           <p>
-            The concept of delivery cycles in Polaris, gives you a simple and effective technique to continuously
-            optimize the size of your active backlog and communicate your plans with your customer.
+            The notion of deferred states in the the phase mapping gives you a way to take the areas of the backlog that represent uncommitted work
+            and hide it from the days supply calculation. Any work item in a deferred state is removed from the Define
+            phase in the funnel, and also removed from the days supply calculation.
           </p>
-          <SubSection>
-            <ul>
-              <li>
-                Create a workflow state called ROADMAP in your work tracking system and map this to the
-                <em> Closed </em> phase in Polaris.
-              </li>
-              <li>
-                If you think a given card will be not prioritized for delivery within a couple of flow analysis periods,
-                move the card to the ROADMAP state and communicate this to your customer. This will reset your
-                customer's expectations. Polaris also closes the delivery cycle and stops the lead and cycle time clocks
-                for the card. You can move it back to your backlog state when it is re-scheduled for delivery and the
-                lead time clock will start ticking again. This way your lead time becomes a useful metric to measure how
-                well you are doing against your customer commitments.
-              </li>
-              <li>
-                If you dont think a card will be addressed in the next few analysis periods, delete it or move it out of
-                your work stream. It will come back again if the work is important enough to do.
-              </li>
-            </ul>
-          </SubSection>
           <p>
-            By adopting this simple process, lead time time does not simply accumulate because a card was sitting in the
-            backlog indefinitely. When that happens, it is hard to separate signal from noise in the lead time metric
-            and it becomes much less useful. You will also have system for grooming your backlog that forces to you to
-            prioritize and communicate your current plans with your customer and measure your performance against those
-            promises.
+            If the flow analysis period is 30 days, we typically want to see about the same days suppy of non-deferred items in the Define phase of the funnel.
           </p>
+
+
         </Section>
       </Section>
     </>

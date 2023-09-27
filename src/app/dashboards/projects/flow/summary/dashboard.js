@@ -76,7 +76,7 @@ export function NewFlowDashboard() {
           <span>TimeBox  </span>
           <sup><TimeboxInfoCard/></sup>
         </div>
-        <div className="tw-text-base tw-flex tw-justify-start">
+        <div className="tw-text-sm tw-flex tw-justify-start">
           {cycleTimeTarget} Days
         </div>
       </div>
@@ -272,6 +272,7 @@ export function NewFlowDashboard() {
             />
           )}
           showDetail={true}
+          infoConfig={ProjectPipelineFunnelWidget.infoConfig}
         />
       </DashboardRow>
       <DashboardRow>

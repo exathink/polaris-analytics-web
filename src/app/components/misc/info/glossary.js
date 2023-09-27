@@ -32,11 +32,11 @@ export function TermDefinition({name, definition, capitalize, append, className}
 
 /** Maintain these in alphabetical order for easy scanning */
 
-Glossary.CARDS = ({display="cards", ...rest}) => {
+Glossary.CARDS = ({display="work items", ...rest}) => {
   return (
     <TermDefinition
       name={display}
-      definition={"Generic term in Polaris for tickets, issues, work items etc. in your work tracking system."}
+      definition={"Generic term in Polaris for tickets, issues etc. in your work tracking system."}
       {...rest}
     />
   )
@@ -146,11 +146,21 @@ Glossary.PHASE = ({display="phase", ...rest}) => {
 
 
 
-Glossary.VOLUME = ({display="volume", ...rest}) => {
+Glossary.VOLUME = ({display="flow velocity", ...rest}) => {
   return (
     <TermDefinition
       name={display}
       definition={"The number of completed delivery cycles within a given analysis period."}
+      {...rest}
+    />
+  )
+}
+
+Glossary.THROUGHPUT = ({display="throughput", ...rest}) => {
+  return (
+    <TermDefinition
+      name={display}
+      definition={"The rate at which work items complete over the analysis period."}
       {...rest}
     />
   )
