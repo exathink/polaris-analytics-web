@@ -76,6 +76,7 @@ export const ProjectPipelineFunnelWidget = ({
 
     workItemStateTypeCounts = {
       ...workItemStateTypeCounts,
+      open: nonAbandonedWorkItemsByState?.["open"]?.length,
       wip: nonAbandonedWorkItemsByState?.["wip"]?.length,
       complete: nonAbandonedWorkItemsByState?.["complete"]?.length,
     };
