@@ -238,7 +238,7 @@ export function DevItemRatio({devItemsCount, devItemsPercentage}) {
         <div className="tw-textSm">{devItemsCount===1 ? "Dev Item": "Dev Items"}</div>
       </div>
       <div className="tw-flex tw-items-center tw-gap-2">
-        <div className="tw-textSm">Dev Item Ratio</div>
+        <div className="tw-textSm">Ratio</div>
         <div className="tw-textSm tw-font-medium">{devItemsPercentage}</div>
       </div>
     </div>
