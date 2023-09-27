@@ -56,24 +56,36 @@ export function NewFlowDashboard() {
       className="tw-grid tw-grid-cols-8 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
-      <div className="tw-row-start-1 tw-col-start-1 tw-col-span-2 tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">
-          Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+      <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
+        <div>
+          <div className="tw-flex tw-justify-start">
+            Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+          </div>
+          <div className="tw-flex tw-justify-start tw-text-sm">Last {flowAnalysisPeriod} Days</div>
         </div>
-        <div className="tw-text-sm tw-flex tw-justify-start">
-          Last {flowAnalysisPeriod} Days
+
+        <div className="tw-justify-self-end tw-text-gray-300">
+          <Checkbox
+            onChange={(e) => {
+              setExclude(e.target.checked);
+            }}
+            name="state-exclude"
+            checked={exclude}
+            style={{alignItems: "center"}}
+          >
+            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
+              <div>Exclude</div>
+              <div>Abandoned</div>
+            </div>
+          </Checkbox>
         </div>
       </div>
-      <div className="tw-row-start-1 tw-col-start-4 tw-col-span-2 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">
-          TimeBox
-        </div>
-        <div className="tw-text-base tw-flex tw-justify-start">
-          {cycleTimeTarget} Days
-        </div>
+      <div className="tw-col-span-2 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">TimeBox</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-text-base tw-col-start-6 tw-row-start-1 tw-col-span-3 tw-flex tw-items-center tw-justify-end tw-gap-4">
-      {specsOnly && (
+      <div className="tw-col-span-3 tw-col-start-6 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
+        {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
               label={"Show"}
@@ -93,22 +105,6 @@ export function NewFlowDashboard() {
             />
           </Flex>
         )}
-
-        <div className="tw-text-gray-300 tw-justify-self-end">
-          <Checkbox
-            onChange={(e) => {
-              setExclude(e.target.checked);
-            }}
-            name="state-exclude"
-            checked={exclude}
-            style={{alignItems: "center"}}
-          >
-            <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
-              <div>Exclude</div>
-              <div>Abandoned</div>
-            </div>
-          </Checkbox>
-        </div>
 
         <Flex justify={"center"} className="tw-mr-2">
           <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
