@@ -139,6 +139,8 @@ export function NewFlowDashboard() {
                   traceability: (
                     <ProjectTraceabilityTrendsWidget
                       instanceKey={key}
+                      tags={workItemSelectors}
+                      release={release}
                       measurementWindow={flowAnalysisPeriod}
                       days={flowAnalysisPeriod}
                       samplingFrequency={flowAnalysisPeriod}
