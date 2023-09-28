@@ -71,6 +71,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
                     cycleTimeTarget={cycleTimeTarget}
                     latencyTarget={latencyTarget}
                     onSelectionChange={handleSelectionChange}
+                    excludeAbandoned={displayBag?.excludeAbandoned}
                   />
 
                     <CardInspectorWithDrawer
@@ -99,6 +100,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
           latencyTarget,
           stateTypes,
           showQuadrantPopup: displayBag?.showQuadrantPopup,
+          excludeAbandoned: displayBag?.excludeAbandoned,
           context,
         }}
         {...displayBag}
