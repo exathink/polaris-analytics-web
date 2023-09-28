@@ -33,6 +33,7 @@ export function DimensionWipMetricsWidget({
   } = useQueryDimensionFlowMetrics({
     dimension,
     instanceKey,
+    release,
     tags,
     leadTimeTarget,
     cycleTimeTarget,
