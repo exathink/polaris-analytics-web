@@ -111,7 +111,7 @@ function getTeamEntry(teamNodeRefs) {
 
 export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
-    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen")
+    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeAbandoned")
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
@@ -133,7 +133,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 fullScreen,
                 excludeAbandoned
               }) => {
-                
+
     const workItemsWithAggregateDurations = workItems;
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));

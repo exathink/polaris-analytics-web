@@ -300,7 +300,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: excludeAbandoned,
+                excludeAbandoned: Boolean(excludeAbandoned),
                 customPhaseMapping,
               }}
             />
@@ -340,7 +340,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: excludeAbandoned,
+                excludeAbandoned: Boolean(excludeAbandoned),
                 customPhaseMapping,
               }}
             />

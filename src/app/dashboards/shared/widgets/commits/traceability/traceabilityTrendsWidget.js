@@ -8,6 +8,8 @@ import {ProjectTraceabilityTrendsDetailDashboard} from "./traceabilityTrendsDeta
 export const ProjectTraceabilityTrendsWidget = (
   {
     instanceKey,
+    release,
+    tags,
     view,
     context,
     showAll,
@@ -28,6 +30,8 @@ export const ProjectTraceabilityTrendsWidget = (
     const {loading, error, data} = useQueryProjectTraceabilityTrends(
       {
         instanceKey: instanceKey,
+        release,
+        tags,
         days: days,
         measurementWindow: measurementWindow,
         samplingFrequency: samplingFrequency,

@@ -4,6 +4,8 @@ import {analytics_service} from "../../../../../services/graphql";
 export function useQueryProjectTraceabilityTrends(
   {
     instanceKey,
+    release,
+    tags,
     before,
     days,
     measurementWindow,
@@ -15,6 +17,8 @@ export function useQueryProjectTraceabilityTrends(
     gql`
      query projectTraceabilityTrends(
           $key: String!, 
+          $tags: [String],
+          $release: String,
           $days: Int!,
           $measurementWindow: Int!,
           $samplingFrequency: Int!,
@@ -23,7 +27,9 @@ export function useQueryProjectTraceabilityTrends(
           $referenceString: String, 
           ) {
       project(
-            key: $key, 
+            key: $key,
+            tags: $tags,
+            release: $release,
             interfaces: [TraceabilityTrends],
              traceabilityTrendsArgs: {
               before: $before,
@@ -48,6 +54,8 @@ export function useQueryProjectTraceabilityTrends(
       service: analytics_service,
       variables: {
         key: instanceKey,
+        release: release,
+        tags: tags,
         days: days,
         before: before,
         measurementWindow: measurementWindow,
