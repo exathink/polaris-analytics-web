@@ -75,7 +75,7 @@ class SidebarSubnav extends Component {
             trigger={null}
             collapsible={true}
             collapsed={collapsed}
-            width="130"
+            width={"fit-content"}
             className="isomorphicSidebar tw-shadow-md"
             style={{height: "100%", backgroundColor: "#f2f2f8", borderRight: "1px solid #2d344610"}}
           >
