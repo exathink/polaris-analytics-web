@@ -9,6 +9,7 @@ import {Dashboard, DashboardRow, DashboardWidget} from "../../../framework/viz/d
 import {DimensionFlowMixTrendsWidget} from "../../shared/widgets/work_items/trends/flowMix";
 import {DefectArrivalCloseRateWidget, DefectBacklogTrendsWidget} from "../shared/widgets/quality";
 import {DaysRangeSlider, ONE_YEAR} from "../../shared/components/daysRangeSlider/daysRangeSlider";
+import { useQueryParamState } from "../shared/helper/hooks";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
@@ -25,6 +26,10 @@ function TrendsDashboard({
   } = settingsWithDefaults;
 
   const [daysRange, setDaysRange] = React.useState(trendsAnalysisPeriod);
+  
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
@@ -60,6 +65,8 @@ function TrendsDashboard({
             <DimensionDefectResponseTimeWidget
               dimension={"project"}
               instanceKey={key}
+              release={release}
+              tags={workItemSelectors}
               measurementWindow={30}
               days={daysRange}
               samplingFrequency={30}
@@ -81,6 +88,8 @@ function TrendsDashboard({
           render={({view}) => (
             <DimensionFlowMixTrendsWidget
               dimension={"project"}
+              release={release}
+              tags={workItemSelectors}
               title={`Capacity Allocated to Defects, Last ${daysRange} Days`}
               instanceKey={key}
               measurementWindow={30}
