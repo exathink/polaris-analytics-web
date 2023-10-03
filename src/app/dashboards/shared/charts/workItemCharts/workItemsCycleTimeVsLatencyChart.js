@@ -176,20 +176,18 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
 
     return {
       chart: {
-
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
         panKey: "shift",
-        zoomType: "xy"
-
+        zoomType: "xy",
       },
       title: {
         text: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant}),
-        align: "left"
+        align: "left",
       },
       subtitle: {
         text: `Age & Last Moved: ${localNow(intl)} `,
-        align: "left"
+        align: "left",
       },
       xAxis: {
         type: "logarithmic",
@@ -199,68 +197,72 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         max: Math.max(maxCycleTime, cycleTimeTarget || -1) * 1.2,
         visible: true,
         labels: {
-          formatter: function() {
-            return intl.formatNumber(this.value, { maximumSignificantDigits: 2 });
-          }
+          formatter: function () {
+            return intl.formatNumber(this.value, {maximumSignificantDigits: 2});
+          },
         },
         title: {
-          text: "Age in Days"
+          text: "Age in Days",
         },
-        plotLines: cycleTimeTarget ? [
-          {
-            color: "green",
-            value: cycleTimeTarget,
-            dashStyle: "solid",
-            width: 1.5,
-            label: {
-              text: ` A= ${intl.formatNumber(cycleTimeTarget)}d`
-            }
-          },
-          ...abandonedPlotLineXAxis
-        ] : null
+        plotLines: cycleTimeTarget
+          ? [
+              {
+                color: "green",
+                value: cycleTimeTarget,
+                dashStyle: "solid",
+                width: 1.5,
+                label: {
+                  text: ` A= ${intl.formatNumber(cycleTimeTarget)}d`,
+                },
+              },
+              ...abandonedPlotLineXAxis,
+            ]
+          : null,
       },
       yAxis: {
         type: "logarithmic",
         labels: {
-          formatter: function() {
-            return intl.formatNumber(this.value, { maximumSignificantDigits: 2 });
-          }
+          formatter: function () {
+            return intl.formatNumber(this.value, {maximumSignificantDigits: 2});
+          },
         },
         title: {
-          text: "Last Moved in Days"
+          text: "Last Moved in Days",
         },
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
 
         min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
-        plotLines: targetLatency ? [
-          {
-            color: "green",
-            value: targetLatency,
-            dashStyle: "solid",
-            width: 1,
-            label: {
-              text: ` L= ${intl.formatNumber(targetLatency)}d`
-            },
-          },
-          {
-            color: excludeAbandoned ? "red" : "orange",
-            value: cycleTimeTarget,
-            dashStyle: "solid",
-            width: 1,
-            label: {
-              text: ` L= ${intl.formatNumber(cycleTimeTarget)}d`
-            }
-          },
-          ...abandonedPlotLineYAxis
-        ] : null
+        plotLines: targetLatency
+          ? [
+              {
+                color: "green",
+                value: targetLatency,
+                dashStyle: "solid",
+                width: 1,
+                label: {
+                  text: ` L= ${intl.formatNumber(targetLatency)}d`,
+                },
+              },
+              {
+                color: excludeAbandoned ? "red" : "orange",
+                value: cycleTimeTarget,
+                dashStyle: "solid",
+                width: 1,
+                label: {
+                  text: ` L= ${intl.formatNumber(cycleTimeTarget)}d`,
+                },
+              },
+              ...abandonedPlotLineYAxis,
+            ]
+          : null,
       },
 
       tooltip: {
         useHTML: true,
         hideDelay: 50,
         outside: fullScreen === false,
-        formatter: function() {
+        formatter: function () {
           const {
             displayId,
             workItemType,
@@ -274,7 +276,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             latency,
             effort,
             workItemStateDetails,
-            teamNodeRefs
+            teamNodeRefs,
           } = this.point.workItem;
 
           const teamEntry = getTeamEntry(teamNodeRefs);
@@ -284,24 +286,22 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
             tooltipType === "small"
               ? []
               : [
-                [],
-                [`Current State:`, `${state.toLowerCase()}`],
-                [`Entered:`, `${timeInStateDisplay}`],
+                  [],
+                  [`Current State:`, `${state.toLowerCase()}`],
+                  [`Entered:`, `${timeInStateDisplay}`],
 
-                stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
+                  stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
 
-                [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-                workItemStateDetails.commitCount != null ? [] : [``, ``],
-                duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
-                effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""]
-              ];
+                  [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
+                  workItemStateDetails.commitCount != null ? [] : [``, ``],
+                  duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
+                ];
 
           const _displayId = blurClass ? "**********" : displayId;
           const _name = blurClass ? "**********" : name;
           return tooltipHtml_v2({
-            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${
-              elide(_name, 30)
-            }`,
+            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
             body: [
               [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
               [`Current State:`, `${state.toLowerCase()}`],
@@ -311,40 +311,52 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               [`Last Moved:`, `${intl.formatNumber(latency)} days`],
               effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
               latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
-              ...remainingEntries
-
-            ]
+              ...remainingEntries,
+            ],
           });
-        }
+        },
       },
-      series: [
-        ...cycleTimeVsLatencySeries
-      ],
+      series: [...cycleTimeVsLatencySeries],
       plotOptions: {
         series: {
           animation: false,
           dataLabels: {
             enabled: true,
-            formatter: function() {
+            formatter: function () {
               return this.point.workItem.displayId;
-            }
+            },
           },
-        }
+          events: {
+            legendItemClick: function () {
+              const currentSeries = this;
+              // get all the series
+              var series = this.chart.series;
+              
+              // other series except current
+              const otherSeries = series.filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
+              otherSeries.forEach(x => x?.hide());
+
+              if (this.visible) {
+                return false;
+              }
+              
+            },
+          },
+        },
       },
       legend: {
         title: {
           text: groupByState ? "State" : "Phase",
           style: {
-            fontStyle: "italic"
-          }
+            fontStyle: "italic",
+          },
         },
         align: "right",
         layout: "vertical",
         verticalAlign: "middle",
         itemMarginBottom: 3,
-        enabled: workItemsWithAggregateDurations.length > 0
-
-      }
-    }
+        enabled: workItemsWithAggregateDurations.length > 0,
+      },
+    };
   }
 }));
