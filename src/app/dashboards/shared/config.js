@@ -32,8 +32,8 @@ export const Colors = {
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'
   ],
   DefectRate: {
-    arrival: "#ea9c9c",
-    close: "#64de95"
+    arrival: 'rgba(218,115,4,0.75)',
+    close: '#7824b5'
   },
   Commits: {
     nonMerge: "#7cb5ec",
