@@ -53,6 +53,8 @@ function TrendsDashboard({
               measurementWindow={30}
               days={daysRange}
               samplingFrequency={30}
+              release={release}
+              tags={workItemSelectors}
               view={view}
             />
           )}

@@ -10,6 +10,8 @@ export const FLOW_RATE_TRENDS_QUERY = gql`
     $referenceString: String
     $defectsOnly: Boolean
     $specsOnly: Boolean
+    $release: String
+    $tags: [String]
   ) {
     project(
       key: $key
@@ -21,6 +23,8 @@ export const FLOW_RATE_TRENDS_QUERY = gql`
         metrics: [arrival_rate, close_rate]
         defectsOnly: $defectsOnly
         specsOnly: $specsOnly
+        release: $release
+        tags: $tags
       }
       referenceString: $referenceString
     ) {
@@ -42,6 +46,8 @@ export function useQueryProjectFlowRateTrends({
   referenceString,
   defectsOnly,
   specsOnly,
+  release,
+  tags
 }) {
   return useQuery(FLOW_RATE_TRENDS_QUERY, {
     service: analytics_service,
@@ -53,6 +59,8 @@ export function useQueryProjectFlowRateTrends({
       referenceString: referenceString,
       defectsOnly: defectsOnly,
       specsOnly: specsOnly,
+      release: release,
+      tags: tags
     },
     errorPolicy: "all",
     pollInterval: analytics_service.defaultPollInterval(),
