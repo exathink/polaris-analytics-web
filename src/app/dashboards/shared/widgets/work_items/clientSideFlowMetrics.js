@@ -211,6 +211,9 @@ export function useWipMetricsCommon({
       )
     : workItemsDurations;
 
+  const motionLimit = workItemsDurations.filter(
+    (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) === Quadrants.ok
+  )
 
   const workItemAggregateDurationsForSpecs = excludeAbandoned
     ? getWorkItemDurations(wipSpecsWorkItems).filter(
@@ -227,7 +230,7 @@ export function useWipMetricsCommon({
 
   const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
 
-  return {wipLimit, pipelineCycleMetrics, workItemAggregateDurations, workItemAggregateDurationsForSpecs};
+  return {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurations, workItemAggregateDurationsForSpecs};
 }
 
 export function DevItemRatio({devItemsCount, devItemsPercentage}) {
