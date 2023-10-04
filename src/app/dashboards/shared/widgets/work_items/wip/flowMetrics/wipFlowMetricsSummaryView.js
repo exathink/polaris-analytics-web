@@ -336,7 +336,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
   const {excludeAbandoned} = displayBag;
   const intl = useIntl();
   
-  const {wipLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
+  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
     useWipMetricsCommon({
       wipDataAll,
       flowMetricsData,
@@ -383,6 +383,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
           supportingMetric: <span>Limit {wipLimit}</span>,
           ...bottomRightElement,
           testId: "wip-total",
+          midTarget: motionLimit
         }}
       />
       <AvgAge

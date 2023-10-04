@@ -8,7 +8,7 @@ import { getPercentage } from "../../../../../projects/shared/helper/utils";
 export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
-  const {wipLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
+  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
     useWipMetricsCommon({
       wipDataAll,
       flowMetricsData,
@@ -57,6 +57,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
           ...bottomRightView,
           info: {title: "Info", content: "content"},
           ...displayProps,
+          midTarget: motionLimit
         }}
       />
     ),
