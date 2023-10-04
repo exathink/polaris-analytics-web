@@ -15,10 +15,14 @@ export const DimensionDefectResponseTimeWidget = ({
   leadTimeConfidenceTarget,
   cycleTimeConfidenceTarget,
   cycleTimeTarget,
+  tags,
+  release
 }) => {
   const {loading, error, data} = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
+    tags,
+    release,
     days,
     measurementWindow,
     samplingFrequency,

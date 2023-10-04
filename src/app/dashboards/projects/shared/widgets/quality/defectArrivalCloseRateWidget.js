@@ -5,13 +5,15 @@ import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useQueryProjectFlowRateTrends} from "../../hooks/useQueryProjectFlowRateTrends";
 import {DefectArrivalCloseRateView} from "./defectArrivalCloseRateView";
 
-export const DefectArrivalCloseRateWidget = ({instanceKey, view, days, measurementWindow, samplingFrequency}) => {
+export const DefectArrivalCloseRateWidget = ({instanceKey, view, days, measurementWindow, samplingFrequency, release, tags}) => {
   const {loading, error, data} = useQueryProjectFlowRateTrends({
     instanceKey: instanceKey,
     days: days,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
     defectsOnly: true,
+    release: release,
+    tags: tags
   });
   if (loading) return <Loading />;
   if (error) {
