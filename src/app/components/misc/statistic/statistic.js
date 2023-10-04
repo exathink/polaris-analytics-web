@@ -116,7 +116,7 @@ export function getMetricUtils({target, value, midTarget = target, uom, good, va
     if (good(value - target) && good(value - midTarget)) {
       color = TrendColors.good;
     } else if (good(value - target) && !good(value - midTarget)) {
-      color = "orange";
+      color = TrendColors.notokay;
     } else {
       color = TrendColors.bad;
     }

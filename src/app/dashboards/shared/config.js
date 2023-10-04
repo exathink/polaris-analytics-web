@@ -279,6 +279,7 @@ export const ResponseTimeMetricsColor = {
 export const TrendColors = {
   good: "rgba(0, 128, 0, 0.7)",
   bad: "rgba(255, 0, 0, 0.7)",
+  notokay: "rgb(202, 138, 4, 1)"
 }
 
 
