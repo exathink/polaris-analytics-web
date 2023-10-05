@@ -334,7 +334,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               
               // other series except current
               const otherSeries = series.filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
-              otherSeries.forEach(x => x?.hide());
+              otherSeries.forEach(x => x.visible ? x.hide(): x.show());
 
               if (this.visible) {
                 return false;
