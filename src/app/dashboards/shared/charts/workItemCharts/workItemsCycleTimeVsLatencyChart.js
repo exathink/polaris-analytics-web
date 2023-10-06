@@ -1,5 +1,5 @@
 import { Chart } from "../../../../framework/viz/charts";
-import { buildIndex, pick, elide, localNow } from "../../../../helpers/utility";
+import { buildIndex, pick, elide, localNow, range} from "../../../../helpers/utility";
 import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {
@@ -109,6 +109,55 @@ function getTeamEntry(teamNodeRefs) {
   return teamNodeRefs.length > 0 ? teamsString : "";
 }
 
+/* This function computes the least squares regression line
+* for the points in the chart.
+*
+* The slope of this line indicates the amount of friction/impedance in the system
+* */
+function getRegressionLine(workItems) {
+    let sumX = 0;
+    let sumY = 0;
+    let sumXY = 0;
+    let sumX2 = 0;
+
+    workItems.forEach(workItem => {
+        sumX += workItem.cycleTime;
+        sumY += workItem.latency;
+        sumXY += workItem.cycleTime * workItem.latency;
+        sumX2 += workItem.cycleTime ** 2;
+    });
+
+    const n = workItems.length;
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
+    const intercept = (sumY - slope * sumX) / n;
+
+    return [slope, intercept];
+
+}
+
+function getLineOfFrictionSeries(workItems, maxCycleTime) {
+
+  const [slope, intercept] = getRegressionLine(workItems)
+  const lineOfFriction = range(0,maxCycleTime)
+  return [{
+      type: "spline",
+      key: `line-of-friction`,
+      id: `friction-line`,
+      name: 'Line of Friction',
+      color: "grey",
+      dashStyle: 'Dot',
+      showInLegend: false,
+      data: lineOfFriction.map(
+        point => (
+          {
+            x: point,
+            y: slope * point + intercept
+          }
+        )
+      )
+    }]
+}
+
 export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
     pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeAbandoned")
@@ -144,6 +193,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
+
+    const lineOfFrictionSeries = getLineOfFrictionSeries(workItems, maxCycleTime)
 
     const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
@@ -316,7 +367,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           });
         },
       },
-      series: [...cycleTimeVsLatencySeries],
+      series: [...cycleTimeVsLatencySeries, ...lineOfFrictionSeries],
       plotOptions: {
         series: {
           animation: false,
