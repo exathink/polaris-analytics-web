@@ -141,9 +141,9 @@ function getLineOfFrictionSeries(workItems, maxCycleTime) {
   const lineOfFriction = range(0,maxCycleTime)
   return [{
       type: "spline",
-      key: `line-of-friction`,
-      id: `friction-line`,
-      name: 'Line of Friction',
+      key: `line-of-motion`,
+      id: `motion-line`,
+      name: 'Motion',
       color: "grey",
       dashStyle: 'Dot',
       showInLegend: false,
@@ -152,6 +152,22 @@ function getLineOfFrictionSeries(workItems, maxCycleTime) {
           {
             x: point,
             y: slope * point + intercept
+          }
+        )
+      )
+    }, {
+      type: "spline",
+      key: `line-of-immobility`,
+      id: `motionless-line`,
+      name: 'Motionless',
+      color: "red",
+    dashStyle: "dot",
+      showInLegend: false,
+      data: lineOfFriction.map(
+        point => (
+          {
+            x: point,
+            y: point
           }
         )
       )
@@ -374,7 +390,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           dataLabels: {
             enabled: true,
             formatter: function () {
-              return this.point.workItem.displayId;
+              return this.point.workItem?.displayId;
             },
           },
           events: {
@@ -384,7 +400,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               var series = this.chart.series;
               
               // other series except current
-              const otherSeries = series.filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
+              const otherSeries = series.filter((x) => x.type !== 'spline').filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
               const areAllOtherHidden = otherSeries.every((x) => Boolean(x.visible)===false);
 
               if (areAllOtherHidden) {
