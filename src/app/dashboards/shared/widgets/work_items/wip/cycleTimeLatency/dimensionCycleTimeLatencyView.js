@@ -94,8 +94,13 @@ export const DimensionCycleTimeLatencyView = ({
   }
 
   function handleAgeFilterReset() {
-    appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
-    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    if (getFilterValue(appliedFilters, FILTERS.STATE).length === 0) {
+      appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
+      appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    } else {
+      appliedFilters.set(FILTERS.CURRENT_INTERACTION, {value: ["queuesize"]});
+    }
+
     appliedFilters.delete(FILTERS.HISTOGRAM_BUCKET);
 
     setAppliedFilters(new Map(appliedFilters));
