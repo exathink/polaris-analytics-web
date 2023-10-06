@@ -22,6 +22,16 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
     icon: 'ion-ios-pulse-strong'
   },
+  queues: {
+    name: 'wip',
+    display: () => (<FormattedMessage id='topics.queues' defaultMessage="Queues"/>),
+    icon: 'ion-ios-pulse-strong'
+  },
+  motion: {
+    name: 'wip',
+    display: () => (<FormattedMessage id='topics.motion' defaultMessage="Motion"/>),
+    icon: 'ion-ios-pulse-strong'
+  },
   productVideos: {
     name: 'productVideos',
     display: () => (<FormattedMessage id='topics.productVideos' defaultMessage="Product Videos"/>),
