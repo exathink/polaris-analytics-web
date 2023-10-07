@@ -135,42 +135,62 @@ function getRegressionLine(workItems) {
 
 }
 
-function getLineOfFrictionSeries(workItems, maxCycleTime) {
+function getLineOfFrictionSeries(workItems, maxCycleTime, minCycleTime, yMin) {
 
   const [slope, intercept] = getRegressionLine(workItems)
+  // We use this to generate the points on the line of motion.
   const lineOfFriction = range(0,maxCycleTime)
+  // We need this so that the lowest point is visible on the chart. With log scale, negative values won't be shown.
+  const lineOfFrictionMin = lineOfFriction.find( (x) => (slope*x + intercept) > 0)
+
   return [{
+      //This line shows the least square regression line
+      // It is intended as a reference line, so we disable mousetracking, tooltips and
+      // set the zIndex to be negative.
       type: "spline",
       key: `line-of-motion`,
       id: `motion-line`,
-      name: 'Motion',
-      color: "grey",
+      name: 'motion line',
+      color: "purple",
       dashStyle: 'Dot',
-      showInLegend: false,
-      data: lineOfFriction.map(
-        point => (
-          {
-            x: point,
-            y: slope * point + intercept
-          }
-        )
-      )
-    }, {
+      showInLegend: true,
+      allowPointSelect: false,
+      enableMouseTracking: false,
+      data: lineOfFriction.map( x => ({
+        x: x,
+        y: slope*x + intercept,
+        slope: slope,
+        intercept: intercept,
+        // we only want to show the line not the points on the line.
+        color: Colors.Chart.backgroundColor
+      })),
+      zIndex: -100
+    },
+    // This is the x=y line or the line of immobile points.
+    // It is also a reference line, so we don't interact with it or show the points on the line
+    {
       type: "spline",
       key: `line-of-immobility`,
       id: `motionless-line`,
       name: 'Motionless',
       color: "red",
-    dashStyle: "dot",
+      dashStyle: "dot",
       showInLegend: false,
-      data: lineOfFriction.map(
-        point => (
-          {
-            x: point,
-            y: point
-          }
-        )
-      )
+      allowPointSelect: false,
+      enableMouseTracking: false,
+      data: [
+        {
+          x: lineOfFrictionMin,
+          y: lineOfFrictionMin,
+          color: Colors.Chart.backgroundColor
+        },
+        {
+          x:maxCycleTime + 10,
+          y:maxCycleTime + 10,
+          color: Colors.Chart.backgroundColor
+        }
+      ],
+      zIndex: -102
     }]
 }
 
@@ -202,6 +222,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const workItemsWithAggregateDurations = workItems;
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
+    const minCycleTime = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
     const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));
 
     const targetLatency = latencyTarget || (cycleTimeTarget && cycleTimeTarget * 0.1) || null;
@@ -210,7 +231,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
-    const lineOfFrictionSeries = getLineOfFrictionSeries(workItems, maxCycleTime)
+    const yMin = Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001);
+    const lineOfFrictionSeries = getLineOfFrictionSeries(workItems, maxCycleTime, minCycleTime, yMin)
 
     const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
@@ -299,7 +321,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
 
-        min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
+        min: yMin,
         plotLines: targetLatency
           ? [
               {
@@ -330,58 +352,59 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         hideDelay: 50,
         outside: fullScreen === false,
         formatter: function () {
-          const {
-            displayId,
-            workItemType,
-            name,
-            state,
-            stateType,
-            timeInStateDisplay,
-            latestCommitDisplay,
-            cycleTime,
-            duration,
-            latency,
-            effort,
-            workItemStateDetails,
-            teamNodeRefs,
-          } = this.point.workItem;
+          if (this.point.workItem != null) {
+              const {
+                displayId,
+                workItemType,
+                name,
+                state,
+                stateType,
+                timeInStateDisplay,
+                latestCommitDisplay,
+                cycleTime,
+                duration,
+                latency,
+                effort,
+                workItemStateDetails,
+                teamNodeRefs,
+              } = this.point.workItem;
 
-          const teamEntry = getTeamEntry(teamNodeRefs);
-          const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry} <br/>` : "";
+              const teamEntry = getTeamEntry(teamNodeRefs);
+              const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry} <br/>` : "";
 
-          const remainingEntries =
-            tooltipType === "small"
-              ? []
-              : [
-                  [],
+              const remainingEntries =
+                tooltipType === "small"
+                  ? []
+                  : [
+                      [],
+                      [`Current State:`, `${state.toLowerCase()}`],
+                      [`Entered:`, `${timeInStateDisplay}`],
+
+                      stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
+
+                      [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
+                      workItemStateDetails.commitCount != null ? [] : [``, ``],
+                      duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                      effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
+                    ];
+
+              const _displayId = blurClass ? "**********" : displayId;
+              const _name = blurClass ? "**********" : name;
+              return tooltipHtml_v2({
+                header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
+                body: [
+                  [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
                   [`Current State:`, `${state.toLowerCase()}`],
                   [`Entered:`, `${timeInStateDisplay}`],
-
-                  stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
-
-                  [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-                  workItemStateDetails.commitCount != null ? [] : [``, ``],
-                  duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  [],
+                  [`Age:`, `${intl.formatNumber(cycleTime)} days`],
+                  [`Last Moved:`, `${intl.formatNumber(latency)} days`],
                   effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
-                ];
-
-          const _displayId = blurClass ? "**********" : displayId;
-          const _name = blurClass ? "**********" : name;
-          return tooltipHtml_v2({
-            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
-            body: [
-              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
-              [`Current State:`, `${state.toLowerCase()}`],
-              [`Entered:`, `${timeInStateDisplay}`],
-              [],
-              [`Age:`, `${intl.formatNumber(cycleTime)} days`],
-              [`Last Moved:`, `${intl.formatNumber(latency)} days`],
-              effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
-              ...remainingEntries,
-            ],
-          });
-        },
+                  latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
+                  ...remainingEntries,
+                ],
+              });
+            }},
       },
       series: [...cycleTimeVsLatencySeries, ...lineOfFrictionSeries],
       plotOptions: {
