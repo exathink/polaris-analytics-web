@@ -93,6 +93,29 @@ export const DimensionCycleTimeLatencyView = ({
     displayBag?.setWipChartType("queue");
   }
 
+  function handleAgeFilterReset() {
+    if (getFilterValue(appliedFilters, FILTERS.STATE).length === 0) {
+      appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
+      appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    } else {
+      appliedFilters.set(FILTERS.CURRENT_INTERACTION, {value: ["queuesize"]});
+    }
+
+    appliedFilters.delete(FILTERS.HISTOGRAM_BUCKET);
+
+    setAppliedFilters(new Map(appliedFilters));
+    displayBag?.setWipChartType("age");
+  }
+
+  function handleQueueSizeFilterReset() {
+    appliedFilters.delete(FILTERS.PRIMARY_CATEGORY);
+    appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
+    appliedFilters.delete(FILTERS.STATE);
+
+    setAppliedFilters(new Map(appliedFilters));
+    displayBag?.setWipChartType("queue");
+  }
+
   function handleQuadrantClear() {
     appliedFilters.delete(FILTERS.QUADRANT_PANEL);
     appliedFilters.delete(FILTERS.CURRENT_INTERACTION);
@@ -234,7 +257,7 @@ export const DimensionCycleTimeLatencyView = ({
       selectedFilter = getFilterValue(appliedFilters, FILTERS.STATE)[0].value;
     }
 
-    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />;
+    const ageFilterElement = <AgeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleAgeFilterReset} />;
     const quadrantFilterElement = selectedQuadrant && chartCategory === chart_category && (
       <QuadrantFilterWrapper
         selectedQuadrant={QuadrantNames[selectedQuadrant]}
@@ -243,7 +266,7 @@ export const DimensionCycleTimeLatencyView = ({
       />
     );
     const queueSizeFilterElement = (
-      <QueueSizeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleResetAll} />
+      <QueueSizeFilterWrapper selectedFilter={selectedFilter} handleClearClick={handleQueueSizeFilterReset} />
     );
 
     let filterElement;

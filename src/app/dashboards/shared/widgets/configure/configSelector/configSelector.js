@@ -25,12 +25,12 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
       display: "Value Streams / Work Streams",
     },
     {
-      key: CONFIG_TABS.MEASUREMENT_SETTINGS,
-      display: settingsName,
+      key: CONFIG_TABS.RESPONSE_TIME_SLA,
+      display: "TimeBox Settings",
     },
     {
-      key: CONFIG_TABS.RESPONSE_TIME_SLA,
-      display: "Response Time Targets",
+      key: CONFIG_TABS.MEASUREMENT_SETTINGS,
+      display: settingsName,
     },
   ];
 
