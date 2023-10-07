@@ -1,5 +1,5 @@
 import { Chart } from "../../../../framework/viz/charts";
-import { buildIndex, pick, elide, localNow } from "../../../../helpers/utility";
+import { buildIndex, pick, elide, localNow, range} from "../../../../helpers/utility";
 import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {
@@ -109,6 +109,116 @@ function getTeamEntry(teamNodeRefs) {
   return teamNodeRefs.length > 0 ? teamsString : "";
 }
 
+/* This function computes the least squares regression line
+* for the points in the chart.
+*
+* The slope of this line indicates the amount of friction/impedance in the system
+* */
+function getRegressionLine(workItems) {
+    let sumX = 0;
+    let sumY = 0;
+    let sumXY = 0;
+    let sumX2 = 0;
+
+    workItems.forEach(workItem => {
+        sumX += workItem.cycleTime;
+        sumY += workItem.latency;
+        sumXY += workItem.cycleTime * workItem.latency;
+        sumX2 += workItem.cycleTime ** 2;
+    });
+
+    const n = workItems.length;
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
+    const intercept = (sumY - slope * sumX) / n;
+
+    return [slope, intercept];
+
+}
+
+function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime, yMin) {
+
+
+  // We use this to generate the points on the line of motion.
+  const lineOfFriction = range(0,maxCycleTime)
+  // We need this so that the lowest point is visible on the chart. With log scale, negative values won't be shown.
+  const lineOfFrictionMin = lineOfFriction.find( (x) => (slope*x + intercept) > 0)
+
+  return [{
+      //This line shows the least square regression line
+      // It is intended as a reference line, so we disable mousetracking, tooltips and
+      // set the zIndex to be negative.
+      type: "spline",
+      key: `line-of-motion`,
+      id: `motion-line`,
+      name: 'motion line',
+      color: "purple",
+      dashStyle: 'Dot',
+      showInLegend: true,
+      allowPointSelect: false,
+      enableMouseTracking: false,
+      data: lineOfFriction.map( x => ({
+        x: x,
+        y: slope*x + intercept,
+        slope: slope,
+        intercept: intercept,
+        // we only want to show the line not the points on the line.
+        color: Colors.Chart.backgroundColor
+      })),
+      zIndex: -100
+    },
+    // This is the x=y line or the line of immobile points.
+    // It is also a reference line, so we don't interact with it or show the points on the line
+    {
+      type: "spline",
+      key: `line-of-immobility`,
+      id: `motionless-line`,
+      name: 'Motionless',
+      color: "red",
+      dashStyle: "dot",
+      showInLegend: false,
+      allowPointSelect: false,
+      enableMouseTracking: false,
+      data: [
+        {
+          x: lineOfFrictionMin,
+          y: lineOfFrictionMin,
+          color: Colors.Chart.backgroundColor
+        },
+        {
+          x:maxCycleTime + 10,
+          y:maxCycleTime + 10,
+          color: Colors.Chart.backgroundColor
+        }
+      ],
+      zIndex: -102
+    }]
+}
+
+function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
+  const friction = Math.min(Math.round(slope*100), 100);
+  const color = friction <= 30 ? 'green' : (friction < 70? 'yellow' : 'red')
+  return [
+        {
+          visible: workItemsWithAggregateDurations.length > 1,
+          labels: {
+            point: {
+              x:10,
+              y:10,
+            },
+            useHtml: true,
+            text: `Friction: ${intl.formatNumber(friction)}`,
+            shadow: {
+              color: color,
+              offsetX: -1,
+              opacity: 0.3
+            },
+            borderRadius: 5,
+            backgroundColor: color
+          }
+        }
+      ]
+}
+
 export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
     pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeAbandoned")
@@ -137,6 +247,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const workItemsWithAggregateDurations = workItems;
 
     const maxCycleTime = Math.max(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
+    const minCycleTime = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.cycleTime));
     const minLatency = Math.min(...workItemsWithAggregateDurations.map(workItems => workItems.latency));
 
     const targetLatency = latencyTarget || (cycleTimeTarget && cycleTimeTarget * 0.1) || null;
@@ -144,6 +255,10 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
     const cycleTimeVsLatencySeries = groupByState ?
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
+
+    const yMin = Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001);
+    const [slope, intercept] = getRegressionLine(workItems)
+    const motionLines = getMotionLines(workItems, slope, intercept, maxCycleTime, minCycleTime, yMin)
 
     const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
@@ -232,7 +347,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
 
-        min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
+        min: yMin,
         plotLines: targetLatency
           ? [
               {
@@ -263,67 +378,68 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         hideDelay: 50,
         outside: fullScreen === false,
         formatter: function () {
-          const {
-            displayId,
-            workItemType,
-            name,
-            state,
-            stateType,
-            timeInStateDisplay,
-            latestCommitDisplay,
-            cycleTime,
-            duration,
-            latency,
-            effort,
-            workItemStateDetails,
-            teamNodeRefs,
-          } = this.point.workItem;
+          if (this.point.workItem != null) {
+              const {
+                displayId,
+                workItemType,
+                name,
+                state,
+                stateType,
+                timeInStateDisplay,
+                latestCommitDisplay,
+                cycleTime,
+                duration,
+                latency,
+                effort,
+                workItemStateDetails,
+                teamNodeRefs,
+              } = this.point.workItem;
 
-          const teamEntry = getTeamEntry(teamNodeRefs);
-          const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry} <br/>` : "";
+              const teamEntry = getTeamEntry(teamNodeRefs);
+              const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry} <br/>` : "";
 
-          const remainingEntries =
-            tooltipType === "small"
-              ? []
-              : [
-                  [],
+              const remainingEntries =
+                tooltipType === "small"
+                  ? []
+                  : [
+                      [],
+                      [`Current State:`, `${state.toLowerCase()}`],
+                      [`Entered:`, `${timeInStateDisplay}`],
+
+                      stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
+
+                      [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
+                      workItemStateDetails.commitCount != null ? [] : [``, ``],
+                      duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                      effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
+                    ];
+
+              const _displayId = blurClass ? "**********" : displayId;
+              const _name = blurClass ? "**********" : name;
+              return tooltipHtml_v2({
+                header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
+                body: [
+                  [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
                   [`Current State:`, `${state.toLowerCase()}`],
                   [`Entered:`, `${timeInStateDisplay}`],
-
-                  stateType !== "closed" ? [`Time in State:`, `${intl.formatNumber(this.y)} days`] : ["", ""],
-
-                  [`Commits`, `${intl.formatNumber(workItemStateDetails.commitCount || 0)}`],
-                  workItemStateDetails.commitCount != null ? [] : [``, ``],
-                  duration != null ? [`Duration`, `${intl.formatNumber(duration)} days`] : ["", ""],
+                  [],
+                  [`Age:`, `${intl.formatNumber(cycleTime)} days`],
+                  [`Last Moved:`, `${intl.formatNumber(latency)} days`],
                   effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
-                ];
-
-          const _displayId = blurClass ? "**********" : displayId;
-          const _name = blurClass ? "**********" : name;
-          return tooltipHtml_v2({
-            header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
-            body: [
-              [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
-              [`Current State:`, `${state.toLowerCase()}`],
-              [`Entered:`, `${timeInStateDisplay}`],
-              [],
-              [`Age:`, `${intl.formatNumber(cycleTime)} days`],
-              [`Last Moved:`, `${intl.formatNumber(latency)} days`],
-              effort != null ? [`Effort`, `${intl.formatNumber(effort)} FTE Days`] : ["", ""],
-              latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
-              ...remainingEntries,
-            ],
-          });
-        },
+                  latestCommitDisplay != null ? [`Latest Commit`, `${latestCommitDisplay}`] : ["", ""],
+                  ...remainingEntries,
+                ],
+              });
+            }},
       },
-      series: [...cycleTimeVsLatencySeries],
+      series: [...cycleTimeVsLatencySeries, ...motionLines],
       plotOptions: {
         series: {
           animation: false,
           dataLabels: {
             enabled: true,
             formatter: function () {
-              return this.point.workItem.displayId;
+              return this.point.workItem?.displayId;
             },
           },
           events: {
@@ -333,7 +449,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               var series = this.chart.series;
               
               // other series except current
-              const otherSeries = series.filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
+              const otherSeries = series.filter((x) => x.type !== 'spline').filter((x) => x.userOptions.id !== currentSeries.userOptions.id);
               const areAllOtherHidden = otherSeries.every((x) => Boolean(x.visible)===false);
 
               if (areAllOtherHidden) {
@@ -367,6 +483,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         itemMarginBottom: 3,
         enabled: workItemsWithAggregateDurations.length > 0,
       },
+      annotations: getAnnotations(intl, slope, workItemsWithAggregateDurations)
     };
   }
 }));
