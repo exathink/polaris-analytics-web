@@ -135,9 +135,9 @@ function getRegressionLine(workItems) {
 
 }
 
-function getLineOfFrictionSeries(workItems, maxCycleTime, minCycleTime, yMin) {
+function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime, yMin) {
 
-  const [slope, intercept] = getRegressionLine(workItems)
+
   // We use this to generate the points on the line of motion.
   const lineOfFriction = range(0,maxCycleTime)
   // We need this so that the lowest point is visible on the chart. With log scale, negative values won't be shown.
@@ -194,6 +194,31 @@ function getLineOfFrictionSeries(workItems, maxCycleTime, minCycleTime, yMin) {
     }]
 }
 
+function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
+  const friction = Math.min(Math.round(slope*100), 100);
+  const color = friction <= 30 ? 'green' : (friction < 70? 'yellow' : 'red')
+  return [
+        {
+          visible: workItemsWithAggregateDurations.length > 1,
+          labels: {
+            point: {
+              x:10,
+              y:10,
+            },
+            useHtml: true,
+            text: `Friction: ${intl.formatNumber(friction)}`,
+            shadow: {
+              color: color,
+              offsetX: -1,
+              opacity: 0.3
+            },
+            borderRadius: 5,
+            backgroundColor: color
+          }
+        }
+      ]
+}
+
 export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
     pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeAbandoned")
@@ -232,7 +257,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
     const yMin = Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001);
-    const lineOfFrictionSeries = getLineOfFrictionSeries(workItems, maxCycleTime, minCycleTime, yMin)
+    const [slope, intercept] = getRegressionLine(workItems)
+    const motionLines = getMotionLines(workItems, slope, intercept, maxCycleTime, minCycleTime, yMin)
 
     const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
@@ -406,7 +432,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               });
             }},
       },
-      series: [...cycleTimeVsLatencySeries, ...lineOfFrictionSeries],
+      series: [...cycleTimeVsLatencySeries, ...motionLines],
       plotOptions: {
         series: {
           animation: false,
@@ -457,6 +483,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         itemMarginBottom: 3,
         enabled: workItemsWithAggregateDurations.length > 0,
       },
+      annotations: getAnnotations(intl, slope, workItemsWithAggregateDurations)
     };
   }
 }));
