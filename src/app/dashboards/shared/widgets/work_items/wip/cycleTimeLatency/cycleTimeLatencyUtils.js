@@ -6,7 +6,7 @@ import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../.
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
 import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
-import {parseTags} from "../../../../../../components/tables/tableUtils";
+import { parseTags } from "../../../../../../components/tables/tableUtils";
 import { BLANKS } from "../../../../../../components/tables/tableCols";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -406,4 +406,9 @@ export function filterByStateTypes(workItems, stateTypes) {
   return workItems.filter((workItem) =>
     stateTypes != null ? stateTypes.indexOf(workItem.stateType) !== -1 : true
   );
+}
+
+export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget) {
+  return (workItemsWithAggregateDurations.reduce(
+    (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * cycleTimeTarget);
 }
