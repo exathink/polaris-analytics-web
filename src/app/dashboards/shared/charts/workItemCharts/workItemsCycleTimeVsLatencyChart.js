@@ -176,18 +176,12 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       showInLegend: false,
       allowPointSelect: false,
       enableMouseTracking: false,
-      data: [
-        {
-          x: lineOfFrictionMin,
-          y: lineOfFrictionMin,
+      data: range(lineOfFrictionMin, maxCycleTime+1).map(
+        x => ({
+          x: x,
+          y: x,
           color: Colors.Chart.backgroundColor
-        },
-        {
-          x:maxCycleTime + 10,
-          y:maxCycleTime + 10,
-          color: Colors.Chart.backgroundColor
-        }
-      ],
+        })),
       zIndex: -102
     }]
 }
