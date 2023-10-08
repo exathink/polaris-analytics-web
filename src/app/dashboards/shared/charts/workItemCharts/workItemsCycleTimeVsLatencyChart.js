@@ -148,11 +148,14 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       // It is intended as a reference line, so we disable mousetracking, tooltips and
       // set the zIndex to be negative.
       type: "spline",
+      // turning off this line for now. There are too many false positives,
+      // and it seems like showing the immobile line is sufficient.
+      visible: false,
       key: `line-of-motion`,
       id: `motion-line`,
       name: 'motion lines',
       color: "purple",
-      showInLegend: true,
+      showInLegend: false,
       allowPointSelect: false,
       enableMouseTracking: false,
       data: lineOfFriction.map( x => ({
@@ -171,9 +174,9 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       type: "spline",
       key: `line-of-immobility`,
       id: `motionless-line`,
-      name: 'Motionless',
+      name: 'motionless',
       color: "red",
-      showInLegend: false,
+      showInLegend: true,
       allowPointSelect: false,
       enableMouseTracking: false,
       data: range(lineOfFrictionMin, maxCycleTime+1).map(
@@ -192,7 +195,9 @@ function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
   const color = friction <= 30 ? QuadrantColors.ok : (friction < 70? QuadrantColors.age : QuadrantColors.critical)
   return [
         {
-          visible: workItemsWithAggregateDurations.length > 1,
+          // turning this off for now.
+          // will revisit once we have a better notion of friction.
+          visible: false,
           labels: {
             point: {
               x:10,
