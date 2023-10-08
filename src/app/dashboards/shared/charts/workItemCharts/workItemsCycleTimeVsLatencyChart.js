@@ -1,21 +1,26 @@
 import { Chart } from "../../../../framework/viz/charts";
-import { buildIndex, pick, elide, localNow, range} from "../../../../helpers/utility";
+import { buildIndex, elide, localNow, pick, range } from "../../../../helpers/utility";
 import { DefaultSelectionEventHandler } from "../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 
 import {
   AppTerms,
   Colors,
-  Symbols, workItemFlowTypeColor,
+  Symbols,
+  workItemFlowTypeColor,
   WorkItemStateTypeColor,
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrantName, QuadrantNames, QuadrantColors } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
-import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
-import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
-
+import {
+  getImpedance,
+  getQuadrantName,
+  QuadrantColors,
+  QuadrantNames
+} from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { tooltipHtml_v2 } from "../../../../framework/viz/charts/tooltip";
+import { withNavigationContext } from "../../../../framework/navigation/components/withNavigationContext";
 
 
 function getSeriesByStateType(workItems) {
@@ -191,9 +196,8 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
 
 function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) {
   // we limit friction to a number between 0 and 100
-  const friction = (workItemsWithAggregateDurations.reduce(
-    (totalWeight, workItem ) => totalWeight + (workItem.cycleTime*workItem.latency), 0))/(workItemsWithAggregateDurations.length*cycleTimeTarget*cycleTimeTarget)
-  const color = friction <= 1 ? QuadrantColors.ok : QuadrantColors.critical
+  const impedance = getImpedance(workItemsWithAggregateDurations, cycleTimeTarget)
+  const color = impedance <= 0.8 ? QuadrantColors.ok : (impedance <= 1 ? QuadrantColors.age : QuadrantColors.critical)
   return [
         {
           // turning this off for now.
@@ -205,7 +209,7 @@ function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) 
               y:10,
             },
             useHtml: true,
-            text: `Impedance: ${intl.formatNumber(friction, {maximumFractionDigits: 2})}`,
+            text: `Impedance: ${intl.formatNumber(impedance, {maximumFractionDigits: 2})}`,
             shadow: {
               color: color,
               offsetX: -1,
