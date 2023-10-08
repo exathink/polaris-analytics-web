@@ -1,8 +1,8 @@
 import React from "react";
 import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
-import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import { QuadrantColors, WorkItemStateTypeDisplayName } from "../../../../config";
+import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";

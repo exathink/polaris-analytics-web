@@ -4,9 +4,9 @@ import { tooltipHtml_v2 } from "../../../../../../framework/viz/charts/tooltip";
 import { capitalizeFirstLetter, i18nNumber, localNow } from "../../../../../../helpers/utility";
 import { allPairs, getHistogramCategories, getHistogramSeries } from "../../../../../projects/shared/helper/utils";
 import { ClearFilters } from "../../../../components/clearFilters/clearFilters";
-import { AppTerms, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
+import { AppTerms, QuadrantColors, workItemFlowTypeColor, WorkItemStateTypes } from "../../../../config";
 import { projectDeliveryCycleFlowMetricsMeta } from "../../../../helpers/metricsMeta";
-import {parseTags} from "../../../../../../components/tables/tableUtils";
+import { parseTags } from "../../../../../../components/tables/tableUtils";
 import { BLANKS } from "../../../../../../components/tables/tableCols";
 
 export const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -59,14 +59,6 @@ export const getQuadrant = (cycleTime, latency, cycleTimeTarget, latencyTarget) 
   return Quadrants.abandoned;
 };
 
-
-export const QuadrantColors = {
-  [Quadrants.ok]: "#4ade80",
-  [Quadrants.latency]: "#facc15",
-  [Quadrants.age]: "#fb923c",
-  [Quadrants.critical]: "#f87171",
-  [Quadrants.abandoned]: "#6b7280"
-};
 
 export function getQuadrantColor(cycleTime, latency, cycleTimeTarget, latencyTarget) {
   return QuadrantColors[getQuadrant(cycleTime, latency, cycleTimeTarget, latencyTarget)];

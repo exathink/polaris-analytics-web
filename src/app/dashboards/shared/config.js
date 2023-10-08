@@ -1,3 +1,5 @@
+import { Quadrants } from "./widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+
 export const Colors = {
   ActivityLevel: {
     INITIAL: '#8f9a8e',
@@ -282,6 +284,13 @@ export const TrendColors = {
   notokay: "rgb(202, 138, 4, 1)"
 }
 
+export const QuadrantColors = {
+  [Quadrants.ok]: "#4ade80",
+  [Quadrants.latency]: "#facc15",
+  [Quadrants.age]: "#fb923c",
+  [Quadrants.critical]: "#f87171",
+  [Quadrants.abandoned]: "#6b7280"
+};
 
 export const AppTerms = {
   specs: {
@@ -325,3 +334,4 @@ export function sanitizeStateMappings(workItemStateMappings) {
       return x;
     });
 }
+

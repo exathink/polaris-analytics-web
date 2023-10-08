@@ -196,7 +196,7 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
 
 function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
   const friction = Math.min(Math.round(slope*100), 100);
-  const color = friction <= 30 ? 'green' : (friction < 70? 'yellow' : 'red')
+  const color = friction <= 30 ? 'green' : (friction < 70? 'orange' : 'red')
   return [
         {
           visible: workItemsWithAggregateDurations.length > 1,

@@ -6,7 +6,6 @@ import React from "react";
 import {
   getQuadrantDescription,
   getQuadrantLegacy,
-  QuadrantColors,
   QuadrantNames,
   Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
@@ -14,6 +13,7 @@ import { useIntl } from "react-intl";
 import { EVENT_TYPES, i18nNumber } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
+import { QuadrantColors } from "../../config";
 
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
