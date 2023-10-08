@@ -189,22 +189,23 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
     }]
 }
 
-function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
+function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) {
   // we limit friction to a number between 0 and 100
-  const friction = Math.max(Math.min(Math.round(slope*100), 100), 0);
-  const color = friction <= 30 ? QuadrantColors.ok : (friction < 70? QuadrantColors.age : QuadrantColors.critical)
+  const friction = (workItemsWithAggregateDurations.reduce(
+    (totalWeight, workItem ) => totalWeight + (workItem.cycleTime*workItem.latency), 0))/(workItemsWithAggregateDurations.length*cycleTimeTarget*cycleTimeTarget)
+  const color = friction <= 1 ? QuadrantColors.ok : QuadrantColors.critical
   return [
         {
           // turning this off for now.
           // will revisit once we have a better notion of friction.
-          visible: false,
+          visible: workItemsWithAggregateDurations.length > 0,
           labels: {
             point: {
               x:10,
               y:10,
             },
             useHtml: true,
-            text: `Friction: ${intl.formatNumber(friction)}`,
+            text: `Impedance: ${intl.formatNumber(friction, {maximumFractionDigits: 2})}`,
             shadow: {
               color: color,
               offsetX: -1,
@@ -484,7 +485,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         itemMarginBottom: 3,
         enabled: workItemsWithAggregateDurations.length > 0,
       },
-      annotations: getAnnotations(intl, slope, workItemsWithAggregateDurations)
+      annotations: getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations)
     };
   }
 }));
