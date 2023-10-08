@@ -12,7 +12,7 @@ import {
   WorkItemTypeDisplayName,
   WorkItemTypeScatterRadius
 } from "../../config";
-import { getQuadrantName, QuadrantNames } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getQuadrantName, QuadrantNames, QuadrantColors } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 import {withNavigationContext} from "../../../../framework/navigation/components/withNavigationContext";
 
@@ -150,9 +150,8 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       type: "spline",
       key: `line-of-motion`,
       id: `motion-line`,
-      name: 'motion line',
+      name: 'motion lines',
       color: "purple",
-      dashStyle: 'Dot',
       showInLegend: true,
       allowPointSelect: false,
       enableMouseTracking: false,
@@ -174,7 +173,6 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       id: `motionless-line`,
       name: 'Motionless',
       color: "red",
-      dashStyle: "dot",
       showInLegend: false,
       allowPointSelect: false,
       enableMouseTracking: false,
@@ -195,8 +193,9 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
 }
 
 function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
-  const friction = Math.min(Math.round(slope*100), 100);
-  const color = friction <= 30 ? 'green' : (friction < 70? 'yellow' : 'red')
+  // we limit friction to a number between 0 and 100
+  const friction = Math.max(Math.min(Math.round(slope*100), 100), 0);
+  const color = friction <= 30 ? QuadrantColors.ok : (friction < 70? QuadrantColors.age : QuadrantColors.critical)
   return [
         {
           visible: workItemsWithAggregateDurations.length > 1,
@@ -211,6 +210,9 @@ function getAnnotations(intl, slope, workItemsWithAggregateDurations) {
               color: color,
               offsetX: -1,
               opacity: 0.3
+            },
+            style: {
+              color: color === QuadrantColors.critical ? 'white' : 'black'
             },
             borderRadius: 5,
             backgroundColor: color
