@@ -114,65 +114,13 @@ function getTeamEntry(teamNodeRefs) {
   return teamNodeRefs.length > 0 ? teamsString : "";
 }
 
-/* This function computes the least squares regression line
-* for the points in the chart.
-*
-* The slope of this line indicates the amount of friction/impedance in the system
-* */
-function getRegressionLine(workItems) {
-    let sumX = 0;
-    let sumY = 0;
-    let sumXY = 0;
-    let sumX2 = 0;
-
-    workItems.forEach(workItem => {
-        sumX += workItem.cycleTime;
-        sumY += workItem.latency;
-        sumXY += workItem.cycleTime * workItem.latency;
-        sumX2 += workItem.cycleTime ** 2;
-    });
-
-    const n = workItems.length;
-    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
-    const intercept = (sumY - slope * sumX) / n;
-
-    return [slope, intercept];
-
-}
-
-function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime, yMin) {
 
 
+function getMotionLines(workItems,  maxCycleTime) {
   // We use this to generate the points on the line of motion.
-  const lineOfFriction = range(0,maxCycleTime)
-  // We need this so that the lowest point is visible on the chart. With log scale, negative values won't be shown.
-  const lineOfFrictionMin = lineOfFriction.find( (x) => (slope*x + intercept) > 0)
+  const xAxisRange = range(0,maxCycleTime)
 
-  return [{
-      //This line shows the least square regression line
-      // It is intended as a reference line, so we disable mousetracking, tooltips and
-      // set the zIndex to be negative.
-      type: "spline",
-      // turning off this line for now. There are too many false positives,
-      // and it seems like showing the immobile line is sufficient.
-      visible: false,
-      key: `line-of-motion`,
-      id: `motion-line`,
-      name: 'motion lines',
-      color: "purple",
-      showInLegend: false,
-      allowPointSelect: false,
-      enableMouseTracking: false,
-      data: lineOfFriction.map( x => ({
-        x: x,
-        y: slope*x + intercept,
-        slope: slope,
-        intercept: intercept,
-        // we only want to show the line not the points on the line.
-        color: Colors.Chart.backgroundColor
-      })),
-      zIndex: -100
-    },
+  return [
     // This is the x=y line or the line of immobile points.
     // It is also a reference line, so we don't interact with it or show the points on the line
     {
@@ -184,7 +132,7 @@ function getMotionLines(workItems, slope, intercept,  maxCycleTime, minCycleTime
       showInLegend: true,
       allowPointSelect: false,
       enableMouseTracking: false,
-      data: range(lineOfFrictionMin, maxCycleTime+1).map(
+      data: xAxisRange.map(
         x => ({
           x: x,
           y: x,
@@ -200,8 +148,6 @@ function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) 
   const color = impedance <= 0.8 ? QuadrantColors.ok : (impedance <= 1 ? QuadrantColors.age : QuadrantColors.critical)
   return [
         {
-          // turning this off for now.
-          // will revisit once we have a better notion of friction.
           visible: workItemsWithAggregateDurations.length > 0,
           labels: {
             point: {
@@ -262,9 +208,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
-    const yMin = Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001);
-    const [slope, intercept] = getRegressionLine(workItems)
-    const motionLines = getMotionLines(workItems, slope, intercept, maxCycleTime, minCycleTime, yMin)
+    const motionLines = getMotionLines(workItems,  maxCycleTime, minCycleTime)
 
     const abandonedPlotLineYAxis = excludeAbandoned===false
       ? [
@@ -353,7 +297,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         // We need this rigmarole here because the min value cannot be 0 for
         // a logarithmic axes. If minLatency === 0 we choose the nominal value of 0.001.
 
-        min: yMin,
+        min: Math.max(Math.min(minLatency, targetLatency - 0.5), 0.001),
         plotLines: targetLatency
           ? [
               {
