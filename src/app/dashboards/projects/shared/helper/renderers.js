@@ -115,13 +115,14 @@ export function comboColumnTitleRender({setShowPanel, setWorkItemKey, setPlaceme
 }
 
 export function CardCol(params) {
+  const blurClass = useBlurClass();
   const record = params.data;
   return (
     <div className="tw-flex tw-items-center tw-gap-2 tw-py-2">
       <div className="">{workItemTypeImageMap[record.workItemType] ?? record.workItemType}</div>
       <div className="tw-flex tw-flex-col tw-items-start">
-        <div className="tw-leading-6">{truncateString(record.name, 38, "#6b7280")}</div>
-        <div className="tw-flex tw-items-center tw-leading-6">
+        <div className={classNames("tw-leading-6", blurClass)}>{truncateString(record.name, 38, "#6b7280")}</div>
+        <div className={classNames("tw-flex tw-items-center tw-leading-6", blurClass)}>
           <div className="tw-text-xs tw-font-semibold">{record.displayId}</div>
           {record.epicName && (
             <Tag color="#108ee9" style={{marginLeft: "30px"}}>
