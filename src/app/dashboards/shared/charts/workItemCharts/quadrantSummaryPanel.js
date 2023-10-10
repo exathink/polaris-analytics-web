@@ -11,7 +11,7 @@ import {
   Quadrants
 } from "../../widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useIntl } from "react-intl";
-import { EVENT_TYPES, i18nNumber } from "../../../../helpers/utility";
+import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
@@ -54,6 +54,7 @@ function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, qu
 
 function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadrantEffort, totalEffort, quadrantDescription, color, onQuadrantClick, className, fontClass, testId, size, popupProps, workItems}) {
   const intl = useIntl();
+  const blurClass = useBlurClass();
 
   const percentageCount = total === 0 ? 0 : (val / total) * 100;
   const percentageCountDisplay =
@@ -103,6 +104,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           latencyTarget={popupProps.latencyTarget}
           onSelectionChange={handleSelectionChange}
           excludeAbandoned={popupProps.excludeAbandoned}
+          blurClass={blurClass}
         />
         <CardInspectorWithDrawer
           workItemKey={workItemKey}

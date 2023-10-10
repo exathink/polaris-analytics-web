@@ -137,7 +137,7 @@ export const WorkItemsDurationsByPhaseChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point.workItem),
 
-  getConfig: ({workItems, stateType, groupBy, targetMetrics, singleWorkItemMode, title, shortTooltip, intl}) => {
+  getConfig: ({workItems, stateType, groupBy, targetMetrics, singleWorkItemMode, title, shortTooltip, intl, blurClass}) => {
     const workItemsWithAggregateDurations = getWorkItemDurations(workItems);
 
     let series = [];
@@ -201,8 +201,11 @@ export const WorkItemsDurationsByPhaseChart = Chart({
             workItemStateDetails,
           } = this.point.workItem;
 
+          const enhancedDisplayId = blurClass ? "******" : displayId;
+          const enhancedName = blurClass ? "******" : name;
+
           return tooltipHtml({
-            header: `${WorkItemTypeDisplayName[workItemType]}: ${displayId}<br/>${name}`,
+            header: `${WorkItemTypeDisplayName[workItemType]}: ${enhancedDisplayId}<br/>${enhancedName}`,
             body: this.point.priorState
               ? [
                   [`Phase:`, `${WorkItemStateTypeDisplayName[this.point.stateType]}`],
