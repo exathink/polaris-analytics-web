@@ -31,7 +31,7 @@ export const ProjectPipelineFunnelWidget = ({
   latencyTarget,
   includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState},
   displayBag,
-  excludeAbandoned
+  excludeMotionless
 }) => {
   const includeSubTasks = {includeSubTasksInClosedState, includeSubTasksInNonClosedState}
   const queryVars = {
@@ -68,17 +68,17 @@ export const ProjectPipelineFunnelWidget = ({
 
   let {workItemStateTypeCounts, totalEffortByStateType} = data["project"];
   workItemStateTypeCounts = {...workItemStateTypeCounts, backlog: dataAll["project"].workItemStateTypeCounts.backlog};
-  if (excludeAbandoned) {
-    const nonAbandonedWorkItemDurations = getWorkItemDurations(wipWorkItems).filter(
+  if (excludeMotionless) {
+    const nonMotionlessWorkItemDurations = getWorkItemDurations(wipWorkItems).filter(
       (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
     );
-    const nonAbandonedWorkItemsByState = buildIndex(nonAbandonedWorkItemDurations, (workItem) => workItem.stateType);
+    const nonMotionlessWorkItemsByState = buildIndex(nonMotionlessWorkItemDurations, (workItem) => workItem.stateType);
 
     workItemStateTypeCounts = {
       ...workItemStateTypeCounts,
-      open: nonAbandonedWorkItemsByState?.["open"]?.length,
-      wip: nonAbandonedWorkItemsByState?.["wip"]?.length,
-      complete: nonAbandonedWorkItemsByState?.["complete"]?.length,
+      open: nonMotionlessWorkItemsByState?.["open"]?.length,
+      wip: nonMotionlessWorkItemsByState?.["wip"]?.length,
+      complete: nonMotionlessWorkItemsByState?.["complete"]?.length,
     };
   }
 

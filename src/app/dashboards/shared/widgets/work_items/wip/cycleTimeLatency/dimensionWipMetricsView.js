@@ -5,7 +5,7 @@ import {DevItemRatio, useWipMetricsCommon} from "../../clientSideFlowMetrics";
 import { getPercentage } from "../../../../../projects/shared/helper/utils";
 
 
-export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension, displayBag, excludeAbandoned, cycleTimeTarget, latencyTarget, specsOnly, days}) {
+export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension, displayBag, excludeMotionless, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
   const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
@@ -15,7 +15,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
       dimension,
       specsOnly,
       days,
-      excludeAbandoned,
+      excludeMotionless,
       cycleTimeTarget,
       latencyTarget,
     });

@@ -333,7 +333,7 @@ export function WorkInProgressBaseView({data, dimension}) {
 }
 
 export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarget, latencyTarget, specsOnly, days, flowMetricsData, displayBag={}}) {
-  const {excludeAbandoned} = displayBag;
+  const {excludeMotionless} = displayBag;
   const intl = useIntl();
   
   const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
@@ -343,7 +343,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
       dimension,
       specsOnly,
       days,
-      excludeAbandoned,
+      excludeMotionless,
       cycleTimeTarget,
       latencyTarget,
     });

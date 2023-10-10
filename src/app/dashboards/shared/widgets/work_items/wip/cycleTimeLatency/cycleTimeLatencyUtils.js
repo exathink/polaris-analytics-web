@@ -77,7 +77,7 @@ export const QuadrantNames = {
   [Quadrants.latency]: "Slowing",
   [Quadrants.age]: "Delayed",
   [Quadrants.critical]: "Stalled",
-  [Quadrants.abandoned]: "Abandoned",
+  [Quadrants.abandoned]: "Motionless",
 };
 export const getQuadrantDescription = ({ intl, cycleTimeTarget, latencyTarget }) => ({
   [Quadrants.ok]: `These items are younger than ${i18nNumber(intl, cycleTimeTarget, 0)} days, and have moved within the last ${i18nNumber(intl, latencyTarget, 1)} days`,
@@ -408,7 +408,7 @@ export function filterByStateTypes(workItems, stateTypes) {
   );
 }
 
-export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget) {
+export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget, latencyTarget) {
   return (workItemsWithAggregateDurations.reduce(
-    (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * cycleTimeTarget);
+    (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * latencyTarget);
 }

@@ -103,7 +103,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           cycleTimeTarget={popupProps.cycleTimeTarget}
           latencyTarget={popupProps.latencyTarget}
           onSelectionChange={handleSelectionChange}
-          excludeAbandoned={popupProps.excludeAbandoned}
+          excludeMotionless={popupProps.excludeMotionless}
           blurClass={blurClass}
         />
         <CardInspectorWithDrawer

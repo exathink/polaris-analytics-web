@@ -107,7 +107,7 @@ function WipDashboard({
             checked={exclude}
             className="!tw-mb-1 tw-self-end"
           >
-            Exclude Abandoned
+            Exclude Motionless
           </Checkbox>
         </div>
 
@@ -148,7 +148,7 @@ function WipDashboard({
               tags={workItemSelectors}
               specsOnly={specsOnly}
               latestCommit={latestCommit}
-              displayBag={{excludeAbandoned: exclude}}
+              displayBag={{excludeMotionless: exclude}}
               latestWorkItemEvent={latestWorkItemEvent}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
@@ -270,7 +270,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude,
+                excludeMotionless: exclude,
               }}
             />
           )}
@@ -308,7 +308,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: exclude,
+                excludeMotionless: exclude,
               }}
             />
           )}

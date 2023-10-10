@@ -63,7 +63,7 @@ function WipDashboard({
 
   // maintain all filters state over here
   const [appliedFilters, setAppliedFilters] = React.useState(new Map([[FILTERS.EXCLUDE_ABANDONED, {value: [true]}]]));
-  const [excludeAbandoned] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
+  const [excludeMotionless] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
 
   const {
     cycleTimeTarget,
@@ -105,12 +105,12 @@ function WipDashboard({
               }
             }}
             name="state-exclude"
-            checked={excludeAbandoned}
+            checked={excludeMotionless}
             style={{alignItems: "center"}}
           >
             <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
               <div>Exclude</div>
-              <div>Abandoned</div>
+              <div>Motionless</div>
             </div>
           </Checkbox>
         </div>
@@ -161,7 +161,7 @@ function WipDashboard({
               specsOnly={specsOnly}
               latestCommit={latestCommit}
               displayBag={{
-                excludeAbandoned: excludeAbandoned,
+                excludeMotionless: excludeMotionless,
                 traceability: (
                   <ProjectTraceabilityTrendsWidget
                     instanceKey={key}
@@ -300,7 +300,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: Boolean(excludeAbandoned),
+                excludeMotionless: Boolean(excludeMotionless),
                 customPhaseMapping,
               }}
             />
@@ -340,7 +340,7 @@ function WipDashboard({
                 setWipChartType: updateWipChartType,
                 appliedFilters,
                 setAppliedFilters,
-                excludeAbandoned: Boolean(excludeAbandoned),
+                excludeMotionless: Boolean(excludeMotionless),
                 customPhaseMapping,
               }}
             />

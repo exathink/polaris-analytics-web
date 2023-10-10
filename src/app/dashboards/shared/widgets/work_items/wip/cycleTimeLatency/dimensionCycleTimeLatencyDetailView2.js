@@ -78,7 +78,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const [selectedTeam = defaultOptionType] = getFilterValue(appliedFilters, FILTERS.TEAM);
   const [selectedIssueType = defaultOptionType] = getFilterValue(appliedFilters, FILTERS.ISSUE_TYPE);
   const selectedStateValues = getFilterValue(appliedFilters, FILTERS.STATE);
-  const [excludeAbandoned] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
+  const [excludeMotionless] = getFilterValue(appliedFilters, FILTERS.EXCLUDE_ABANDONED);
 
   // other states
   const [exclude, setExclude] = React.useState(false);
@@ -258,7 +258,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "engineering" ? selectedQuadrant : undefined}
-      excludeAbandoned={Boolean(excludeAbandoned)}
+      excludeMotionless={Boolean(excludeMotionless)}
       blurClass={blurClass}
     />
   );
@@ -276,7 +276,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       tooltipType={tooltipType}
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
-      excludeAbandoned={Boolean(excludeAbandoned)}
+      excludeMotionless={Boolean(excludeMotionless)}
       blurClass={blurClass}
     />
   );
@@ -624,12 +624,12 @@ export const DimensionCycleTimeLatencyDetailView = ({
                 }
               }}
               name="state-exclude"
-              checked={excludeAbandoned}
+              checked={excludeMotionless}
               style={{alignItems: "center"}}
             >
               <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4 tw-mt-2">
                 <div>Exclude</div>
-                <div>Abandoned</div>
+                <div>Motionless</div>
               </div>
             </Checkbox>
           </div>

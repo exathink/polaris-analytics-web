@@ -15,13 +15,13 @@ export const DimensionQuadrantSummaryView = ({
   latencyTarget,
   displayBag,
   specsOnly,
-  excludeAbandoned,
+  excludeMotionless,
   tooltipType,
   view,
   context,
 }) => {
   const {wipWorkItems: workItems} = useWipData({wipDataAll, specsOnly, dimension});
-  const initTransformedData = excludeAbandoned
+  const initTransformedData = excludeMotionless
     ? getWorkItemDurations(workItems).filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
@@ -36,7 +36,7 @@ export const DimensionQuadrantSummaryView = ({
       latencyTarget={latencyTarget}
       className="tw-h-full"
       context={context}
-      displayBag={{...displayBag, className: classNames("tw-mx-auto tw-h-full tw-w-[98%]", displayBag?.fontSize), excludeAbandoned}}
+      displayBag={{...displayBag, className: classNames("tw-mx-auto tw-h-full tw-w-[98%]", displayBag?.fontSize), excludeMotionless}}
      />
   );
 };

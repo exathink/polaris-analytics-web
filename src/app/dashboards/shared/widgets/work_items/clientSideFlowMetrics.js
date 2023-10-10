@@ -197,7 +197,7 @@ export function useWipMetricsCommon({
   dimension,
   specsOnly,
   days,
-  excludeAbandoned,
+  excludeMotionless,
   cycleTimeTarget,
   latencyTarget,
 }) {
@@ -205,7 +205,7 @@ export function useWipMetricsCommon({
   const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension});
 
   const workItemsDurations = getWorkItemDurations(wipWorkItems);
-  const workItemAggregateDurations = excludeAbandoned
+  const workItemAggregateDurations = excludeMotionless
     ? workItemsDurations.filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
@@ -215,7 +215,7 @@ export function useWipMetricsCommon({
     (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) === Quadrants.ok
   )
 
-  const workItemAggregateDurationsForSpecs = excludeAbandoned
+  const workItemAggregateDurationsForSpecs = excludeMotionless
     ? getWorkItemDurations(wipSpecsWorkItems).filter(
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
