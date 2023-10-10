@@ -76,8 +76,9 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
       hide: !hasWorkItemsSourceName,
+      cellClass: blurClass
     }),
-    [hasWorkItemsSourceName, filters]
+    [hasWorkItemsSourceName, filters, blurClass]
   );
 
   const hasTeams = hidden_cols.includes("teams");
