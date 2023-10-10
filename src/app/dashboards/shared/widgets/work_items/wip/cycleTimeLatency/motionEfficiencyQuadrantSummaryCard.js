@@ -7,6 +7,8 @@ import {filterByStateTypes} from "./cycleTimeLatencyUtils";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import { EVENT_TYPES, useBlurClass } from "../../../../../../helpers/utility";
+import classNames from "classnames";
+import React from "react";
 
 export function MotionEfficiencyQuadrantSummaryCard({
   workItems,
@@ -55,8 +57,13 @@ export function MotionEfficiencyQuadrantSummaryCard({
         displayBag?.showLatencyPopup
           ? {
               title: (
-                <div className="tw-text-lg tw-text-gray-300">
-                  Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
+                <div>
+                  <div className="tw-text-lg tw-text-gray-300">
+                    Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
+                  </div>
+                  <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
+                    Motion is indicated by a change in workflow state or commit activity for a work item.
+                  </div>
                 </div>
               ),
               placement: "bottom",
