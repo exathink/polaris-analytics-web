@@ -14,6 +14,7 @@ import {
 import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { useBlurClass } from "../../helpers/utility";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "Blank";
@@ -23,6 +24,7 @@ export const BLANKS = "Blank";
  * @returns
  */
 export function useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType}) {
+  const blurClass = useBlurClass();
   const hidden_cols = readLocalStorage(HIDDEN_COLUMNS_KEY, []);
 
   const hasDisplayId = hidden_cols.includes("displayId");
@@ -38,8 +40,9 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       },
       menuTabs: MenuTabs,
       hide: !hasDisplayId,
+      cellClass: blurClass
     }),
-    [hasDisplayId]
+    [hasDisplayId, blurClass]
   );
 
   const hasEpicName = hidden_cols.includes("epicName");
@@ -55,8 +58,9 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       },
       menuTabs: MenuTabs,
       hide: !hasEpicName,
+      cellClass: blurClass
     }),
-    [hasEpicName]
+    [hasEpicName, blurClass]
   );
 
   const hasWorkItemsSourceName = hidden_cols.includes("workItemsSourceName");
@@ -72,8 +76,9 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
       hide: !hasWorkItemsSourceName,
+      cellClass: blurClass
     }),
-    [hasWorkItemsSourceName, filters]
+    [hasWorkItemsSourceName, filters, blurClass]
   );
 
   const hasTeams = hidden_cols.includes("teams");
