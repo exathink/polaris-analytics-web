@@ -173,7 +173,7 @@ function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) 
 
 export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
   chartUpdateProps: (props) => (
-    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeAbandoned")
+    pick(props, "workItems", "stateTypes", "stageName", "groupByState", "cycleTimeTarget", "specsOnly", "tick", "selectedQuadrant", "fullScreen", "excludeMotionless")
   ),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map(point => point.workItem),
@@ -193,7 +193,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 selectedQuadrant,
                 blurClass,
                 fullScreen,
-                excludeAbandoned
+                excludeMotionless
               }) => {
 
     const workItemsWithAggregateDurations = workItems;
@@ -210,7 +210,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
 
     const motionLines = getMotionLines(workItems,  maxCycleTime, minCycleTime)
 
-    const abandonedPlotLineYAxis = excludeAbandoned===false
+    const abandonedPlotLineYAxis = excludeMotionless===false
       ? [
           {
             color: "red",
@@ -225,7 +225,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       : [];
 
     const abandonedPlotLineXAxis =
-      excludeAbandoned === false
+      excludeMotionless === false
         ? [
             {
               color: "red",
@@ -310,7 +310,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 },
               },
               {
-                color: excludeAbandoned ? "red" : "orange",
+                color: excludeMotionless ? "red" : "orange",
                 value: cycleTimeTarget,
                 dashStyle: "solid",
                 width: 1,

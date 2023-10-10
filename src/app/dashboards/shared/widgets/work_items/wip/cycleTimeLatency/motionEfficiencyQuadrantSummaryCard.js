@@ -79,7 +79,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
                     cycleTimeTarget={cycleTimeTarget}
                     latencyTarget={latencyTarget}
                     onSelectionChange={handleSelectionChange}
-                    excludeAbandoned={displayBag?.excludeAbandoned}
+                    excludeMotionless={displayBag?.excludeMotionless}
                     blurClass={blurClass}
                   />
 
@@ -109,7 +109,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
           latencyTarget,
           stateTypes,
           showQuadrantPopup: displayBag?.showQuadrantPopup,
-          excludeAbandoned: displayBag?.excludeAbandoned,
+          excludeMotionless: displayBag?.excludeMotionless,
           context,
         }}
         {...displayBag}

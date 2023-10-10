@@ -75,7 +75,7 @@ export function NewFlowDashboard() {
           >
             <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
               <div>Exclude</div>
-              <div>Abandoned</div>
+              <div>Motionless</div>
             </div>
           </Checkbox>
         </div>
@@ -131,7 +131,7 @@ export function NewFlowDashboard() {
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
-                excludeAbandoned={exclude}
+                excludeMotionless={exclude}
                 includeSubTasks={includeSubTasksWipInspector}
                 displayBag={{
                   metric: "volume",
@@ -187,7 +187,7 @@ export function NewFlowDashboard() {
               includeSubTasks={includeSubTasksWipInspector}
               latestCommit={latestCommit}
               latestWorkItemEvent={latestWorkItemEvent}
-              excludeAbandoned={exclude}
+              excludeMotionless={exclude}
               displayBag={{fontSize: "tw-text-xl", showLatencyPopup: true, showQuadrantPopup: true}}
             />
           )}
@@ -214,7 +214,7 @@ export function NewFlowDashboard() {
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
                 includeSubTasks={includeSubTasksWipInspector}
-                excludeAbandoned={exclude}
+                excludeMotionless={exclude}
                 displayBag={{
                   metric: "avgAge",
                   displayType: "cardAdvanced",
@@ -247,7 +247,7 @@ export function NewFlowDashboard() {
               leadTimeTarget={leadTimeTarget}
               cycleTimeTarget={cycleTimeTarget}
               latencyTarget={latencyTarget}
-              excludeAbandoned={exclude}
+              excludeMotionless={exclude}
               includeSubTasks={{
                 includeSubTasksInClosedState: includeSubTasksFlowMetrics,
                 includeSubTasksInNonClosedState: includeSubTasksWipInspector,
