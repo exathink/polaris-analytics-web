@@ -175,7 +175,7 @@ export function ComboCardTitleColumn({record}) {
         <img src={issueTypeImagePaths[record.workItemType]} alt="#" style={{width: "32px", height: "32px"}} />
       </div>
       <div className={classNames(styles.titleXl, blurClass)}>{truncateString(record.name, 100, "#6b7280")}</div>
-      <div className={styles.textBase}>
+      <div className={classNames(styles.textBase, blurClass)}>
         {record.displayId}{" "}
         {record.epicName && (
           <Tag color="#108ee9" style={{marginLeft: "30px", fontSize: "14px"}}>
