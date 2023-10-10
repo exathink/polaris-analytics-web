@@ -408,7 +408,7 @@ export function filterByStateTypes(workItems, stateTypes) {
   );
 }
 
-export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget) {
+export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget, latencyTarget) {
   return (workItemsWithAggregateDurations.reduce(
-    (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * cycleTimeTarget);
+    (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * latencyTarget);
 }

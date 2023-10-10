@@ -142,10 +142,10 @@ function getMotionLines(workItems,  maxCycleTime) {
     }]
 }
 
-function getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations) {
+function getAnnotations(intl, cycleTimeTarget, latencyTarget, workItemsWithAggregateDurations) {
   // we limit friction to a number between 0 and 100
-  const impedance = getImpedance(workItemsWithAggregateDurations, cycleTimeTarget)
-  const color = impedance <= 0.8 ? QuadrantColors.ok : (impedance <= 1 ? QuadrantColors.age : QuadrantColors.critical)
+  const impedance = getImpedance(workItemsWithAggregateDurations, cycleTimeTarget, latencyTarget)
+  const color = impedance <= 1 ? QuadrantColors.ok : (impedance <= cycleTimeTarget*cycleTimeTarget ? QuadrantColors.age : QuadrantColors.critical)
   return [
         {
           visible: workItemsWithAggregateDurations.length > 0,
@@ -434,7 +434,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         itemMarginBottom: 3,
         enabled: workItemsWithAggregateDurations.length > 0,
       },
-      annotations: getAnnotations(intl, cycleTimeTarget, workItemsWithAggregateDurations)
+      annotations: getAnnotations(intl, cycleTimeTarget, latencyTarget, workItemsWithAggregateDurations)
     };
   }
 }));
