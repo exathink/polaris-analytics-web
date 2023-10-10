@@ -6,7 +6,7 @@ import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 import {filterByStateTypes} from "./cycleTimeLatencyUtils";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import { EVENT_TYPES } from "../../../../../../helpers/utility";
+import { EVENT_TYPES, useBlurClass } from "../../../../../../helpers/utility";
 
 export function MotionEfficiencyQuadrantSummaryCard({
   workItems,
@@ -20,6 +20,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
   className,
   displayBag,
 }) {
+  const blurClass = useBlurClass();
   const filteredWorkItems = filterByStateTypes(workItems, stateTypes);
   const [workInMotion, percentage] = useMotionEfficiency(filteredWorkItems, latencyTarget);
   const workItemsDisplay = itemsDesc(specsOnly);
@@ -72,6 +73,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
                     latencyTarget={latencyTarget}
                     onSelectionChange={handleSelectionChange}
                     excludeAbandoned={displayBag?.excludeAbandoned}
+                    blurClass={blurClass}
                   />
 
                     <CardInspectorWithDrawer
