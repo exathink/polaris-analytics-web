@@ -17,7 +17,7 @@ import {
   engineeringStateTypes,
   deliveryStateTypes,
 } from "./cycleTimeLatencyUtils";
-import {EVENT_TYPES, getUniqItems, useFeatureFlag} from "../../../../../../helpers/utility";
+import {EVENT_TYPES, getUniqItems, useBlurClass, useFeatureFlag} from "../../../../../../helpers/utility";
 import {useResetComponentState} from "../../../../../projects/shared/helper/hooks";
 import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import classNames from "classnames";
@@ -55,6 +55,8 @@ export const DimensionCycleTimeLatencyDetailView = ({
   const {
     data: wipDataAll,
   } = useWidget();
+
+  const blurClass = useBlurClass();
 
   const {customPhaseMapping = WorkItemStateTypeDisplayName} = displayBag;
 
@@ -257,6 +259,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "engineering" ? selectedQuadrant : undefined}
       excludeAbandoned={Boolean(excludeAbandoned)}
+      blurClass={blurClass}
     />
   );
 
@@ -274,6 +277,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
       onSelectionChange={handleSelectionChange}
       selectedQuadrant={chartCategory === "delivery" ? selectedQuadrant : undefined}
       excludeAbandoned={Boolean(excludeAbandoned)}
+      blurClass={blurClass}
     />
   );
 

@@ -388,6 +388,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
           animation: false,
           dataLabels: {
             enabled: true,
+            className: blurClass,
             formatter: function () {
               return this.point.workItem?.displayId;
             },
