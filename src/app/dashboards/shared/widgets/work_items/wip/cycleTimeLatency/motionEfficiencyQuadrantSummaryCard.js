@@ -72,7 +72,75 @@ export function MotionEfficiencyQuadrantSummaryCard({
     }
   }
 
-const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = getOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget, intl});
+  let latencyView;
+  if (displayBag?.showLatencyPopup) {
+    const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = getOverallQuadrantMetrics({
+      workItems,
+      cycleTimeTarget,
+      latencyTarget,
+      intl,
+    });
+    latencyView = {
+      title: (
+        <div>
+          <div className="tw-text-lg tw-text-gray-300">All {specsOnly ? "Dev Items" : "Work Items"}</div>
+          <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
+            Motion is indicated by a change in workflow state or commit activity for a work item.
+          </div>
+        </div>
+      ),
+      placement: "bottom",
+      content: (
+        <div className="tw-w-[500px]">
+          <div className="tw-mb-2 tw-flex tw-justify-between">
+            <LabelValue
+              label="Avg. Age:"
+              labelClassName="tw-normal-case tw-font-normal"
+              valueClassName="tw-ml-1"
+              value={<span className="tw-text-base">{averageAgeDisplay}</span>}
+              uom="Days"
+            />
+            <LabelValue
+              label="Avg. Days Since Last Move:"
+              labelClassName="tw-normal-case tw-font-normal"
+              valueClassName="tw-ml-1"
+              value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
+              uom="Days"
+            />
+            <LabelValue
+              label="Total Effort:"
+              labelClassName="tw-normal-case tw-font-normal"
+              valueClassName="tw-ml-1"
+              value={<span className="tw-text-base">{wipEffortDisplay}</span>}
+              uom={`FTE Days`}
+            />
+          </div>
+          <WorkItemsCycleTimeVsLatencyChart
+            stageName={"Process"}
+            workItems={filteredWorkItems}
+            groupByState={true}
+            tooltipType={"small"}
+            specsOnly={specsOnly}
+            stateTypes={stateTypes}
+            cycleTimeTarget={cycleTimeTarget}
+            latencyTarget={latencyTarget}
+            onSelectionChange={handleSelectionChange}
+            excludeMotionless={displayBag?.excludeMotionless}
+            blurClass={blurClass}
+          />
+
+          <CardInspectorWithDrawer
+            workItemKey={workItemKey}
+            showPanel={showPanel}
+            setShowPanel={setShowPanel}
+            context={context}
+            drawerOptions={{placement: "bottom"}}
+          />
+        </div>
+      ),
+    };
+  }
+
 
   return (
     <PlainCard
@@ -92,71 +160,7 @@ const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = getOverallQ
         placement: "bottom",
         content: <FlowEfficiencyDetailsView workItems={workItems} phases={stateTypes} />,
       }}
-      latencyView={
-        displayBag?.showLatencyPopup
-          ? {
-              title: (
-                <div>
-                  <div className="tw-text-lg tw-text-gray-300">
-                    All {specsOnly ? "Dev Items" : "Work Items"}
-                  </div>
-                  <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
-                    Motion is indicated by a change in workflow state or commit activity for a work item.
-                  </div>
-                </div>
-              ),
-              placement: "bottom",
-              content: (
-                <div className="tw-w-[500px]">
-                  <div className="tw-mb-2 tw-flex tw-justify-between">
-                    <LabelValue
-                      label="Avg. Age:"
-                      labelClassName="tw-normal-case tw-font-normal"
-                      valueClassName="tw-ml-1"
-                      value={<span className="tw-text-base">{averageAgeDisplay}</span>}
-                      uom="Days"
-                    />
-                    <LabelValue
-                      label="Avg. Days Since Last Move:"
-                      labelClassName="tw-normal-case tw-font-normal"
-                      valueClassName="tw-ml-1"
-                      value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
-                      uom="Days"
-                    />
-                    <LabelValue
-                      label="Total Effort:"
-                      labelClassName="tw-normal-case tw-font-normal"
-                      valueClassName="tw-ml-1"
-                      value={<span className="tw-text-base">{wipEffortDisplay}</span>}
-                      uom={`FTE Days`}
-                    />
-                  </div>
-                  <WorkItemsCycleTimeVsLatencyChart
-                    stageName={"Process"}
-                    workItems={filteredWorkItems}
-                    groupByState={true}
-                    tooltipType={"small"}
-                    specsOnly={specsOnly}
-                    stateTypes={stateTypes}
-                    cycleTimeTarget={cycleTimeTarget}
-                    latencyTarget={latencyTarget}
-                    onSelectionChange={handleSelectionChange}
-                    excludeMotionless={displayBag?.excludeMotionless}
-                    blurClass={blurClass}
-                  />
-
-                  <CardInspectorWithDrawer
-                    workItemKey={workItemKey}
-                    showPanel={showPanel}
-                    setShowPanel={setShowPanel}
-                    context={context}
-                    drawerOptions={{placement: "bottom"}}
-                  />
-                </div>
-              ),
-            }
-          : undefined
-      }
+      latencyView={latencyView}
     >
       <QuadrantSummaryPanel
         workItems={filteredWorkItems}
