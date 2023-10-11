@@ -17,7 +17,7 @@ import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/c
 import { LabelValue } from "../../../../helpers/components";
 
 
-function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalAge[quadrant]) {
@@ -29,7 +29,7 @@ function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadr
   }, {});
 }
 
-function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalLatency, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalLatency[quadrant]) {
@@ -41,7 +41,7 @@ function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, q
   }, {});
 }
 
-function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalEffort, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalEffort[quadrant]) {
@@ -88,13 +88,26 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
   }
 
   let initialPopoverContent = (
-    <div className="tw-mb-2">
-      <LabelValue label="Avg. Age:" labelClassName="tw-normal-case" value={averageAgeDisplay} uom="Days" />
-      <LabelValue label="Avg. Days Since Last Move:" labelClassName="tw-normal-case" value={averageLatencyDisplay} uom="Days" />
+    <div className="tw-mb-2 tw-flex tw-justify-between">
+      <LabelValue
+        label="Age:"
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{averageAgeDisplay}</span>}
+        uom="Days"
+      />
+      <LabelValue
+        label="Days Since Last Move:"
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
+        uom="Days"
+      />
       <LabelValue
         label="Total Effort:"
-        labelClassName="tw-normal-case"
-        value={wipEffortDisplay}
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{wipEffortDisplay}</span>}
         uom={`FTE Days (${i18nNumber(intl, (quadrantEffort / totalEffort) * 100, 0)}%)`}
       />
     </div>
