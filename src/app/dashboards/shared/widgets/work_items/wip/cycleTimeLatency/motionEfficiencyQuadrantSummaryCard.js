@@ -12,8 +12,7 @@ import React from "react";
 import { LabelValue } from "../../../../../../helpers/components";
 import { useIntl } from "react-intl";
 
-function useOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget}) {
-  const intl = useIntl();
+function getOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget, intl}) {
   const quadrantCounts = getQuadrantCounts({workItems, cycleTimeTarget, latencyTarget})
   const totalQuadrantCounts = Object.values(quadrantCounts).reduce((acc, item) => acc + item, 0);
   const quadrantAge = getTotalAgeByQuadrant({
@@ -59,6 +58,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
   className,
   displayBag,
 }) {
+  const intl = useIntl();
   const blurClass = useBlurClass();
   const filteredWorkItems = filterByStateTypes(workItems, stateTypes);
   const [workInMotion, percentage] = useMotionEfficiency(filteredWorkItems, latencyTarget);
@@ -72,7 +72,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
     }
   }
 
-const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = useOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget});
+const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = getOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget, intl});
 
   return (
     <PlainCard
@@ -98,7 +98,7 @@ const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = useOverallQ
               title: (
                 <div>
                   <div className="tw-text-lg tw-text-gray-300">
-                    Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
+                    All {specsOnly ? "Dev Items" : "Work Items"}
                   </div>
                   <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
                     Motion is indicated by a change in workflow state or commit activity for a work item.
@@ -110,14 +110,14 @@ const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = useOverallQ
                 <div className="tw-w-[500px]">
                   <div className="tw-mb-2 tw-flex tw-justify-between">
                     <LabelValue
-                      label="Age:"
+                      label="Avg. Age:"
                       labelClassName="tw-normal-case tw-font-normal"
                       valueClassName="tw-ml-1"
                       value={<span className="tw-text-base">{averageAgeDisplay}</span>}
                       uom="Days"
                     />
                     <LabelValue
-                      label="Days Since Last Move:"
+                      label="Avg. Days Since Last Move:"
                       labelClassName="tw-normal-case tw-font-normal"
                       valueClassName="tw-ml-1"
                       value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
