@@ -14,6 +14,7 @@ import { useIntl } from "react-intl";
 import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
+import { LabelValue } from "../../../../helpers/components";
 
 
 function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
@@ -86,6 +87,17 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     }
   }
 
+  let initialPopoverContent = (
+    <div className="tw-mb-2">
+      <LabelValue label="Avg. Age:" value={averageAgeDisplay} uom="Days" />
+      <LabelValue label="Avg. Days Since Last Move:" value={averageLatencyDisplay} uom="Days" />
+      <LabelValue
+        label="Total Effort:"
+        value={wipEffortDisplay}
+        uom={`FTE Days (${i18nNumber(intl, (quadrantEffort / totalEffort) * 100, 0)}%)`}
+      />
+    </div>
+  );
   let popoverContent;
   if (popupProps && popupProps.showQuadrantPopup) {
     const quadrantWorkItems = workItems.filter(
@@ -93,6 +105,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     );
     popoverContent = (
       <>
+        {initialPopoverContent}
         <WorkItemsCycleTimeVsLatencyChart
           stageName={"Wip"}
           workItems={quadrantWorkItems}
