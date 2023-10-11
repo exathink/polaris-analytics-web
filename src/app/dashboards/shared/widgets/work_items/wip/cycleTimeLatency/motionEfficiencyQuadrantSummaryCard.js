@@ -92,7 +92,20 @@ export function MotionEfficiencyQuadrantSummaryCard({
       placement: "bottom",
       content: (
         <div className="tw-w-[500px]">
-          <div className="tw-mb-2 tw-flex tw-justify-between">
+          <WorkItemsCycleTimeVsLatencyChart
+            stageName={"Process"}
+            workItems={filteredWorkItems}
+            groupByState={true}
+            tooltipType={"small"}
+            specsOnly={specsOnly}
+            stateTypes={stateTypes}
+            cycleTimeTarget={cycleTimeTarget}
+            latencyTarget={latencyTarget}
+            onSelectionChange={handleSelectionChange}
+            excludeMotionless={displayBag?.excludeMotionless}
+            blurClass={blurClass}
+          />
+          <div className="tw-mt-2 tw-flex tw-justify-between">
             <LabelValue
               label="Avg. Age:"
               labelClassName="tw-normal-case tw-font-normal"
@@ -115,20 +128,6 @@ export function MotionEfficiencyQuadrantSummaryCard({
               uom={`FTE Days`}
             />
           </div>
-          <WorkItemsCycleTimeVsLatencyChart
-            stageName={"Process"}
-            workItems={filteredWorkItems}
-            groupByState={true}
-            tooltipType={"small"}
-            specsOnly={specsOnly}
-            stateTypes={stateTypes}
-            cycleTimeTarget={cycleTimeTarget}
-            latencyTarget={latencyTarget}
-            onSelectionChange={handleSelectionChange}
-            excludeMotionless={displayBag?.excludeMotionless}
-            blurClass={blurClass}
-          />
-
           <CardInspectorWithDrawer
             workItemKey={workItemKey}
             showPanel={showPanel}

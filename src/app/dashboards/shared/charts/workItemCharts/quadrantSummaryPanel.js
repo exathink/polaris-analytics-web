@@ -88,7 +88,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
   }
 
   let initialPopoverContent = (
-    <div className="tw-mb-2 tw-flex tw-justify-between">
+    <div className="tw-flex tw-justify-between">
       <LabelValue
         label="Avg. Age:"
         labelClassName="tw-normal-case tw-font-normal"
@@ -118,8 +118,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       (w) => getQuadrantLegacy(w.cycleTime, w.latency, popupProps.cycleTimeTarget, popupProps.latencyTarget) === quadKey
     );
     popoverContent = (
-      <>
-        {initialPopoverContent}
+      <>  
         <WorkItemsCycleTimeVsLatencyChart
           stageName={"Wip"}
           workItems={quadrantWorkItems}
@@ -133,6 +132,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           excludeMotionless={popupProps.excludeMotionless}
           blurClass={blurClass}
         />
+        {initialPopoverContent}
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           showPanel={showPanel}
