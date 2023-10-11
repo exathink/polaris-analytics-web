@@ -93,9 +93,9 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
     }));
 }
 
-export function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
+export function getTitle({workItems, stageName, specsOnly, selectedQuadrant, title}) {
   const count = workItems.length;
-  const prefix = `Motion Analysis`
+  const prefix = title || `Motion Analysis: `
   const countDisplay = `${count} ${count === 1 ? specsOnly ? AppTerms.spec.display : AppTerms.card.display : specsOnly ? AppTerms.specs.display : AppTerms.cards.display}`;
   let suffix =  stageName ? `${countDisplay} in ${stageName}` : countDisplay;
   if (selectedQuadrant) {
@@ -105,7 +105,7 @@ export function getTitle({workItems, stageName, specsOnly, selectedQuadrant}) {
       suffix =  `${countDisplay} ${QuadrantNames[selectedQuadrant]}`
     }
   }
-  return `${prefix}: ${suffix}`
+  return `${prefix}${suffix}`
 }
 
 function getTeamEntry(teamNodeRefs) {
@@ -191,6 +191,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 view,
                 tooltipType,
                 selectedQuadrant,
+                title,
                 blurClass,
                 fullScreen,
                 excludeMotionless
@@ -247,7 +248,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         zoomType: "xy",
       },
       title: {
-        text: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant}),
+        text: title || getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant, title}),
         align: "left",
       },
       subtitle: {
