@@ -125,9 +125,9 @@ function getMotionLines(workItems,  maxCycleTime) {
     // It is also a reference line, so we don't interact with it or show the points on the line
     {
       type: "spline",
-      key: `line-of-immobility`,
-      id: `motionless-line`,
-      name: 'motionless',
+      key: `isostatic`,
+      id: `isostatic`,
+      name: 'isostatic line',
       color: "red",
       showInLegend: true,
       allowPointSelect: false,
