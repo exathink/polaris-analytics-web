@@ -1,14 +1,51 @@
-import {QuadrantSummaryPanel} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
+import {QuadrantSummaryPanel, getTotalAgeByQuadrant, getTotalEffortByQuadrant, getTotalLatencyByQuadrant} from "../../../../charts/workItemCharts/quadrantSummaryPanel";
 import {PlainCard} from "../../../../components/cards/plainCard";
 import {AppTerms, itemsDesc} from "../../../../config";
-import {useMotionEfficiency} from "../../clientSideFlowMetrics";
+import {getQuadrantCounts, useMotionEfficiency} from "../../clientSideFlowMetrics";
 import {FlowEfficiencyDetailsView} from "./flowEfficiencyDetailsView";
 import {filterByStateTypes} from "./cycleTimeLatencyUtils";
 import {WorkItemsCycleTimeVsLatencyChart} from "../../../../charts/workItemCharts/workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_items/cardInspector/cardInspectorUtils";
-import { EVENT_TYPES, useBlurClass } from "../../../../../../helpers/utility";
+import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../../../helpers/utility";
 import classNames from "classnames";
 import React from "react";
+import { LabelValue } from "../../../../../../helpers/components";
+import { useIntl } from "react-intl";
+
+function useOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget}) {
+  const intl = useIntl();
+  const quadrantCounts = getQuadrantCounts({workItems, cycleTimeTarget, latencyTarget})
+  const totalQuadrantCounts = Object.values(quadrantCounts).reduce((acc, item) => acc + item);
+  const quadrantAge = getTotalAgeByQuadrant({
+    workItems,
+    cycleTimeTarget,
+    latencyTarget,
+  });
+  const totalQuadrantAge = Object.values(quadrantAge).reduce((acc, item) => acc + item);
+
+  const quadrantLatency = getTotalLatencyByQuadrant({
+    workItems,
+    cycleTimeTarget,
+    latencyTarget,
+  });
+  const totalQuadrantLatency = Object.values(quadrantLatency).reduce((acc, item) => acc + item);
+  const quadrantEffort = getTotalEffortByQuadrant({
+    workItems,
+    cycleTimeTarget,
+    latencyTarget,
+  });
+  const totalEffort = Object.values(quadrantEffort).reduce((acc, item) => acc + item);
+
+  const averageAge = totalQuadrantAge/totalQuadrantCounts;
+  const averageAgeDisplay = totalQuadrantCounts > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)}`: '';
+
+  const averageLatency = totalQuadrantLatency/totalQuadrantCounts;
+  const averageLatencyDisplay = totalQuadrantCounts > 0 ? `${i18nNumber(intl, averageLatency,averageAge < 10 ? 1 :0)}`: '';
+
+  const wipEffortDisplay = workItems.length > 0 ?  `${i18nNumber(intl,totalEffort, 0 ) } ` : '';
+
+  return {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay}
+}
 
 export function MotionEfficiencyQuadrantSummaryCard({
   workItems,
@@ -34,6 +71,8 @@ export function MotionEfficiencyQuadrantSummaryCard({
       setShowPanel(true);
     }
   }
+
+const {averageAgeDisplay, averageLatencyDisplay, wipEffortDisplay} = useOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget});
 
   return (
     <PlainCard
@@ -61,7 +100,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
                   <div className="tw-text-lg tw-text-gray-300">
                     Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
                   </div>
-                  <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
+                  <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
                     Motion is indicated by a change in workflow state or commit activity for a work item.
                   </div>
                 </div>
@@ -69,6 +108,29 @@ export function MotionEfficiencyQuadrantSummaryCard({
               placement: "bottom",
               content: (
                 <div className="tw-w-[500px]">
+                  <div className="tw-mb-2 tw-flex tw-justify-between">
+                    <LabelValue
+                      label="Age:"
+                      labelClassName="tw-normal-case tw-font-normal"
+                      valueClassName="tw-ml-1"
+                      value={<span className="tw-text-base">{averageAgeDisplay}</span>}
+                      uom="Days"
+                    />
+                    <LabelValue
+                      label="Days Since Last Move:"
+                      labelClassName="tw-normal-case tw-font-normal"
+                      valueClassName="tw-ml-1"
+                      value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
+                      uom="Days"
+                    />
+                    <LabelValue
+                      label="Total Effort:"
+                      labelClassName="tw-normal-case tw-font-normal"
+                      valueClassName="tw-ml-1"
+                      value={<span className="tw-text-base">{wipEffortDisplay}</span>}
+                      uom={`FTE Days`}
+                    />
+                  </div>
                   <WorkItemsCycleTimeVsLatencyChart
                     stageName={"Process"}
                     workItems={filteredWorkItems}
@@ -83,14 +145,13 @@ export function MotionEfficiencyQuadrantSummaryCard({
                     blurClass={blurClass}
                   />
 
-                    <CardInspectorWithDrawer
-                      workItemKey={workItemKey}
-                      showPanel={showPanel}
-                      setShowPanel={setShowPanel}
-                      context={context}
-                      drawerOptions={{placement: "bottom"}}
-                    />
-                  
+                  <CardInspectorWithDrawer
+                    workItemKey={workItemKey}
+                    showPanel={showPanel}
+                    setShowPanel={setShowPanel}
+                    context={context}
+                    drawerOptions={{placement: "bottom"}}
+                  />
                 </div>
               ),
             }
