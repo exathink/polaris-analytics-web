@@ -83,7 +83,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
     latencyView = {
       title: (
         <div>
-          <div className="tw-text-lg tw-text-gray-300">All {specsOnly ? "Dev Items" : "Work Items"}</div>
+          <div className="tw-text-lg tw-text-gray-300">Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}</div>
           <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
             Motion is indicated by a change in workflow state or commit activity for a work item.
           </div>
@@ -103,6 +103,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
             latencyTarget={latencyTarget}
             onSelectionChange={handleSelectionChange}
             excludeMotionless={displayBag?.excludeMotionless}
+            title=" "
             blurClass={blurClass}
           />
           <div className="tw-mt-2 tw-flex tw-justify-between">

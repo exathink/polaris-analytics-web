@@ -130,6 +130,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           latencyTarget={popupProps.latencyTarget}
           onSelectionChange={handleSelectionChange}
           excludeMotionless={popupProps.excludeMotionless}
+          title=" "
           blurClass={blurClass}
         />
         {initialPopoverContent}
