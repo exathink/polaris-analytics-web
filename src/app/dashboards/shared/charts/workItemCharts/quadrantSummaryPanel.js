@@ -14,9 +14,10 @@ import { useIntl } from "react-intl";
 import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
+import { LabelValue } from "../../../../helpers/components";
 
 
-function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalAge[quadrant]) {
@@ -28,7 +29,7 @@ function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadr
   }, {});
 }
 
-function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalLatency, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalLatency[quadrant]) {
@@ -40,7 +41,7 @@ function getTotalLatencyByQuadrant({workItems, cycleTimeTarget, latencyTarget, q
   }, {});
 }
 
-function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
+export function getTotalEffortByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalEffort, item) => {
     const quadrant = getQuadrantLegacy(item.cycleTime, item.latency, cycleTimeTarget, latencyTarget);
     if (totalEffort[quadrant]) {
@@ -86,6 +87,31 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     }
   }
 
+  let footerPopoverContent = (
+    <div className="tw-flex tw-justify-between">
+      <LabelValue
+        label="Avg. Age:"
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{averageAgeDisplay}</span>}
+        uom="Days"
+      />
+      <LabelValue
+        label="Avg. Days Since Last Move:"
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
+        uom="Days"
+      />
+      <LabelValue
+        label="Total Effort:"
+        labelClassName="tw-normal-case tw-font-normal"
+        valueClassName="tw-ml-1"
+        value={<span className="tw-text-base">{wipEffortDisplay}</span>}
+        uom={`FTE Days (${i18nNumber(intl, (quadrantEffort / totalEffort) * 100, 0)}%)`}
+      />
+    </div>
+  );
   let popoverContent;
   if (popupProps && popupProps.showQuadrantPopup) {
     const quadrantWorkItems = workItems.filter(
@@ -94,7 +120,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     popoverContent = (
       <>
         <WorkItemsCycleTimeVsLatencyChart
-          stageName={"Wip"}
+          title=" "
           workItems={quadrantWorkItems}
           groupByState={true}
           tooltipType={"small"}
@@ -106,6 +132,10 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           excludeMotionless={popupProps.excludeMotionless}
           blurClass={blurClass}
         />
+        {footerPopoverContent}
+        <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
+          Motion is indicated by a change in workflow state or commit activity for a work item.
+        </div>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           showPanel={showPanel}
@@ -131,7 +161,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
 
 
   const tooltipContent = val > 0 && (
-    <div className={classNames("tw-p-2 tw-grid tw-gap-2 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[500px]")}>
+    <div className={classNames("tw-grid tw-gap-1 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[530px]")}>
       {popoverContent}
     </div>
   )
@@ -143,9 +173,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
         {quadrantDescription}
       </div>
-      <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
-        Motion is indicated by a change in workflow state or commit activity for a work item.
-      </div>
+      
     </div>
   )
   return (
