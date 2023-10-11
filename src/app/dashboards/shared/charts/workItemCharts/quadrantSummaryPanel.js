@@ -90,14 +90,14 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
   let initialPopoverContent = (
     <div className="tw-mb-2 tw-flex tw-justify-between">
       <LabelValue
-        label="Age:"
+        label="Avg. Age:"
         labelClassName="tw-normal-case tw-font-normal"
         valueClassName="tw-ml-1"
         value={<span className="tw-text-base">{averageAgeDisplay}</span>}
         uom="Days"
       />
       <LabelValue
-        label="Days Since Last Move:"
+        label="Avg. Days Since Last Move:"
         labelClassName="tw-normal-case tw-font-normal"
         valueClassName="tw-ml-1"
         value={<span className="tw-text-base">{averageLatencyDisplay}</span>}
