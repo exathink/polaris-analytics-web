@@ -84,9 +84,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
       title: (
         <div>
           <div className="tw-text-lg tw-text-gray-300">Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}</div>
-          <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
-            Motion is indicated by a change in workflow state or commit activity for a work item.
-          </div>
+          
         </div>
       ),
       placement: "bottom",
@@ -128,6 +126,9 @@ export function MotionEfficiencyQuadrantSummaryCard({
               value={<span className="tw-text-base">{wipEffortDisplay}</span>}
               uom={`FTE Days`}
             />
+          </div>
+          <div className={classNames("tw-text-xs tw-font-normal tw-italic tw-mt-1")}>
+            Motion is indicated by a change in workflow state or commit activity for a work item.
           </div>
           <CardInspectorWithDrawer
             workItemKey={workItemKey}

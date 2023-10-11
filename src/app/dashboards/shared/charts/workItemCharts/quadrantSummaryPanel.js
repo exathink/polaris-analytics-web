@@ -118,7 +118,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       (w) => getQuadrantLegacy(w.cycleTime, w.latency, popupProps.cycleTimeTarget, popupProps.latencyTarget) === quadKey
     );
     popoverContent = (
-      <>  
+      <>
         <WorkItemsCycleTimeVsLatencyChart
           stageName={"Wip"}
           workItems={quadrantWorkItems}
@@ -134,6 +134,9 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           blurClass={blurClass}
         />
         {initialPopoverContent}
+        <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
+          Motion is indicated by a change in workflow state or commit activity for a work item.
+        </div>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
           showPanel={showPanel}
@@ -159,7 +162,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
 
 
   const tooltipContent = val > 0 && (
-    <div className={classNames("tw-grid tw-gap-2 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[530px]")}>
+    <div className={classNames("tw-grid tw-gap-1 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[530px]")}>
       {popoverContent}
     </div>
   )
@@ -171,9 +174,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
       <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
         {quadrantDescription}
       </div>
-      <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
-        Motion is indicated by a change in workflow state or commit activity for a work item.
-      </div>
+      
     </div>
   )
   return (
