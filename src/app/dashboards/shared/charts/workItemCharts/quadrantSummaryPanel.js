@@ -89,10 +89,11 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
 
   let initialPopoverContent = (
     <div className="tw-mb-2">
-      <LabelValue label="Avg. Age:" value={averageAgeDisplay} uom="Days" />
-      <LabelValue label="Avg. Days Since Last Move:" value={averageLatencyDisplay} uom="Days" />
+      <LabelValue label="Avg. Age:" labelClassName="tw-normal-case" value={averageAgeDisplay} uom="Days" />
+      <LabelValue label="Avg. Days Since Last Move:" labelClassName="tw-normal-case" value={averageLatencyDisplay} uom="Days" />
       <LabelValue
         label="Total Effort:"
+        labelClassName="tw-normal-case"
         value={wipEffortDisplay}
         uom={`FTE Days (${i18nNumber(intl, (quadrantEffort / totalEffort) * 100, 0)}%)`}
       />
