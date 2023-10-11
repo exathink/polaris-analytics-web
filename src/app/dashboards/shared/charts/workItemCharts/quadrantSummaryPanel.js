@@ -87,7 +87,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     }
   }
 
-  let initialPopoverContent = (
+  let footerPopoverContent = (
     <div className="tw-flex tw-justify-between">
       <LabelValue
         label="Avg. Age:"
@@ -120,7 +120,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     popoverContent = (
       <>
         <WorkItemsCycleTimeVsLatencyChart
-          stageName={"Wip"}
+          title=" "
           workItems={quadrantWorkItems}
           groupByState={true}
           tooltipType={"small"}
@@ -130,10 +130,9 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
           latencyTarget={popupProps.latencyTarget}
           onSelectionChange={handleSelectionChange}
           excludeMotionless={popupProps.excludeMotionless}
-          title=" "
           blurClass={blurClass}
         />
-        {initialPopoverContent}
+        {footerPopoverContent}
         <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>
           Motion is indicated by a change in workflow state or commit activity for a work item.
         </div>

@@ -248,7 +248,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         zoomType: "xy",
       },
       title: {
-        text: getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant, title}),
+        text: title || getTitle({workItems: workItemsWithAggregateDurations, stageName, specsOnly, selectedQuadrant, title}),
         align: "left",
       },
       subtitle: {
