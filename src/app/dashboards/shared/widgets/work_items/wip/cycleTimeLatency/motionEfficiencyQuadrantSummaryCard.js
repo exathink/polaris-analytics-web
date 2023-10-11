@@ -15,26 +15,26 @@ import { useIntl } from "react-intl";
 function useOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget}) {
   const intl = useIntl();
   const quadrantCounts = getQuadrantCounts({workItems, cycleTimeTarget, latencyTarget})
-  const totalQuadrantCounts = Object.values(quadrantCounts).reduce((acc, item) => acc + item);
+  const totalQuadrantCounts = Object.values(quadrantCounts).reduce((acc, item) => acc + item, 0);
   const quadrantAge = getTotalAgeByQuadrant({
     workItems,
     cycleTimeTarget,
     latencyTarget,
   });
-  const totalQuadrantAge = Object.values(quadrantAge).reduce((acc, item) => acc + item);
+  const totalQuadrantAge = Object.values(quadrantAge).reduce((acc, item) => acc + item, 0);
 
   const quadrantLatency = getTotalLatencyByQuadrant({
     workItems,
     cycleTimeTarget,
     latencyTarget,
   });
-  const totalQuadrantLatency = Object.values(quadrantLatency).reduce((acc, item) => acc + item);
+  const totalQuadrantLatency = Object.values(quadrantLatency).reduce((acc, item) => acc + item, 0);
   const quadrantEffort = getTotalEffortByQuadrant({
     workItems,
     cycleTimeTarget,
     latencyTarget,
   });
-  const totalEffort = Object.values(quadrantEffort).reduce((acc, item) => acc + item);
+  const totalEffort = Object.values(quadrantEffort).reduce((acc, item) => acc + item, 0);
 
   const averageAge = totalQuadrantAge/totalQuadrantCounts;
   const averageAgeDisplay = totalQuadrantCounts > 0 ? `${i18nNumber(intl, averageAge,averageAge < 10 ? 1 :0)}`: '';
