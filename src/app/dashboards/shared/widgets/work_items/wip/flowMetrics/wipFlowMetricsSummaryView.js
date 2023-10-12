@@ -349,7 +349,16 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
     });
 
     const bottomRightElement = specsOnly
-      ? {}
+      ? {
+        bottomRightView: {
+          bottomRightElement: (
+            <div>Traceability</div>
+          ),
+          title: null,
+          content: displayBag?.traceability,
+          placement: "top",
+        },
+      }
       : {
         bottomRightView: {
           bottomRightElement: (
@@ -364,8 +373,8 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
             />
           ),
           title: null,
-          content: displayBag?.traceability,
-          placement: "top",
+          content: null,
+          placement: null,
         },
       };
     
