@@ -25,11 +25,10 @@ export function WorkItemsDetailHistogramTable({
   clearFilters,
   // table props
   view,
+  context,
   selectedFilter,
   tableData,
   tableSelectedMetric,
-  setShowPanel,
-  setWorkItemKey,
   paginationOptions
 }) {
   return (
@@ -52,10 +51,9 @@ export function WorkItemsDetailHistogramTable({
             view={view}
             stateType={stateType}
             tableData={tableData}
+            context={context}
             selectedMetric={getNormalizedMetricKey(tableSelectedMetric)}
             selectedFilter={selectedFilter}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
             colWidthBoundaries={colWidthBoundaries}
             specsOnly={specsOnly}
             paginationOptions={paginationOptions}
