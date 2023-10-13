@@ -170,7 +170,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
     {
       title: (
         <span>
-          Flow Velocity <sup>Last {samplingFrequency} Days</sup>
+          Flow Volume <sup>Last {samplingFrequency} Days</sup>
         </span>
       ),
       children: [

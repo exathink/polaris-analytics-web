@@ -26,6 +26,7 @@ import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilte
 import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
+import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? item.leadTime : item.cycleTime;
@@ -56,13 +57,8 @@ function getTransformedData(data, intl) {
 export function useWorkItemsDetailTableColumns({
   stateType,
   filters,
-  callBacks,
-  intl,
-  selectedFilter,
   selectedMetric,
   workTrackingIntegrationType,
-  supportsFilterOnCard,
-  hidden_cols
 }) {
   const blurClass = useBlurClass("tw-blur-[2px]");
   const optionalColumns = useOptionalColumnsForWorkItems({filters, workTrackingIntegrationType});
@@ -102,7 +98,7 @@ export function useWorkItemsDetailTableColumns({
     };
   }
 
-  const columns = [
+  const columns = React.useMemo(() => [
     ...optionalColumns,
     getWorkItemNameCol(),
     {
@@ -146,7 +142,7 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
-  ];
+  ], []);
 
   return columns;
 }
@@ -155,8 +151,7 @@ export const WorkItemsDetailTable = ({
   view,
   stateType,
   tableData,
-  setShowPanel,
-  setWorkItemKey,
+  context,
   colWidthBoundaries,
   selectedFilter,
   selectedMetric,
@@ -169,7 +164,7 @@ export const WorkItemsDetailTable = ({
 }) => {
   const intl = useIntl();
   const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
-
+  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   // get unique workItem types
   const workItemTypes = [...new Set(tableData.map((x) => x.workItemType))];
   const stateTypes = [...new Set(tableData.map((x) => WorkItemStateTypeDisplayName[x.stateType]))];
@@ -230,6 +225,7 @@ export const WorkItemsDetailTable = ({
   }, []);
 
   return (
+    <>
     <AgGridStripeTable
       columnDefs={columns}
       rowData={dataSource}
@@ -276,5 +272,13 @@ export const WorkItemsDetailTable = ({
       defaultColDef={defaultColDef}
       onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
     />
+      <CardInspectorWithDrawer
+        workItemKey={workItemKey}
+        showPanel={showPanel}
+        setShowPanel={setShowPanel}
+        context={context}
+      />
+    </>
+    
   );
 };

@@ -6,7 +6,6 @@ import {
   getMetricsMetaKey,
   getSelectedMetricColor,
 } from "../../../../helpers/metricsMeta";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../../../work_items/cardInspector/cardInspectorUtils";
 import {useChildState} from "../../../../../../helpers/hooksUtil";
 import {pick} from "../../../../../../helpers/utility";
 import {useSelect} from "../../../../components/select/selectDropdown";
@@ -106,8 +105,6 @@ const DeliveryCyclesFlowMetricsView = ({
     defaultVal: _defaultMetric,
   });
 
-  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
-
   const [yAxisScale, setYAxisScale] = useChildState(
     parentYAxisScale,
     parentSetYAxisScale,
@@ -204,18 +201,12 @@ const DeliveryCyclesFlowMetricsView = ({
         // table props
         view={view}
         selectedFilter={selectedFilter}
+        context={context}
         tableData={filteredData}
         tableSelectedMetric={selectedMetric.key}
-        setShowPanel={setShowPanel}
-        setWorkItemKey={setWorkItemKey}
       />
 
-      <CardInspectorWithDrawer
-        workItemKey={workItemKey}
-        showPanel={showPanel}
-        setShowPanel={setShowPanel}
-        context={context}
-      />
+      
     </div>
   );
 };
