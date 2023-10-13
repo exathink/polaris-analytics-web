@@ -3,6 +3,7 @@ import {TraceabilityTrendsChart} from "./traceabilityTrendsChart";
 import {VizItem, VizRow} from "../../../containers/layout";
 
 import {Traceability, TraceabilityTarget} from "../../../components/flowStatistics/flowStatistics";
+import { TrendIndicator, getMetricUtils } from '../../../../../components/misc/statistic/statistic';
 
 
 const TraceabilityStatisticView = (
@@ -92,6 +93,21 @@ export const ProjectTraceabilityTrendsView = (
         displayType={displayBag.displayType}
         displayProps={{measurementWindow: measurementWindow}}
       />
+    );
+  }
+
+  if (displayBag.displayType === "normStat") {
+    const {metricValue} = getMetricUtils({
+      target: target * 100,
+      value: current["traceability"] * 100,
+      good: TrendIndicator.isPositive,
+      valueRender: (value) => (current["totalCommits"] > 0 ? `${value?.toFixed?.(2)} %` : "N/A"),
+    });
+    return (
+      <div className="tw-flex tw-flex-col tw-items-center">
+        <div className="tw-textXl">Traceability</div>
+        <div className="!tw-text-lg !tw-font-semibold">{metricValue}</div>
+      </div>
     );
   }
 

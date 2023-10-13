@@ -136,6 +136,19 @@ export function NewFlowDashboard() {
                 displayBag={{
                   metric: "volume",
                   displayType: "cardAdvanced",
+                  traceabilityStat: <ProjectTraceabilityTrendsWidget
+                      instanceKey={key}
+                      tags={workItemSelectors}
+                      release={release}
+                      measurementWindow={flowAnalysisPeriod}
+                      days={flowAnalysisPeriod}
+                      samplingFrequency={flowAnalysisPeriod}
+                      context={context}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      displayBag={{displayType: "normStat"}}
+                      target={0.9}
+                    />,
                   traceability: (
                     <ProjectTraceabilityTrendsWidget
                       instanceKey={key}

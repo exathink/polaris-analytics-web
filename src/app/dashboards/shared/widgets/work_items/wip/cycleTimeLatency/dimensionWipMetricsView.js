@@ -25,9 +25,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
   const bottomRightView = specsOnly
     ?  {
       bottomRightView: {
-        bottomRightElement: (
-          <div>Traceability</div>
-        ),
+        bottomRightElement: displayBag?.traceabilityStat,
         title: null,
         content: displayBag?.traceability,
         placement: "top",
