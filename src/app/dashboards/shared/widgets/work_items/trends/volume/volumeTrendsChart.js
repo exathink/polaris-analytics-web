@@ -67,7 +67,7 @@ export const VolumeTrendsChart = ({
       measurementWindow={measurementWindow}
       onSelectionChange={onSelectionChange}
       config={{
-        title: effortOnly? "Effort Throughput" : (chartConfig?.title || "Flow Velocity"),
+        title: effortOnly? "Effort Throughput" : (chartConfig?.title || "Flow Volume"),
         subTitle: chartConfig?.subTitle,
         yAxisUom: (effortOnly? "FTE Days" : chartConfig?.yAxisUom || "Work Items"),
         xAxisUom: chartConfig?.xAxisUom,

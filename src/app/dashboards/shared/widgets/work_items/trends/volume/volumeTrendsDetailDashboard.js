@@ -121,7 +121,7 @@ export const VolumeTrendsDetailDashboard = ({
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
         h={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? "100%" : "40%"}
-        title={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? ` ` : `Velocity Trends`}
+        title={displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table" ? ` ` : `Volume Trends`}
         subTitle={
           displayProps.tabSelection !== undefined && displayProps.chartOrTable === "table"
             ? ` `
