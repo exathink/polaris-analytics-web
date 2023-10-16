@@ -204,16 +204,7 @@ export function useWipMetricsCommon({
   const intl = useIntl();
   const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension});
 
-  const [specEpicsCount, epicsCount] = [
-    getUniqItems(
-      wipSpecsWorkItems.filter((x) => Boolean(x.epicName)),
-      (n) => n.epicName
-    ).length,
-    getUniqItems(
-      wipWorkItems.filter((x) => Boolean(x.epicName)),
-      (n) => n.epicName
-    ).length,
-  ];
+
 
   const workItemsDurations = getWorkItemDurations(wipWorkItems);
   const workItemAggregateDurations = excludeMotionless
@@ -231,6 +222,17 @@ export function useWipMetricsCommon({
         (w) => getQuadrant(w.cycleTime, w.latency, cycleTimeTarget, latencyTarget) !== Quadrants.abandoned
       )
     : getWorkItemDurations(wipSpecsWorkItems);
+
+    const [specEpicsCount, epicsCount] = [
+      getUniqItems(
+        workItemAggregateDurationsForSpecs.filter((x) => Boolean(x.epicName)),
+        (n) => n.epicName
+      ).length,
+      getUniqItems(
+        workItemAggregateDurations.filter((x) => Boolean(x.epicName)),
+        (n) => n.epicName
+      ).length,
+    ];
 
   const avgCycleTime = average(workItemAggregateDurations, (item) => item.cycleTime);
 
