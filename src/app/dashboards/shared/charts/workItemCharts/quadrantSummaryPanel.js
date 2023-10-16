@@ -161,7 +161,7 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
 
 
   const tooltipContent = val > 0 && (
-    <div className={classNames("tw-grid tw-gap-1 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[550px]")}>
+    <div className={classNames("tw-grid tw-gap-1 tw-text-gray-300", popupProps?.showQuadrantPopup && "tw-w-[570px]")}>
       {popoverContent}
     </div>
   )
