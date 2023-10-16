@@ -23,7 +23,14 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
   const {displayType, metric, displayProps} = displayBag;
 
   const bottomRightView = specsOnly
-    ? {}
+    ?  {
+      bottomRightView: {
+        bottomRightElement: displayBag?.traceabilityStat,
+        title: null,
+        content: displayBag?.traceability,
+        placement: "top",
+      },
+    }
     : {
         bottomRightView: {
           bottomRightElement: (

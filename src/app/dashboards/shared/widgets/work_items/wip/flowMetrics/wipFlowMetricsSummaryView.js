@@ -349,7 +349,14 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
     });
 
     const bottomRightElement = specsOnly
-      ? {}
+      ? {
+        bottomRightView: {
+          bottomRightElement: displayBag?.traceabilityStat,
+          title: null,
+          content: displayBag?.traceability,
+          placement: "top",
+        },
+      }
       : {
         bottomRightView: {
           bottomRightElement: (

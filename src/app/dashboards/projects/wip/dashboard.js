@@ -162,6 +162,17 @@ function WipDashboard({
               latestCommit={latestCommit}
               displayBag={{
                 excludeMotionless: excludeMotionless,
+                traceabilityStat: (<ProjectTraceabilityTrendsWidget
+                    instanceKey={key}
+                    measurementWindow={flowAnalysisPeriod}
+                    days={flowAnalysisPeriod}
+                    samplingFrequency={flowAnalysisPeriod}
+                    context={context}
+                    latestWorkItemEvent={latestWorkItemEvent}
+                    latestCommit={latestCommit}
+                    displayBag={{displayType: "normStat"}}
+                    target={0.9}
+                  />),
                 traceability: (
                   <ProjectTraceabilityTrendsWidget
                     instanceKey={key}
