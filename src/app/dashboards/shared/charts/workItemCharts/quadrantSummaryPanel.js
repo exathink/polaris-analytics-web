@@ -14,8 +14,7 @@ import { useIntl } from "react-intl";
 import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../helpers/utility";
 import { WorkItemsCycleTimeVsLatencyChart } from "./workItemsCycleTimeVsLatencyChart";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
-import { LabelValue } from "../../../../helpers/components";
-
+import { LabelValue, NavigationLink } from "../../../../helpers/components";
 
 export function getTotalAgeByQuadrant({workItems, cycleTimeTarget, latencyTarget, quadrantCounts}) {
    return workItems.reduce((totalAge, item) => {
@@ -166,16 +165,16 @@ function QuadrantBox({quadKey, name, val, total, totalAge, totalLatency, quadran
     </div>
   )
   const tooltipTitle = (
-    <div className="tw-p-2 tw-text-gray-300 tw-text-xl tw-tracking-wide">
+    <div className="tw-flex tw-items-center tw-justify-between tw-p-2 tw-text-xl tw-tracking-wide tw-text-gray-300">
       <div>
-        {`${val} ${name}`}
+        <div>{`${val} ${name}`}</div>
+        <div className={classNames("tw-text-xs tw-font-normal tw-italic")}>{quadrantDescription}</div>
       </div>
-      <div className={classNames("tw-font-normal tw-italic tw-text-xs")}>
-        {quadrantDescription}
+      <div>
+        <NavigationLink to="wip" />
       </div>
-      
     </div>
-  )
+  );
   return (
     <Popover content={tooltipContent} title={tooltipTitle} trigger={"hover"}>
       <div
