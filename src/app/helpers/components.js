@@ -1,7 +1,10 @@
 import React from "react";
-import {Alert, Tag, message, notification} from "antd";
+import {Tag, Tooltip, notification} from "antd";
 import classNames from "classnames";
 import Button from "../../components/uielements/button";
+import {Link} from "react-router-dom";
+import { PieChartFilled } from "@ant-design/icons";
+import { Colors } from "../dashboards/shared/config";
 
 export function LabelValue({label, value, uom, className, labelClassName, valueClassName}) {
   return (
@@ -61,5 +64,18 @@ export function MutationExecution({mutationLoading, status}) {
         </Button>
       )}
     </div>
+  );
+}
+
+export function NavigationLink({to}) {
+  return (
+    <Tooltip title={"Open Analysis View"}>
+      <Link to={to}>
+        <PieChartFilled
+          className="tw-text-right"
+          style={{fontSize: "2.5vh", color: Colors.DashboardWidgetIcons.primary}}
+        />
+      </Link>
+    </Tooltip>
   );
 }
