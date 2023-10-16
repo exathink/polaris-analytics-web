@@ -3,6 +3,8 @@ import {TraceabilityTrendsChart} from "./traceabilityTrendsChart";
 import {VizItem, VizRow} from "../../../containers/layout";
 
 import {Traceability, TraceabilityTarget} from "../../../components/flowStatistics/flowStatistics";
+import { TrendIndicator, TrendIndicatorDisplayThreshold, TrendIndicatorNew, getMetricUtils, getTrendIndicatorUtils } from '../../../../../components/misc/statistic/statistic';
+import { useIntl } from 'react-intl';
 
 
 const TraceabilityStatisticView = (
@@ -78,6 +80,7 @@ export const ProjectTraceabilityTrendsView = (
     target,
     displayBag={}
   }) => {
+    const intl = useIntl();
   // trends come back in descending order so this is canonical pattern to
   // extract the current and previous value.
   const [current, previous] = traceabilityTrends;
@@ -92,6 +95,34 @@ export const ProjectTraceabilityTrendsView = (
         displayType={displayBag.displayType}
         displayProps={{measurementWindow: measurementWindow}}
       />
+    );
+  }
+
+  if (displayBag.displayType === "normStat") {
+    const currentValue = (current?.["traceability"]??0) * 100;
+    const previousValue = (previous?.["traceability"]??0) * 100;
+
+    const {metricValue} = getMetricUtils({
+      target: target * 100,
+      value: currentValue,
+      good: TrendIndicator.isPositive,
+      valueRender: (value) => (current["totalCommits"] > 0 ? `${value?.toFixed?.(2)} %` : "N/A"),
+    });
+    const {trendIndicatorIcon} = getTrendIndicatorUtils({
+      currentValue: currentValue,
+      previousValue: previousValue,
+      good: TrendIndicator.isPositive,
+      intl,
+    });
+    return (
+      <div className="tw-flex tw-items-center tw-gap-2">
+        <div className="tw-flex tw-flex-col tw-items-center">
+          <div className="tw-textXl">Traceability</div>
+          <div className="!tw-text-lg !tw-font-semibold">{metricValue} </div>
+        </div>
+
+        <div className="tw-text-xl">{trendIndicatorIcon}</div>
+      </div>
     );
   }
 

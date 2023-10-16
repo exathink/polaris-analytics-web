@@ -89,7 +89,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
       ),
       placement: "bottom",
       content: (
-        <div className="tw-w-[500px]">
+        <div className="tw-w-[600px]">
           <WorkItemsCycleTimeVsLatencyChart
             stageName={"Process"}
             workItems={filteredWorkItems}
