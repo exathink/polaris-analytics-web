@@ -3,7 +3,7 @@ import { AppTerms } from "../../../../shared/config";
 import {
   DimensionCycleTimeDetailDashboard
 } from "../../../../shared/widgets/work_items/responseTime/dimensionCycleTimeDetailDashboard";
-
+import { NavigationLink } from "../../../../../helpers/components";
 
 export function CycleTimeCardView({
     data,
@@ -32,29 +32,43 @@ export function CycleTimeCardView({
             info: {title: "title"},
             subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
             detailsView: {
-            title: (
-              <div className="tw-text-lg tw-text-gray-300">
-                Cycle Time Details, {specsOnly? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
-              </div>
-            ),
-            content: (
-              <DimensionCycleTimeDetailDashboard dimension={dimension} dimensionData={{key: instanceKey, latestWorkItemEvent, latestCommit, settingsWithDefaults: {flowAnalysisPeriod, trendAnalysisPeriod, cycleTimeTarget}}} specsOnly={specsOnly} />
-            ),
-            placement: "top",
-          },
+              title: (
+                <div className="tw-flex tw-items-baseline tw-justify-between">
+                  <div className="tw-text-lg tw-text-gray-300 ">
+                    Cycle Time Details, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`},{" "}
+                    <span className="tw-text-base tw-italic">Last {flowAnalysisPeriod} Days</span>
+                  </div>
+
+                  <NavigationLink to="responseTime" />
+                </div>
+              ),
+              content: (
+                <DimensionCycleTimeDetailDashboard
+                  dimension={dimension}
+                  dimensionData={{
+                    key: instanceKey,
+                    latestWorkItemEvent,
+                    latestCommit,
+                    settingsWithDefaults: {flowAnalysisPeriod, trendAnalysisPeriod, cycleTimeTarget},
+                  }}
+                  specsOnly={specsOnly}
+                />
+              ),
+              placement: "top",
+            },
             trendsView: {
-            title: "",
-            content: (
-              <AvgCycleTime
-                title={<span>Volume</span>}
-                displayType={"trendsCompareCard"}
-                displayProps={{measurementWindow: flowAnalysisPeriod}}
-                currentMeasurement={currentTrend}
-                previousMeasurement={previousTrend}
-              />
-            ),
-            placement: "top",
-          },
+              title: "",
+              content: (
+                <AvgCycleTime
+                  title={<span>Volume</span>}
+                  displayType={"trendsCompareCard"}
+                  displayProps={{measurementWindow: flowAnalysisPeriod}}
+                  currentMeasurement={currentTrend}
+                  previousMeasurement={previousTrend}
+                />
+              ),
+              placement: "top",
+            },
             supportingMetric: <span>Limit {cycleTimeTarget} Days</span>,
             ...displayProps,
           }}
