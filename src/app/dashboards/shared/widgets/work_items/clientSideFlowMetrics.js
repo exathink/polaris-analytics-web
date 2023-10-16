@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { average, daysFromNow, fromNow, i18nNumber, toMoment } from "../../../../helpers/utility";
+import { average, daysFromNow, fromNow, getUniqItems, i18nNumber, toMoment } from "../../../../helpers/utility";
 import { getPercentage } from "../../../projects/shared/helper/utils";
 import { ALL_PHASES, FlowTypeStates, WorkItemStateTypes } from "../../config";
 import { Quadrants, getQuadrant, getQuadrantLegacy } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
@@ -204,6 +204,17 @@ export function useWipMetricsCommon({
   const intl = useIntl();
   const {wipWorkItems, wipSpecsWorkItems} = useWipData({wipDataAll, specsOnly: specsOnly, dimension});
 
+  const [specEpicsCount, epicsCount] = [
+    getUniqItems(
+      wipSpecsWorkItems.filter((x) => Boolean(x.epicName)),
+      (n) => n.epicName
+    ).length,
+    getUniqItems(
+      wipWorkItems.filter((x) => Boolean(x.epicName)),
+      (n) => n.epicName
+    ).length,
+  ];
+
   const workItemsDurations = getWorkItemDurations(wipWorkItems);
   const workItemAggregateDurations = excludeMotionless
     ? workItemsDurations.filter(
@@ -230,7 +241,7 @@ export function useWipMetricsCommon({
 
   const wipLimit = getWipLimit({flowMetricsData, dimension, specsOnly, intl, cycleTimeTarget, days});
 
-  return {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurations, workItemAggregateDurationsForSpecs};
+  return {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurations, workItemAggregateDurationsForSpecs, specEpicsCount, epicsCount};
 }
 
 export function DevItemRatio({devItemsCount, devItemsPercentage}) {
