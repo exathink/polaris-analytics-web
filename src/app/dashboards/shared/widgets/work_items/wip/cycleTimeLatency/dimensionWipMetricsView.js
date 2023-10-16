@@ -8,7 +8,7 @@ import { getPercentage } from "../../../../../projects/shared/helper/utils";
 export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension, displayBag, excludeMotionless, cycleTimeTarget, latencyTarget, specsOnly, days}) {
   const intl = useIntl();
 
-  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
+  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations, specEpicsCount, epicsCount} =
     useWipMetricsCommon({
       wipDataAll,
       flowMetricsData,
@@ -23,7 +23,14 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
   const {displayType, metric, displayProps} = displayBag;
 
   const bottomRightView = specsOnly
-    ? {}
+    ?  {
+      bottomRightView: {
+        bottomRightElement: displayBag?.traceabilityStat,
+        title: null,
+        content: displayBag?.traceability,
+        placement: "top",
+      },
+    }
     : {
         bottomRightView: {
           bottomRightElement: (
@@ -46,7 +53,12 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
   const metricMap = {
     volume: (
       <Wip
-        title={<span>Work In Process (WIP)</span>}
+        title={
+          <div className="tw-flex tw-flex-col">
+            <div>Work In Process (WIP)</div>
+            <div className="tw-text-base">{specsOnly ? specEpicsCount : epicsCount} Epics</div>
+          </div>
+        }
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
@@ -57,7 +69,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
           ...bottomRightView,
           info: {title: "Info", content: "content"},
           ...displayProps,
-          midTarget: motionLimit
+          midTarget: motionLimit,
         }}
       />
     ),

@@ -336,7 +336,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
   const {excludeMotionless} = displayBag;
   const intl = useIntl();
   
-  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations} =
+  const {wipLimit, motionLimit, pipelineCycleMetrics, workItemAggregateDurationsForSpecs, workItemAggregateDurations, specEpicsCount, epicsCount} =
     useWipMetricsCommon({
       wipDataAll,
       flowMetricsData,
@@ -349,7 +349,14 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
     });
 
     const bottomRightElement = specsOnly
-      ? {}
+      ? {
+        bottomRightView: {
+          bottomRightElement: displayBag?.traceabilityStat,
+          title: null,
+          content: displayBag?.traceability,
+          placement: "top",
+        },
+      }
       : {
         bottomRightView: {
           bottomRightElement: (
@@ -373,7 +380,12 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
     <div className="tw-grid tw-h-full tw-grid-cols-2 tw-grid-rows-[auto_1fr] tw-gap-1">
       <MetricsGroupTitle>Flow Metrics, Work In Process</MetricsGroupTitle>
       <Wip
-        title={<span>WIP</span>}
+        title={
+          <div className="tw-flex tw-flex-col">
+            <div>WIP</div>
+            <div className="tw-text-base">{specsOnly ? specEpicsCount : epicsCount} Epics</div>
+          </div>
+        }
         currentMeasurement={pipelineCycleMetrics}
         specsOnly={specsOnly}
         target={wipLimit}
@@ -383,7 +395,7 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
           supportingMetric: <span>Limit {wipLimit}</span>,
           ...bottomRightElement,
           testId: "wip-total",
-          midTarget: motionLimit
+          midTarget: motionLimit,
         }}
       />
       <AvgAge

@@ -3,6 +3,7 @@ import { AppTerms } from "../../../../shared/config";
 import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
+import { NavigationLink } from "../../../../../helpers/components";
 
 export function FlowMetricsView({
   data,
@@ -69,11 +70,16 @@ export function FlowMetricsView({
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
           detailsView: {
             title: (
-              <div className="tw-text-lg tw-text-gray-300">
-                Flow Volume Details{" "}
-                <span className="tw-text-base tw-italic">
-                  {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last {flowAnalysisPeriod} Days
-                </span>
+              <div className="tw-flex tw-justify-between tw-text-lg tw-text-gray-300">
+                <div className="tw-flex tw-items-baseline tw-gap-2 tw-p-1">
+                  <div>Flow Volume Details </div>
+                  <div className="tw-text-base tw-italic">
+                    {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}, Last {flowAnalysisPeriod}{" "}
+                    Days
+                  </div>
+                </div>
+
+                <NavigationLink to="throughput" />
               </div>
             ),
             content: (
