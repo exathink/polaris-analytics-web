@@ -9,7 +9,7 @@ import { CardInspectorWithDrawer, useCardInspector } from "../../../../../work_i
 import { EVENT_TYPES, i18nNumber, useBlurClass } from "../../../../../../helpers/utility";
 import classNames from "classnames";
 import React from "react";
-import { LabelValue } from "../../../../../../helpers/components";
+import { LabelValue, NavigationLink } from "../../../../../../helpers/components";
 import { useIntl } from "react-intl";
 
 function getOverallQuadrantMetrics({workItems, cycleTimeTarget, latencyTarget, intl}) {
@@ -82,9 +82,13 @@ export function MotionEfficiencyQuadrantSummaryCard({
     });
     latencyView = {
       title: (
-        <div>
-          <div className="tw-text-lg tw-text-gray-300">Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}</div>
-          
+        <div className="tw-flex tw-items-center tw-justify-between">
+          <div className="tw-text-lg tw-text-gray-300">
+            Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
+          </div>
+          <div>
+            <NavigationLink to="wip" />
+          </div>
         </div>
       ),
       placement: "bottom",
@@ -127,7 +131,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
               uom={`FTE Days`}
             />
           </div>
-          <div className={classNames("tw-text-xs tw-font-normal tw-italic tw-mt-1")}>
+          <div className={classNames("tw-mt-1 tw-text-xs tw-font-normal tw-italic")}>
             Motion is indicated by a change in workflow state or commit activity for a work item.
           </div>
           <CardInspectorWithDrawer
