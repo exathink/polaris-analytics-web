@@ -371,8 +371,8 @@ export function WorkInProgressSummaryView({wipDataAll, dimension, cycleTimeTarge
             />
           ),
           title: null,
-          content: null,
-          placement: null,
+          content: displayBag?.traceability,
+          placement: "top",
         },
       };
     

@@ -45,8 +45,8 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
             />
           ),
           title: null,
-          content: null,
-          placement: null,
+          content: displayBag?.traceability,
+          placement: "top",
         },
       };
 
