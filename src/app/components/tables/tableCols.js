@@ -11,7 +11,7 @@ import {
   parseTags,
   ArrayCol
 } from "./tableUtils";
-import {CardCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
+import {CardCol, IssueTypeCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { useBlurClass } from "../../helpers/utility";
@@ -50,17 +50,21 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     () => ({
       field: "epicName",
       headerName: "Epic",
-      filter: "agTextColumnFilter",
+      filter: MultiCheckboxFilter,
       filterParams: {
-        filterOptions: ["contains", "startsWith"],
-        buttons: ["reset"],
-        maxNumConditions: 1,
+        values: [BLANKS, ...filters.epicNames].map((b) => ({text: b, value: b})),
+        onFilter: ({value, record}) => {
+          if (value === BLANKS && record.epicName == null) {
+            return true;
+          }
+          return record.epicName === value;
+        },
       },
       menuTabs: MenuTabs,
       hide: !hasEpicName,
-      cellClass: blurClass
+      cellClass: blurClass,
     }),
-    [hasEpicName, blurClass]
+    [hasEpicName, blurClass, filters]
   );
 
   const hasWorkItemsSourceName = hidden_cols.includes("workItemsSourceName");
@@ -337,5 +341,19 @@ export function getEffortCol() {
     },
     menuTabs: MenuTabs,
     comparator: SORTER.number_compare,
+  };
+}
+
+export function getWorkItemTypeCol() {
+  return {
+    headerName: "Work Item Type",
+    field: "workItemType",
+    cellRenderer: React.memo(IssueTypeCol),
+    filter: "agSetColumnFilter",
+    filterParams: {
+      cellRenderer: IssueTypeCol,
+    },
+    menuTabs: MenuTabs,
+    // comparator: SORTER.number_compare,
   };
 }

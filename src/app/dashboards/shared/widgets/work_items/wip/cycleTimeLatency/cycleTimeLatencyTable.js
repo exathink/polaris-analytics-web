@@ -8,7 +8,7 @@ import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
 import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 import {HIDDEN_COLUMNS_KEY} from "../../../../../../helpers/localStorageUtils";
 
@@ -89,7 +89,8 @@ const valueAccessor = {
   state: (data) => data.values.map(x => ({value: x, label: x})),
   component: (data) => data.values,
   custom_type: (data) => data.values,
-  custom_tags: (data) => data.values
+  custom_tags: (data) => data.values,
+  epicName: (data) => data.values
 };
 
 function getFilterValue(key, value) {
@@ -105,6 +106,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
       ...optionalColumns,
       getWorkItemNameCol(),
       getStateCol({filters}),
+      getWorkItemTypeCol(),
       {
         field: "quadrant",
         headerName: "Status",
@@ -193,6 +195,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     // get unique workItem types
     const {workItemTypes, stateTypes, teams} = getUniqueItems(tableData);
     const workItemStreams = [...new Set(tableData.map((x) => x.workItemsSourceName))];
+    const epicNames = [...new Set(tableData.filter((x) => Boolean(x.epicName)).map((x) => x.epicName))];
     const componentTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).component))];
     const customTypeTags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).custom_type))];
     const tags = [...new Set(tableData.flatMap((x) => parseTags(x.tags).tags))];
@@ -207,7 +210,7 @@ export const CycleTimeLatencyTable = React.forwardRef(
     );
     const quadrants = [...new Set(dataSource.map((x) => x.quadrant))];
     const columnDefs = useCycleTimeLatencyTableColumns({
-      filters: {workItemTypes, stateTypes, quadrants, teams, states, workItemStreams, componentTags, customTypeTags, tags, categories, allPairsData},
+      filters: {workItemTypes, stateTypes, quadrants, teams, epicNames, states, workItemStreams, componentTags, customTypeTags, tags, categories, allPairsData},
       workTrackingIntegrationType
     });
 
