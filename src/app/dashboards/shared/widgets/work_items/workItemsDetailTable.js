@@ -13,7 +13,6 @@ import {
 } from "../../../../components/tables/tableUtils";
 import {useBlurClass} from "../../../../helpers/utility";
 import {useLocalStorage} from "../../../../helpers/hooksUtil";
-import {IssueTypeCol} from "../../../projects/shared/helper/renderers";
 import {allPairs, getHistogramCategories, isClosed} from "../../../projects/shared/helper/utils";
 import {formatDateTime} from "../../../../i18n";
 import {
@@ -23,7 +22,7 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
@@ -101,17 +100,7 @@ export function useWorkItemsDetailTableColumns({
   const columns = React.useMemo(() => [
     ...optionalColumns,
     getWorkItemNameCol(),
-    {
-      headerName: "Work Item Type",
-      field: "workItemType",
-      cellRenderer: React.memo(IssueTypeCol),
-      filter: "agSetColumnFilter",
-      filterParams: {
-        cellRenderer: IssueTypeCol,
-      },
-      menuTabs: MenuTabs,
-      // comparator: SORTER.number_compare,
-    },
+    getWorkItemTypeCol(),
     getStateCol({filters}),
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
