@@ -612,6 +612,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
           <div className="tw-self-center tw-text-gray-300">
             <Checkbox
               onChange={(e) => {
+                setEventSource("init");
                 if (e.target.checked) {
                   setAppliedFilters(
                     (prev) => new Map(prev.set(FILTERS.EXCLUDE_ABANDONED, {value: [e.target.checked]}))
