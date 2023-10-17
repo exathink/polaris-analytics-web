@@ -243,7 +243,8 @@ export const FILTERS = {
   COMPONENT: "component",
   CUSTOM_TYPE: "custom_type",
   CUSTOM_TAGS: "custom_tags",
-  EXCLUDE_ABANDONED: "exclude_abandoned"
+  EXCLUDE_ABANDONED: "exclude_abandoned",
+  EPIC_NAME: "epicName",
 };
 
 export const engineeringStateTypes = [WorkItemStateTypes.open, WorkItemStateTypes.make];
@@ -323,6 +324,15 @@ export let filterFns = {
   },
   [FILTERS.EXCLUDE_ABANDONED]: (w, [value]) => {
     return value ? w.quadrant !== Quadrants.abandoned : true;
+  },
+  [FILTERS.EPIC_NAME]: (w, values) => {
+    if (values.length === 1 && values[0] === BLANKS) {
+      return w.epicName == null;
+    }
+    if (w.epicName == null) {
+      return false;
+    }
+    return values.some((filterVal) => w.epicName.indexOf(filterVal) === 0);
   }
 };
 
