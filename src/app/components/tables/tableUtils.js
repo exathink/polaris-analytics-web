@@ -390,13 +390,12 @@ export function parseTags(tagSource = "") {
 }
 
 export function CustomComponentCol({value}) {
-  let tags_list = parseTags(value).component
-  return renderTags(tags_list);
+  return renderTags(value);
 }
 
 
 export function CustomTypeCol({value}) {
-  let val = parseTags(value).custom_type.join(", ");
+  let val = value.join(", ");
   return (
     <span>
       {val}
@@ -405,9 +404,7 @@ export function CustomTypeCol({value}) {
 }
 
 export function TagsCol({value}) {
-  let tags_list = parseTags(value).tags;
-
-  return renderTags(tags_list);
+  return renderTags(value);
 }
 
 
