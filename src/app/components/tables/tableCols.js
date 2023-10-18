@@ -50,21 +50,12 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     () => ({
       field: "epicName",
       headerName: "Epic",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: [BLANKS, ...filters.epicNames].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          if (value === BLANKS && record.epicName == null) {
-            return true;
-          }
-          return record.epicName === value;
-        },
-      },
+      filter: "agSetColumnFilter",
       menuTabs: MenuTabs,
       hide: !hasEpicName,
       cellClass: blurClass,
     }),
-    [hasEpicName, blurClass, filters]
+    [hasEpicName, blurClass]
   );
 
   const hasWorkItemsSourceName = hidden_cols.includes("workItemsSourceName");
@@ -72,17 +63,13 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     () => ({
       headerName: "Workstream",
       field: "workItemsSourceName",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.workItemStreams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => record.workItemsSourceName === value,
-      },
+      filter: "agSetColumnFilter",
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TextWithStyle),
       hide: !hasWorkItemsSourceName,
       cellClass: blurClass
     }),
-    [hasWorkItemsSourceName, filters, blurClass]
+    [hasWorkItemsSourceName, blurClass]
   );
 
   const hasTeams = hidden_cols.includes("teams");
@@ -90,18 +77,15 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     () => ({
       field: "teams",
       headerName: "Teams",
-      filter: MultiCheckboxFilter,
-      filterParams: {
-        values: filters.teams.map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          const _teams = record.teamNodeRefs.map((t) => t.teamName);
-          return _teams.includes(value);
-        },
+      filter: "agSetColumnFilter",
+      valueGetter: (params) => {
+        const fieldValue = params.data["teamNodeRefs"].map(t => t.teamName);
+        return fieldValue;
       },
       menuTabs: MenuTabs,
       hide: !hasTeams,
     }),
-    [hasTeams, filters]
+    [hasTeams]
   );
 
   const hasUrl = hidden_cols.includes("url");
@@ -128,21 +112,15 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       headerName: "Component",
       field: "tags",
       colId: "component",
-      filter: MultiCheckboxFilter,
-      filterValueGetter: (params) => {
+      filter: "agSetColumnFilter",
+      valueGetter: (params) => {
         const field = params.column.getColDef().field;
         const fieldValue = params.data[field];
-        const componentTags = parseTags(fieldValue).component.join(", ");
-        return componentTags;
+        const tags = parseTags(fieldValue).component;
+        return tags;
       },
       filterParams: {
-        values: [BLANKS, ...filters.componentTags].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          if (value === BLANKS && parseTags(record.tags).component.length === 0) {
-            return true;
-          }
-          return parseTags(record.tags).component.includes(value);
-        },
+        defaultToNothingSelected: true,
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(CustomComponentCol),
@@ -150,7 +128,7 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       wrapText: true,
       hide: !hasComponent,
     }),
-    [hasComponent, filters]
+    [hasComponent]
   );
 
   const hasCustomType = hidden_cols.includes("custom_type");
@@ -159,27 +137,18 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       headerName: "Custom Type",
       field: "tags",
       colId: "custom_type",
-      filter: MultiCheckboxFilter,
-      filterValueGetter: (params) => {
+      filter: "agSetColumnFilter",
+      valueGetter: (params) => {
         const field = params.column.getColDef().field;
         const fieldValue = params.data[field];
-        const customTypeTags = parseTags(fieldValue).custom_type;
-        return customTypeTags;
-      },
-      filterParams: {
-        values: [BLANKS, ...filters.customTypeTags].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          if (value === BLANKS && parseTags(record.tags).custom_type.length === 0) {
-            return true;
-          }
-          return parseTags(record.tags).custom_type.includes(value);
-        },
+        const tags = parseTags(fieldValue).custom_type;
+        return tags;
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(CustomTypeCol),
       hide: !hasCustomType,
     }),
-    [hasCustomType, filters]
+    [hasCustomType]
   );
 
   const hasCustomTags = hidden_cols.includes("custom_tags");
@@ -188,27 +157,18 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       headerName: "Tags",
       field: "tags",
       colId: "custom_tags",
-      filter: MultiCheckboxFilter,
-      filterValueGetter: (params) => {
+      filter: "agSetColumnFilter",
+      valueGetter: (params) => {
         const field = params.column.getColDef().field;
         const fieldValue = params.data[field];
         const tags = parseTags(fieldValue).tags;
         return tags;
       },
-      filterParams: {
-        values: [BLANKS, ...filters.tags].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          if (value === BLANKS && parseTags(record.tags).tags.length === 0) {
-            return true;
-          }
-          return parseTags(record.tags).tags.includes(value);
-        },
-      },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TagsCol),
       hide: !hasCustomTags,
     }),
-    [hasCustomTags, filters]
+    [hasCustomTags]
   );
 
   const hasStoryPoints = hidden_cols.includes("storyPoints");
@@ -306,6 +266,9 @@ export function getWorkItemNameCol() {
   };
 }
 
+function stateFormatter(params) {
+  return String(params.value).toLowerCase();
+}
 export function getStateCol({filters}) {
   return {
     field: "state",
@@ -313,13 +276,18 @@ export function getStateCol({filters}) {
     autoHeight: true,
     width: 250,
     cellRenderer: React.memo(StateTypeCol),
-    comparator: (valA, valB, a, b) => SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate),
-    filter: MultiCheckboxFilter,
+    comparator: (valA, valB, a, b) => {
+      if (!a || !b) {
+        return;        
+      }
+      return SORTER.date_compare(a.data.latestTransitionDate, b.data.latestTransitionDate)
+    },
+    filter: "agSetColumnFilter",
     filterParams: {
-      values: filters.states.map((b) => ({text: b, value: b})),
-      onFilter: ({value, record}) => record.state.indexOf(value) === 0,
+      valueFormatter: stateFormatter,
     },
     menuTabs: MenuTabs,
+
   };
 }
 
