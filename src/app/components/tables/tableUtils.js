@@ -484,6 +484,9 @@ export function useDefaultColDef() {
       useValueFormatterForExport: true,
       cellClass: "tw-flex tw-items-center",
       headerClass: "tw-uppercase tw-text-xs tw-font-medium",
+      filterParams: {
+        defaultToNothingSelected: true,
+      },
     };
   }, []);
 
