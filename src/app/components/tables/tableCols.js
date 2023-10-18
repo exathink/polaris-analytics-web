@@ -144,8 +144,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
         const tags = parseTags(fieldValue).custom_type;
         return tags;
       },
-      filterParams: {
-      },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(CustomTypeCol),
       hide: !hasCustomType,
@@ -165,8 +163,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
         const fieldValue = params.data[field];
         const tags = parseTags(fieldValue).tags;
         return tags;
-      },
-      filterParams: {
       },
       menuTabs: MenuTabs,
       cellRenderer: React.memo(TagsCol),
