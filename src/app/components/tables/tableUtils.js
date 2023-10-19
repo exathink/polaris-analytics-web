@@ -302,6 +302,29 @@ export function TextWithUom(props) {
   );
 }
 
+/**
+ * Some Common cellRenderer
+ */
+export function TextWithUomColRender(props) {
+  const intl = useIntl();
+
+  const field = props.column.getColDef().field;
+  const fieldValue = props.data[field];
+
+  if (fieldValue==null) {
+    return <span></span>
+  }
+  
+  const uom = props.uom ?? "days";
+
+  const value = getNumber(fieldValue, intl);
+  return (
+    <span className="tw-textXs">
+      {value} {uom}
+    </span>
+  );
+}
+
 export function TextWithStyle({value}) {
   return (
     <span className="tw-textXs">
