@@ -434,3 +434,13 @@ export function getImpedance(workItemsWithAggregateDurations, cycleTimeTarget, l
   return (workItemsWithAggregateDurations.reduce(
     (totalWeight, workItem) => totalWeight + (workItem.cycleTime * workItem.latency), 0)) / (workItemsWithAggregateDurations.length * cycleTimeTarget * latencyTarget);
 }
+
+export function getValueGetterForCorrectPair(metric) {
+  return (params) => {
+    const field = params.column.getColDef().field;
+    const fieldValue = params.data[field];
+
+    const pair = getCorrectPair({value: fieldValue, metric});
+    return pair;
+  };
+}
