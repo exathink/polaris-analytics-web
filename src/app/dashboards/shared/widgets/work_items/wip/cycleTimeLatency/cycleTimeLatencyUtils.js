@@ -418,6 +418,10 @@ export function doesPairWiseFilterPass({value, record, metric}) {
 }
 
 export function getCorrectPair({value, metric}) {
+  if (value == null) {
+    return null;
+  }
+  
   const allCategories = getAllCategories(metric)
 
   const index = allPairsData.findIndex(([part1, part2]) => value >= part1 && value < part2)
