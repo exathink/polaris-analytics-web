@@ -10,6 +10,7 @@ import {
   TextWithUom,
   useDefaultColDef,
   getHandleColumnVisible,
+  TextWithUomColRender,
 } from "../../../../components/tables/tableUtils";
 import {useBlurClass} from "../../../../helpers/utility";
 import {useLocalStorage} from "../../../../helpers/hooksUtil";
@@ -23,7 +24,7 @@ import {
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
 import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
-import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { doesPairWiseFilterPass, getValueGetterForCorrectPair } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
@@ -105,13 +106,11 @@ export function useWorkItemsDetailTableColumns({
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
-      cellRenderer: React.memo(TextWithUom),
-      filter: MultiCheckboxFilter,
+      cellRenderer: React.memo(TextWithUomColRender),
+      valueGetter: getValueGetterForCorrectPair("leadTimeOrAge"),
+      filter: "agSetColumnFilter",
       filterParams: {
-        values: [BLANKS, ...filters.categories].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          return doesPairWiseFilterPass({value, record,metric: "leadTimeOrAge"});
-        },
+        values: ["", ...filters.categories]
       },
       menuTabs: MenuTabs,
       comparator: SORTER.number_compare,
@@ -119,13 +118,11 @@ export function useWorkItemsDetailTableColumns({
     {
       headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       field: "cycleTimeOrLatency",
-      cellRenderer: React.memo(TextWithUom),
-      filter: MultiCheckboxFilter,
+      cellRenderer: React.memo(TextWithUomColRender),
+      valueGetter: getValueGetterForCorrectPair("cycleTimeOrLatency"),
+      filter: "agSetColumnFilter",
       filterParams: {
-        values: [BLANKS, ...filters.categories].map((b) => ({text: b, value: b})),
-        onFilter: ({value, record}) => {
-          return doesPairWiseFilterPass({value, record, metric: "cycleTimeOrLatency"});
-        },
+        values: ["", ...filters.categories]
       },
       menuTabs: MenuTabs,
       comparator: SORTER.number_compare,
