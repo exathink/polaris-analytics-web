@@ -1,14 +1,14 @@
 import React from "react";
 import {useIntl} from "react-intl";
-import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
+import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, TextWithUomColRender, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, COL_WIDTH_BOUNDARIES, doesPairWiseFilterPass, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, COL_WIDTH_BOUNDARIES, getCorrectPair, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
-import {CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./agGridUtils";
+import {CustomTotalAndFilteredRowCount} from "./agGridUtils";
 import {getRemoteBrowseUrl} from "../../../../../work_items/activity/views/workItemRemoteLink";
-import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
+import { getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../../../components/tables/tableCols";
 import { useLocalStorage } from "../../../../../../helpers/hooksUtil";
 import {HIDDEN_COLUMNS_KEY} from "../../../../../../helpers/localStorageUtils";
 
@@ -122,14 +122,18 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
       {
         field: "cycleTime",
         headerName: "Age",
-        cellRenderer: TextWithUom,
+        cellRenderer: TextWithUomColRender,
         comparator: SORTER.number_compare,
-        filter: MultiCheckboxFilter,
+        valueGetter: (params) => {
+          const field = params.column.getColDef().field;
+          const fieldValue = params.data[field];
+          
+          const pair = getCorrectPair({value: fieldValue, metric: "cycleTime"});
+          return pair;
+        },
+        filter: "agSetColumnFilter",
         filterParams: {
-          values: [BLANKS, ...categories].map((b) => ({text: b, value: b})),
-          onFilter: ({value, record}) => {     
-            return doesPairWiseFilterPass({value, record, metric: "cycleTime"});
-          },
+          values: ["", ...categories]
         },
         menuTabs: MenuTabs,
       },
