@@ -2,7 +2,7 @@ import React from "react";
 import {useIntl} from "react-intl";
 import {AgGridStripeTable, SORTER, TextWithStyle, TextWithUom, TextWithUomColRender, getHandleColumnVisible, getOnSortChanged, parseTags} from "../../../../../../components/tables/tableUtils";
 import {WorkItemStateTypeDisplayName} from "../../../../config";
-import {categories, COL_WIDTH_BOUNDARIES, getCorrectPair, getQuadrant, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
+import {categories, COL_WIDTH_BOUNDARIES,  getQuadrant, getValueGetterForCorrectPair, QuadrantColors, QuadrantNames, Quadrants} from "./cycleTimeLatencyUtils";
 import {InfoCircleFilled} from "@ant-design/icons";
 import {joinTeams} from "../../../../helpers/teamUtils";
 import {allPairs, getHistogramCategories, isObjectEmpty} from "../../../../../projects/shared/helper/utils";
@@ -124,13 +124,7 @@ export function useCycleTimeLatencyTableColumns({filters, workTrackingIntegratio
         headerName: "Age",
         cellRenderer: TextWithUomColRender,
         comparator: SORTER.number_compare,
-        valueGetter: (params) => {
-          const field = params.column.getColDef().field;
-          const fieldValue = params.data[field];
-          
-          const pair = getCorrectPair({value: fieldValue, metric: "cycleTime"});
-          return pair;
-        },
+        valueGetter: getValueGetterForCorrectPair("cycleTime"),
         filter: "agSetColumnFilter",
         filterParams: {
           values: ["", ...categories]
