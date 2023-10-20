@@ -150,6 +150,7 @@ const PhaseDetailView = ({
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
+          <div className="tw-p-8">Chart</div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
@@ -170,7 +171,6 @@ const PhaseDetailView = ({
                 layout="col"
                 className="tw-ml-4"
               />
-              
             </div>
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
@@ -226,6 +226,18 @@ const PhaseDetailView = ({
             tableSelectedMetric={selectedMetric}
             setShowPanel={setShowPanel}
             setWorkItemKey={setWorkItemKey}
+            onSortChanged={(params) => {
+              const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+              if (sortState?.sort) {
+                let filteredColVals = [];
+                params.api.forEachNodeAfterFilter((node) => {
+                  if (!node.group) {
+                    filteredColVals.push(node.data[sortState.colId]);
+                  }
+                });
+                return filteredColVals;
+              }
+            }}
           />
         </VizItem>
         <CardInspectorWithDrawer
