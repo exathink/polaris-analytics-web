@@ -486,6 +486,12 @@ export function useDefaultColDef() {
       headerClass: "tw-uppercase tw-text-xs tw-font-medium",
       filterParams: {
         defaultToNothingSelected: true,
+        valueFormatter: (params) => {
+          if (params.value == null || params.value === "") {
+            return "Unassigned"
+          }
+          return params.value;
+        }
       },
     };
   }, []);
