@@ -17,7 +17,7 @@ import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared
 import { useBlurClass } from "../../helpers/utility";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
-export const BLANKS = "Blank";
+export const BLANKS = "Unassigned";
 /**
  * get optional cols with given colIds
  * @param {{colIds: string[]}} obj
