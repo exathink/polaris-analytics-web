@@ -23,7 +23,8 @@ const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
 export const COL_TYPES = {
   state: "category",
-  cycleTime: "continous"
+  cycleTime: "continous",
+  workItemType: "category"
 };
 
 const PhaseDetailView = ({
