@@ -3,7 +3,7 @@ import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 
 import {Colors, itemsDesc} from "../../../config";
-import { getCorrectPair } from "../wip/cycleTimeLatency/cycleTimeLatencyUtils";
+import { getAllCategories, getCorrectPair } from "../wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {COL_TYPES} from "./valueStreamPhaseDetailView";
 
 function getSeries({data, colId}) {
@@ -44,13 +44,15 @@ export const ValueStreamDistributionChart = Chart({
   mapPoints: (points, _) => points.map((point) => point),
 
   getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId}) => {
-    let colDataMap;
+    let categories, colDataMap;
     if (COL_TYPES[colId] === "category") {
       colDataMap = mapArrToObj(colData);
+      categories = Object.keys(colDataMap);
     } else {
+      categories = getAllCategories(colId);
       colDataMap = groupColData({colData, colId});
     }
-    const [categories, colValues] = [Object.keys(colDataMap), Object.values(colDataMap)];
+    const colValues = Object.values(colDataMap);
 
     const series = getSeries({data: colValues, colId, intl, view});
     return {

@@ -399,7 +399,7 @@ const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
 export const EFFORT_CATEGORIES = categories.map((b) => String(b).replace("day", "FTE Day"));
 
-function getAllCategories(metric) {
+export function getAllCategories(metric) {
   let effortCategories
   if (metric === "effort") {
     effortCategories = EFFORT_CATEGORIES;
