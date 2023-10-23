@@ -3,6 +3,7 @@ import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 
 import {Colors, itemsDesc} from "../../../config";
+import { getCorrectPair } from "../wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {COL_TYPES} from "./valueStreamPhaseDetailView";
 
 function getSeries({data, colId}) {
@@ -24,11 +25,19 @@ export function mapArrToObj(arr) {
     return acc;
   }, {});
 }
-export function groupColData(colData) {
+export function groupColData({colData, colId}) {
   // implement, create categories of < 1day, 1-3 days etc
-  const transformedColData = colData.map((item) => {});
-  return colData;
+  const transformedColData = colData
+    .sort((a, b) => a - b)
+    .map((item) => {
+      const pair = getCorrectPair({value: item, metric: colId});
+      return pair;
+    });
+  const colDataMap = mapArrToObj(transformedColData);
+
+  return colDataMap;
 }
+
 export const ValueStreamDistributionChart = Chart({
   chartUpdateProps: (props) => props,
   eventHandler: DefaultSelectionEventHandler,
@@ -39,7 +48,7 @@ export const ValueStreamDistributionChart = Chart({
     if (COL_TYPES[colId] === "category") {
       colDataMap = mapArrToObj(colData);
     } else {
-      colDataMap = groupColData(colData);
+      colDataMap = groupColData({colData, colId});
     }
     const [categories, colValues] = [Object.keys(colDataMap), Object.values(colDataMap)];
 
