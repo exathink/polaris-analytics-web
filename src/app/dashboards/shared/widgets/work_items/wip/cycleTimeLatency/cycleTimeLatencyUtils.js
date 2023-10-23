@@ -398,18 +398,32 @@ export function getFilterValue(appliedFilters, filterKey) {
 const allPairsData = allPairs(COL_WIDTH_BOUNDARIES);
 export const categories = getHistogramCategories(COL_WIDTH_BOUNDARIES, "days");
 export const EFFORT_CATEGORIES = categories.map((b) => String(b).replace("day", "FTE Day"));
-export function doesPairWiseFilterPass({value, record, metric}) {
+
+function getAllCategories(metric) {
   let effortCategories
   if (metric === "effort") {
     effortCategories = EFFORT_CATEGORIES;
   }
-  if (value === BLANKS) {
+  return effortCategories ?? categories;
+}
+
+export function doesPairWiseFilterPass({value, record, metric}) {
+  if (value === BLANKS || value == null) {
     return record[metric] == null;
   }
 
-  const allCategories = effortCategories ?? categories;
+  const allCategories = getAllCategories(metric)
   const [part1, part2] = allPairsData[allCategories.indexOf(value)];
   return record[metric] != null && Number(record[metric]) >= part1 && Number(record[metric]) < part2;
+}
+
+export function getCorrectPair({value, metric}) {
+  const allCategories = getAllCategories(metric)
+  if (value == null) {
+    return allCategories[0];
+  }
+  const index = allPairsData.findIndex(([part1, part2]) => value >= part1 && value < part2)
+  return allCategories[index];
 }
 
 export function filterByStateTypes(workItems, stateTypes) {
