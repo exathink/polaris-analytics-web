@@ -5,10 +5,10 @@ import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 import {Colors, itemsDesc} from "../../../config";
 import {COL_TYPES} from "./valueStreamPhaseDetailView";
 
-function getSeries({data, intl, view}) {
+function getSeries({data, colId}) {
   return [
     {
-      name: "Tokyo",
+      name: colId,
       data: data,
     },
   ];
@@ -43,7 +43,7 @@ export const ValueStreamDistributionChart = Chart({
     }
     const [categories, colValues] = [Object.keys(colDataMap), Object.values(colDataMap)];
 
-    const series = getSeries({data: colValues, intl, view});
+    const series = getSeries({data: colValues, colId, intl, view});
     return {
       chart: {
         backgroundColor: Colors.Chart.backgroundColor,
@@ -54,17 +54,17 @@ export const ValueStreamDistributionChart = Chart({
       },
       title: {
         text: title || "Title",
-        align: "left",
+        align: "center",
       },
       subtitle: {
         text: subtitle || `Subtitle`,
-        align: "left",
+        align: "center",
       },
       xAxis: {
         type: "linear",
 
         title: {
-          text: "X",
+          // text: "X",
         },
         categories: categories,
       },
@@ -72,7 +72,7 @@ export const ValueStreamDistributionChart = Chart({
         type: "linear",
 
         title: {
-          text: "x",
+          text: itemsDesc(specsOnly),
         },
       },
 
