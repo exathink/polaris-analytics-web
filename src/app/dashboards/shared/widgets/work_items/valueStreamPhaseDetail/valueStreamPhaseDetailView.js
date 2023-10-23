@@ -16,9 +16,15 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
+import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
+export const COL_TYPES = {
+  state: "category",
+  cycleTime: "continous"
+};
 
 const PhaseDetailView = ({
   data,
@@ -37,7 +43,7 @@ const PhaseDetailView = ({
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-
+  const [colState, setColState] = React.useState({colData:[], colType: "continous", colId: "state"});
   const uniqWorkItemsSources = React.useMemo(
     () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
     [workItems]
@@ -150,7 +156,13 @@ const PhaseDetailView = ({
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
-          <div className="tw-p-8">Chart</div>
+          <div className="tw-p-8">
+            <ValueStreamDistributionChart
+              colData={colState.colData}
+              colId={colState.colId}
+              specsOnly={workItemScope === "specs"}
+            />
+          </div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
@@ -235,7 +247,7 @@ const PhaseDetailView = ({
                     filteredColVals.push(node.data[sortState.colId]);
                   }
                 });
-                return filteredColVals;
+                setColState({colData: filteredColVals, colId: sortState.colId});
               }
             }}
           />
