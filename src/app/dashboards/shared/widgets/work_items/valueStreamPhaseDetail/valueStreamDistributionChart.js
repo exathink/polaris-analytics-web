@@ -1,18 +1,13 @@
 import {Chart} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
-
 import {Colors, itemsAllDesc} from "../../../config";
-import { getAllCategories, getCorrectPair } from "../wip/cycleTimeLatency/cycleTimeLatencyUtils";
-import {COL_TYPES} from "./valueStreamPhaseDetailView";
 
 function getSeries({data, colId}) {
-  return [
-    {
-      name: colId,
-      data: data,
-    },
-  ];
+  return {
+    name: colId,
+    data: data.map((i) => ({y: i})),
+  };
 }
 
 export function mapArrToObj(arr) {
@@ -25,62 +20,41 @@ export function mapArrToObj(arr) {
     return acc;
   }, {});
 }
-export function groupColData({colData, colId}) {
-  // implement, create categories of < 1day, 1-3 days etc
-  const transformedColData = colData
-    .sort((a, b) => a - b)
-    .map((item) => {
-      const pair = getCorrectPair({value: item, metric: colId});
-      return pair;
-    });
-  const colDataMap = mapArrToObj(transformedColData);
-
-  return colDataMap;
-}
 
 export const ValueStreamDistributionChart = Chart({
   chartUpdateProps: (props) => props,
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId}) => {
-    let categories, colDataMap;
-    if (COL_TYPES[colId] === "category") {
-      colDataMap = mapArrToObj(colData);
-      categories = Object.keys(colDataMap);
-    } else {
-      categories = getAllCategories(colId);
-      colDataMap = groupColData({colData, colId});
-    }
-    const colValues = Object.values(colDataMap);
+  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName, histogramSeries}) => {
+    const colDataMap = mapArrToObj(colData);
+    const categories = Object.keys(colDataMap);
 
-    const series = getSeries({data: colValues, colId, intl, view});
+    const colValues = Object.values(colDataMap);
+    const seriesObj = getSeries({data: colValues, colId, intl, view});
+
     return {
       chart: {
         backgroundColor: Colors.Chart.backgroundColor,
         panning: true,
+        animation: false,
         panKey: "shift",
         zoomType: "xy",
         type: "column",
       },
       title: {
-        text: title || `Title`,
+        text: title,
         align: "center",
       },
       subtitle: {
-        text: subtitle || `Subtitle`,
+        text: subtitle,
         align: "center",
       },
       xAxis: {
-        type: "linear",
-
-        title: {
-          // text: "X",
-        },
         categories: categories,
       },
       yAxis: {
-        type: "linear",
+        softMin: 0,
 
         title: {
           text: itemsAllDesc(specsOnly),
@@ -92,15 +66,24 @@ export const ValueStreamDistributionChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml_v2({
-            header: this.x,
+            header: `${headerName}: ${this.x}`,
             body: [[itemsAllDesc(specsOnly), this.y]],
           });
         },
       },
-      series: [...series],
+      series: [seriesObj],
       plotOptions: {
         series: {
           animation: false,
+          stacking: "normal",
+          allowPointSelect: true,
+          cursor: "pointer",
+          states: {
+            select: {
+              color: null,
+              opacity: 0.5,
+            },
+          },
         },
       },
       legend: {
