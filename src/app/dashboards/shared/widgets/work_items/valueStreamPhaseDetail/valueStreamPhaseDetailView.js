@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder} from "../../../config";
+import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -154,6 +154,7 @@ const PhaseDetailView = ({
   }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
 
   if (selectedStateType != null) {
+    const specsOnly = workItemScope === "specs";
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
@@ -161,8 +162,10 @@ const PhaseDetailView = ({
             <ValueStreamDistributionChart
               colData={colState.colData}
               colId={colState.colId}
-              headerName={colState.headerName}
-              specsOnly={workItemScope === "specs"}
+              title={`${colState.headerName} Distribution`}
+              subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+              specsOnly={specsOnly}
+
             />
           </div>
           <div className={"workItemStateDetailsControlWrapper"}>

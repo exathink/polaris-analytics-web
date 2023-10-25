@@ -2,7 +2,7 @@ import {Chart} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 
-import {Colors, itemsDesc} from "../../../config";
+import {Colors, itemsAllDesc} from "../../../config";
 import { getAllCategories, getCorrectPair } from "../wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {COL_TYPES} from "./valueStreamPhaseDetailView";
 
@@ -43,7 +43,7 @@ export const ValueStreamDistributionChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName}) => {
+  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId}) => {
     let categories, colDataMap;
     if (COL_TYPES[colId] === "category") {
       colDataMap = mapArrToObj(colData);
@@ -64,7 +64,7 @@ export const ValueStreamDistributionChart = Chart({
         type: "column",
       },
       title: {
-        text: title || headerName,
+        text: title || `Title`,
         align: "center",
       },
       subtitle: {
@@ -83,7 +83,7 @@ export const ValueStreamDistributionChart = Chart({
         type: "linear",
 
         title: {
-          text: itemsDesc(specsOnly),
+          text: itemsAllDesc(specsOnly),
         },
       },
 
@@ -93,7 +93,7 @@ export const ValueStreamDistributionChart = Chart({
         formatter: function () {
           return tooltipHtml_v2({
             header: this.x,
-            body: [[itemsDesc(specsOnly), this.y]],
+            body: [[itemsAllDesc(specsOnly), this.y]],
           });
         },
       },
