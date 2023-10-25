@@ -309,6 +309,14 @@ export function itemsDesc(specsOnly){
   }
 }
 
+export function itemsAllDesc(specsOnly){
+  if (specsOnly) {
+    return AppTerms.specs.display;
+  } else {
+    return AppTerms.allCards.display;
+  }
+}
+
 export function sanitizeStateMappings(workItemStateMappings) {
   const {...legalStateTypes} = WorkItemStateTypeDisplayName;
 
