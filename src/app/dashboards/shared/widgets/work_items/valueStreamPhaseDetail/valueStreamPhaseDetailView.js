@@ -44,7 +44,7 @@ const PhaseDetailView = ({
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-  const [colState, setColState] = React.useState({colData:[], colType: "continous", colId: "state"});
+  const [colState, setColState] = React.useState({colData:[], colType: "continous", colId: "state", headerName: "State"});
   const uniqWorkItemsSources = React.useMemo(
     () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
     [workItems]
@@ -161,6 +161,7 @@ const PhaseDetailView = ({
             <ValueStreamDistributionChart
               colData={colState.colData}
               colId={colState.colId}
+              headerName={colState.headerName}
               specsOnly={workItemScope === "specs"}
             />
           </div>
@@ -241,6 +242,9 @@ const PhaseDetailView = ({
             setWorkItemKey={setWorkItemKey}
             onSortChanged={(params) => {
               const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+              const columnDefs = params.columnApi.columnModel.columnDefs;
+              const headerName = columnDefs.find(x => x.field === sortState.colId).headerName;
+
               if (sortState?.sort) {
                 let filteredColVals = [];
                 params.api.forEachNodeAfterFilter((node) => {
@@ -248,7 +252,7 @@ const PhaseDetailView = ({
                     filteredColVals.push(node.data[sortState.colId]);
                   }
                 });
-                setColState({colData: filteredColVals, colId: sortState.colId});
+                setColState({colData: filteredColVals, colId: sortState.colId, headerName});
               }
             }}
           />

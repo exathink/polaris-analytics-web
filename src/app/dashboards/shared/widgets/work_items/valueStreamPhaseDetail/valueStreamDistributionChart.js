@@ -43,7 +43,7 @@ export const ValueStreamDistributionChart = Chart({
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId}) => {
+  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName}) => {
     let categories, colDataMap;
     if (COL_TYPES[colId] === "category") {
       colDataMap = mapArrToObj(colData);
@@ -64,7 +64,7 @@ export const ValueStreamDistributionChart = Chart({
         type: "column",
       },
       title: {
-        text: title || "Title",
+        text: title || headerName,
         align: "center",
       },
       subtitle: {
@@ -91,7 +91,6 @@ export const ValueStreamDistributionChart = Chart({
         useHTML: true,
         hideDelay: 50,
         formatter: function () {
-          debugger;
           return tooltipHtml_v2({
             header: this.x,
             body: [[itemsDesc(specsOnly), this.y]],
@@ -105,17 +104,7 @@ export const ValueStreamDistributionChart = Chart({
         },
       },
       legend: {
-        title: {
-          text: "Legend",
-          style: {
-            fontStyle: "italic",
-          },
-        },
-        align: "right",
-        layout: "vertical",
-        verticalAlign: "middle",
-        itemMarginBottom: 3,
-        enabled: true,
+        enabled: false,
       },
     };
   },
