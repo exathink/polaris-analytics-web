@@ -196,7 +196,7 @@ const PhaseDetailView = ({
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
-          <div className="tw-p-2">{chartElement}</div>
+          <div>{chartElement}</div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
