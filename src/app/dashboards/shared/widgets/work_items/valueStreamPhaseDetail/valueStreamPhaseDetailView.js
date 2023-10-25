@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
+import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
@@ -17,6 +17,7 @@ import {injectIntl} from "react-intl";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
 import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
+import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -155,19 +156,47 @@ const PhaseDetailView = ({
 
   if (selectedStateType != null) {
     const specsOnly = workItemScope === "specs";
+
+    const continousValueseries = getHistogramSeries({
+      id: colState.colId,
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: colState.colData,
+      name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
+      color: getSelectedMetricColor(colState.colId, selectedStateType),
+      visible: true,
+    });
+
+    let chartElement;
+    if (COL_TYPES[colState.colId] === "category") {
+      chartElement = (
+        <ValueStreamDistributionChart
+          colData={colState.colData}
+          colId={colState.colId}
+          headerName={colState.headerName}
+          title={`${colState.headerName} Distribution`}
+          subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+          specsOnly={specsOnly}
+          histogramSeries={continousValueseries}
+        />
+      );
+    } else {
+      chartElement = (
+        <WorkItemsDetailHistogramChart
+          chartConfig={{subtitle: getChartSubTitle(), legendItemClick: () => {}}}
+          selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
+          specsOnly={specsOnly}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          stateType={selectedStateType}
+          series={[continousValueseries]}
+        />
+      );
+    }
+
     return (
       <VizRow h={1}>
         <VizItem w={1} style={{height: "93%"}}>
-          <div className="tw-p-8">
-            <ValueStreamDistributionChart
-              colData={colState.colData}
-              colId={colState.colId}
-              title={`${colState.headerName} Distribution`}
-              subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
-              specsOnly={specsOnly}
-
-            />
-          </div>
+          <div className="tw-p-2">{chartElement}</div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
@@ -245,8 +274,6 @@ const PhaseDetailView = ({
             setWorkItemKey={setWorkItemKey}
             onSortChanged={(params) => {
               const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-              const columnDefs = params.columnApi.columnModel.columnDefs;
-              const headerName = columnDefs.find(x => x.field === sortState.colId).headerName;
 
               if (sortState?.sort) {
                 let filteredColVals = [];
@@ -255,6 +282,8 @@ const PhaseDetailView = ({
                     filteredColVals.push(node.data[sortState.colId]);
                   }
                 });
+                const columnDefs = params.columnApi.columnModel.columnDefs;
+                const headerName = columnDefs.find((x) => x.field === sortState.colId).headerName;
                 setColState({colData: filteredColVals, colId: sortState.colId, headerName});
               }
             }}
