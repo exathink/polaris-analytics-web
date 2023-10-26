@@ -212,8 +212,8 @@ const PhaseDetailView = ({
 
     return (
       <VizRow h={1}>
-        <VizItem w={1} style={{height: "93%"}}>
-          <div>{chartElement}</div>
+        <VizItem w={1} style={{height: "98%"}}>
+          <div className="tw-h-[45%]">{chartElement}</div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
@@ -265,46 +265,47 @@ const PhaseDetailView = ({
               </div>
             </div>
           </div>
+          <div className="tw-h-[50%]">
+            <WorkItemsDetailHistogramTable
+              // common props
+              key={resetComponentStateKey}
+              stateType={selectedStateType}
+              tabSelection={selectedGrouping}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              // chart props
+              chartSubTitle={getChartSubTitle()}
+              specsOnly={workItemScope === "specs"}
+              series={seriesData}
+              onPointClick={({category, selectedMetric}) => {
+                setSelectedMetric(selectedMetric);
+                setFilter(category);
+                setSelectedGrouping("table");
+              }}
+              clearFilters={resetFilterAndMetric}
+              // table props
+              view={view}
+              selectedFilter={selectedFilter}
+              tableData={workItemsWithAggregateDurations}
+              tableSelectedMetric={selectedMetric}
+              setShowPanel={setShowPanel}
+              setWorkItemKey={setWorkItemKey}
+              onSortChanged={(params) => {
+                const sortState = params.columnApi.getColumnState().find((x) => x.sort);
 
-          <WorkItemsDetailHistogramTable
-            // common props
-            key={resetComponentStateKey}
-            stateType={selectedStateType}
-            tabSelection={selectedGrouping}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            // chart props
-            chartSubTitle={getChartSubTitle()}
-            specsOnly={workItemScope === "specs"}
-            series={seriesData}
-            onPointClick={({category, selectedMetric}) => {
-              setSelectedMetric(selectedMetric);
-              setFilter(category);
-              setSelectedGrouping("table");
-            }}
-            clearFilters={resetFilterAndMetric}
-            // table props
-            view={view}
-            selectedFilter={selectedFilter}
-            tableData={workItemsWithAggregateDurations}
-            tableSelectedMetric={selectedMetric}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
-            onSortChanged={(params) => {
-              const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-
-              if (sortState?.sort) {
-                let filteredColVals = [];
-                params.api.forEachNodeAfterFilter((node) => {
-                  if (!node.group) {
-                    filteredColVals.push(node.data[sortState.colId]);
-                  }
-                });
-                const columnDefs = params.columnApi.columnModel.columnDefs;
-                const headerName = columnDefs.find((x) => x.field === sortState.colId).headerName;
-                setColState({colData: filteredColVals, colId: sortState.colId, headerName});
-              }
-            }}
-          />
+                if (sortState?.sort) {
+                  let filteredColVals = [];
+                  params.api.forEachNodeAfterFilter((node) => {
+                    if (!node.group) {
+                      filteredColVals.push(node.data[sortState.colId]);
+                    }
+                  });
+                  const columnDefs = params.columnApi.columnModel.columnDefs;
+                  const headerName = columnDefs.find((x) => x.field === sortState.colId).headerName;
+                  setColState({colData: filteredColVals, colId: sortState.colId, headerName});
+                }
+              }}
+            />
+          </div>
         </VizItem>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
