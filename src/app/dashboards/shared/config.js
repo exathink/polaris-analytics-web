@@ -179,11 +179,20 @@ export const FlowTypeStates = {
 
 export const ReleaseStatus = {
   DEFERRED: "deferred",
+  ROADMAP: "roadmap",
+  COMMITTED: "committed",
+  IMPLEMENTATION: "implementation",
+  CODE_REVIEW: "code_review",
+  TESTING: 'testing',
+  INTEGRATION: "integration",
+  APPROVAL: "approval",
   DEPLOYABLE: "deployable",
   DEPLOYED: "deployed",
   RELEASABLE: "releasable",
   RELEASED: "released",
+  VALIDATED: "validated",
   ABANDONED: "abandoned",
+  TERMINAL: "terminal",
   UNASSIGNED: "unassigned",
 }
 
