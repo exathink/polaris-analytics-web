@@ -118,6 +118,17 @@ const PhaseDetailView = ({
 
   const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(candidateWorkItems), [candidateWorkItems]);
 
+  React.useEffect(() => {
+    setColState(prev => {
+      return {
+        ...prev,
+        colData: workItemsWithAggregateDurations.map((x) => x[getMetricsMetaKey(colState.colId, "closed")]),
+      };
+    })
+
+  }, [selectedStateType]);
+
+
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
 
