@@ -131,7 +131,7 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
-  ], []);
+  ], [stateType]);
 
   return columns;
 }
