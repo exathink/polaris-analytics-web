@@ -45,7 +45,7 @@ const PhaseDetailView = ({
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
   }, [data, dimension]);
-  const [colState, setColState] = React.useState({colData:[], colType: "continous", colId: "state", headerName: "State"});
+
   const uniqWorkItemsSources = React.useMemo(
     () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
     [workItems]
@@ -82,6 +82,12 @@ const PhaseDetailView = ({
 
   const defaultSelectedGrouping = defaultToHistogram ? "responseTime" : "table";
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
+
+  const [colState, setColState] = React.useState({
+    colData: workItemsByStateType[selectedStateType]?.map((x) => x["workItemType"])??[],
+    colId: "workItemType",
+    headerName: "Work Item Type",
+  });
 
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
