@@ -183,6 +183,7 @@ export const ReleaseStatus = {
   COMMITTED: "committed",
   IMPLEMENTATION: "implementation",
   CODE_REVIEW: "code_review",
+  TESTING: 'testing',
   INTEGRATION: "integration",
   APPROVAL: "approval",
   DEPLOYABLE: "deployable",
@@ -191,6 +192,7 @@ export const ReleaseStatus = {
   RELEASED: "released",
   VALIDATED: "validated",
   ABANDONED: "abandoned",
+  TERMINAL: "terminal",
   UNASSIGNED: "unassigned",
 }
 
