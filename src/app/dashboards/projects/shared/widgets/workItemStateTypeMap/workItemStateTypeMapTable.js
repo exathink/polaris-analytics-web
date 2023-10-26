@@ -15,10 +15,17 @@ const typeItems = [
 const releaseItems = [
   {value: ReleaseStatus.UNASSIGNED, label: "Unassigned"},
   {value: ReleaseStatus.DEFERRED, label: "Deferred"},
+  {value: ReleaseStatus.ROADMAP, label: "Roadmap"},
+  {value: ReleaseStatus.COMMITTED, label: "Committed"},
+  {value: ReleaseStatus.IMPLEMENTATION, label: "Implementation"},
+  {value: ReleaseStatus.CODE_REVIEW, label: "Code Review"},
+  {value: ReleaseStatus.INTEGRATION, label: "Integration"},
+  {value: ReleaseStatus.APPROVAL, label: "Approval"},
   {value: ReleaseStatus.DEPLOYABLE, label: "Deployable"},
   {value: ReleaseStatus.DEPLOYED, label: "Deployed"},
   {value: ReleaseStatus.RELEASABLE, label: "Releasable"},
   {value: ReleaseStatus.RELEASED, label: "Released"},
+  {value: ReleaseStatus.VALIDATED, label: "Validated"},
   {value: ReleaseStatus.ABANDONED, label: "Abandoned"}
 ]
 
@@ -51,25 +58,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
       render: (text, record) => text,
     },
     {
-      title: "Flow Type",
-      dataIndex: "flowType",
-      key: "flowType",
-      width: "30%",
-      render: (text, record) => {
-        return (
-            <SelectDropdown2
-              value={typeItems.find(y => {
-                return y.value === (flowTypeRecords[record.state] ?? "unassigned");
-                })}
-              uniqueItems={typeItems}
-              handleChange={(flowTypeVal) => handleFlowTypeDropdownChange(record.state, flowTypeVal)}
-              testId={`flow-type-select-${record.state}`}
-            />
-        );
-      },
-    },
-    {
-      title: "Release Status",
+      title: "SDLC Status",
       dataIndex: "releaseStatus",
       key: "releaseStatus",
       width: "25%",
@@ -86,6 +75,24 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
         );
       },
     },
+    {
+      title: "Flow Type",
+      dataIndex: "flowType",
+      key: "flowType",
+      width: "30%",
+      render: (text, record) => {
+        return (
+            <SelectDropdown2
+              value={typeItems.find(y => {
+                return y.value === (flowTypeRecords[record.state] ?? "unassigned");
+                })}
+              uniqueItems={typeItems}
+              handleChange={(flowTypeVal) => handleFlowTypeDropdownChange(record.state, flowTypeVal)}
+              testId={`flow-type-select-${record.state}`}
+            />
+        );
+      },
+    }
   ];
   return columns;
 }
