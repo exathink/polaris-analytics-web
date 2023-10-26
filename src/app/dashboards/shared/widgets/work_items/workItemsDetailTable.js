@@ -153,6 +153,8 @@ export const WorkItemsDetailTable = ({
   onSortChanged
 }) => {
   const intl = useIntl();
+  const gridRef = React.useRef(null);
+
   const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   // get unique workItem types
@@ -194,6 +196,10 @@ export const WorkItemsDetailTable = ({
     },
   }), []);
 
+  React.useEffect(() => {
+    gridRef.current?.api?.clearRangeSelection();
+  }, [stateType]);
+
   const statusBar = React.useMemo(() => {
     return {
       statusPanels: [
@@ -220,6 +226,7 @@ export const WorkItemsDetailTable = ({
         columnDefs={columns}
         rowData={dataSource}
         statusBar={statusBar}
+        ref={gridRef}
         onSortChanged={(params) => {
           onSortChanged(params);
           getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])(params);
