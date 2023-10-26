@@ -19,7 +19,7 @@ const releaseItems = [
   {value: ReleaseStatus.DEPLOYED, label: "Deployed"},
   {value: ReleaseStatus.RELEASABLE, label: "Releasable"},
   {value: ReleaseStatus.RELEASED, label: "Released"},
-  {value: ReleaseStatus.ABANDONED, label: "Motionless"}
+  {value: ReleaseStatus.ABANDONED, label: "Abandoned"}
 ]
 
 export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, releaseStatusRecords}) {
