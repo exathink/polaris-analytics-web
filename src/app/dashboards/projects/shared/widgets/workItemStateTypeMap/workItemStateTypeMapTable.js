@@ -13,13 +13,22 @@ const typeItems = [
 ]
 
 const releaseItems = [
-  {value: ReleaseStatus.UNASSIGNED, label: "Unassigned"},
-  {value: ReleaseStatus.DEFERRED, label: "Deferred"},
-  {value: ReleaseStatus.DEPLOYABLE, label: "Deployable"},
-  {value: ReleaseStatus.DEPLOYED, label: "Deployed"},
-  {value: ReleaseStatus.RELEASABLE, label: "Releasable"},
-  {value: ReleaseStatus.RELEASED, label: "Released"},
-  {value: ReleaseStatus.ABANDONED, label: "Abandoned"}
+  {stateTypes: ['backlog', 'open', 'wip', 'complete', 'closed'], value: ReleaseStatus.UNASSIGNED, label: "Unassigned"},
+  {stateTypes: ['backlog', 'closed'], value: ReleaseStatus.DEFERRED, label: "Deferred"},
+  {stateTypes: ['backlog'], value: ReleaseStatus.ROADMAP, label: "Roadmap"},
+  {stateTypes: ['backlog'], value: ReleaseStatus.COMMITTED, label: "Committed"},
+  {stateTypes: ['open', 'wip'], value: ReleaseStatus.IMPLEMENTATION, label: "Implementation"},
+  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.CODE_REVIEW, label: "Code Review"},
+  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.TESTING, label: "Testing"},
+  {stateTypes: ['wip', 'complete'],value: ReleaseStatus.INTEGRATION, label: "Integration"},
+  {stateTypes: ['backlog', 'open', 'wip', 'complete'], value: ReleaseStatus.APPROVAL, label: "Approval"},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYABLE, label: "Deployable"},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYED, label: "Deployed"},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.RELEASABLE, label: "Releasable"},
+  {stateTypes: ['closed'],value: ReleaseStatus.RELEASED, label: "Released"},
+  {stateTypes: ['closed'], value: ReleaseStatus.VALIDATED, label: "Validated"},
+  {stateTypes: ['closed'], value: ReleaseStatus.ABANDONED, label: "Abandoned"},
+  {stateTypes: ['closed'], value: ReleaseStatus.TERMINAL, label: "Terminal"}
 ]
 
 export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, releaseStatusRecords}) {
@@ -51,6 +60,24 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
       render: (text, record) => text,
     },
     {
+      title: "SDLC Status",
+      dataIndex: "releaseStatus",
+      key: "releaseStatus",
+      width: "25%",
+      render: (text, record) => {
+        return (
+            <SelectDropdown2
+              value={releaseItems.find(y => {
+                return y.value === (releaseStatusRecords?.[record.state] ?? "unassigned");
+                })}
+              uniqueItems={releaseItems.filter(y => y.stateTypes.includes(record.stateType))}
+              handleChange={(releaseStatusVal) => handleReleaseStatusDropdownChange(record.state, releaseStatusVal)}
+              testId={`release-status-select-${record.state}`}
+            />
+        );
+      },
+    },
+    {
       title: "Flow Type",
       dataIndex: "flowType",
       key: "flowType",
@@ -67,25 +94,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
             />
         );
       },
-    },
-    {
-      title: "Release Status",
-      dataIndex: "releaseStatus",
-      key: "releaseStatus",
-      width: "25%",
-      render: (text, record) => {
-        return (
-            <SelectDropdown2
-              value={releaseItems.find(y => {
-                return y.value === (releaseStatusRecords?.[record.state] ?? "unassigned");
-                })}
-              uniqueItems={releaseItems}
-              handleChange={(releaseStatusVal) => handleReleaseStatusDropdownChange(record.state, releaseStatusVal)}
-              testId={`release-status-select-${record.state}`}
-            />
-        );
-      },
-    },
+    }
   ];
   return columns;
 }
