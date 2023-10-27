@@ -564,17 +564,18 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
   />
 }
 
-export const StartRate = ({displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
 
   return (
-    <ResponseTime
+    <FlowStatistic
+      title={title || <span>Started</span>}
       currentMeasurement={currentMeasurement}
       previousMeasurement={previousMeasurement}
       metric={"arrivals"}
-      displayName={"Started"}
-      uom={itemsDesc(specsOnly)}
-      target={target}
+      uom={itemsDesc(specsOnly) || "Days"}
+      precision={0}
       deltaThreshold={deltaThreshold}
+      target={target}
       displayType={displayType}
       displayProps={displayProps}
     />
