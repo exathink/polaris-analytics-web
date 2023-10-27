@@ -278,10 +278,40 @@ export function NewFlowDashboard() {
         />
       </DashboardRow>
       <DashboardRow>
+      <DashboardWidget
+          name="start-rate"
+          title=""
+          className="tw-col-span-2 tw-col-start-2 tw-row-start-4"
+          render={({view}) => {
+            return (
+              <FlowMetricsTrendsWidget
+                key={specsOnly}
+                dimension="project"
+                instanceKey={key}
+                tags={workItemSelectors}
+                release={release}
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendsAnalysisPeriod}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                targetPercentile={responseTimeConfidenceTarget}
+                specsOnly={specsOnly}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                cycleTimeTarget={cycleTimeTarget}
+                displayBag={{metric: "startRate", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+              />
+            );
+          }}
+          showDetail={false}
+        />
+
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className="tw-col-span-2 tw-col-start-3 tw-row-start-4 "
+          className="tw-col-span-2 tw-col-start-6 tw-row-start-4 "
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
@@ -319,7 +349,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="cycletime-summary"
           title=""
-          className="tw-col-span-2 tw-col-start-5 tw-row-start-4"
+          className="tw-col-span-2 tw-col-start-4 tw-row-start-4"
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
