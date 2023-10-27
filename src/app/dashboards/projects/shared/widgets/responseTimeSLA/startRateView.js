@@ -10,7 +10,7 @@ export function StartRateView({
 }) {
   let [currentArrivalTrend, previousArrivalTrend] = arrivalDepartureTrends;
   const startRate = currentArrivalTrend["arrivals"] / flowAnalysisPeriod;
-  const supportingMetric = <span>Start Rate: {startRate}</span>;
+  const supportingMetric = <span>Start Rate: {startRate} / day</span>;
   return (
     <div className="tw-h-full tw-w-full">
       <StartRate
