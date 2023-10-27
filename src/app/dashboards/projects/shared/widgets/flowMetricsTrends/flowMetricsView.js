@@ -23,8 +23,9 @@ export function FlowMetricsView({
   view,
 }) {
   const {metric, displayType, iconsShiftLeft, ...displayProps} = displayBag;
-  const {cycleMetricsTrends} = data[dimension];
+  const {cycleMetricsTrends, arrivalDepartureTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
+  let [currentArrivalTrend, previousArrivalTrend] = arrivalDepartureTrends;
 
   const metricMap = {
     throughput:
@@ -150,7 +151,15 @@ export function FlowMetricsView({
         specsOnly={specsOnly}
       />
     ),
+    startRate: (
+      <StartRateView />
+    )
   };
   const metricViewElement = metricMap[metric];
   return <div className="tw-h-full tw-w-full">{metricViewElement}</div>;
+}
+
+
+export function StartRateView() {
+  return <div>Arrival Rate View</div>
 }
