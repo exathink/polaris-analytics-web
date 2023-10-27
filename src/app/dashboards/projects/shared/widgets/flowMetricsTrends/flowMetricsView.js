@@ -157,7 +157,6 @@ export function FlowMetricsView({
         displayType={displayType}
         displayProps={displayProps}
         flowAnalysisPeriod={flowAnalysisPeriod}
-        measurementWindow={flowAnalysisPeriod}
         specsOnly={specsOnly}
       />
     ),

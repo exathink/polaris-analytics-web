@@ -2,7 +2,6 @@ import {StartRate} from "../../../../shared/components/flowStatistics/flowStatis
 
 export function StartRateView({
   arrivalDepartureTrends,
-  measurementWindow,
   flowAnalysisPeriod,
   specsOnly,
   displayType,
@@ -18,7 +17,6 @@ export function StartRateView({
         previousMeasurement={previousArrivalTrend}
         displayType={displayType}
         specsOnly={specsOnly}
-        measurementWindow={measurementWindow}
         displayProps={{
           info: {title: "title"},
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
