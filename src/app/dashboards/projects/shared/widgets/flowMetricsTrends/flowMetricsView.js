@@ -4,6 +4,7 @@ import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
 import { NavigationLink } from "../../../../../helpers/components";
+import { StartRateView } from "../responseTimeSLA/startRateView";
 
 export function FlowMetricsView({
   data,
@@ -25,7 +26,6 @@ export function FlowMetricsView({
   const {metric, displayType, iconsShiftLeft, ...displayProps} = displayBag;
   const {cycleMetricsTrends, arrivalDepartureTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
-  let [currentArrivalTrend, previousArrivalTrend] = arrivalDepartureTrends;
 
   const metricMap = {
     throughput:
@@ -74,8 +74,8 @@ export function FlowMetricsView({
               <div className="tw-flex tw-justify-between tw-text-lg tw-text-gray-300">
                 <div className="tw-flex tw-items-baseline tw-gap-2 tw-p-1">
                   <div className="tw-text-base tw-italic">
-                    {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`} Closed, Last {flowAnalysisPeriod}{" "}
-                    Days
+                    {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`} Closed, Last{" "}
+                    {flowAnalysisPeriod} Days
                   </div>
                 </div>
 
@@ -152,14 +152,16 @@ export function FlowMetricsView({
       />
     ),
     startRate: (
-      <StartRateView />
-    )
+      <StartRateView
+        arrivalDepartureTrends={arrivalDepartureTrends}
+        displayType={displayType}
+        displayProps={displayProps}
+        flowAnalysisPeriod={flowAnalysisPeriod}
+        measurementWindow={flowAnalysisPeriod}
+        specsOnly={specsOnly}
+      />
+    ),
   };
   const metricViewElement = metricMap[metric];
   return <div className="tw-h-full tw-w-full">{metricViewElement}</div>;
-}
-
-
-export function StartRateView() {
-  return <div>Arrival Rate View</div>
 }
