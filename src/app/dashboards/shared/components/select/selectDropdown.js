@@ -78,7 +78,7 @@ export function SelectDropdown({
       )}
     >
       {title && <div>{title}</div>}
-      <Select defaultValue={uniqueItems[0].value} value={value} options={uniqueItems} onChange={handleChange} className={className} getPopupContainer={(node) => node.parentNode}>
+      <Select defaultValue={uniqueItems[0]?.value} value={value} options={uniqueItems} onChange={handleChange} className={className} getPopupContainer={(node) => node.parentNode}>
       </Select>
     </div>
   );
