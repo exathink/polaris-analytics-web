@@ -311,7 +311,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className="tw-col-span-2 tw-col-start-6 tw-row-start-4 "
+          className="tw-col-span-2 tw-col-start-4 tw-row-start-4 "
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
@@ -349,7 +349,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="cycletime-summary"
           title=""
-          className="tw-col-span-2 tw-col-start-4 tw-row-start-4"
+          className="tw-col-span-2 tw-col-start-6 tw-row-start-4"
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
