@@ -13,7 +13,7 @@ import { fromNow, percentileToText, humanizeDuration, getItemSuffix, getPeriodSt
 import { ComponentCarousel } from "../componentCarousel/componentCarousel";
 import { HumanizedDateView } from "../humanizedDateView/humanizedDateView";
 import { TrendCard } from "../cards/trendCard";
-import { AppTerms, TrendColors } from "../../config";
+import { AppTerms, itemsDesc, TrendColors } from "../../config";
 import { getCapacityEfficiency, getFlowEfficiency } from "../../helpers/statsUtils";
 import {MetricCard} from "../cards/metricCard";
 import {TrendsDetail} from "../../../projects/shared/components/TrendsDetail";
@@ -562,6 +562,24 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
     displayType={displayType}
     displayProps={displayProps}
   />
+}
+
+export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+
+  return (
+    <FlowStatistic
+      title={title || <span>Started</span>}
+      currentMeasurement={currentMeasurement}
+      previousMeasurement={previousMeasurement}
+      metric={"arrivals"}
+      uom={itemsDesc(specsOnly) || "Days"}
+      precision={0}
+      deltaThreshold={deltaThreshold}
+      target={target}
+      displayType={displayType}
+      displayProps={displayProps}
+    />
+  );
 }
 
 export const FlowEfficiency = ({title, displayType, precision, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold}) => {
