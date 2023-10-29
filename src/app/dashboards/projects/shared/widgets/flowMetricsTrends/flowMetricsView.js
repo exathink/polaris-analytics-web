@@ -4,7 +4,7 @@ import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
 import { NavigationLink } from "../../../../../helpers/components";
-import { StartRateView } from "../responseTimeSLA/startRateView";
+import { StartRateView } from "./startRateView";
 
 export function FlowMetricsView({
   data,
