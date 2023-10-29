@@ -21,7 +21,14 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
       key: $key
       tags: $tags
       release: $release,
-      interfaces: [CycleMetricsTrends]
+      interfaces: [CycleMetricsTrends, ArrivalDepartureTrends]
+      arrivalDepartureTrendsArgs: {
+        days: $days,
+        measurementWindow: $measurementWindow,
+        samplingFrequency: $samplingFrequency,
+        specsOnly: $specsOnly, 
+        metric: wip_arrivals_departures
+      }
       cycleMetricsTrendsArgs: {
         before: $before
         days: $days
@@ -93,6 +100,14 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
         targetPercentile
         cadence
       }
+      arrivalDepartureTrends {
+        measurementDate
+        measurementWindow
+        arrivals
+        departures
+        flowbacks
+        passthroughs
+    }
     }
   }
 `;
