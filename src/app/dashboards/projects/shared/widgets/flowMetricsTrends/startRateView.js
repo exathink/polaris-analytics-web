@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) Exathink, LLC  2016-2023.
+ * All rights reserved
+ *
+ */
+
 import {StartRate} from "../../../../shared/components/flowStatistics/flowStatistics";
 
 export function StartRateView({
@@ -9,7 +15,7 @@ export function StartRateView({
 }) {
   let [currentArrivalTrend, previousArrivalTrend] = arrivalDepartureTrends;
   const startRate = currentArrivalTrend["arrivals"] ? currentArrivalTrend["arrivals"] / flowAnalysisPeriod : null;
-  const supportingMetric = currentArrivalTrend["arrivals"] ? <span>Start Rate: {startRate} / day</span> : <span></span>;
+  const supportingMetric = currentArrivalTrend["arrivals"] ? <span>Start Rate: {startRate.toFixed(1)} / day</span> : <span></span>;
   return (
     <div className="tw-h-full tw-w-full">
       <StartRate
