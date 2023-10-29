@@ -516,7 +516,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
-        <div className={classNames(styles.title, "tw-text-2xl")}>Work In Process</div>
+        <div className={classNames(styles.title, "tw-text-2xl")}>Motion Analysis</div>
         <div className={styles.filters}>
           <SelectDropdown
             title="WorkStream"
