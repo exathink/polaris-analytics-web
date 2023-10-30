@@ -29,7 +29,8 @@ export function WorkItemsDetailHistogramTable({
   selectedFilter,
   tableData,
   tableSelectedMetric,
-  paginationOptions
+  paginationOptions,
+  onSortChanged,
 }) {
   return (
     <React.Fragment>
@@ -57,6 +58,7 @@ export function WorkItemsDetailHistogramTable({
             colWidthBoundaries={colWidthBoundaries}
             specsOnly={specsOnly}
             paginationOptions={paginationOptions}
+            onSortChanged={onSortChanged}
             onGridReady={(params) => {
               defaultOnGridReady(params);
               if(selectedFilter){
