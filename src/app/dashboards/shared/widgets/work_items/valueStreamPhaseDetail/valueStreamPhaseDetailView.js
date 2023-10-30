@@ -19,6 +19,7 @@ import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
 import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
+import { SORTER } from "../../../../../components/tables/tableUtils";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -118,7 +119,9 @@ const PhaseDetailView = ({
     setColState(prev => {
       return {
         ...prev,
-        colData: workItemsWithAggregateDurations.map((x) => x[getMetricsMetaKey(colState.colId, "closed")]),
+        colData: workItemsWithAggregateDurations
+          .map((x) => x[getMetricsMetaKey(prev.colId, selectedStateType)])
+          .sort(COL_TYPES[prev.colId].sorter ?? SORTER.no_sort),
       };
     })
 
@@ -289,16 +292,21 @@ const PhaseDetailView = ({
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
-                if (sortState?.sort && supportedCols.includes(sortState?.colId)) {
+                const colId = sortState?.colId;
+                if (sortState?.sort && supportedCols.includes(colId)) {
                   let filteredColVals = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
-                      filteredColVals.push(node.data[sortState.colId]);
+                      filteredColVals.push(node.data[colId]);
                     }
                   });
                   const columnDefs = params.columnApi.columnModel.columnDefs;
-                  const headerName = columnDefs.find((x) => x.field === sortState.colId).headerName;
-                  setColState({colData: filteredColVals, colId: sortState.colId, headerName});
+                  const headerName = columnDefs.find((x) => x.field === colId).headerName;
+                  setColState({
+                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
+                    colId: colId,
+                    headerName,
+                  });
                 }
               }}
             />
