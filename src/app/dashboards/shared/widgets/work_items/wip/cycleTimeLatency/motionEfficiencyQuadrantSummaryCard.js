@@ -87,7 +87,7 @@ export function MotionEfficiencyQuadrantSummaryCard({
             Motion Analysis, All {specsOnly ? "Dev Items" : "Work Items"}
           </div>
           <div>
-            <NavigationLink to="wip" />
+            <NavigationLink to="wip/engineering" />
           </div>
         </div>
       ),

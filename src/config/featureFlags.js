@@ -9,5 +9,6 @@ export const UI_NEW_CARD_DESIGN = 'ui.new-card-design'
 export const DEMO_MODE = 'system.demo_mode'
 export const TABLE_PAGINATION = 'ui.table_pagination';
 export const AGE_LATENCY_ENHANCEMENTS = 'ui.age_latency_enhancements';
+export const FLOW_DASHBOARD_NEW_LAYOUT = 'ui.flow_dashboard_new_layout';
 
 

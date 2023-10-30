@@ -36,7 +36,7 @@ function getWorkItemTitle(stateType, specsOnly) {
     if (specsOnly) {
       return `${AppTerms.specs.display}`;
     } else {
-      return `All ${AppTerms.cards.display}`;
+      return `${AppTerms.cards.display}`;
     }
   }
 }
@@ -86,6 +86,7 @@ export const WorkItemsDetailHistogramChart = Chart({
         title: {
           text: getWorkItemTitle(stateType, specsOnly),
         },
+        allowDecimals: false
       },
       tooltip: {
         useHTML: true,
