@@ -43,13 +43,27 @@ export class HighchartsChart extends React.Component {
     this.teardownChart();
   }
 
+  componentDidCatch(error, errorInfo) {
+    console.log(error)
+  }
+
   teardownChart() {
     const {callback} = this.props;
     if (this.chart) {
-      this.chart.destroy();
-      this.chart = null;
-      if (callback) {
-        callback(this.chart)
+      try {
+        // This try catch block is here because some calls
+        // to this.chart.destroy throw an error inside highstock.js
+        // looking through the source code, the calls dont actually seem to leak
+        // any memory - it seems like a genuine bug, and may be fixed with an upgrade.
+        // for now, we are going to just catch and ignore the error.
+        // revisit if this becomes an issue at some point.
+        this.chart.destroy();
+        this.chart = null;
+        if (callback) {
+          callback(this.chart)
+        }
+      } catch (e) {
+        console.log(e)
       }
     }
   }
