@@ -26,8 +26,10 @@ export const getFlowMetricsTrendsQuery = (dimension) => gql`
         days: $days,
         measurementWindow: $measurementWindow,
         samplingFrequency: $samplingFrequency,
-        specsOnly: $specsOnly, 
-        metric: wip_arrivals_departures
+        specsOnly: $specsOnly,
+        tags: $tags,
+        release: $release,
+        metric: wip_arrivals_departures,
       }
       cycleMetricsTrendsArgs: {
         before: $before
