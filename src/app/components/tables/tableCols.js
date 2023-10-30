@@ -15,6 +15,7 @@ import {CardCol, IssueTypeCol, StateTypeCol, workItemTypeImageMapFromPublic} fro
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { capitalizeFirstLetter, useBlurClass } from "../../helpers/utility";
+import { WorkItemColorMap, WorkItemStateTypeColor } from "../../dashboards/shared/config";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "Blank";
@@ -326,10 +327,11 @@ export function getWorkItemTypeCol() {
 }
 
 export const COL_TYPES = {
-  state: {type: "category"},
+  state: {type: "category", color: x => WorkItemStateTypeColor[x]},
   workItemType: {
     type: "category",
     transform: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
+    color: x => WorkItemColorMap[x]
   },
   workItemsSourceName: {type: "category"},
   priority: {type: "category"},

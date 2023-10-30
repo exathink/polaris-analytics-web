@@ -202,6 +202,7 @@ const PhaseDetailView = ({
           subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
           specsOnly={specsOnly}
           histogramSeries={continousValueseries}
+          stateType={selectedStateType}
         />
       );
     }
