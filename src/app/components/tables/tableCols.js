@@ -11,10 +11,10 @@ import {
   parseTags,
   ArrayCol
 } from "./tableUtils";
-import {CardCol, IssueTypeCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
+import {CardCol, IssueTypeCol, StateTypeCol, workItemTypeImageMapFromPublic} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
-import { useBlurClass } from "../../helpers/utility";
+import { capitalizeFirstLetter, useBlurClass } from "../../helpers/utility";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "Blank";
@@ -326,14 +326,17 @@ export function getWorkItemTypeCol() {
 }
 
 export const COL_TYPES = {
-  state: "category",
-  workItemType: "category",
-  workItemsSourceName: "category",
-  priority: "category",
-  
-  cycleTime: "continous",
-  cycleTimeOrLatency: "continous",
-  leadTime: "continous",
-  leadTimeOrAge: "continous",
-  effort: "continous",
+  state: {type: "category"},
+  workItemType: {
+    type: "category",
+    transform: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
+  },
+  workItemsSourceName: {type: "category"},
+  priority: {type: "category"},
+
+  cycleTime: {type: "continous"},
+  cycleTimeOrLatency: {type: "continous"},
+  leadTime: {type: "continous"},
+  leadTimeOrAge: {type: "continous"},
+  effort: {type: "continous"},
 };

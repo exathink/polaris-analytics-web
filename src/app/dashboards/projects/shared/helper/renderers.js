@@ -31,6 +31,14 @@ export const workItemTypeImageMap = {
   Uncategorized: <QuestionCircleOutlined />,
 };
 
+export const workItemTypeImageMapFromPublic = {
+  epic: `<img src='/images/issueType/epic.svg' style="width: 16px; vertical-align: middle;" />`,
+  story: `<img src='/images/issueType/story.svg' style="width: 16px; vertical-align: middle;" />`,
+  task: `<img src='/images/issueType/task.svg' style="width: 16px; vertical-align: middle;" />`,
+  subtask: `<img src='/images/issueType/subtask.svg' style="width: 16px; vertical-align: middle;" />`,
+  bug: `<img src='/images/issueType/bug.svg' style="width: 16px; vertical-align: middle;" />`,
+};
+
 export function getStateTypeIcon(stateType, size = "16px") {
   return (
     <div

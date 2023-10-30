@@ -181,7 +181,7 @@ const PhaseDetailView = ({
     });
 
     let chartElement;
-    if (COL_TYPES[colState.colId] === "continous") {
+    if (COL_TYPES[colState.colId].type === "continous") {
       chartElement = (
         <WorkItemsDetailHistogramChart
           chartConfig={{subtitle: getChartSubTitle(), legendItemClick: () => {}}}
@@ -192,7 +192,7 @@ const PhaseDetailView = ({
           series={[continousValueseries]}
         />
       );
-    } else if(COL_TYPES[colState.colId] === "category"){
+    } else if(COL_TYPES[colState.colId].type === "category"){
       chartElement = (
         <ValueStreamDistributionChart
           colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}

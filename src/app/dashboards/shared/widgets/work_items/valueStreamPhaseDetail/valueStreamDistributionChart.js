@@ -1,3 +1,4 @@
+import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import {Chart} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
@@ -28,7 +29,7 @@ export const ValueStreamDistributionChart = Chart({
 
   getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName, histogramSeries}) => {
     const colDataMap = mapArrToObj(colData);
-    const categories = Object.keys(colDataMap);
+    const categories = Object.keys(colDataMap).map((x) => COL_TYPES[colId].transform?.(x) ?? x);
 
     const colValues = Object.values(colDataMap);
     const seriesObj = getSeries({data: colValues, colId, intl, view});
@@ -51,6 +52,9 @@ export const ValueStreamDistributionChart = Chart({
         align: "center",
       },
       xAxis: {
+        labels: {
+          useHTML: true,
+        },
         categories: categories,
       },
       yAxis: {
