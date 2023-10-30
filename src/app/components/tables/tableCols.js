@@ -330,7 +330,6 @@ export const COL_TYPES = {
   workItemType: "category",
   workItemsSourceName: "category",
   priority: "category",
-  teams: "category",
   
   cycleTime: "continous",
   cycleTimeOrLatency: "continous",
