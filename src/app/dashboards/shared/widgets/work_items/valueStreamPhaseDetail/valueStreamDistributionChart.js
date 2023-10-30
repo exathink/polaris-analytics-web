@@ -29,7 +29,7 @@ export const ValueStreamDistributionChart = Chart({
 
   getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName, stateType}) => {
     const colDataMap = getSeriesPoints({arr: colData, colId, stateType});
-    const categories = Object.keys(colDataMap).map((x) => COL_TYPES[colId].transform?.(x) ?? x);
+    const categories = Object.keys(colDataMap).map((x) => COL_TYPES[colId].transformCategoryLabels?.(x) ?? x);
 
     const colValues = Object.values(colDataMap);
     const seriesObj = getSeries({data: colValues, colId});

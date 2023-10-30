@@ -330,7 +330,7 @@ export const COL_TYPES = {
   state: {type: "category", color: x => WorkItemStateTypeColor[x]},
   workItemType: {
     type: "category",
-    transform: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
+    transformCategoryLabels: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
     color: x => WorkItemColorMap[x]
   },
   workItemsSourceName: {type: "category"},
