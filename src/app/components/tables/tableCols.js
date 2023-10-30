@@ -334,7 +334,7 @@ export const COL_TYPES = {
     color: x => WorkItemColorMap[x]
   },
   workItemsSourceName: {type: "category"},
-  priority: {type: "category"},
+  priority: {type: "category", sorter: SORTER.string_compare},
 
   cycleTime: {type: "continous"},
   cycleTimeOrLatency: {type: "continous"},
