@@ -131,7 +131,7 @@ export function useWorkItemsDetailTableColumns({
       comparator: SORTER.number_compare,
     },
     defaultOptionalCol,
-  ], []);
+  ], [stateType]);
 
   return columns;
 }
@@ -149,9 +149,12 @@ export const WorkItemsDetailTable = ({
   loading,
   specsOnly,
   paginationOptions,
-  onGridReady
+  onGridReady,
+  onSortChanged
 }) => {
   const intl = useIntl();
+  const gridRef = React.useRef(null);
+
   const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   // get unique workItem types
@@ -193,6 +196,10 @@ export const WorkItemsDetailTable = ({
     },
   }), []);
 
+  React.useEffect(() => {
+    gridRef.current?.api?.clearRangeSelection();
+  }, [stateType]);
+
   const statusBar = React.useMemo(() => {
     return {
       statusPanels: [
@@ -215,52 +222,49 @@ export const WorkItemsDetailTable = ({
 
   return (
     <>
-    <AgGridStripeTable
-      columnDefs={columns}
-      rowData={dataSource}
-      statusBar={statusBar}
-      onSortChanged={getOnSortChanged([
-        "cycleTimeOrLatency",
-        "leadTimeOrAge",
-        "effort",
-        "duration",
-        "latency",
-        "delivery",
-      ])}
-      enableRangeSelection={true}
-      defaultExcelExportParams={{
-        fileName: "Work_In_Progress",
-        autoConvertFormulas: true,
-        processCellCallback: (params) => {
-          const field = params.column.getColDef().field;
-          return field === "url"
-            ? `=HYPERLINK("${params.value}")`
-            : params.formatValue
-            ? params.formatValue(params.value)
-            : params.value;
-        },
-      }}
-      excelStyles={[
-        {
-          id: "hyperlinks",
-          font: {
-            underline: "Single",
-            color: "#358ccb",
+      <AgGridStripeTable
+        columnDefs={columns}
+        rowData={dataSource}
+        statusBar={statusBar}
+        ref={gridRef}
+        onSortChanged={(params) => {
+          onSortChanged(params);
+          getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])(params);
+        }}
+        enableRangeSelection={true}
+        defaultExcelExportParams={{
+          fileName: "Work_In_Progress",
+          autoConvertFormulas: true,
+          processCellCallback: (params) => {
+            const field = params.column.getColDef().field;
+            return field === "url"
+              ? `=HYPERLINK("${params.value}")`
+              : params.formatValue
+              ? params.formatValue(params.value)
+              : params.value;
           },
-        },
-      ]}
-      onCellClicked={(e) => {
-        if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
-          const record = e.data;
-          setShowPanel(true);
-          setWorkItemKey(record.workItemKey || record.key);
-        }
-      }}
-      testId="work-items-detail-table"
-      onGridReady={onGridReady}
-      defaultColDef={defaultColDef}
-      onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
-    />
+        }}
+        excelStyles={[
+          {
+            id: "hyperlinks",
+            font: {
+              underline: "Single",
+              color: "#358ccb",
+            },
+          },
+        ]}
+        onCellClicked={(e) => {
+          if (["quadrant", "name", "state", "latestCommitDisplay"].includes(e.colDef.field)) {
+            const record = e.data;
+            setShowPanel(true);
+            setWorkItemKey(record.workItemKey || record.key);
+          }
+        }}
+        testId="work-items-detail-table"
+        onGridReady={onGridReady}
+        defaultColDef={defaultColDef}
+        onColumnVisible={getHandleColumnVisible(hidden_cols, setHiddenCols)}
+      />
       <CardInspectorWithDrawer
         workItemKey={workItemKey}
         showPanel={showPanel}
@@ -268,6 +272,5 @@ export const WorkItemsDetailTable = ({
         context={context}
       />
     </>
-    
   );
 };

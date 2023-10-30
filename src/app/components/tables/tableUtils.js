@@ -162,6 +162,7 @@ export const SORTER = {
     const span = diff_in_dates(date_a, date_b);
     return span["_milliseconds"];
   },
+  no_sort: () => 0
 };
 
 export function VirtualStripeTable({

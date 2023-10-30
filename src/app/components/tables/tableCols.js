@@ -11,10 +11,11 @@ import {
   parseTags,
   ArrayCol
 } from "./tableUtils";
-import {CardCol, IssueTypeCol, StateTypeCol} from "../../dashboards/projects/shared/helper/renderers";
+import {CardCol, IssueTypeCol, StateTypeCol, workItemTypeImageMapFromPublic} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
-import { useBlurClass } from "../../helpers/utility";
+import { capitalizeFirstLetter, useBlurClass } from "../../helpers/utility";
+import { WorkItemColorMap, WorkItemStateTypeColor } from "../../dashboards/shared/config";
 
 const MenuTabs = ["filterMenuTab", "generalMenuTab"];
 export const BLANKS = "Unassigned";
@@ -210,7 +211,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       field: "priority",
       headerName: "Priority",
       cellRenderer: React.memo(TextWithStyle),
-      sortable: false,
       filter: "agSetColumnFilter",
       filterParams: {
         filterOptions: ["contains", "startsWith"],
@@ -325,3 +325,20 @@ export function getWorkItemTypeCol() {
     // comparator: SORTER.number_compare,
   };
 }
+
+export const COL_TYPES = {
+  state: {type: "category", color: x => WorkItemStateTypeColor[x]},
+  workItemType: {
+    type: "category",
+    transformCategoryLabels: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
+    color: x => WorkItemColorMap[x]
+  },
+  workItemsSourceName: {type: "category"},
+  priority: {type: "category", sorter: SORTER.string_compare},
+
+  cycleTime: {type: "continous"},
+  cycleTimeOrLatency: {type: "continous"},
+  leadTime: {type: "continous"},
+  leadTimeOrAge: {type: "continous"},
+  effort: {type: "continous"},
+};
