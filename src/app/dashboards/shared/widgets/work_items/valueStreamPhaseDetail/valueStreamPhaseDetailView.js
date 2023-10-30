@@ -18,15 +18,11 @@ import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
 import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import { COL_TYPES } from "../../../../../components/tables/tableCols";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
-export const COL_TYPES = {
-  state: "category",
-  cycleTime: "continous",
-  workItemType: "category"
-};
 
 const PhaseDetailView = ({
   data,
@@ -185,19 +181,7 @@ const PhaseDetailView = ({
     });
 
     let chartElement;
-    if (COL_TYPES[colState.colId] === "category") {
-      chartElement = (
-        <ValueStreamDistributionChart
-          colData={colState.colData}
-          colId={colState.colId}
-          headerName={colState.headerName}
-          title={`${colState.headerName} Distribution`}
-          subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
-          specsOnly={specsOnly}
-          histogramSeries={continousValueseries}
-        />
-      );
-    } else {
+    if (COL_TYPES[colState.colId] === "continous") {
       chartElement = (
         <WorkItemsDetailHistogramChart
           chartConfig={{subtitle: getChartSubTitle(), legendItemClick: () => {}}}
@@ -206,6 +190,18 @@ const PhaseDetailView = ({
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           stateType={selectedStateType}
           series={[continousValueseries]}
+        />
+      );
+    } else if(COL_TYPES[colState.colId] === "category"){
+      chartElement = (
+        <ValueStreamDistributionChart
+          colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}
+          colId={colState.colId}
+          headerName={colState.headerName}
+          title={`${colState.headerName} Distribution`}
+          subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+          specsOnly={specsOnly}
+          histogramSeries={continousValueseries}
         />
       );
     }
@@ -291,8 +287,8 @@ const PhaseDetailView = ({
               setWorkItemKey={setWorkItemKey}
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-
-                if (sortState?.sort) {
+                const supportedCols = Object.keys(COL_TYPES);
+                if (sortState?.sort && supportedCols.includes(sortState?.colId)) {
                   let filteredColVals = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
