@@ -32,7 +32,7 @@ export function getTrendIndicatorUtils({currentValue, previousValue, good, intl}
 }
 
 // Display the trend indicator only if abs value of the delta is greater than this threshold.
-export const TrendIndicatorDisplayThreshold = 2;
+export const TrendIndicatorDisplayThreshold = 0.5;
 
 export const TrendIndicator = ({currentValue, previousValue, good, deltaThreshold = TrendIndicatorDisplayThreshold}) => {
   const intl = useIntl();
