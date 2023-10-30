@@ -210,7 +210,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
       field: "priority",
       headerName: "Priority",
       cellRenderer: React.memo(TextWithStyle),
-      sortable: false,
       filter: "agSetColumnFilter",
       filterParams: {
         filterOptions: ["contains", "startsWith"],
@@ -325,3 +324,17 @@ export function getWorkItemTypeCol() {
     // comparator: SORTER.number_compare,
   };
 }
+
+export const COL_TYPES = {
+  state: "category",
+  workItemType: "category",
+  workItemsSourceName: "category",
+  priority: "category",
+  teams: "category",
+  
+  cycleTime: "continous",
+  cycleTimeOrLatency: "continous",
+  leadTime: "continous",
+  leadTimeOrAge: "continous",
+  effort: "continous",
+};
