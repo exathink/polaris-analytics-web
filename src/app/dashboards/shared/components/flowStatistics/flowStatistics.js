@@ -564,7 +564,7 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
   />
 }
 
-export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, good, deltaThreshold, specsOnly}) => {
 
   return (
     <FlowStatistic
@@ -576,6 +576,7 @@ export const StartRate = ({title, displayType, displayProps, currentMeasurement,
       precision={0}
       deltaThreshold={deltaThreshold}
       target={target}
+      good={good}
       displayType={displayType}
       displayProps={displayProps}
     />
