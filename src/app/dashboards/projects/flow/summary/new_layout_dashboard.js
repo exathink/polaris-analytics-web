@@ -133,7 +133,7 @@ export function NewFlowDashboard() {
                 targetPercentile={responseTimeConfidenceTarget}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 latestWorkItemEvent={latestWorkItemEvent}
-                displayBag={{metric: "startRate", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                displayBag={{displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
               />
             );
           }}

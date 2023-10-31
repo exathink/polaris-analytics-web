@@ -58,7 +58,7 @@ export const StartRateWidget = ({
     return null;
   }
 
-  const {metric, displayType, iconsShiftLeft, ...displayProps} = displayBag;
+  const {displayType, iconsShiftLeft, ...displayProps} = displayBag;
   const {arrivalDepartureTrends} = data[dimension];
   const {cycleMetricsTrends} = data1[dimension];
 
