@@ -130,6 +130,8 @@ export function NewFlowDashboard() {
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
+                targetPercentile={responseTimeConfidenceTarget}
+                includeSubTasks={includeSubTasksFlowMetrics}
                 latestWorkItemEvent={latestWorkItemEvent}
                 displayBag={{metric: "startRate", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
               />
