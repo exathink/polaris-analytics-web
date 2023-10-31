@@ -4,7 +4,6 @@ import {CycleTimeCardView} from "../responseTimeSLA/cycleTimeCardView";
 import {ThroughputDetailDashboard} from "../throughput/throughputDetailDashboard";
 import {ThroughputCardView, VolumeCardView} from "../throughput/throughputViews";
 import { NavigationLink } from "../../../../../helpers/components";
-import { StartRateView } from "./startRateView";
 
 export function FlowMetricsView({
   data,
@@ -24,7 +23,7 @@ export function FlowMetricsView({
   view,
 }) {
   const {metric, displayType, iconsShiftLeft, ...displayProps} = displayBag;
-  const {cycleMetricsTrends, arrivalDepartureTrends} = data[dimension];
+  const {cycleMetricsTrends} = data[dimension];
   let [currentTrend, previousTrend] = cycleMetricsTrends;
 
   const metricMap = {
@@ -145,15 +144,6 @@ export function FlowMetricsView({
       <VolumeCardView
         data={data}
         dimension={dimension}
-        displayType={displayType}
-        displayProps={displayProps}
-        flowAnalysisPeriod={flowAnalysisPeriod}
-        specsOnly={specsOnly}
-      />
-    ),
-    startRate: (
-      <StartRateView
-        arrivalDepartureTrends={arrivalDepartureTrends}
         displayType={displayType}
         displayProps={displayProps}
         flowAnalysisPeriod={flowAnalysisPeriod}
