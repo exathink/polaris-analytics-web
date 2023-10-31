@@ -88,6 +88,7 @@ export function DimensionWipMetricsView({wipDataAll, flowMetricsData, dimension,
           supportingMetric: <span>Target {cycleTimeTarget} Days</span>,
           trendsView: {title: "Age", content: <span>Trends</span>},
           info: {title: "Info", content: "content"},
+          midTarget: cycleTimeTarget * 0.5,
           ...displayProps,
         }}
       />
