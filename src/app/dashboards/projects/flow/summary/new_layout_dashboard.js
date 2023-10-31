@@ -12,6 +12,7 @@ import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
 import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
+import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRateWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -117,7 +118,7 @@ export function NewFlowDashboard() {
           className="tw-col-span-2 tw-col-start-2 tw-row-start-2"
           render={({view}) => {
             return (
-              <FlowMetricsTrendsWidget
+              <StartRateWidget
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
@@ -126,14 +127,10 @@ export function NewFlowDashboard() {
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                cycleTimeTarget={cycleTimeTarget}
                 displayBag={{metric: "startRate", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
               />
             );
