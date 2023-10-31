@@ -28,6 +28,8 @@ export const FlowStatistic = ({
   currentValue,
   previousValue,
   uom,
+  trendGood,
+  valueGood,
   good,
   target,
   precision,
@@ -37,7 +39,8 @@ export const FlowStatistic = ({
   const value = currentValue != null ? currentValue : currentMeasurement && currentMeasurement[metric];
   const comp = previousValue != null ? previousValue : previousMeasurement && previousMeasurement[metric];
 
-  const {metricValue, suffix, value: _value} = getMetricUtils({target, midTarget: displayProps.midTarget, value, uom, good, valueRender, precision});
+  const goodValueIndicator = valueGood || good;
+  const {metricValue, suffix, value: _value} = getMetricUtils({target, midTarget: displayProps.midTarget, value, uom, good: goodValueIndicator, valueRender, precision});
 
   switch (displayType) {
     case "card": {
@@ -207,7 +210,7 @@ export const VolumeWithThroughput = ({title, displayType, displayProps, currentM
     valueRender={value => value}
     uom={specsOnly ? AppTerms.specs.display: AppTerms.cards.display}
     precision={0}
-    good={TrendIndicator.isPositive}
+    good={false}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
     displayProps={{supportingMetric, ...displayProps}}
@@ -229,7 +232,7 @@ export const Throughput = ({title, displayType, displayProps, currentMeasurement
     }
     uom={specsOnly ? `${AppTerms.specs.display}/Day` : `${AppTerms.cards.display}/Day`}
     precision={2}
-    good={TrendIndicator.isPositive}
+    good={false}
     deltaThreshold={deltaThreshold}
     displayType={displayType}
     displayProps={displayProps}
@@ -564,7 +567,7 @@ export const AvgCycleTime = ({displayType, displayProps, currentMeasurement, pre
   />
 }
 
-export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, deltaThreshold, specsOnly}) => {
+export const StartRate = ({title, displayType, displayProps, currentMeasurement, previousMeasurement, target, good, valueGood, deltaThreshold, specsOnly}) => {
 
   return (
     <FlowStatistic
@@ -576,6 +579,8 @@ export const StartRate = ({title, displayType, displayProps, currentMeasurement,
       precision={0}
       deltaThreshold={deltaThreshold}
       target={target}
+      good={good}
+      valueGood={valueGood}
       displayType={displayType}
       displayProps={displayProps}
     />
