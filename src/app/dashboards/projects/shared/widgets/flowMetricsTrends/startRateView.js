@@ -5,15 +5,18 @@
  */
 
 import {StartRate} from "../../../../shared/components/flowStatistics/flowStatistics";
-
+const START_RATE_THRESHOLD = 2;
 export function StartRateView({
   arrivalDepartureTrends,
+  cycleMetricsTrends,
   flowAnalysisPeriod,
   specsOnly,
   displayType,
   displayProps,
 }) {
   let [currentArrivalTrend, previousArrivalTrend] = arrivalDepartureTrends;
+  let [currentThroughputTrend] = cycleMetricsTrends;
+  const dummy_target = 2;
   const startRate = currentArrivalTrend["arrivals"] ? currentArrivalTrend["arrivals"] / flowAnalysisPeriod : null;
   const supportingMetric = currentArrivalTrend["arrivals"] ? <span>Start Rate: {startRate.toFixed(1)} / day</span> : <span></span>;
   return (
@@ -23,6 +26,10 @@ export function StartRateView({
         previousMeasurement={previousArrivalTrend}
         displayType={displayType}
         specsOnly={specsOnly}
+        target={dummy_target}
+        good={(delta) =>
+          Math.abs(currentThroughputTrend["workItemsInScope"] - currentArrivalTrend["arrivals"]) < START_RATE_THRESHOLD
+        }
         displayProps={{
           info: {title: "title"},
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
