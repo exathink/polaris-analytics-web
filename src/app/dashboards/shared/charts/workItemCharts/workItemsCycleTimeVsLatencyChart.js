@@ -275,7 +275,16 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
         plotLines: cycleTimeTarget
           ? [
               {
-                color: "green",
+                color: "orange",
+                value: cycleTimeTarget * 0.5,
+                dashStyle: "longdashdot",
+                width: 1.5,
+                label: {
+                  text: ` A= ${intl.formatNumber(cycleTimeTarget*0.5)}d`,
+                },
+              },
+            {
+                color: "red",
                 value: cycleTimeTarget,
                 dashStyle: "solid",
                 width: 1.5,
@@ -313,7 +322,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 },
               },
               {
-                color: excludeMotionless ? "red" : "orange",
+                color: "red",
                 value: cycleTimeTarget,
                 dashStyle: "solid",
                 width: 1,
