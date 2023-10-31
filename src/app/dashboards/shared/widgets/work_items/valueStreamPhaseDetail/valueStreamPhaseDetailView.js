@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
+import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder} from "../../../config";
+import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc} from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -16,9 +16,14 @@ import {getHistogramSeries, isClosed} from "../../../../projects/shared/helper/u
 import {injectIntl} from "react-intl";
 import {WorkItemsDetailHistogramTable} from "../workItemsDetailHistogramTable";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
+import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
+import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
+import { COL_TYPES } from "../../../../../components/tables/tableCols";
+import { SORTER } from "../../../../../components/tables/tableUtils";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
+
 
 const PhaseDetailView = ({
   data,
@@ -75,6 +80,12 @@ const PhaseDetailView = ({
   const defaultSelectedGrouping = defaultToHistogram ? "responseTime" : "table";
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
+  const [colState, setColState] = React.useState({
+    colData: workItemsByStateType[selectedStateType]?.map((x) => x["workItemType"])??[],
+    colId: "workItemType",
+    headerName: "Work Item Type",
+  });
+
   const candidateWorkItems = React.useMemo(() => {
     if (selectedStateType != null && workItemsByStateType[selectedStateType] != null) {
       return workItemsByStateType[selectedStateType]
@@ -103,6 +114,19 @@ const PhaseDetailView = ({
   }
 
   const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(candidateWorkItems), [candidateWorkItems]);
+
+  React.useEffect(() => {
+    setColState(prev => {
+      return {
+        ...prev,
+        colData: workItemsWithAggregateDurations
+          .map((x) => x[getMetricsMetaKey(prev.colId, selectedStateType)])
+          .sort(COL_TYPES[prev.colId].sorter ?? SORTER.no_sort),
+      };
+    })
+
+  }, [selectedStateType]);
+
 
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
@@ -147,9 +171,49 @@ const PhaseDetailView = ({
   }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
 
   if (selectedStateType != null) {
+    const specsOnly = workItemScope === "specs";
+
+    const continousValueseries = getHistogramSeries({
+      id: colState.colId,
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: colState.colData,
+      name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
+      color: getSelectedMetricColor(colState.colId, selectedStateType),
+      visible: true,
+    });
+
+    let chartElement;
+    if (COL_TYPES[colState.colId].type === "continous") {
+      chartElement = (
+        <WorkItemsDetailHistogramChart
+          chartConfig={{subtitle: getChartSubTitle(), legendItemClick: () => {}}}
+          selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
+          specsOnly={specsOnly}
+          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+          stateType={selectedStateType}
+          series={[continousValueseries]}
+        />
+      );
+    } else if(COL_TYPES[colState.colId].type === "category"){
+      chartElement = (
+        <ValueStreamDistributionChart
+          colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}
+          colId={colState.colId}
+          headerName={colState.headerName}
+          title={`${colState.headerName} Distribution`}
+          subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+          specsOnly={specsOnly}
+          histogramSeries={continousValueseries}
+          stateType={selectedStateType}
+        />
+      );
+    }
+
     return (
       <VizRow h={1}>
-        <VizItem w={1} style={{height: "93%"}}>
+        <VizItem w={1} style={{height: "98%"}}>
+          <div className="tw-h-[45%]">{chartElement}</div>
           <div className={"workItemStateDetailsControlWrapper"}>
             <div className={"middleControls"}>
               <GroupingSelector
@@ -170,7 +234,6 @@ const PhaseDetailView = ({
                 layout="col"
                 className="tw-ml-4"
               />
-              
             </div>
             <div className={"rightControls"}>
               <div className="workItemScopeSelector">
@@ -202,31 +265,52 @@ const PhaseDetailView = ({
               </div>
             </div>
           </div>
-
-          <WorkItemsDetailHistogramTable
-            // common props
-            key={resetComponentStateKey}
-            stateType={selectedStateType}
-            tabSelection={selectedGrouping}
-            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-            // chart props
-            chartSubTitle={getChartSubTitle()}
-            specsOnly={workItemScope === "specs"}
-            series={seriesData}
-            onPointClick={({category, selectedMetric}) => {
-              setSelectedMetric(selectedMetric);
-              setFilter(category);
-              setSelectedGrouping("table");
-            }}
-            clearFilters={resetFilterAndMetric}
-            // table props
-            view={view}
-            selectedFilter={selectedFilter}
-            tableData={workItemsWithAggregateDurations}
-            tableSelectedMetric={selectedMetric}
-            setShowPanel={setShowPanel}
-            setWorkItemKey={setWorkItemKey}
-          />
+          <div className="tw-h-[50%]">
+            <WorkItemsDetailHistogramTable
+              // common props
+              key={resetComponentStateKey}
+              stateType={selectedStateType}
+              tabSelection={selectedGrouping}
+              colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+              // chart props
+              chartSubTitle={getChartSubTitle()}
+              specsOnly={workItemScope === "specs"}
+              series={seriesData}
+              onPointClick={({category, selectedMetric}) => {
+                setSelectedMetric(selectedMetric);
+                setFilter(category);
+                setSelectedGrouping("table");
+              }}
+              clearFilters={resetFilterAndMetric}
+              // table props
+              view={view}
+              selectedFilter={selectedFilter}
+              tableData={workItemsWithAggregateDurations}
+              tableSelectedMetric={selectedMetric}
+              setShowPanel={setShowPanel}
+              setWorkItemKey={setWorkItemKey}
+              onSortChanged={(params) => {
+                const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+                const supportedCols = Object.keys(COL_TYPES);
+                const colId = sortState?.colId;
+                if (sortState?.sort && supportedCols.includes(colId)) {
+                  let filteredColVals = [];
+                  params.api.forEachNodeAfterFilter((node) => {
+                    if (!node.group) {
+                      filteredColVals.push(node.data[colId]);
+                    }
+                  });
+                  const columnDefs = params.columnApi.columnModel.columnDefs;
+                  const headerName = columnDefs.find((x) => x.field === colId).headerName;
+                  setColState({
+                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
+                    colId: colId,
+                    headerName,
+                  });
+                }
+              }}
+            />
+          </div>
         </VizItem>
         <CardInspectorWithDrawer
           workItemKey={workItemKey}
