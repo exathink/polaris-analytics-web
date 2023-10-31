@@ -5,7 +5,19 @@
  */
 
 import {StartRate} from "../../../../shared/components/flowStatistics/flowStatistics";
-const START_RATE_THRESHOLD = 2;
+
+function getGoodnessIndicator(currentThroughputTrend, currentArrivalTrend, specsOnly) {
+    const START_RATE_THRESHOLD = 5;
+    const departures = specsOnly ? currentThroughputTrend["workItemsWithCommits"] : currentThroughputTrend["workItemsInScope"];
+    const arrivals = currentArrivalTrend['arrivals'];
+    if (arrivals > 0) {
+      // good means that the departure rate is within threshold % of the arrival rate.
+      return (Math.abs(arrivals - departures) / arrivals)*100 < START_RATE_THRESHOLD;
+    } else {
+      return true
+    }
+}
+
 export function StartRateView({
   arrivalDepartureTrends,
   cycleMetricsTrends,
@@ -27,9 +39,10 @@ export function StartRateView({
         displayType={displayType}
         specsOnly={specsOnly}
         target={dummy_target}
-        good={(delta) =>
-          Math.abs(currentThroughputTrend["workItemsInScope"] - currentArrivalTrend["arrivals"]) < START_RATE_THRESHOLD
-        }
+        // explicitly setting this to false since we need to figure out a better mechanism for goodness indicator here.
+        good={false}
+        // explicity passing a function to evaluate the goodness of value since we are not passing goodness of trend.
+        valueGood={()=> getGoodnessIndicator(currentThroughputTrend, currentArrivalTrend, specsOnly)}
         displayProps={{
           info: {title: "title"},
           subTitle: <span>Last {flowAnalysisPeriod} Days</span>,
