@@ -18,7 +18,7 @@ export const ConfigSelector = (
 
         {
           key: CONFIG_TABS.VALUE_STREAM,
-          display: 'Delivery Process Mapping'
+          display: 'Value Stream Mapping'
         },
         {
           key: CONFIG_TABS.RESPONSE_TIME_SLA,
