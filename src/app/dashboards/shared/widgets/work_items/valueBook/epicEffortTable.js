@@ -152,7 +152,7 @@ export function useImplementationCostTableColumns([budgetRecords, dispatch], epi
           ...renderState,
         },
         {
-          title: "Elapsed",
+          title: "Flow Time",
           dataIndex: "elapsed",
           key: "elapsed",
           sorter: (a, b) => SORTER.number_compare(a, b, "elapsed"),
