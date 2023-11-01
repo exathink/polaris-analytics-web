@@ -76,7 +76,7 @@ export const PipelineFunnelChart = Chart({
         align: "center"
       },
       subtitle: {
-        text: (showVolumeOrEffort === "volume" ? "Avg. Residence Time by Phase" : "Total Effort by Phase"),
+        text: (showVolumeOrEffort === "volume" ? "Supply vs Demand" : "Total Effort by Phase"),
         align: "center"
       },
       plotOptions: {

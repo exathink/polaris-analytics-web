@@ -13,7 +13,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
       ? [
           {
             key: CONFIG_TABS.DELIVERY_PROCESS_MAPPING,
-            display: "Delivery Process Mapping",
+            display: "Value Stream Mapping",
           },
         ]
       : [];

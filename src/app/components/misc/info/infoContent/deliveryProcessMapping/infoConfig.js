@@ -5,7 +5,7 @@ import {InfoCard, PhaseDefinitions} from "../../index";
 const {Section, SubSection} = InfoCard;
 
 export const DeliveryProcessMappingInfoConfig = {
-  title: "Delivery Process Mapping",
+  title: "Value Stream Mapping",
   headerContent: () => <DeliveryProcessMappingSummary />,
   showDrawer: true,
   drawerContent: () => <DeliveryProcessMappingDetails />,
@@ -16,7 +16,7 @@ export const DeliveryProcessMappingInfoConfig = {
 };
 
 export const DeliveryProcessMappingInitialInfoConfig = {
-  title: "Delivery Process Mapping",
+  title: "Value Stream Mapping",
   headerContent: () => <DeliveryProcessMappingInitialSummary />,
   showDrawer: true,
   drawerContent: () => <DeliveryProcessMappingDetails />,
@@ -69,9 +69,9 @@ export function DeliveryProcessMappingSummary() {
 export function DeliveryProcessMappingDetails() {
   return (
     <>
-      <Section heading={"Mapping a Delivery Process"}>
+      <Section heading={"Mapping a Value Stream"}>
         <p>
-          Polaris models a delivery process with a mapping of states in your workflow to one of five standard phases
+          Polaris models the flow of work in your value stream with a mapping of states in your workflow to one of five standard phases
           that represent key stages in the software development lifecycle. There are four <em>work</em> phases:
           Define, Open, Code and Ship and one
           <em> terminal</em> phase: Closed.

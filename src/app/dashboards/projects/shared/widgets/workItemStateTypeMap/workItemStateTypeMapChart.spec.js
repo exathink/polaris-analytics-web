@@ -126,7 +126,7 @@ const fixedChartConfig = {
     ...commonChartProps,
   },
   title: {
-    text: `Delivery Process Mapping`,
+    text: `Value Stream Mapping`,
   },
   subtitle: {
     text: `Drag a workflow state to its desired phase.`,
