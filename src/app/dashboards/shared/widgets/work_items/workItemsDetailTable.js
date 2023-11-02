@@ -22,7 +22,15 @@ import {
 } from "../../helpers/metricsMeta";
 
 import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilter} from "./wip/cycleTimeLatency/agGridUtils";
-import { BLANKS, getEffortCol, getStateCol, getWorkItemNameCol, getWorkItemTypeCol, useOptionalColumnsForWorkItems } from "../../../../components/tables/tableCols";
+import {
+  BLANKS,
+  getEffortCol,
+  getSDLCStatusCol,
+  getStateCol,
+  getWorkItemNameCol,
+  getWorkItemTypeCol,
+  useOptionalColumnsForWorkItems
+} from "../../../../components/tables/tableCols";
 import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
@@ -102,6 +110,7 @@ export function useWorkItemsDetailTableColumns({
     getWorkItemNameCol(),
     getWorkItemTypeCol(),
     getStateCol({filters}),
+    getSDLCStatusCol(),
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",
@@ -116,6 +125,7 @@ export function useWorkItemsDetailTableColumns({
       menuTabs: MenuTabs,
       comparator: SORTER.number_compare,
     },
+
     {
       headerName: getSelectedMetricDisplayName("cycleTimeOrLatency", stateType),
       field: "cycleTimeOrLatency",

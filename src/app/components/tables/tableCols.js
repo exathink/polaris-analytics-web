@@ -237,7 +237,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     [hasSprints]
   );
 
-
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
   return [col1, col2, col3, col4, col5, col9, col10, col11, col12, ...optionalCustomCols];
@@ -324,6 +323,16 @@ export function getWorkItemTypeCol() {
     menuTabs: MenuTabs,
     // comparator: SORTER.number_compare,
   };
+}
+
+export function getSDLCStatusCol(){
+  return {
+       field: "releaseStatus",
+       headerName: "SDLC Status",
+       cellRenderer: React.memo(TextWithStyle),
+       filter: "agSetColumnFilter",
+       menuTabs: MenuTabs
+  }
 }
 
 export const COL_TYPES = {
