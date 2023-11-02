@@ -343,6 +343,7 @@ export function getReleaseStatusCol(){
 
 export const COL_TYPES = {
   state: {type: "category", color: x => WorkItemStateTypeColor[x]},
+  releaseStatus: {type: "category"},
   workItemType: {
     type: "category",
     transformCategoryLabels: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
