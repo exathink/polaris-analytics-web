@@ -51,18 +51,18 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const columns = [
     {
-      title: "Phase",
-      dataIndex: "stateType",
-      key: "stateType",
-      width: "15%",
-      render: (text, record) => <span className="tw-font-semibold">{WorkItemStateTypeDisplayName[text]}</span>,
-    },
-    {
       title: "Workflow State",
       dataIndex: "state",
       key: "state",
       width: "30%",
       render: (text, record) => text,
+    },
+    {
+      title: "Phase",
+      dataIndex: "stateType",
+      key: "stateType",
+      width: "15%",
+      render: (text, record) => <span className="tw-font-semibold">{WorkItemStateTypeDisplayName[text]}</span>,
     },
     {
       title: "SDLC Stage",
