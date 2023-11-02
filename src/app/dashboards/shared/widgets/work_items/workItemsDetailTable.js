@@ -25,7 +25,7 @@ import {CustomFloatingFilter, CustomTotalAndFilteredRowCount, MultiCheckboxFilte
 import {
   BLANKS,
   getEffortCol,
-  getSDLCStatusCol,
+  getReleaseStatusCol,
   getStateCol,
   getWorkItemNameCol,
   getWorkItemTypeCol,
@@ -110,7 +110,7 @@ export function useWorkItemsDetailTableColumns({
     getWorkItemNameCol(),
     getWorkItemTypeCol(),
     getStateCol({filters}),
-    getSDLCStatusCol(),
+    getReleaseStatusCol(),
     {
       headerName: getSelectedMetricDisplayName("leadTimeOrAge", stateType),
       field: "leadTimeOrAge",

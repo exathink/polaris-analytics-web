@@ -2,7 +2,7 @@ import {Tag} from "antd";
 import React from "react";
 import {Highlighter} from "../../../../components/misc/highlighter";
 import {truncateString, useBlurClass} from "../../../../helpers/utility";
-import {PullRequestStateTypeColor, WorkItemStateTypeColor} from "../../../shared/config";
+import { PullRequestStateTypeColor, ReleaseStatusDisplayName, WorkItemStateTypeColor } from "../../../shared/config";
 import styles from "./renderers.module.css";
 
 // import issueType icons
@@ -171,6 +171,16 @@ export function IssueTypeCol(params) {
   return (
     <span>
       {IssueTypeMapping[issueType]?.icon ?? issueType} {IssueTypeMapping[issueType]?.name ?? ""}
+    </span>
+  );
+}
+
+export function ReleaseStatusCol(params) {
+  const releaseStatus = params.value;
+
+  return (
+    <span>
+      {releaseStatus ? ReleaseStatusDisplayName[releaseStatus] : ""}
     </span>
   );
 }
