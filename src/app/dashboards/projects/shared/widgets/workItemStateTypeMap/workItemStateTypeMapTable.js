@@ -65,7 +65,7 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
       render: (text, record) => text,
     },
     {
-      title: "SDLC Status",
+      title: "SDLC Stage",
       dataIndex: "releaseStatus",
       key: "releaseStatus",
       width: "25%",

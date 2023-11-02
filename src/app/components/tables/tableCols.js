@@ -11,7 +11,13 @@ import {
   parseTags,
   ArrayCol
 } from "./tableUtils";
-import {CardCol, IssueTypeCol, StateTypeCol, workItemTypeImageMapFromPublic} from "../../dashboards/projects/shared/helper/renderers";
+import {
+  CardCol,
+  IssueTypeCol,
+  ReleaseStatusCol,
+  StateTypeCol,
+  workItemTypeImageMapFromPublic
+} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { capitalizeFirstLetter, useBlurClass } from "../../helpers/utility";
@@ -325,11 +331,11 @@ export function getWorkItemTypeCol() {
   };
 }
 
-export function getSDLCStatusCol(){
+export function getReleaseStatusCol(){
   return {
        field: "releaseStatus",
-       headerName: "SDLC Status",
-       cellRenderer: React.memo(TextWithStyle),
+       headerName: "SDLC Stage",
+       cellRenderer: React.memo(ReleaseStatusCol),
        filter: "agSetColumnFilter",
        menuTabs: MenuTabs
   }
