@@ -11,7 +11,13 @@ import {
   parseTags,
   ArrayCol
 } from "./tableUtils";
-import {CardCol, IssueTypeCol, StateTypeCol, workItemTypeImageMapFromPublic} from "../../dashboards/projects/shared/helper/renderers";
+import {
+  CardCol,
+  IssueTypeCol,
+  ReleaseStatusCol,
+  StateTypeCol,
+  workItemTypeImageMapFromPublic
+} from "../../dashboards/projects/shared/helper/renderers";
 import {HIDDEN_COLUMNS_KEY} from "../../helpers/localStorageUtils";
 import {EFFORT_CATEGORIES, doesPairWiseFilterPass} from "../../dashboards/shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { capitalizeFirstLetter, useBlurClass } from "../../helpers/utility";
@@ -237,7 +243,6 @@ export function useOptionalColumnsForWorkItems({filters, workTrackingIntegration
     [hasSprints]
   );
 
-
   const optionalCustomCols = workTrackingIntegrationType === "jira" ? [col6, col7, col8] : [];
 
   return [col1, col2, col3, col4, col5, col9, col10, col11, col12, ...optionalCustomCols];
@@ -326,8 +331,19 @@ export function getWorkItemTypeCol() {
   };
 }
 
+export function getReleaseStatusCol(){
+  return {
+       field: "releaseStatus",
+       headerName: "SDLC Stage",
+       cellRenderer: React.memo(ReleaseStatusCol),
+       filter: "agSetColumnFilter",
+       menuTabs: MenuTabs
+  }
+}
+
 export const COL_TYPES = {
   state: {type: "category", color: x => WorkItemStateTypeColor[x]},
+  releaseStatus: {type: "category"},
   workItemType: {
     type: "category",
     transformCategoryLabels: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,

@@ -196,6 +196,25 @@ export const ReleaseStatus = {
   UNASSIGNED: "unassigned",
 }
 
+export const ReleaseStatusDisplayName = {
+  deferred: "Deferred",
+  roadmap: "Roadmap",
+  committed: "Committed",
+  implementation: "Implementation",
+  code_review: "Code Review",
+  testing: 'Testing',
+  integration: "Integration",
+  approval: "Approval",
+  deployable: "Deployable",
+  deployed: "Deployed",
+  releasable: "Releasable",
+  released: "Released",
+  validated: "Validated",
+  abandoned: "Abandoned",
+  terminal: "Terminal",
+  unassigned: "Unassigned",
+}
+
 /*
 The next two configs are coupled.
 If you add elements here make sure you review the impact on the next one.
