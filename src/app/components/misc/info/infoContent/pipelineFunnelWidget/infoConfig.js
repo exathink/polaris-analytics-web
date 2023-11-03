@@ -23,7 +23,7 @@ export function PipelineFunnelWidgetInitialInfoSummary() {
     <>
       <Section>
         <p>
-          Once you have set up the delivery process mapping on the right, the funnel will update and let you
+          Once you have set up the value stream mapping on the right, the funnel will update and let you
           visualize the end to end flow of work across the value stream in real time.
         </p>
         <p>So head over to the Value Stream Mapping widget first and set that up. </p>

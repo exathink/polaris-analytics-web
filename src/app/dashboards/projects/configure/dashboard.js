@@ -60,7 +60,7 @@ export function ValueStreamMappingInitialDashboard() {
             <div className="tw-flex tw-flex-col tw-items-center tw-bg-white tw-p-2">
               <div className="tw-flex tw-flex-col tw-items-center" id="state-type-mapping">
                 <div className={classNames(fontStyles["text-lg"], fontStyles["font-normal"])}>
-                  Configure the delivery process mapping for this value stream
+                  Let's set up the value stream mapping for this value stream.
                 </div>
                 <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
                   <em>Click on the info icon for more guidance.</em>
