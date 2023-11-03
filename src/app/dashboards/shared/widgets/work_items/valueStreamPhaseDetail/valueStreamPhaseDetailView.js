@@ -81,9 +81,9 @@ const PhaseDetailView = ({
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const [colState, setColState] = React.useState({
-    colData: workItemsByStateType[selectedStateType]?.map((x) => x["workItemType"])??[],
-    colId: "workItemType",
-    headerName: "Work Item Type",
+    colData: workItemsByStateType[selectedStateType]?.map((x) => x["state"])??[],
+    colId: "state",
+    headerName: "State",
   });
 
   const candidateWorkItems = React.useMemo(() => {
