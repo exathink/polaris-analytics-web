@@ -2,7 +2,8 @@ import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import {Chart} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
-import {Colors, WorkItemStateTypeColor, itemsAllDesc} from "../../../config";
+import {Colors, WorkItemStateTypeColor, itemsDesc} from "../../../config";
+import {i18nNumber} from "../../../../../helpers/utility";
 
 function getSeries({data, colId}) {
   return {
@@ -61,7 +62,7 @@ export const ValueStreamDistributionChart = Chart({
         softMin: 0,
 
         title: {
-          text: itemsAllDesc(specsOnly),
+          text: itemsDesc(specsOnly),
         },
       },
 
@@ -70,8 +71,10 @@ export const ValueStreamDistributionChart = Chart({
         hideDelay: 50,
         formatter: function () {
           return tooltipHtml_v2({
-            header: `${headerName}: ${this.x}`,
-            body: [[itemsAllDesc(specsOnly), this.y]],
+            header: `${this.x}`,
+            body: [
+              ["", `${this.y} ${itemsDesc(specsOnly)} (${i18nNumber(intl, (this.point.y / colData.length)*100, 0)}%)`, ]
+            ]
           });
         },
       },
