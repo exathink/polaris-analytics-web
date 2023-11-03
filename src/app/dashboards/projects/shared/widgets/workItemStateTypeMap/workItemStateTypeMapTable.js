@@ -1,7 +1,12 @@
 import React from "react";
 import {StripeTable} from "../../../../../components/tables/tableUtils";
 import { SelectDropdown2 } from "../../../../shared/components/select/selectDropdown";
-import {FlowTypeStates, ReleaseStatus, WorkItemStateTypeColorClass} from "../../../../shared/config";
+import {
+  FlowTypeStates,
+  ReleaseStatus,
+  ReleaseStatusDisplayName,
+  WorkItemStateTypeColorClass
+} from "../../../../shared/config";
 import { actionTypes } from "./constants";
 import { LabelValue } from "../../../../../helpers/components";
 import {useCustomPhaseMapping} from "../../../projectDashboard";
@@ -12,23 +17,23 @@ const typeItems = [
   {value: FlowTypeStates.WAITING, label: "Waiting"}
 ]
 
-const releaseItems = [
-  {stateTypes: ['backlog', 'open', 'wip', 'complete', 'closed'], value: ReleaseStatus.UNASSIGNED, label: "Unassigned"},
-  {stateTypes: ['backlog', 'closed'], value: ReleaseStatus.DEFERRED, label: "Deferred"},
-  {stateTypes: ['backlog'], value: ReleaseStatus.ROADMAP, label: "Roadmap"},
-  {stateTypes: ['backlog'], value: ReleaseStatus.COMMITTED, label: "Committed"},
-  {stateTypes: ['open', 'wip'], value: ReleaseStatus.IMPLEMENTATION, label: "Implementation"},
-  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.CODE_REVIEW, label: "Code Review"},
-  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.TESTING, label: "Testing"},
-  {stateTypes: ['wip', 'complete'],value: ReleaseStatus.INTEGRATION, label: "Integration"},
-  {stateTypes: ['backlog', 'open', 'wip', 'complete'], value: ReleaseStatus.APPROVAL, label: "Approval"},
-  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYABLE, label: "Deployable"},
-  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYED, label: "Deployed"},
-  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.RELEASABLE, label: "Releasable"},
-  {stateTypes: ['closed'],value: ReleaseStatus.RELEASED, label: "Released"},
-  {stateTypes: ['closed'], value: ReleaseStatus.VALIDATED, label: "Validated"},
-  {stateTypes: ['closed'], value: ReleaseStatus.ABANDONED, label: "Abandoned"},
-  {stateTypes: ['closed'], value: ReleaseStatus.TERMINAL, label: "Terminal"}
+const releaseStatusItems = [
+  {stateTypes: ['backlog', 'open', 'wip', 'complete', 'closed'], value: ReleaseStatus.UNASSIGNED, label: ReleaseStatusDisplayName[ReleaseStatus.UNASSIGNED]},
+  {stateTypes: ['backlog', 'closed'], value: ReleaseStatus.DEFERRED, label: ReleaseStatusDisplayName[ReleaseStatus.DEFERRED]},
+  {stateTypes: ['backlog'], value: ReleaseStatus.ROADMAP, label: ReleaseStatusDisplayName[ReleaseStatus.ROADMAP]},
+  {stateTypes: ['backlog'], value: ReleaseStatus.COMMITTED, label: ReleaseStatusDisplayName[ReleaseStatus.COMMITTED]},
+  {stateTypes: ['open', 'wip'], value: ReleaseStatus.IMPLEMENTATION, label: ReleaseStatusDisplayName[ReleaseStatus.IMPLEMENTATION]},
+  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.CODE_REVIEW, label: ReleaseStatusDisplayName[ReleaseStatus.CODE_REVIEW]},
+  {stateTypes: ['wip', 'complete'], value: ReleaseStatus.TESTING, label: ReleaseStatusDisplayName[ReleaseStatus.TESTING]},
+  {stateTypes: ['wip', 'complete'],value: ReleaseStatus.INTEGRATION, label: ReleaseStatusDisplayName[ReleaseStatus.INTEGRATION]},
+  {stateTypes: ['backlog', 'open', 'wip', 'complete'], value: ReleaseStatus.APPROVAL, label: ReleaseStatusDisplayName[ReleaseStatus.APPROVAL]},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYABLE, label: ReleaseStatusDisplayName[ReleaseStatus.DEPLOYABLE]},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.DEPLOYED, label: ReleaseStatusDisplayName[ReleaseStatus.DEPLOYED]},
+  {stateTypes: ['complete', 'closed'], value: ReleaseStatus.RELEASABLE, label: ReleaseStatusDisplayName[ReleaseStatus.RELEASABLE]},
+  {stateTypes: ['closed'],value: ReleaseStatus.RELEASED, label: ReleaseStatusDisplayName[ReleaseStatus.RELEASED]},
+  {stateTypes: ['closed'], value: ReleaseStatus.VALIDATED, label: ReleaseStatusDisplayName[ReleaseStatus.VALIDATED]},
+  {stateTypes: ['closed'], value: ReleaseStatus.ABANDONED, label: ReleaseStatusDisplayName[ReleaseStatus.ABANDONED]},
+  {stateTypes: ['closed'], value: ReleaseStatus.TERMINAL, label: ReleaseStatusDisplayName[ReleaseStatus.TERMINAL]}
 ]
 
 export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, releaseStatusRecords}) {
@@ -46,13 +51,6 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const columns = [
     {
-      title: "Phase",
-      dataIndex: "stateType",
-      key: "stateType",
-      width: "15%",
-      render: (text, record) => <span className="tw-font-semibold">{WorkItemStateTypeDisplayName[text]}</span>,
-    },
-    {
       title: "Workflow State",
       dataIndex: "state",
       key: "state",
@@ -60,17 +58,24 @@ export function useWorkItemStateTypeMapColumns({dispatch, flowTypeRecords, relea
       render: (text, record) => text,
     },
     {
-      title: "SDLC Status",
+      title: "Phase",
+      dataIndex: "stateType",
+      key: "stateType",
+      width: "15%",
+      render: (text, record) => <span className="tw-font-semibold">{WorkItemStateTypeDisplayName[text]}</span>,
+    },
+    {
+      title: "SDLC Stage",
       dataIndex: "releaseStatus",
       key: "releaseStatus",
       width: "25%",
       render: (text, record) => {
         return (
             <SelectDropdown2
-              value={releaseItems.find(y => {
+              value={releaseStatusItems.find(y => {
                 return y.value === (releaseStatusRecords?.[record.state] ?? "unassigned");
                 })}
-              uniqueItems={releaseItems.filter(y => y.stateTypes.includes(record.stateType))}
+              uniqueItems={releaseStatusItems.filter(y => y.stateTypes.includes(record.stateType))}
               handleChange={(releaseStatusVal) => handleReleaseStatusDropdownChange(record.state, releaseStatusVal)}
               testId={`release-status-select-${record.state}`}
             />

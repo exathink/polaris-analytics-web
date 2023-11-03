@@ -22,7 +22,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
         tags: $tags
         release: $release
         closedWithinDays: $closedWithinDays
-        interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs, EpicNodeRef]
+        interfaces: [WorkItemStateDetails, WorkItemsSourceRef, TeamNodeRefs, EpicNodeRef, WorkItemStateMapping]
         specsOnly: $specsOnly
         includeSubTasks: $includeSubTasks
         funnelView: $funnelView
@@ -53,6 +53,12 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
             teamNodeRefs {
               teamName
               teamKey
+            }
+            workItemStateMapping {
+                state
+                stateType
+                flowType
+                releaseStatus
             }
             workItemStateDetails {
               currentStateTransition {

@@ -131,6 +131,14 @@ export function useMotionEfficiency(workItems, latencyTarget) {
   }
 }
 
+function getWorkItemStateMapping(workItem) {
+  return {
+    stateType: workItem.workItemStateMapping?.stateType || workItem.stateType,
+    flowType: workItem.workItemStateMapping?.flowType || getCurrentFlowType(workItem.workItemStateDetails, workItem.state),
+    releaseStatus: workItem.workItemStateMapping?.releaseStatus
+  }
+}
+
 function getCurrentFlowType(workItemStateDetails, currentState) {
   return workItemStateDetails.currentDeliveryCycleDurations.find(d => d.state === currentState)?.flowType
 }
@@ -148,7 +156,7 @@ export function getWorkItemDurations(workItems) {
 
     return {
       ...workItem,
-      flowType:flowType,
+      ...getWorkItemStateMapping(workItem),
       timeInState: timeInCurrentState,
       duration: workItemStateDetails.duration,
       effort: workItemStateDetails.effort,
