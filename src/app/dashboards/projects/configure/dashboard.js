@@ -442,7 +442,7 @@ export function ValueStreamWorkStreamEditorDashboard({}) {
 const componentsMap = {
   [CONFIG_TABS.DELIVERY_PROCESS_MAPPING]: <ValueStreamMappingDashboard />,
   [CONFIG_TABS.VALUE_STREAMS]: <ValueStreamWorkStreamEditorDashboard />,
-  [CONFIG_TABS.RESPONSE_TIME_SLA]: <ResponseTimeSLASettingsDashboard dimension={"project"} />,
+  [CONFIG_TABS.TIMEBOX_SETTINGS]: <ResponseTimeSLASettingsDashboard dimension={"project"} />,
   [CONFIG_TABS.MEASUREMENT_SETTINGS]: <MeasurementSettingsDashboard dimension={"project"} />,
 };
 
