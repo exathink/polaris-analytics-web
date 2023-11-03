@@ -84,11 +84,24 @@ export const ValueStreamDistributionChart = Chart({
           animation: false,
           stacking: "normal",
           allowPointSelect: true,
+          maxPointWidth: 70,
           cursor: "pointer",
           states: {
             select: {
               color: null,
               opacity: 0.5,
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function () {
+              if (this.point.y === 0 || colData.length === 0) {
+                return "";
+              } else {
+                const fractionVal = this.point.y / colData.length;
+                const percentVal = i18nNumber(intl, fractionVal * 100, 2);
+                return `${percentVal}%`;
+              }
             },
           },
         },

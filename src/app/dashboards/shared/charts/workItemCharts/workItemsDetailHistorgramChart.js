@@ -109,6 +109,7 @@ export const WorkItemsDetailHistogramChart = Chart({
           stacking: 'normal',
           animation: false,
           allowPointSelect: true,
+          maxPointWidth: 70,
           cursor: "pointer",
           states: {
             select: {
