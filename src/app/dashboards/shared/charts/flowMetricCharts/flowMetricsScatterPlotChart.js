@@ -234,18 +234,10 @@ export const FlowMetricsScatterPlotChart = Chart({
             ["Lead Time: ", `${intl.formatNumber(leadTime)} days`],
             ["Backlog Time: ", backlogTime > 0 ? `${intl.formatNumber(backlogTime)} days` : "N/A"],
             ["Cycle Time: ", cycleTime > 0 ? `${intl.formatNumber(cycleTime)} days` : "N/A"],
-
-            ["Coding: ", specsOnly ? `${intl.formatNumber(duration)} days` : "N/A"],
-            ["Effort: ", specsOnly ? `${intl.formatNumber(effort)} FTE Days` : "N/A"],
-            ["Delivery: ", specsOnly ? `${intl.formatNumber(latency)} days` : "N/A"],
-            ["Authors: ", specsOnly ? `${intl.formatNumber(authorCount)}` : "N/A"],
           ];
 
           const indexOfSelectedMetric = METRICS.indexOf(selectedMetric);
-          beforeDivider = [...beforeDivider, afterDivider[indexOfSelectedMetric]];
-          afterDivider = afterDivider.filter((_, i) => i !== indexOfSelectedMetric);
-
-          const toolTipLines = [...beforeDivider, [`------`, ``], ...afterDivider];
+          const toolTipLines= [...beforeDivider, afterDivider[indexOfSelectedMetric]];
 
           return tooltipHtml({
             header: `${WorkItemTypeDisplayName[this.point.cycle.workItemType]}: ${this.point.cycle.name} (${
