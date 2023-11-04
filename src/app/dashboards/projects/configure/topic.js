@@ -2,7 +2,10 @@ import React from 'react';
 import {Topics} from "../../../meta/topics";
 import {ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
 import ConfigureDashboard, {ValueStreamMappingDashboard} from "./dashboard";
-import ValueStreamMapping from "./valueStreamMapping/topic"
+import ValueStreamMapping from "./valueStreamMapping/topic";
+import ValueStreams from "./valueStreams/topic";
+import TimeboxSettings from "./timeBoxSettings/topic";
+import GeneralSettings from "./generalSettings/topic";
 
 const topic =  {
   ...Topics.configure,
@@ -12,6 +15,22 @@ const topic =  {
       subnav: true,
       match: 'value-stream-mapping',
       topic: ValueStreamMapping
+    },
+
+    {
+      subnav: true,
+      match: 'timebox-settings',
+      topic: TimeboxSettings
+    },
+    {
+      subnav: true,
+      match: 'value-streams',
+      topic: ValueStreams
+    },
+    {
+      subnav: true,
+      match: 'general-settings',
+      topic: GeneralSettings
     },
     {
       match: 'response-time-sla',
