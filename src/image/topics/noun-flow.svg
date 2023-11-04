@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1"
+     style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;"
+     viewBox="0 0 256 115" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd">
+    <defs>
+        <style type="text/css">
+   
+            .fil0 {fill:black;fill-rule:nonzero}
+   
+        </style>
+    </defs>
+    <g><path class="fil0" d="M256 4c-116,74 -152,-28 -256,33 106,-87 145,13 256,-33z"/>
+        <path class="fil0" d="M256 32c-116,73 -152,-29 -256,32 106,-87 145,13 256,-32z"/>
+        <path class="fil0" d="M256 59c-116,73 -152,-28 -256,33 106,-87 145,13 256,-33z"/></g>
+</svg>

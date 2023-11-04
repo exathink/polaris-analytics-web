@@ -1,6 +1,8 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl.macro';
 
+import flow from "../../image/topics/noun-flow.svg";
+
 export const Topics = {
   flow: {
     name: 'flow',
@@ -101,6 +103,11 @@ export const Topics = {
     name: 'projects',
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     icon: 'ion-folder'
+  },
+  value_streams: {
+    name: 'value_streams',
+    display: () => (<FormattedMessage id='topics.value_streams' defaultMessage="Value Streams"/>),
+    icon: 'flow'
   },
   pull_requests: {
     name: 'pull_requests',

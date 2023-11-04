@@ -3,7 +3,7 @@ import {Topics} from "../../../../meta/topics";
 
 
 const topic =  {
-  ...Topics.projects,
+  ...Topics.value_streams,
   routes: [
     {
       match: '',
