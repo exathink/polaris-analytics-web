@@ -11,7 +11,7 @@ import {
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
-  WorkItemTypeScatterRadius
+  WorkItemTypeScatterRadius, workItemTypeScatterRadiusFlagged
 } from "../../config";
 import {
   getImpedance,
@@ -36,7 +36,6 @@ function getSeriesByStateType(workItems) {
         key: `${stateType}`,
         id: `${stateType}`,
         name: `${WorkItemStateTypeDisplayName[stateType]}`,
-        color: `${WorkItemStateTypeColor[stateType]}`,
         marker: {
           symbol: "circle"
         },
@@ -46,10 +45,10 @@ function getSeriesByStateType(workItems) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
+              color: workItem.flagged ? 'rgb(255,0,0)' : workItemFlowTypeColor(workItem.stateType),
               marker: {
-                symbol: Symbols.WorkItemType[workItem.workItemType],
-                radius: WorkItemTypeScatterRadius[workItem.workItemType]
-              },
+                symbol: workItem.flagged ? 'square' : 'circle',
+                radius: workItem.flagged ? workItemTypeScatterRadiusFlagged(workItem.workItemType) : WorkItemTypeScatterRadius[workItem.workItemType]},
               workItem: workItem
             }
           )
@@ -79,19 +78,22 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
         symbol: "circle",
       },
       allowPointSelect: true,
-      color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
+
       data: workItemsByState[state].map((workItem) => ({
         x: workItem.cycleTime,
         y: workItem.latency || workItem.cycleTime,
 
+        color: workItem.flagged ? 'rgb(255,0,0)' : workItemFlowTypeColor(workItem.flowType),
         marker: {
-          symbol: Symbols.WorkItemType[workItem.workItemType],
+          symbol: workItem.flagged ? 'square' : 'circle',
+          radius: workItem.flagged ? workItemTypeScatterRadiusFlagged(workItem.workItemType) : WorkItemTypeScatterRadius[workItem.workItemType],
         },
         workItem: workItem,
       })),
       cursor: "pointer",
     }));
 }
+
 
 export function getTitle({workItems, stageName, specsOnly, selectedQuadrant, title}) {
   const count = workItems.length;

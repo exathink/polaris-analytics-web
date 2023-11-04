@@ -50,6 +50,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
             releases
             priority
             sprints
+            flagged
             teamNodeRefs {
               teamName
               teamKey
