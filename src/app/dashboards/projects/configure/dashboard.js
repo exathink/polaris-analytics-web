@@ -156,7 +156,7 @@ export function ValueStreamMappingDashboard() {
   }
 
   const drawerElement = ({initialValues, instanceKey}) => (
-    <Drawer placement="left" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
+    <Drawer placement="right" height={355} closable={false} onClose={() => setVisible(false)} visible={visible}>
       <MutationExecution mutationLoading={mutationLoading} status={status}/>
       <div className="tw-flex tw-flex-col tw-gap-8">
         <div className="tw-flex tw-flex-col tw-justify-center tw-border-0 tw-border-b tw-border-solid tw-border-b-gray-200 tw-pb-4">
@@ -254,7 +254,7 @@ export function ValueStreamMappingDashboard() {
         title={" "}
         controls={[
           () => (
-            <div className="tw-absolute tw-top-4 tw-right-12 tw-z-20" onClick={handleClick}>
+            <div className="tw-absolute tw-top-4 tw-left-1/16 tw-z-20" onClick={handleClick}>
               <Button type="primary">Customize Phase Names</Button>
             </div>
           ),
@@ -278,7 +278,7 @@ export function ValueStreamMappingDashboard() {
               }}
             />
           )}
-          showDetail={false}
+          showDetail={true}
         />
         <DashboardWidget
           className="tw-col-start-2 tw-row-span-6 tw-row-start-1"
@@ -296,7 +296,9 @@ export function ValueStreamMappingDashboard() {
               />
             );
           }}
+          showDetail={true}
         />
+
       </DashboardRow>
       {drawerElement({initialValues: customPhaseMapping, instanceKey: key})}
     </Dashboard>
