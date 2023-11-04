@@ -2,14 +2,16 @@ import React from 'react';
 import {Topics} from "../../../meta/topics";
 import {ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/settingWidgets";
 import ConfigureDashboard, {ValueStreamMappingDashboard} from "./dashboard";
+import ValueStreamMapping from "./valueStreamMapping/topic"
 
 const topic =  {
   ...Topics.configure,
   ContextControl: false,
   routes: [
     {
-      match: 'value-stream',
-      component: () => <ValueStreamMappingDashboard/>
+      subnav: true,
+      match: 'value-stream-mapping',
+      topic: ValueStreamMapping
     },
     {
       match: 'response-time-sla',
@@ -17,7 +19,7 @@ const topic =  {
     },
     {
       match: '',
-      component: ConfigureDashboard
+      redirect: "value-stream-mapping"
     }
   ]
 };

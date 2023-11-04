@@ -254,7 +254,7 @@ export function ValueStreamMappingDashboard() {
         title={" "}
         controls={[
           () => (
-            <div className="tw-absolute tw-top-4 tw-left-1/16 tw-z-20" onClick={handleClick}>
+            <div className="tw-absolute tw-top-6 tw-left-1/16 tw-z-20" onClick={handleClick}>
               <Button type="primary">Customize Phase Names</Button>
             </div>
           ),
