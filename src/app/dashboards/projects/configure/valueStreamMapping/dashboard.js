@@ -26,6 +26,7 @@ import {
 } from "../../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
 
 import {DetailViewTooltipTypes} from "../../../../framework/viz/dashboard/dashboardWidget";
+import { CONFIG_TABS } from "../../../shared/widgets/configure/configSelector/configSelector";
 
 
 export function ValueStreamMappingDashboard() {
@@ -276,9 +277,21 @@ export function ValueStreamMappingInitialDashboard() {
   );
 }
 
+function ValueStreamMappingDashboardRouter() {
+  const {
+    project: {mappedWorkStreamCount},
+  } = useProjectContext();
+
+  const isValueStreamMappingNotDone = mappedWorkStreamCount === 0;
+  if (isValueStreamMappingNotDone) {
+    return <ValueStreamMappingInitialDashboard />;
+  }
+  return <ValueStreamMappingDashboard/>
+}
+
 const dashboard = (({viewerContext}) => (
   <ProjectDashboard>
-    <ValueStreamMappingDashboard/>
+      <ValueStreamMappingDashboardRouter/>
   </ProjectDashboard>
 ));
 
