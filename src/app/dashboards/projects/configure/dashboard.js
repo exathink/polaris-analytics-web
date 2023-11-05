@@ -193,10 +193,10 @@ export function ValueStreamWorkStreamEditorView({projectKey}) {
         />
       )}
       <div className="tw-flex tw-items-center tw-justify-between">
-        <LabelValue label={"Nested Value Streams"} className="tw-ml-2" />
+        <LabelValue label={"Value Streams"} className="tw-ml-2" />
         <Button type="primary" className="tw-mr-2" onClick={() => setVisible(true)}>
           {" "}
-          <PlusOutlined /> New Value Stream
+          <PlusOutlined /> Nested Value Stream
         </Button>
         <ValueStreamForm
           formType="NEW_FORM"
