@@ -1,7 +1,13 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl.macro';
 
-import flow from "../../image/topics/noun-flow.svg";
+import {
+  FieldTimeOutlined,
+  ProjectOutlined,
+  FunnelPlotOutlined,
+  SettingOutlined,
+  RadarChartOutlined,
+}  from "@ant-design/icons";
 
 export const Topics = {
   flow: {
@@ -102,12 +108,22 @@ export const Topics = {
   projects: {
     name: 'projects',
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
-    icon: 'ion-folder'
+    Icon: ProjectOutlined
   },
-  value_streams: {
-    name: 'value_streams',
-    display: () => (<FormattedMessage id='topics.value_streams' defaultMessage="Value Streams"/>),
-    icon: 'flow'
+  timebox: {
+    name: 'timebox',
+    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Timeboxes"/>),
+    Icon: FieldTimeOutlined
+  },
+  flow_mapping: {
+    name: 'value_stream_map',
+    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Flow Map"/>),
+    Icon: FunnelPlotOutlined
+  },
+  settings: {
+    name: 'settings',
+    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Settings"/>),
+    Icon: SettingOutlined
   },
   pull_requests: {
     name: 'pull_requests',

@@ -3,7 +3,7 @@ import {Topics} from "../../../../meta/topics";
 
 
 const topic =  {
-  ...Topics.projects,
+  ...Topics.timebox,
   routes: [
     {
       match: '',

@@ -3,7 +3,7 @@ import {Topics} from "../../../../meta/topics";
 
 
 const topic =  {
-  ...Topics.projects,
+  ...Topics.flow_mapping,
   routes: [
     {
       match: '',
