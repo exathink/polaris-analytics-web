@@ -31,10 +31,6 @@ const context = {
         display: match => messages.instanceDisplay(match.params.organization),
         routes: [
           {
-            match: 'activity',
-            topic: Activity
-          },
-          {
             match: 'value-streams',
             topic: Project
           },
@@ -51,7 +47,7 @@ const context = {
           },
           {
             match: '',
-            redirect: 'activity'
+            redirect: 'value-streams'
           }
         ]
       }
