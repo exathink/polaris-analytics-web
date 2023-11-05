@@ -6,6 +6,7 @@ import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
 import ValueMix from "./valueMix/topic";
+import TimeboxSettings from "./timeBoxSettings/topic";
 
 const topic = {
   ...Topics.flow,
@@ -39,6 +40,11 @@ const topic = {
       match: "valueMix",
       subnav: true,
       topic: ValueMix,
+    },
+    {
+      subnav: true,
+      match: 'timebox-settings',
+      topic: TimeboxSettings
     },
     {
       requiredFeatures: ['ui.new-card-design'],
