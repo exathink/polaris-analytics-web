@@ -110,19 +110,19 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     Icon: ProjectOutlined
   },
-  timebox: {
-    name: 'timebox',
-    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Timeboxes"/>),
+  timeboxing: {
+    name: 'timeboxing',
+    display: () => (<FormattedMessage id='topics.timeboxing' defaultMessage="Timeboxes"/>),
     Icon: FieldTimeOutlined
   },
   flow_mapping: {
     name: 'value_stream_map',
-    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Flow Map"/>),
+    display: () => (<FormattedMessage id='topics.flow_mapping' defaultMessage="Flow Map"/>),
     Icon: FunnelPlotOutlined
   },
   settings: {
     name: 'settings',
-    display: () => (<FormattedMessage id='topics.timebox' defaultMessage="Settings"/>),
+    display: () => (<FormattedMessage id='topics.settings' defaultMessage="Settings"/>),
     Icon: SettingOutlined
   },
   pull_requests: {
