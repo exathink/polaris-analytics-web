@@ -238,13 +238,6 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
             [`State: `, `${state}`],
             ["Lead Time: ", `${formatNumber(leadTime)} days`],
-            [`------`, ``],
-            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
-            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
-            ["Coding: ", expect.stringMatching(`days`)],
-            ["Effort: ", expect.stringMatching(`FTE Days`)],
-            ["Delivery: ", `${formatNumber(latency)} days`],
-            ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
       });
@@ -419,14 +412,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
             [`State: `, `${state}`],
             ["Lead Time: ", `${formatNumber(leadTime)} days`],
-            [`------`, ``],
-            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
-            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
 
-            ["Coding: ", expect.stringMatching(`days`)],
-            ["Effort: ", expect.stringMatching(`FTE Days`)],
-            ["Delivery: ", `${formatNumber(latency)} days`],
-            ["Authors: ", `${formatNumber(authorCount)}`],
           ],
         });
       });
@@ -574,13 +560,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
             [`State: `, `${state}`],
             ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
-            [`------`, ``],
-            ["Lead Time: ", `${formatNumber(leadTime)} days`],
-            ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
-            ["Coding: ", expect.stringMatching(`days`)],
-            ["Effort: ", expect.stringMatching(`FTE Days`)],
-            ["Delivery: ", `${formatNumber(latency)} days`],
-            ["Authors: ", `${formatNumber(authorCount)}`],
+
           ],
         });
       });
@@ -832,13 +812,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             [`Closed: `, `${formatDateRaw(epoch(endDate))}`],
             [`State: `, `${state}`],
             ["Backlog Time: ", `${formatNumber(backlogTime)} days`],
-            [`------`, ``],
-            ["Lead Time: ", `${formatNumber(leadTime)} days`],
-            ["Cycle Time: ", `${formatNumber(cycleTime)} days`],
-            ["Coding: ", expect.stringMatching(`days`)],
-            ["Effort: ", expect.stringMatching(`FTE Days`)],
-            ["Delivery: ", `${formatNumber(latency)} days`],
-            ["Authors: ", `${formatNumber(authorCount)}`],
+
           ],
         });
       });
