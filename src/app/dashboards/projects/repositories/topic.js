@@ -13,11 +13,6 @@ const topic =  {
   ContextControl: false,
   routes: [
     {
-      match: 'code-reviews',
-      subnav: true,
-      topic: PullRequests,
-    },
-    {
       match: 'activity',
       subnav: true,
       topic: Activity,
@@ -30,7 +25,7 @@ const topic =  {
     },
     {
       match: '',
-      redirect: 'code-reviews'
+      redirect: 'activity'
     }
   ]
 };

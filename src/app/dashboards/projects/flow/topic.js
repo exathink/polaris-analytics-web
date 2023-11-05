@@ -36,9 +36,9 @@ const topic = {
     },
     {
 
-      match: "valueMix",
+      match: "code-reviews",
       subnav: true,
-      topic: ValueMix,
+      topic: PullRequests,
     },
     {
       subnav: true,
