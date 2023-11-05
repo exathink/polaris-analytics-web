@@ -1,6 +1,6 @@
 import React from "react";
 import { Topics } from "../../../meta/topics";
-import Summary from "./summary/topic";
+import Stability from "./stability/topic";
 import Wip from "./wip/topic";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
@@ -13,9 +13,9 @@ const topic = {
   routes: [
     {
       requiredFeatures: ['ui.new-card-design'],
-      match: "summary",
+      match: "stability",
       subnav: true,
-      topic: Summary,
+      topic: Stability,
     },
     {
       requiredFeatures: ['ui.new-card-design'],
@@ -49,7 +49,7 @@ const topic = {
     {
       requiredFeatures: ['ui.new-card-design'],
       match: '',
-      redirect: 'summary'
+      redirect: 'stability'
     },
     // This technique works because when the feature flag is present the redirect route to topic overides the route to
     // the main dashboard. Its a bit of a hack, but works for now without having to have a switch in the routes array.
