@@ -16,6 +16,17 @@ import Button from "../../../../../components/uielements/button";
 import { Dashboard, DashboardRow, DashboardWidget } from "../../../../framework/viz/dashboard";
 import { ProjectPipelineFunnelWidget } from "../../shared/widgets/funnel";
 import { WorkItemStateTypeMapWidget } from "../../shared/widgets/workItemStateTypeMap";
+import classNames from "classnames";
+import fontStyles from "../../../../framework/styles/fonts.module.css";
+import {
+  PipelineFunnelWidgetInitialInfoConfig
+} from "../../../../components/misc/info/infoContent/pipelineFunnelWidget/infoConfig";
+import {
+  DeliveryProcessMappingInitialInfoConfig
+} from "../../../../components/misc/info/infoContent/deliveryProcessMapping/infoConfig";
+
+import {DetailViewTooltipTypes} from "../../../../framework/viz/dashboard/dashboardWidget";
+
 
 export function ValueStreamMappingDashboard() {
   const { project: { key, settingsWithDefaults }, context } = useProjectContext();
@@ -161,7 +172,7 @@ export function ValueStreamMappingDashboard() {
         title={" "}
         controls={[
           () => (
-            <div className="tw-absolute tw-top-6 tw-left-1/16 tw-z-20" onClick={handleClick}>
+            <div className="tw-absolute tw-top-5 tw-left-1/16 tw-z-20" onClick={handleClick}>
               <Button type="primary">Customize Phase Names</Button>
             </div>
           )
@@ -170,7 +181,7 @@ export function ValueStreamMappingDashboard() {
         <DashboardWidget
           className="tw-row-span-4 tw-row-start-2"
           name="project-pipeline-detailed"
-          title={" "}
+          title={""}
           infoConfig={ProjectPipelineFunnelWidget.infoConfig}
           render={({ view }) => (
             <ProjectPipelineFunnelWidget
@@ -186,7 +197,7 @@ export function ValueStreamMappingDashboard() {
             />
           )}
           showDetail={true}
-          detailTooltipTitle={"Show Details"}
+          showDetailTooltipType={DetailViewTooltipTypes.BAR_CHART_DETAILS_VIEW}
         />
         <DashboardWidget
           className="tw-col-start-2 tw-row-span-6 tw-row-start-1"
@@ -205,10 +216,62 @@ export function ValueStreamMappingDashboard() {
             );
           }}
           showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.FOCUS_VIEW}
         />
 
       </DashboardRow>
       {drawerElement({ initialValues: customPhaseMapping, instanceKey: key })}
+    </Dashboard>
+  );
+}
+
+export function ValueStreamMappingInitialDashboard() {
+  const { project: { key, settingsWithDefaults }, context } = useProjectContext();
+
+  return (
+    <Dashboard
+      dashboardVideoConfig={ValueStreamMappingDashboard.videoConfig}
+      gridLayout={true}
+      className="tw-grid tw-grid-cols-[40%_59%] tw-grid-rows-[auto_1fr_1fr_1fr_1fr_1fr] tw-gap-2"
+    >
+      <DashboardRow>
+        <DashboardWidget
+          className="tw-col-span-2 tw-col-start-1 tw-row-start-1"
+          render={() => (
+            <div className="tw-flex tw-flex-col tw-items-center tw-bg-white tw-p-2">
+              <div className="tw-flex tw-flex-col tw-items-center" id="state-type-mapping">
+                <div className={classNames(fontStyles["text-lg"], fontStyles["font-normal"])}>
+                  Let's set up the value stream mapping for this value stream.
+                </div>
+                <div className={classNames(fontStyles["text-xs"], fontStyles["font-normal"])}>
+                  <em>Click on the info icon for more guidance.</em>
+                </div>
+              </div>
+            </div>
+          )}
+        />
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
+          className="tw-col-span-2  tw-col-start-1 tw-row-start-2"
+          infoConfig={DeliveryProcessMappingInitialInfoConfig}
+          name="workitem-statetype-map"
+          render={({ view }) => {
+            return (
+              <WorkItemStateTypeMapWidget
+                instanceKey={key}
+                context={context}
+                days={30}
+                view={view}
+                showMeLinkVisible={true}
+              />
+            );
+          }}
+          showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.FOCUS_VIEW}
+
+        />
+      </DashboardRow>
     </Dashboard>
   );
 }

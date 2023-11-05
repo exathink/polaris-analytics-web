@@ -7,10 +7,20 @@ import fontStyles from "../../styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoCard} from "../../../components/misc/info/infoCard";
 import {Tooltip} from "antd";
-import {FullscreenExitOutlined, PieChartFilled} from "@ant-design/icons";
+import {FullscreenExitOutlined, PieChartFilled, FullscreenOutlined, BarChartOutlined} from "@ant-design/icons";
 import {Colors} from "../../../dashboards/shared/config";
 
-const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, detailTooltipTitle="Open Analysis View"}) => {
+export const DetailViewTooltipTypes = {
+  FOCUS_VIEW: {
+    tooltip: "Focus View",
+    Icon: FullscreenOutlined
+  },
+  BAR_CHART_DETAILS_VIEW: {
+    tooltip: "Analysis View",
+    Icon:  BarChartOutlined
+  }
+}
+const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, showDetailTooltipType, showDetailIcon, showDetailTooltip = "Open Analysis View",  }) => {
   const infoElement = infoConfig && (
     <InfoCard
       title={infoConfig.title}
@@ -27,20 +37,23 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, d
   );
   const color = Colors.DashboardWidgetIcons.primary;
 
+  const ShowDetailIcon = showDetailTooltipType?.Icon || showDetailIcon || PieChartFilled;
+  const showDetailTooltipTitle = showDetailTooltipType?.tooltip || showDetailTooltip;
   return showDetail ? (
     <div className={classNames(className??uniqueStyles.iconsWrapper, "tw-flex tw-items-center")} data-testid="analysis-view">
-      {!itemSelected && infoElement}
+
       <nav>
         {itemSelected ? (
-          <Tooltip title={"Close Analysis View"}>
+          <Tooltip title={"Close"} className={classNames(("tw-pr-2"))}>
             <FullscreenExitOutlined onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
           </Tooltip>
         ) : (
-          <Tooltip title={detailTooltipTitle}>
-            <PieChartFilled onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
+          <Tooltip title={showDetailTooltipTitle} className={classNames(("tw-pr-2"))}>
+            <ShowDetailIcon onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
           </Tooltip>
         )}
       </nav>
+      {infoElement}
     </div>
   ) : (
     <React.Fragment>{infoElement}</React.Fragment>
@@ -48,7 +61,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, d
 };
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, detailTooltipTitle, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail,  showDetailTooltipType, showDetailIcon, showDetailTooltip, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
   return (
     <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
@@ -100,7 +113,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
 
       }
       <WidgetMenu
-        {...{itemSelected, showDetail, detailTooltipTitle}}
+        {...{itemSelected, showDetail,showDetailTooltipType, showDetailTooltip, showDetailIcon}}
         onClick={() => (
           itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
         )}
