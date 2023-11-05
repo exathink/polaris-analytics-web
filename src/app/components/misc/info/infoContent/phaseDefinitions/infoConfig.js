@@ -9,8 +9,8 @@ export function PhaseDefinitions() {
         <div className={classNames(styles.title, styles.define)}>Define</div>
         <div className={styles.defineContent}>
           <p>
-            This phase includes states representing your active backlog, cards that are at the design or definition
-            stage, and cards that are ready for development.
+            This phase includes states representing your active backlog, work items that are at the design or definition
+            stage, and work items that are ready for development.
           </p>
           <p>
             When a card is initially created, it starts in this phase and it marks the start of a
@@ -26,16 +26,16 @@ export function PhaseDefinitions() {
         <div className={classNames(styles.title, styles.open)}>Open</div>
         <div className={styles.openContent}>
           <p>
-            This phase is meant for cards that are under development but are not currently being worked on by anyone.
+            This phase is meant for work items that are under development but are not currently being worked on by anyone.
           </p>
-          <p>Blocked cards, cards waiting for code-review etc belong here.</p>
+          <p>Blocked work items, work items waiting for code-review etc belong here.</p>
           <p>Lead and cycle time clocks continue to tick in this phase.</p>
         </div>
       </div>
       <div className={styles.phase}>
         <div className={classNames(styles.title, styles.make)}>Code</div>
         <div className={styles.makeContent}>
-          <p>This phase is meant for cards where implementation has begun.</p>
+          <p>This phase is meant for work items where implementation has begun.</p>
           <p>Cards that have been marked "in-progress" by developers belong here.</p>
           <p>
             When a card exits this phase it is considered code-complete: all code is reviewed and merged into an
@@ -47,7 +47,7 @@ export function PhaseDefinitions() {
       <div className={styles.phase}>
         <div className={classNames(styles.title, styles.deliver)}>Ship</div>
         <div className={styles.deliverContent}>
-          <p>This phase is meant for code-complete cards that are ready for QA and delivery to production.</p>
+          <p>This phase is meant for code-complete work items that are ready for QA and delivery to production.</p>
           <p>
             If you have a manual QA or acceptance stage, prior to deployment then any workflow states that track this
             acceptance process belong here.
@@ -62,7 +62,7 @@ export function PhaseDefinitions() {
       <div className={styles.phase}>
         <div className={classNames(styles.title, styles.closed)}>Closed</div>
         <div className={styles.closedContent}>
-          <p>This phase is meant for cards that are released and available to customers in production.</p>
+          <p>This phase is meant for work items that are released and available to customers in production.</p>
           <p>A delivery cycle ends when a card enters a state in this phase.</p>
           <p>Lead and cycle time clocks stop ticking in this phase.</p>
           <p>A new delivery cycle starts when a card transitions out of this phase.</p>

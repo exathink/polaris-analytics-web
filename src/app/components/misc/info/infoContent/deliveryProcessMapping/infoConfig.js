@@ -31,12 +31,12 @@ export function DeliveryProcessMappingInitialSummary() {
     <>
       <Section>
         <p>
-          Polaris models a delivery process with a mapping of states in your workflow to one of five standard phases
+          Polaris models the flow of work in a value stream with a mapping of states in your workflow to one of five standard phases
           that represent key stages in the software development lifecycle.
         </p>
         <p>
-          This is a pre-requisite for analyzing response time metrics for the value stream. It needs to be configured
-          before Polaris can show you the analytics dashboards for the value stream.
+          This is a pre-requisite for analyzing flow of work for the value stream, and must be configured
+          before Polaris can calculate flow metrics for the value stream.
         </p>
         <p>
           Click the button below for guidance on how to configure this mapping. You may update this mapping at any time
@@ -72,7 +72,9 @@ export function DeliveryProcessMappingDetails() {
       <Section heading={"Mapping a Value Stream"}>
         <p>
           Polaris models the flow of work in your value stream with a mapping of states in your workflow to one of five standard phases
-          that represent key stages in the software development lifecycle. There are four <em>work</em> phases:
+          that represent key stages in the software development lifecycle.</p>
+        <p>
+          There are four <em>work</em> phases:
           Define, Open, Code and Ship and one
           <em> terminal</em> phase: Closed.
         </p>

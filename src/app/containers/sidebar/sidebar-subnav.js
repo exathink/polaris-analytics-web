@@ -81,7 +81,9 @@ class SidebarSubnav extends Component {
           >
             <Menu key={`subnav`} {...menuProps}>
               {currentContext
-                ? subNavRoutes.map((route) => (
+                ? subNavRoutes.map((route) => {
+                  const TopicIcon = route.topic.Icon;
+                  return (
                     <Menu.Item
                       className="ant-menu-item"
                       key={`${currentContext.urlFor(selectedSubNavParent)}/${route.match}`}
@@ -93,14 +95,19 @@ class SidebarSubnav extends Component {
                         })}
                       >
                         <span className="isoMenuHolder" style={submenuColor}>
-                          <i className={classNames(route.topic.icon, "!tw-text-black")} />
+                          {
+                            route.topic.Icon ?
+                              <TopicIcon className={classNames("!tw-text-black")} style={{marginRight: "0px"}} />
+                              :
+                              <i className={classNames(route.topic.icon, "!tw-text-black")} />
+                          }
                           <span className={classNames("nav-text !tw-text-black", mode === "vertical" ? "tw-ml-1" : "")}>
                             {route.topic.display()}
                           </span>
                         </span>
                       </Link>
                     </Menu.Item>
-                  ))
+                  )})
                 : null}
             </Menu>
           </Sider>

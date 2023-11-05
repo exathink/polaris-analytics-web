@@ -3,7 +3,7 @@ import React from "react";
 export const CONFIG_TABS = {
   DELIVERY_PROCESS_MAPPING: "delivery-process-mapping",
   VALUE_STREAMS: "value-streams",
-  RESPONSE_TIME_SLA: "response-time-sla",
+  TIMEBOX_SETTINGS: "response-time-sla",
   MEASUREMENT_SETTINGS: "measurement-settings",
 };
 
@@ -15,17 +15,18 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
             key: CONFIG_TABS.DELIVERY_PROCESS_MAPPING,
             display: "Value Stream Mapping",
           },
+          {
+            key: CONFIG_TABS.VALUE_STREAMS,
+            display: "Value Streams / Work Streams",
+          },
         ]
       : [];
 
   const groupings = [
     ...valueStreamGrouping,
+
     {
-      key: CONFIG_TABS.VALUE_STREAMS,
-      display: "Value Streams / Work Streams",
-    },
-    {
-      key: CONFIG_TABS.RESPONSE_TIME_SLA,
+      key: CONFIG_TABS.TIMEBOX_SETTINGS,
       display: "TimeBox Settings",
     },
     {

@@ -7,7 +7,7 @@ import {ConfigSelector, CONFIG_TABS} from "../../shared/widgets/configure/config
 
 const dashboard_id = "dashboards.teams.configure";
 export default withViewerContext(({viewerContext}) => {
-  const [configTab, setConfigTab] = React.useState(CONFIG_TABS.MEASUREMENT_SETTINGS);
+  const [configTab, setConfigTab] = React.useState(CONFIG_TABS.TIMEBOX_SETTINGS);
 
   return (
     <Dashboard dashboard={`${dashboard_id}`} gridLayout={true}>
@@ -18,7 +18,7 @@ export default withViewerContext(({viewerContext}) => {
         controls={[() => <ConfigSelector dimension={"team"} configTab={configTab} setConfigTab={setConfigTab} settingsName={"Team Settings"}/>]}
         Team
       >
-        {configTab === CONFIG_TABS.RESPONSE_TIME_SLA ? (
+        {configTab === CONFIG_TABS.TIMEBOX_SETTINGS ? (
           <ResponseTimeSLASettingsDashboard dimension={"team"} />
         ) : configTab === CONFIG_TABS.MEASUREMENT_SETTINGS ? (
           <MeasurementSettingsDashboard dimension={"team"} />
