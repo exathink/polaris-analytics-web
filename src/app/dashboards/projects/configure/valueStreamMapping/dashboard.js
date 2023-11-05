@@ -186,6 +186,7 @@ export function ValueStreamMappingDashboard() {
             />
           )}
           showDetail={true}
+          detailTooltipTitle={"Show Details"}
         />
         <DashboardWidget
           className="tw-col-start-2 tw-row-span-6 tw-row-start-1"

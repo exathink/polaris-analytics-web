@@ -10,7 +10,7 @@ import {Tooltip} from "antd";
 import {FullscreenExitOutlined, PieChartFilled} from "@ant-design/icons";
 import {Colors} from "../../../dashboards/shared/config";
 
-const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) => {
+const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, detailTooltipTitle="Open Analysis View"}) => {
   const infoElement = infoConfig && (
     <InfoCard
       title={infoConfig.title}
@@ -36,7 +36,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
             <FullscreenExitOutlined onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
           </Tooltip>
         ) : (
-          <Tooltip title={"Open Analysis View"}>
+          <Tooltip title={detailTooltipTitle}>
             <PieChartFilled onClick={onClick} style={{fontSize: "2.5vh", color: color}} />
           </Tooltip>
         )}
@@ -48,7 +48,7 @@ const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className}) 
 };
 
 export const DashboardWidget = withRouter(withNavigationContext(
-  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
+  ({children, name, w, title, subtitle, hideTitlesInDetailView, controls, styles, itemSelected, dashboardUrl, match, context, navigate, render, showDetail, detailTooltipTitle, enableVideo, videoConfig, infoConfig, fullScreen, className="", gridLayout, ...rest}) => {
 
   return (
     <Flex column w={w} className={classNames(uniqueStyles["dashboard-item"], className)} data-testid={name}>
@@ -100,7 +100,7 @@ export const DashboardWidget = withRouter(withNavigationContext(
 
       }
       <WidgetMenu
-        {...{itemSelected, showDetail}}
+        {...{itemSelected, showDetail, detailTooltipTitle}}
         onClick={() => (
           itemSelected ? navigate.push(`${dashboardUrl}${context.search}`) : navigate.push(`${match.url}/${name}${context.search}`)
         )}
