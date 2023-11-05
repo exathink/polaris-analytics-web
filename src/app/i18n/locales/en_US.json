@@ -72,5 +72,8 @@
   "landing.yourDashboards": "Your Dashboards",
   "landing.importRepositories": "Analyze your code",
   "landing.ossDashboards": "Browse open source dashboards",
-  "topics.configure": "Model"
+  "topics.configure": "Model",
+  "topics.timeboxing": "Timeboxing",
+  "topics.flow_mapping": "Flow Mapping",
+  "topics.settings": "General Settings"
 }

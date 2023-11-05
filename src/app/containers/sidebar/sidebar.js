@@ -138,7 +138,9 @@ class Sidebar extends Component {
             <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
               <Menu key={`top`} {...menuProps}>
                 {currentContext
-                  ? activeTopicRoutes.map((route) => (
+                  ? activeTopicRoutes.map((route) => {
+                    const TopicIcon = route.topic.Icon;
+                    return (
                       <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
                       <Link
                         to={(location) => {
@@ -149,12 +151,17 @@ class Sidebar extends Component {
                         }}
                       >
                           <span className="isoMenuHolder" style={submenuColor}>
-                            <i className={route.topic.icon} />
+                            {
+                              route.topic.Icon?
+                                <TopicIcon style={{marginRight: "0px"}} />
+                                :
+                                <i className={route.topic.icon} />
+                            }
                             <span className={classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.topic.display()}</span>
                           </span>
                         </Link>
                       </Menu.Item>
-                    ))
+                    )})
                   : null}
               </Menu>
 

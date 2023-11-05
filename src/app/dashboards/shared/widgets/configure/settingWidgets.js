@@ -22,6 +22,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
           cycleTimeTarget,
           leadTimeConfidenceTarget,
           cycleTimeConfidenceTarget,
+          flowAnalysisPeriod
         } = settingsWithDefaults;
         return (
           <Dashboard>
@@ -37,7 +38,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
                       instanceKey={key}
                       view={view}
                       context={context}
-                      days={90}
+                      days={flowAnalysisPeriod}
                       leadTimeTarget={leadTimeTarget}
                       cycleTimeTarget={cycleTimeTarget}
                       leadTimeConfidenceTarget={leadTimeConfidenceTarget}

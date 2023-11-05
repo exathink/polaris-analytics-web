@@ -12,6 +12,7 @@ import {AppTerms, WIP_PHASES} from "../../../shared/config";
 import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
 import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
+import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -59,7 +60,7 @@ export function NewFlowDashboard() {
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
         <div>
           <div className="tw-flex tw-justify-start">
-            Flow Stability, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
+            Flow Metrics, {specsOnly ? AppTerms.specs.display : `All ${AppTerms.cards.display}`}
           </div>
           <div className="tw-flex tw-justify-start tw-text-sm">Last {flowAnalysisPeriod} Days</div>
         </div>
@@ -275,6 +276,7 @@ export function NewFlowDashboard() {
             />
           )}
           showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.BAR_CHART_DETAILS_VIEW}
         />
       </DashboardRow>
       <DashboardRow>

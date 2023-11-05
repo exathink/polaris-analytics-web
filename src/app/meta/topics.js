@@ -1,6 +1,14 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl.macro';
 
+import {
+  FieldTimeOutlined,
+  ProjectOutlined,
+  FunnelPlotOutlined,
+  SettingOutlined,
+  RadarChartOutlined,
+}  from "@ant-design/icons";
+
 export const Topics = {
   flow: {
     name: 'flow',
@@ -100,7 +108,22 @@ export const Topics = {
   projects: {
     name: 'projects',
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
-    icon: 'ion-folder'
+    Icon: ProjectOutlined
+  },
+  timeboxing: {
+    name: 'timeboxing',
+    display: () => (<FormattedMessage id='topics.timeboxing' defaultMessage="Timeboxes"/>),
+    Icon: FieldTimeOutlined
+  },
+  flow_mapping: {
+    name: 'value_stream_map',
+    display: () => (<FormattedMessage id='topics.flow_mapping' defaultMessage="Flow Map"/>),
+    Icon: FunnelPlotOutlined
+  },
+  settings: {
+    name: 'settings',
+    display: () => (<FormattedMessage id='topics.settings' defaultMessage="Settings"/>),
+    Icon: SettingOutlined
   },
   pull_requests: {
     name: 'pull_requests',
