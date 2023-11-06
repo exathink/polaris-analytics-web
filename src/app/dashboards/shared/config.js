@@ -117,7 +117,12 @@ export const WorkItemTypeScatterRadius = {
   bug: 5,
   task: 5,
   subtask: 3,
-  pull_request: 5
+  pull_request: 5,
+}
+
+
+export function workItemTypeScatterRadiusFlagged(workItemType) {
+  return workItemType != null ? WorkItemTypeScatterRadius[workItemType] + 1: WorkItemTypeScatterRadius['issue']
 }
 
 export const WorkItemTypeDisplayName = {
