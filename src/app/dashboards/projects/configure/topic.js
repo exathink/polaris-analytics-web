@@ -19,13 +19,13 @@ const topic =  {
     },
     {
       subnav: true,
-      match: 'stability-settings',
-      topic: TimeboxSettings
+      match: 'value-streams',
+      topic: ValueStreams
     },
     {
       subnav: true,
-      match: 'value-streams',
-      topic: ValueStreams
+      match: 'stability-settings',
+      topic: TimeboxSettings
     },
     {
       subnav: true,
