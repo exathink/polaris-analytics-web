@@ -11,7 +11,7 @@ import {
   WorkItemStateTypeDisplayName,
   WorkItemStateTypeSortOrder,
   WorkItemTypeDisplayName,
-  WorkItemTypeScatterRadius
+  WorkItemTypeScatterRadius, workItemTypeScatterRadiusFlagged
 } from "../../config";
 import {
   getImpedance,
@@ -36,7 +36,6 @@ function getSeriesByStateType(workItems) {
         key: `${stateType}`,
         id: `${stateType}`,
         name: `${WorkItemStateTypeDisplayName[stateType]}`,
-        color: `${WorkItemStateTypeColor[stateType]}`,
         marker: {
           symbol: "circle"
         },
@@ -46,10 +45,10 @@ function getSeriesByStateType(workItems) {
             {
               x: workItem.cycleTime,
               y: workItem.latency || workItem.cycleTime,
+              color: workItem.flagged ? 'rgb(255,0,0)' : workItemFlowTypeColor(workItem.stateType),
               marker: {
-                symbol: Symbols.WorkItemType[workItem.workItemType],
-                radius: WorkItemTypeScatterRadius[workItem.workItemType]
-              },
+                symbol: workItem.flagged ? 'square' : 'circle',
+                radius: workItem.flagged ? workItemTypeScatterRadiusFlagged(workItem.workItemType) : WorkItemTypeScatterRadius[workItem.workItemType]},
               workItem: workItem
             }
           )
@@ -79,19 +78,22 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
         symbol: "circle",
       },
       allowPointSelect: true,
-      color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
+
       data: workItemsByState[state].map((workItem) => ({
         x: workItem.cycleTime,
         y: workItem.latency || workItem.cycleTime,
 
+        color: workItem.flagged ? 'rgb(255,0,0)' : workItemFlowTypeColor(workItem.flowType),
         marker: {
-          symbol: Symbols.WorkItemType[workItem.workItemType],
+          symbol: workItem.flagged ? 'square' : 'circle',
+          radius: workItem.flagged ? workItemTypeScatterRadiusFlagged(workItem.workItemType) : WorkItemTypeScatterRadius[workItem.workItemType],
         },
         workItem: workItem,
       })),
       cursor: "pointer",
     }));
 }
+
 
 export function getTitle({workItems, stageName, specsOnly, selectedQuadrant, title}) {
   const count = workItems.length;
@@ -114,6 +116,32 @@ function getTeamEntry(teamNodeRefs) {
   return teamNodeRefs.length > 0 ? teamsString : "";
 }
 
+function getFlaggedItemsSeries(workItems) {
+  const flaggedItems = workItems.filter((workItem)=> workItem.flagged);
+
+  return [{
+    type: "scatter",
+    key: `flagged`,
+    id: `flagged`,
+    name: "flagged",
+    marker: {
+      symbol: "square",
+    },
+    color:  'rgb(255,0,0)',
+    allowPointSelect: true,
+    showInLegend: flaggedItems.length > 0,
+    data: flaggedItems.map((workItem) => ({
+      x: workItem.cycleTime,
+      y: workItem.latency || workItem.cycleTime,
+      marker: {
+        symbol: 'square',
+        radius: workItemTypeScatterRadiusFlagged(workItem.workItemType)
+      },
+      workItem: workItem,
+    })),
+  }]
+  workItems.filter( (workItem) => workItem.flagged).map()
+}
 
 
 function getMotionLines(workItems,  maxCycleTime) {
@@ -209,6 +237,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
       getSeriesByState(workItemsWithAggregateDurations, view, cycleTimeTarget, latencyTarget)
       : getSeriesByStateType(workItemsWithAggregateDurations, view);
 
+    const flaggedItemsSeries = getFlaggedItemsSeries(workItems);
     const motionLines = getMotionLines(workItems,  maxCycleTime, minCycleTime)
 
     const abandonedPlotLineYAxis = excludeMotionless===false
@@ -353,13 +382,14 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
                 duration,
                 latency,
                 effort,
+                flagged,
                 workItemStateDetails,
                 teamNodeRefs,
               } = this.point.workItem;
 
               const teamEntry = getTeamEntry(teamNodeRefs);
               const teamHeaderEntry = teamNodeRefs.length > 0 ? `${teamEntry} <br/>` : "";
-
+              const flaggedStateTooltipText = flagged? " (flagged)" : "";
               const remainingEntries =
                 tooltipType === "small"
                   ? []
@@ -381,8 +411,8 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               return tooltipHtml_v2({
                 header: `${teamHeaderEntry}${WorkItemTypeDisplayName[workItemType]}: ${_displayId}<br/>${elide(_name, 30)}`,
                 body: [
+                  [`Current State:`, `${state.toLowerCase()}${flaggedStateTooltipText}`],
                   [`Status:`, `${getQuadrantName(cycleTime, latency, cycleTimeTarget, latencyTarget)?.toLowerCase()}`],
-                  [`Current State:`, `${state.toLowerCase()}`],
                   [`Entered:`, `${timeInStateDisplay}`],
                   [],
                   [`Age:`, `${intl.formatNumber(cycleTime)} days`],
@@ -394,7 +424,7 @@ export const WorkItemsCycleTimeVsLatencyChart = withNavigationContext(Chart({
               });
             }},
       },
-      series: [...cycleTimeVsLatencySeries, ...motionLines],
+      series: [...cycleTimeVsLatencySeries, ...flaggedItemsSeries,  ...motionLines],
       plotOptions: {
         series: {
           animation: false,
