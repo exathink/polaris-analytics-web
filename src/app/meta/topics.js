@@ -110,9 +110,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.projects' defaultMessage="Projects"/>),
     Icon: ProjectOutlined
   },
-  timeboxing: {
-    name: 'timeboxing',
-    display: () => (<FormattedMessage id='topics.timeboxing' defaultMessage="Timeboxes"/>),
+  stabilitySettings: {
+    name: 'stability',
+    display: () => (<FormattedMessage id='topics.stabilitySettings' defaultMessage="Stability"/>),
     Icon: FieldTimeOutlined
   },
   flow_mapping: {
