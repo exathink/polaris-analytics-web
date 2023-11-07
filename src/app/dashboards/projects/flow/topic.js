@@ -6,7 +6,7 @@ import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
 import ValueMix from "./valueMix/topic";
-import TimeboxSettings from "./timeBoxSettings/topic";
+import TimeboxSettings from "../configure/timeBoxSettings/topic";
 
 const topic = {
   ...Topics.flow,
@@ -39,11 +39,6 @@ const topic = {
       match: "code-reviews",
       subnav: true,
       topic: PullRequests,
-    },
-    {
-      subnav: true,
-      match: 'timebox-settings',
-      topic: TimeboxSettings
     },
     {
       match: '',
