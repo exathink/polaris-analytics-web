@@ -1,8 +1,8 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export const getStartRateTrendsQuery = (dimension) => gql`
-  query ${dimension}FlowMetricsTrends(
+export const getArrivalDepartureTrendsQuery = (dimension) => gql`
+  query ${dimension}ArrivalDepartureRateTrends(
     $key: String!
     $tags: [String]
     $release: String
@@ -40,7 +40,7 @@ export const getStartRateTrendsQuery = (dimension) => gql`
   }
 `;
 
-export function useQueryDimensionStartRateTrends({
+export function useQueryDimensionArrivalDepartureTrends({
   dimension,
   tags,
   release,
@@ -51,7 +51,7 @@ export function useQueryDimensionStartRateTrends({
   specsOnly,
   referenceString,
 }) {
-  return useQuery(getStartRateTrendsQuery(dimension), {
+  return useQuery(getArrivalDepartureTrendsQuery(dimension), {
     service: analytics_service,
     variables: {
       key: instanceKey,

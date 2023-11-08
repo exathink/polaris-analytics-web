@@ -3,7 +3,7 @@ import React from "react";
 import {getReferenceString} from "../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import { StartRateView } from "./startRateView";
-import { useQueryDimensionStartRateTrends } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionStartRateTrends";
+import { useQueryDimensionArrivalDepartureTrends } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionArrivalDepartureTrends";
 import { useQueryDimensionFlowMetricsTrends } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionFlowMetricsTrends";
 
 export const StartRateWidget = ({
@@ -22,7 +22,7 @@ export const StartRateWidget = ({
   targetPercentile,
   includeSubTasks,
 }) => {
-  const {loading, error, data} = useQueryDimensionStartRateTrends({
+  const {loading, error, data} = useQueryDimensionArrivalDepartureTrends({
     dimension,
     instanceKey,
     tags,
