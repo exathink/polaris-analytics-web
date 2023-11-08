@@ -1,4 +1,4 @@
-import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
+import {useQueryProjectFunnelCounts} from "../../hooks/useQueryProjectFunnelCounts";
 import {Loading} from "../../../../../components/graphql/loading";
 import {ProjectPipelinePhaseSummaryView} from "./projectPipelinePhaseSummaryView";
 import React from "react";
@@ -13,7 +13,7 @@ export const ProjectPipelinePhaseSummaryWidget = (
     view
   }
 ) => {
-  const {loading, error, data} = useQueryProjectPipelineSummary({
+  const {loading, error, data} = useQueryProjectFunnelCounts({
     instanceKey,
     includeSubTasks: {includeSubTasksInNonClosedState: includeSubTasks},
     specsOnly: specsOnly,

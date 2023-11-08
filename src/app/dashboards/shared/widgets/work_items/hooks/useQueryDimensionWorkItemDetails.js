@@ -1,8 +1,8 @@
 import {useQuery, gql} from "@apollo/client";
 import {analytics_service} from "../../../../../services/graphql";
 
-export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
-  query ${dimension}PipelineStateDetails(
+export const dimensionWorkItemDetailsQuery = (dimension) => gql`
+  query ${dimension}WorkItemDetails(
     $key: String!
     $tags: [String]
     $release: String
@@ -88,7 +88,7 @@ export const dimensionPipelineStateDetailsQuery = (dimension) => gql`
   }
 `;
 
-export function useQueryDimensionPipelineStateDetails({
+export function useQueryDimensionWorkItemDetails({
   dimension,
   instanceKey,
   tags,
@@ -107,7 +107,7 @@ export function useQueryDimensionPipelineStateDetails({
   const {includeSubTasksInNonClosedState, includeSubTasksInClosedState} =
       funnelView ? includeSubTasks : {};
 
-    return useQuery(dimensionPipelineStateDetailsQuery(dimension), {
+    return useQuery(dimensionWorkItemDetailsQuery(dimension), {
       service: analytics_service,
       variables: {
         key: instanceKey,

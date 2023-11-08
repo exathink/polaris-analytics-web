@@ -1,6 +1,6 @@
 import React from 'react';
 import {Loading} from "../../../../../../components/graphql/loading";
-import {useQueryDimensionPipelineStateDetails} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {useQueryDimensionWorkItemDetails} from "../../hooks/useQueryDimensionWorkItemDetails";
 import {DimensionWipEffortView} from "./dimensionWipEffortView";
 import {getReferenceString} from "../../../../../../helpers/utility";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
@@ -25,7 +25,7 @@ export const DimensionWipEffortWidget = (
 
 
 
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionWorkItemDetails({
     dimension,
     instanceKey,
     specsOnly,
