@@ -3,7 +3,7 @@ import {gqlUtils, renderWithProviders} from "../../../../../../framework/viz/cha
 import {waitFor, screen} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {DimensionWipEffortWidget} from "./dimensionWipEffortWidget";
-import {dimensionPipelineStateDetailsQuery} from "../../hooks/useQueryDimensionPipelineStateDetails";
+import {dimensionWorkItemDetailsQuery} from "../../hooks/useQueryDimensionWorkItemDetails";
 import {getReferenceString} from "../../../../../../helpers/utility";
 
 // clear mocks after each test
@@ -24,7 +24,7 @@ const widgetPropsFixture = {
 };
 
 const gqlRequest = {
-  query: dimensionPipelineStateDetailsQuery('project'),
+  query: dimensionWorkItemDetailsQuery('project'),
   variables: {
     key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
     specsOnly: false,

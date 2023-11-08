@@ -1,7 +1,7 @@
 import React from "react";
 import { useQueryParamState } from "../dashboards/projects/shared/helper/hooks";
 import { getReferenceString } from "./utility";
-import { useQueryDimensionPipelineStateDetails } from "../dashboards/shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
+import { useQueryDimensionWorkItemDetails } from "../dashboards/shared/widgets/work_items/hooks/useQueryDimensionWorkItemDetails";
 
 
 // A utility to set a child component take a parent hook state and override it locally
@@ -111,5 +111,5 @@ export function useWipQuery({dimensionSettings}) {
     includeSubTasks: dimensionSettings.settingsWithDefaults.includeSubTasksWipInspector,
   };
 
-  return useQueryDimensionPipelineStateDetails(queryVars);
+  return useQueryDimensionWorkItemDetails(queryVars);
 }

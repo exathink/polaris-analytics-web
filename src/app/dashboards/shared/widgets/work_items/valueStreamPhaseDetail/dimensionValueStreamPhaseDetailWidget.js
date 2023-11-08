@@ -1,6 +1,6 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryDimensionPipelineStateDetails} from "../hooks/useQueryDimensionPipelineStateDetails";
+import {useQueryDimensionWorkItemDetails} from "../hooks/useQueryDimensionWorkItemDetails";
 import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useChildState} from "../../../../../helpers/hooksUtil";
@@ -33,7 +33,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
 }) => {
   const [workItemScope, setWorkItemScope] = useChildState(parentWorkItemScope, parentSetWorkItemScope, "specs");
 
-  const {loading, error, data} = useQueryDimensionPipelineStateDetails({
+  const {loading, error, data} = useQueryDimensionWorkItemDetails({
     dimension,
     instanceKey,
     tags,
