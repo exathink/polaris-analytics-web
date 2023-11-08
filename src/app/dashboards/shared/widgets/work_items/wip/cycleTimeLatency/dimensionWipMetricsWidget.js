@@ -2,8 +2,8 @@ import {Loading} from "../../../../../../components/graphql/loading";
 import {logGraphQlError} from "../../../../../../components/graphql/utils";
 import { useWipQuery } from "../../../../../../helpers/hooksUtil";
 import {getReferenceString} from "../../../../../../helpers/utility";
-import {useQueryDimensionFlowMetrics} from "../../closed/flowMetrics/useQueryDimensionFlowMetrics";
 import {DimensionWipMetricsView} from "./dimensionWipMetricsView";
+import {useQueryDimensionFlowMetricsTrends} from "../../hooks/useQueryDimensionFlowMetricsTrends";
 
 export function DimensionWipMetricsWidget({
   dimension,
@@ -30,15 +30,14 @@ export function DimensionWipMetricsWidget({
     loading: loading1,
     error: error1,
     data: flowMetricsData,
-  } = useQueryDimensionFlowMetrics({
+  } = useQueryDimensionFlowMetricsTrends({
     dimension,
     instanceKey,
     release,
     tags,
     leadTimeTarget,
     cycleTimeTarget,
-    leadTimeTargetPercentile,
-    cycleTimeTargetPercentile,
+    targetPercentile,
     days: flowAnalysisPeriod,
     measurementWindow: flowAnalysisPeriod,
     samplingFrequency: flowAnalysisPeriod,

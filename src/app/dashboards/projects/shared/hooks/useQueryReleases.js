@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export const GET_PROJECT_RELEASES_QUERY = gql`
-query getProjectReleases($projectKey: String!, $releasesWindow: Int!) {
+query projectReleases($projectKey: String!, $releasesWindow: Int!) {
   project(key: $projectKey, interfaces: [Releases], releasesActiveWithinDays: $releasesWindow) {
     name
     key

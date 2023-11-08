@@ -141,66 +141,6 @@ export function NewFlowDashboard() {
           showDetail={false}
         />
         <DashboardWidget
-          name="wip-volume"
-          title=""
-          className="tw-col-span-2 tw-col-start-4 tw-row-start-2"
-          render={({view}) => {
-            return (
-              <DimensionWipMetricsWidget
-                dimension="project"
-                instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-                cycleTimeTarget={cycleTimeTarget}
-                latencyTarget={latencyTarget}
-                leadTimeTarget={leadTimeTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                excludeMotionless={exclude}
-                includeSubTasks={includeSubTasksWipInspector}
-                displayBag={{
-                  metric: "volume",
-                  displayType: "cardAdvanced",
-                  traceabilityStat: <ProjectTraceabilityTrendsWidget
-                      instanceKey={key}
-                      tags={workItemSelectors}
-                      release={release}
-                      measurementWindow={flowAnalysisPeriod}
-                      days={flowAnalysisPeriod}
-                      samplingFrequency={flowAnalysisPeriod}
-                      context={context}
-                      latestWorkItemEvent={latestWorkItemEvent}
-                      latestCommit={latestCommit}
-                      displayBag={{displayType: "normStat"}}
-                      target={0.9}
-                    />,
-                  traceability: (
-                    <ProjectTraceabilityTrendsWidget
-                      instanceKey={key}
-                      tags={workItemSelectors}
-                      release={release}
-                      measurementWindow={flowAnalysisPeriod}
-                      days={flowAnalysisPeriod}
-                      samplingFrequency={flowAnalysisPeriod}
-                      context={context}
-                      latestWorkItemEvent={latestWorkItemEvent}
-                      latestCommit={latestCommit}
-                      displayBag={{displayType: "trendsCompareCard"}}
-                      target={0.9}
-                    />
-                  ),
-                }}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-              />
-            );
-          }}
-          showDetail={false}
-        />
-        <DashboardWidget
           name="throughput-summary-card"
           title=""
           className="tw-col-span-2 tw-col-start-6 tw-row-start-2 "
@@ -277,8 +217,73 @@ export function NewFlowDashboard() {
           showDetail={true}
           showDetailTooltipType={DetailViewTooltipTypes.BAR_CHART_DETAILS_VIEW}
         />
+
       </DashboardRow>
       <DashboardRow>
+        {/**
+         We are placing this widget here on the dashboard layout even though visually it
+         is on the second row. This is because the WIP query is expensive and we want to issue
+         it after the funnel query so that the funnel populates first and shows up on the page,
+         while the WIP query is loading.
+         **/}
+        <DashboardWidget
+          name="wip-volume"
+          title=""
+          className="tw-col-span-2 tw-col-start-4 tw-row-start-2"
+          render={({view}) => {
+            return (
+              <DimensionWipMetricsWidget
+                dimension="project"
+                instanceKey={key}
+                tags={workItemSelectors}
+                release={release}
+                targetPercentile={responseTimeConfidenceTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                latencyTarget={latencyTarget}
+                leadTimeTarget={leadTimeTarget}
+                specsOnly={specsOnly}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                excludeMotionless={exclude}
+                includeSubTasks={includeSubTasksWipInspector}
+                displayBag={{
+                  metric: "volume",
+                  displayType: "cardAdvanced",
+                  traceabilityStat: <ProjectTraceabilityTrendsWidget
+                      instanceKey={key}
+                      tags={workItemSelectors}
+                      release={release}
+                      measurementWindow={flowAnalysisPeriod}
+                      days={flowAnalysisPeriod}
+                      samplingFrequency={flowAnalysisPeriod}
+                      context={context}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      displayBag={{displayType: "normStat"}}
+                      target={0.9}
+                    />,
+                  traceability: (
+                    <ProjectTraceabilityTrendsWidget
+                      instanceKey={key}
+                      tags={workItemSelectors}
+                      release={release}
+                      measurementWindow={flowAnalysisPeriod}
+                      days={flowAnalysisPeriod}
+                      samplingFrequency={flowAnalysisPeriod}
+                      context={context}
+                      latestWorkItemEvent={latestWorkItemEvent}
+                      latestCommit={latestCommit}
+                      displayBag={{displayType: "trendsCompareCard"}}
+                      target={0.9}
+                    />
+                  ),
+                }}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+              />
+            );
+          }}
+          showDetail={false}
+        />
         <DashboardWidget
           name="wip-age"
           title=""
@@ -291,8 +296,6 @@ export function NewFlowDashboard() {
                 tags={workItemSelectors}
                 release={release}
                 targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 specsOnly={specsOnly}
