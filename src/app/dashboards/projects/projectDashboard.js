@@ -40,7 +40,7 @@ export function useCustomPhaseMapping() {
 }
 
 export const PROJECT_QUERY = gql`
-  query with_project_instance($key: String!) {
+  query projectInstance($key: String!) {
     project(
       key: $key
       interfaces: [CommitSummary, WorkItemEventSpan, PullRequestEventSpan, OrganizationRef, ProjectSetupInfo]

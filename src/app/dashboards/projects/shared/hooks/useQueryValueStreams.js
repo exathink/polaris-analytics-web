@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
 export const GET_PROJECT_VALUE_STREAMS_QUERY = gql`
-query with_project_instance($key: String!) {
+query projectValueStreams($key: String!) {
   project(key: $key, interfaces: [Tags]) {
     name
     key
