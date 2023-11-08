@@ -3,7 +3,7 @@ import {GraphQLError} from "graphql/error";
 import React from "react";
 import {renderWithProviders, gqlUtils} from "../../../../../framework/viz/charts/chart-test-utils";
 import { AppTerms } from "../../../../shared/config";
-import {PROJECT_PIPELINE_SUMMARY_QUERY} from "../../hooks/useQueryProjectPipelineSummary";
+import {PROJECT_FUNNEL_COUNTS_QUERY} from "../../hooks/useQueryProjectFunnelCounts";
 import {ProjectPipelineFunnelWidget} from "./projectPipelineFunnelWidget";
 import { dimensionPipelineStateDetailsQuery } from "../../../../shared/widgets/work_items/hooks/useQueryDimensionPipelineStateDetails";
 
@@ -22,7 +22,7 @@ const propsFixture = {
 const mocksFixture = [
   {
     request: {
-      query: PROJECT_PIPELINE_SUMMARY_QUERY,
+      query: PROJECT_FUNNEL_COUNTS_QUERY,
       variables: {
         key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
         closedWithinDays: 30,
@@ -206,7 +206,7 @@ describe("ProjectPipelineFunnelWidget", () => {
     const mockNetworkError = [
       {
         request: {
-          query: PROJECT_PIPELINE_SUMMARY_QUERY,
+          query: PROJECT_FUNNEL_COUNTS_QUERY,
           variables: {
             key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
             closedWithinDays: 30,
@@ -222,7 +222,7 @@ describe("ProjectPipelineFunnelWidget", () => {
     const mockGraphQlErrors = [
       {
         request: {
-          query: PROJECT_PIPELINE_SUMMARY_QUERY,
+          query: PROJECT_FUNNEL_COUNTS_QUERY,
           variables: {
             key: "41af8b92-51f6-4e88-9765-cc3dbea35e1a",
             closedWithinDays: 30,

@@ -1,6 +1,6 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {useQueryProjectPipelineSummary} from "../../hooks/useQueryProjectPipelineSummary";
+import {useQueryProjectFunnelCounts} from "../../hooks/useQueryProjectFunnelCounts";
 import {ProjectPipelineFunnelView} from "./projectPipelineFunnelView";
 import {buildIndex, getLatest} from "../../../../../helpers/utility";
 import {ProjectPipelineFunnelDetailDashboard} from "./projectPipelineFunnelDetailDashboard";
@@ -44,9 +44,9 @@ export const ProjectPipelineFunnelWidget = ({
     referenceString: getLatest(latestWorkItemEvent, latestCommit),
   };
 
-  const {loading, error, data} = useQueryProjectPipelineSummary(queryVars);
+  const {loading, error, data} = useQueryProjectFunnelCounts(queryVars);
 
-  const {loading: loading1, error: error1, data: dataAll} = useQueryProjectPipelineSummary({...queryVars, specsOnly: false});
+  const {loading: loading1, error: error1, data: dataAll} = useQueryProjectFunnelCounts({...queryVars, specsOnly: false});
 
   const {project: dimensionSettings} = useProjectContext();
   const {loading: loading2, error: error2, data: wipDataAll} = useWipQuery({dimensionSettings});

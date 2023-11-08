@@ -1,8 +1,8 @@
 import { useQuery, gql } from "@apollo/client";
 import {analytics_service} from "../../../../services/graphql";
 
-export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
-  query projectPipelineSummary(
+export const PROJECT_FUNNEL_COUNTS_QUERY = gql`
+  query projectFunnelCounts(
     $key: String!
     $tags: [String]
     $release: String
@@ -47,8 +47,8 @@ export const PROJECT_PIPELINE_SUMMARY_QUERY = gql`
   }
 `;
 
-export function useQueryProjectPipelineSummary({instanceKey, tags, release, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}}) {
-  return useQuery(PROJECT_PIPELINE_SUMMARY_QUERY, {
+export function useQueryProjectFunnelCounts({instanceKey, tags, release, referenceString, defectsOnly, specsOnly, closedWithinDays, includeSubTasks: {includeSubTasksInClosedState, includeSubTasksInNonClosedState}}) {
+  return useQuery(PROJECT_FUNNEL_COUNTS_QUERY, {
       service: analytics_service,
       variables: {
         key: instanceKey,
