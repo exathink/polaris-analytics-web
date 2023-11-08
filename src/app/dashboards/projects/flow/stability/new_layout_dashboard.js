@@ -215,7 +215,7 @@ export function NewFlowDashboard() {
             />
           )}
           showDetail={true}
-          showDetailTooltipType={DetailViewTooltipTypes.BAR_CHART_DETAILS_VIEW}
+          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
         />
 
       </DashboardRow>

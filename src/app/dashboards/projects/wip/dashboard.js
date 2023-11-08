@@ -23,6 +23,7 @@ import {WIP_CHART_TYPE} from "../../../helpers/localStorageUtils";
 import { Checkbox } from "antd";
 import { FILTERS, getFilterValue } from "../../shared/widgets/work_items/wip/cycleTimeLatency/cycleTimeLatencyUtils";
 import { ProjectTraceabilityTrendsWidget } from "../../shared/widgets/commits/traceability";
+import { DetailViewTooltipTypes } from "../../../framework/viz/dashboard/dashboardWidget";
 
 const dashboard_id = "dashboards.activity.projects.newDashboard.instance";
 
@@ -317,6 +318,7 @@ function WipDashboard({
             />
           )}
           showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
         />
 
         <DashboardWidget
@@ -357,6 +359,7 @@ function WipDashboard({
             />
           )}
           showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
         />
       </DashboardRow>
     </Dashboard>
