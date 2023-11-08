@@ -39,7 +39,7 @@ export const FlowMetricsTrendsWidget = ({
     targetPercentile,
     includeSubTasks,
     specsOnly,
-    referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
   if (loading) return <Loading />;
   if (error) {

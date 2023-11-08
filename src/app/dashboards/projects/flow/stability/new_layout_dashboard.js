@@ -238,8 +238,6 @@ export function NewFlowDashboard() {
                 tags={workItemSelectors}
                 release={release}
                 targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 leadTimeTarget={leadTimeTarget}
@@ -298,8 +296,6 @@ export function NewFlowDashboard() {
                 tags={workItemSelectors}
                 release={release}
                 targetPercentile={responseTimeConfidenceTarget}
-                leadTimeTargetPercentile={leadTimeConfidenceTarget}
-                cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 specsOnly={specsOnly}

@@ -31,7 +31,7 @@ export const StartRateWidget = ({
     measurementWindow,
     samplingFrequency,
     specsOnly,
-    referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
 
   const {loading: loading1, error: error1, data: data1} = useQueryDimensionFlowMetricsTrends({
@@ -45,7 +45,7 @@ export const StartRateWidget = ({
     targetPercentile,
     includeSubTasks,
     specsOnly,
-    referenceString: getReferenceString(latestCommit, latestWorkItemEvent),
+    referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
   });
 
   if (loading || loading1) return <Loading />;
