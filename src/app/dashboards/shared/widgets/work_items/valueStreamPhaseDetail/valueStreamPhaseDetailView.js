@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import {AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc} from "../../../config";
+import { AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc, itemsDesc, itemDesc } from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -108,12 +108,19 @@ const PhaseDetailView = ({
     setSelectedMetric(null);
   }
 
-  function getChartSubTitle() {
-    const specsOnly = workItemScope === "specs";
-    return `${specsOnly ? AppTerms.specs.display: `All ${AppTerms.cards.display}`} in ${WorkItemStateTypeDisplayName[selectedStateType]}`;
-  }
+
 
   const workItemsWithAggregateDurations = React.useMemo(() => getWorkItemDurations(candidateWorkItems), [candidateWorkItems]);
+  const specsOnly = workItemScope === "specs";
+
+  function getChartTitle() {
+    return
+  }
+
+  function getChartSubTitle() {
+
+    return `${workItemsWithAggregateDurations.length} ${itemsDesc(specsOnly)}`;
+  }
 
   React.useEffect(() => {
     setColState(prev => {
@@ -187,7 +194,11 @@ const PhaseDetailView = ({
     if (COL_TYPES[colState.colId].type === "continous") {
       chartElement = (
         <WorkItemsDetailHistogramChart
-          chartConfig={{subtitle: getChartSubTitle(), legendItemClick: () => {}}}
+          chartConfig={{
+            title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${colState.headerName} Distribution`,
+            subtitle: getChartSubTitle(),
+            legendItemClick: () => {}
+        }}
           selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
@@ -201,8 +212,8 @@ const PhaseDetailView = ({
           colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}
           colId={colState.colId}
           headerName={colState.headerName}
-          title={`${colState.headerName} Distribution`}
-          subtitle={`${itemsAllDesc(specsOnly)} in ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+          title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(specsOnly)} by ${colState.headerName} `}
+          subtitle={`${getChartSubTitle()}`}
           specsOnly={specsOnly}
           histogramSeries={continousValueseries}
           stateType={selectedStateType}

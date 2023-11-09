@@ -334,6 +334,14 @@ export const AppTerms = {
   },
 };
 
+export function itemDesc(specsOnly){
+  if (specsOnly) {
+    return AppTerms.spec.display;
+  } else {
+    return AppTerms.card.display;
+  }
+}
+
 export function itemsDesc(specsOnly){
   if (specsOnly) {
     return AppTerms.specs.display;
