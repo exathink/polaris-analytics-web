@@ -37,6 +37,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
   return (
     <Dashboard dashboard={dashboard_id}>
       <DashboardRow
+        title={" "}
         h={"100%"}
         controls={
           [
