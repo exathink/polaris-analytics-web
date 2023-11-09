@@ -7,7 +7,7 @@ import fontStyles from "../../styles/fonts.module.css";
 import classNames from "classnames";
 import {InfoCard} from "../../../components/misc/info/infoCard";
 import {Tooltip} from "antd";
-import {FullscreenExitOutlined, PieChartFilled, FullscreenOutlined, BarChartOutlined} from "@ant-design/icons";
+import {FullscreenExitOutlined, PieChartFilled, FullscreenOutlined, BarChartOutlined, TableOutlined} from "@ant-design/icons";
 import {Colors} from "../../../dashboards/shared/config";
 
 export const DetailViewTooltipTypes = {
@@ -18,7 +18,12 @@ export const DetailViewTooltipTypes = {
   BAR_CHART_DETAILS_VIEW: {
     tooltip: "Analysis View",
     Icon:  BarChartOutlined
+  },
+  TABULAR_DETAILS_VIEW: {
+    tooltip: "Analyze Data",
+    Icon:  TableOutlined
   }
+
 }
 const WidgetMenu = ({itemSelected, showDetail, onClick, infoConfig, className, showDetailTooltipType, showDetailIcon, showDetailTooltip = "Open Analysis View",  }) => {
   const infoElement = infoConfig && (

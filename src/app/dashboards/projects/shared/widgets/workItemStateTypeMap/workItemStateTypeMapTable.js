@@ -14,7 +14,8 @@ import {useCustomPhaseMapping} from "../../../projectDashboard";
 const typeItems = [
   {value: FlowTypeStates.UNASSIGNED, label: "Unassigned"},
   {value: FlowTypeStates.ACTIVE, label: "Active"},
-  {value: FlowTypeStates.WAITING, label: "Waiting"}
+  {value: FlowTypeStates.WAITING, label: "Waiting"},
+  {value: FlowTypeStates.TERMINAL, label: "Terminal"}
 ]
 
 const releaseStatusItems = [

@@ -179,6 +179,7 @@ export const WorkItemStateTypeDisplayName = {
 export const FlowTypeStates = {
   ACTIVE: "active",
   WAITING: "waiting",
+  TERMINAL: "terminal",
   UNASSIGNED: "unassigned",
 }
 
@@ -333,6 +334,14 @@ export const AppTerms = {
     display: "Work Item",
   },
 };
+
+export function itemDesc(specsOnly){
+  if (specsOnly) {
+    return AppTerms.spec.display;
+  } else {
+    return AppTerms.card.display;
+  }
+}
 
 export function itemsDesc(specsOnly){
   if (specsOnly) {
