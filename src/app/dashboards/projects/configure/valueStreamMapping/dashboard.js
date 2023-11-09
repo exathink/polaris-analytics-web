@@ -198,7 +198,7 @@ export function ValueStreamMappingDashboard() {
             />
           )}
           showDetail={true}
-          showDetailTooltipType={DetailViewTooltipTypes.BAR_CHART_DETAILS_VIEW}
+          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
         />
         <DashboardWidget
           className="tw-col-start-2 tw-row-span-6 tw-row-start-1"
