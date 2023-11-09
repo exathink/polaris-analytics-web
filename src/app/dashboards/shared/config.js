@@ -179,6 +179,7 @@ export const WorkItemStateTypeDisplayName = {
 export const FlowTypeStates = {
   ACTIVE: "active",
   WAITING: "waiting",
+  TERMINAL: "terminal",
   UNASSIGNED: "unassigned",
 }
 
