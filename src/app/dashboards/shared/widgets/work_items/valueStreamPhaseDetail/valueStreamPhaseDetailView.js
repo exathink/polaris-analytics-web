@@ -246,23 +246,7 @@ const PhaseDetailView = ({
                   />
                 )}
               </div>
-              <div className="groupView">
-                <GroupingSelector
-                  label={"View"}
-                  className={"groupCardsBySelector"}
-                  groupings={[
-                    {key: "responseTime", display: `Histogram`},
-                    {key: "table", display: "Card Detail"},
-                  ].map((item) => ({
-                    key: item.key,
-                    display: item.display,
-                  }))}
-                  initialValue={selectedGrouping}
-                  value={selectedGrouping}
-                  onGroupingChanged={setSelectedGrouping}
-                  layout="col"
-                />
-              </div>
+
             </div>
           </div>
           <div className="tw-h-[50%]">
@@ -270,7 +254,7 @@ const PhaseDetailView = ({
               // common props
               key={resetComponentStateKey}
               stateType={selectedStateType}
-              tabSelection={selectedGrouping}
+              tabSelection={'table'}
               colWidthBoundaries={COL_WIDTH_BOUNDARIES}
               // chart props
               chartSubTitle={getChartSubTitle()}
