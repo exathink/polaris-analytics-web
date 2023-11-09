@@ -13,11 +13,8 @@ import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 
 function getChartTitle(metric, stateType) {
   const metricDisplayName = getSelectedMetricDisplayName(metric, stateType);
-  if (stateType === WorkItemStateTypes.closed) {
-    return `${metricDisplayName} Variability`;
-  } else {
-    return `${metricDisplayName} Distribution`;
-  }
+  return `${metricDisplayName} Distribution`;
+
 }
 
 function getNewSubtitle(count, specsOnly, stateType) {

@@ -15,7 +15,7 @@ function getChartTitle(stateType, seriesName=null) {
   if (stateType !== WorkItemStateTypes.closed) {
      return `${seriesName || 'Age'} Distribution`
   } else {
-    return `${seriesName || 'Lead Time' } Variability`
+    return `${seriesName || 'Lead Time' } Distribution`
   }
 }
 

@@ -34,7 +34,7 @@ export const PullRequestsDetailHistogramChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: title || `Merge Time Variability`,
+        text: title || `Merge Time Distribution`,
       },
       subtitle: {
         text: chartSubTitle,
