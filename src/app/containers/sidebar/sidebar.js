@@ -19,6 +19,8 @@ import Library from "../../dashboards/library/context"
 import {VIDEO_GUIDANCE} from "../../../config/featureFlags";
 import classNames from 'classnames';
 
+import {VideoCameraOutlined} from "@ant-design/icons";
+
 const {Sider} = Layout;
 
 const {
@@ -172,7 +174,7 @@ class Sidebar extends Component {
                   <Menu.Item className="ant-menu-item">
                     <Link to={Library.url_for}>
                       <span className="isoMenuHolder" style={submenuColor}>
-                        <i className={Library.icon} />
+                        <VideoCameraOutlined style={{marginRight: "0px"}}/>
                         <span className="tw-text-white">Content Library</span>
                       </span>
                     </Link>
