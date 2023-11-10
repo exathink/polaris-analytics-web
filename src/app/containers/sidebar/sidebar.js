@@ -169,8 +169,9 @@ class Sidebar extends Component {
 
               {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
                 <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
-                  {/* Divider */}
-                  <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
+
+                  <Menu.Divider/>
+
                   <Menu.Item className="ant-menu-item">
                     <Link to={Library.url_for}>
                       <span className="isoMenuHolder" style={submenuColor}>
