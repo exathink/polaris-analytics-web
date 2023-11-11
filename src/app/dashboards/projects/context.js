@@ -57,22 +57,19 @@ const context : Context = {
             topic: Trends
           },
           {
-            group: 'Explore',
-            divider: true
+            submenu: 'Explore',
+            routes: [
+              {
+                match: "repositories",
+                topic: Repositories
+              },
+              {
+                match: "contributors",
+                topic: Contributors
+              }
+            ]
           },
-          {
-            match: 'repositories',
-            topic: Repositories
-          },
-          {
-            disallowedFeatures: [UI_NEW_CARD_DESIGN],
-            match: 'pull-requests',
-            topic: PullRequests
-          },
-          {
-            match: 'contributors',
-            topic: Contributors
-          },
+
           {
             group: '',
             divider: true
@@ -84,7 +81,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'flow'
+            redirect: 'repositories'
           }
         ]
       }
