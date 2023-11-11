@@ -41,6 +41,15 @@ function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, m
       </>
       )
   }
+  function mapRouteAsSubmenu(route) {
+    return (
+      <Menu.SubMenu title={route.submenu} key={route.submenu}>
+        {
+          mapRoutesToMenuItems(route.routes, currentContext, submenuColor, mode)
+        }
+      </Menu.SubMenu>
+    )
+  }
   function mapTopLevelRoute(route) {
     const TopicIcon = route.topic.Icon;
     return (
@@ -69,7 +78,12 @@ function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, m
   }
 
   return activeTopicRoutes.map((route) => {
-    return route.group != null? mapRouteAsMenuGroup(route) : mapTopLevelRoute(route);
+    return route.group != null?
+      mapRouteAsMenuGroup(route) : (
+        route.submenu != null ?
+          mapRouteAsSubmenu(route):
+            mapTopLevelRoute(route)
+      );
   });
 }
 
@@ -146,7 +160,7 @@ class Sidebar extends Component {
     const optionalTopics = this.props.optionalTopics || [];
 
     const topicRoutes = currentContext.routes().filter(
-      route => route.topic || (route.group != null)
+      route => route.topic || (route.group != null) || (route.submenu != null)
     )
 
     const visibleRoutes = topicRoutes.filter(
