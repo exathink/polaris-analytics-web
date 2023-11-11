@@ -33,13 +33,10 @@ const {
 function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode) {
   function mapRouteAsMenuGroup(route) {
     return (
-        <Menu.ItemGroup title={route.group} key={`${route.group}`}>
-          {
-            route.routes.map(
-              (childRoute) => mapTopLevelRoute(childRoute)
-            )
-          }
-        </Menu.ItemGroup>
+      // We are simply inserting an empty menu group here
+      // Similar to a divider
+        <Menu.ItemGroup title={route.group} key={`${route.group}`}/>
+
       )
   }
   function mapTopLevelRoute(route) {

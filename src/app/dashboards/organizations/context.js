@@ -32,12 +32,10 @@ const context = {
         routes: [
           {
             group: "Inspect",
-            routes: [
-              {
-                match: "value-streams",
-                topic: Project
-              },
-            ]
+          },
+          {
+            match: "value-streams",
+            topic: Project
           },
           {
 
@@ -47,12 +45,16 @@ const context = {
 
           },
           {
+            group: "Explore",
+            routes: []
+          },
+          {
             match: "repositories",
             topic: Repositories
           },
           {
             match: "",
-            redirect: "contributors"
+            redirect: "value-streams"
           }
         ]
       }
