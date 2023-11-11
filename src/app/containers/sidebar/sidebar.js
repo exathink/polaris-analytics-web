@@ -1,25 +1,25 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import clone from 'clone';
-import {Link, withRouter} from 'react-router-dom';
-import {Layout} from 'antd';
-import {Scrollbars} from 'react-custom-scrollbars';
-import Menu from '../../../components/uielements/menu';
-import SidebarWrapper from './sidebar.style';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import clone from "clone";
+import { Link, withRouter } from "react-router-dom";
+import { Layout } from "antd";
+import { Scrollbars } from "react-custom-scrollbars";
+import Menu from "../../../components/uielements/menu";
+import SidebarWrapper from "./sidebar.style";
 
 
-import appActions from '../../../redux/app/actions';
-import Logo from './logo';
-import {rtl} from '../../../config/withDirection';
-import {getCurrentTheme} from '../../themes/config';
-import {themeConfig} from '../../../config';
-import {withNavigationContext} from "../../framework/navigation/components/withNavigationContext";
-import {withViewerContext} from "../../framework/viewer/viewerContext";
-import Library from "../../dashboards/library/context"
-import {VIDEO_GUIDANCE} from "../../../config/featureFlags";
-import classNames from 'classnames';
+import appActions from "../../../redux/app/actions";
+import Logo from "./logo";
+import { rtl } from "../../../config/withDirection";
+import { getCurrentTheme } from "../../themes/config";
+import { themeConfig } from "../../../config";
+import { withNavigationContext } from "../../framework/navigation/components/withNavigationContext";
+import { withViewerContext } from "../../framework/viewer/viewerContext";
+import Library from "../../dashboards/library/context";
+import { VIDEO_GUIDANCE } from "../../../config/featureFlags";
 
-import {VideoCameraOutlined} from "@ant-design/icons";
+import { VideoCameraOutlined } from "@ant-design/icons";
+import { mapRoutesToMenuItems } from "./sidebar-shared";
 
 const {Sider} = Layout;
 
@@ -29,49 +29,6 @@ const {
   changeCurrent,
   toggleCollapsed,
 } = appActions;
-
-function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode) {
-  function mapRouteAsMenuGroup(route) {
-    return (
-      // We are simply inserting an empty menu group here
-      // Similar to a divider
-      <>
-        {route.divider && <Menu.Divider/>}
-        <Menu.ItemGroup title={route.group} key={`${route.group}`}/>
-      </>
-      )
-  }
-  function mapTopLevelRoute(route) {
-    const TopicIcon = route.topic.Icon;
-    return (
-      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
-        <Link
-          to={(location) => {
-            return {
-              ...location,
-              pathname: `${currentContext.urlFor(route)}`
-            };
-          }}
-        >
-            <span className="isoMenuHolder" style={submenuColor}>
-              {
-                route.topic.Icon ?
-                  <TopicIcon style={{ marginRight: "0px" }} />
-                  :
-                  <i className={route.topic.icon} />
-              }
-              <span
-                className={classNames("nav-text", mode === "vertical" ? "tw-ml-1" : "")}>{route.topic.display()}</span>
-            </span>
-        </Link>
-      </Menu.Item>
-    );
-  }
-
-  return activeTopicRoutes.map((route) => {
-    return route.group != null? mapRouteAsMenuGroup(route) : mapTopLevelRoute(route);
-  });
-}
 
 class Sidebar extends Component {
   constructor(props) {
