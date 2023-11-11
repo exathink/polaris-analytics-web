@@ -35,8 +35,10 @@ function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, m
     return (
       // We are simply inserting an empty menu group here
       // Similar to a divider
+      <>
+        {route.divider && <Menu.Divider/>}
         <Menu.ItemGroup title={route.group} key={`${route.group}`}/>
-
+      </>
       )
   }
   function mapTopLevelRoute(route) {
