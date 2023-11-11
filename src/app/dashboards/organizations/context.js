@@ -31,7 +31,7 @@ const context = {
         display: match => messages.instanceDisplay(match.params.organization),
         routes: [
           {
-            group: "Inspect",
+            group: "Explore",
           },
           {
             match: "value-streams",
@@ -43,10 +43,6 @@ const context = {
             requiredFeatures: [SYSTEM_TEAMS],
             topic: Contributors
 
-          },
-          {
-            group: "Explore",
-            routes: []
           },
           {
             match: "repositories",
