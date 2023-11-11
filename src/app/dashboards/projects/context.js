@@ -41,6 +41,9 @@ const context : Context = {
         ContextControl: ProjectValueStreamsWidget,
         routes: [
           {
+            group: "Inspect"
+          },
+          {
             match: 'flow',
             topic: Flow
           },
@@ -54,6 +57,9 @@ const context : Context = {
             topic: Trends
           },
           {
+            group: 'Explore'
+          },
+          {
             match: 'repositories',
             topic: Repositories
           },
@@ -65,6 +71,9 @@ const context : Context = {
           {
             match: 'contributors',
             topic: Contributors
+          },
+          {
+            group: 'Manage'
           },
           {
             match: 'configure',

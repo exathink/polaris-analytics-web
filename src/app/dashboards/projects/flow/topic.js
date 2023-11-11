@@ -12,6 +12,9 @@ const topic = {
   ...Topics.flow,
   routes: [
     {
+      group: "Inspect"
+    },
+    {
       match: "stability",
       subnav: true,
       topic: Stability,
@@ -21,6 +24,9 @@ const topic = {
       match: "wip",
       subnav: true,
       topic: Wip,
+    },
+    {
+      group: "Analyze"
     },
     {
 
