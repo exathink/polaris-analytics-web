@@ -15,7 +15,7 @@ export const buildContextRouter = (context: Context, viewerContext: any = null, 
     // from this node.
     filterNonRoutable(routes) {
       return routes.filter(
-        route => !route.group
+        route => route.group === undefined
       )
 
     }

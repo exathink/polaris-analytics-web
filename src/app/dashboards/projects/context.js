@@ -57,7 +57,8 @@ const context : Context = {
             topic: Trends
           },
           {
-            group: 'Explore'
+            group: 'Explore',
+            divider: true
           },
           {
             match: 'repositories',
@@ -73,7 +74,9 @@ const context : Context = {
             topic: Contributors
           },
           {
-            group: 'Manage'
+            group: '',
+            divider: true
+
           },
           {
             match: 'configure',

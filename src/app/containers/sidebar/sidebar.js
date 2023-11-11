@@ -146,7 +146,7 @@ class Sidebar extends Component {
     const optionalTopics = this.props.optionalTopics || [];
 
     const topicRoutes = currentContext.routes().filter(
-      route => route.topic || route.group
+      route => route.topic || (route.group != null)
     )
 
     const visibleRoutes = topicRoutes.filter(
