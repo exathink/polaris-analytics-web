@@ -30,6 +30,50 @@ const {
   toggleCollapsed,
 } = appActions;
 
+function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode) {
+  function mapRouteAsMenuGroup(route) {
+    return (
+        <Menu.ItemGroup title={route.group} key={`${route.group}`}>
+          {
+            route.routes.map(
+              (childRoute) => mapTopLevelRoute(childRoute)
+            )
+          }
+        </Menu.ItemGroup>
+      )
+  }
+  function mapTopLevelRoute(route) {
+    const TopicIcon = route.topic.Icon;
+    return (
+      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
+        <Link
+          to={(location) => {
+            return {
+              ...location,
+              pathname: `${currentContext.urlFor(route)}`
+            };
+          }}
+        >
+            <span className="isoMenuHolder" style={submenuColor}>
+              {
+                route.topic.Icon ?
+                  <TopicIcon style={{ marginRight: "0px" }} />
+                  :
+                  <i className={route.topic.icon} />
+              }
+              <span
+                className={classNames("nav-text", mode === "vertical" ? "tw-ml-1" : "")}>{route.topic.display()}</span>
+            </span>
+        </Link>
+      </Menu.Item>
+    );
+  }
+
+  return activeTopicRoutes.map((route) => {
+    return route.group != null? mapRouteAsMenuGroup(route) : mapTopLevelRoute(route);
+  });
+}
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -103,7 +147,7 @@ class Sidebar extends Component {
     const optionalTopics = this.props.optionalTopics || [];
 
     const topicRoutes = currentContext.routes().filter(
-      route => route.topic
+      route => route.topic || route.group
     )
 
     const visibleRoutes = topicRoutes.filter(
@@ -113,8 +157,8 @@ class Sidebar extends Component {
         (route.disallowedFeatures == null || route.disallowedFeatures.every(feature => !viewerContext.isFeatureFlagActive(feature)))
     )
     const activeTopicRoutes = [
-      ...visibleRoutes.filter(route => !route.topic.optional),
-      ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
+      ...visibleRoutes.filter(route => !route.topic?.optional),
+      ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic?.name === topic))
     ];
     
     const menuProps = {
@@ -140,30 +184,7 @@ class Sidebar extends Component {
             <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
               <Menu key={`top`} {...menuProps}>
                 {currentContext
-                  ? activeTopicRoutes.map((route) => {
-                    const TopicIcon = route.topic.Icon;
-                    return (
-                      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
-                      <Link
-                        to={(location) => {
-                          return {
-                            ...location,
-                            pathname: `${currentContext.urlFor(route)}`,
-                          };
-                        }}
-                      >
-                          <span className="isoMenuHolder" style={submenuColor}>
-                            {
-                              route.topic.Icon?
-                                <TopicIcon style={{marginRight: "0px"}} />
-                                :
-                                <i className={route.topic.icon} />
-                            }
-                            <span className={classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.topic.display()}</span>
-                          </span>
-                        </Link>
-                      </Menu.Item>
-                    )})
+                  ? mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode)
                   : null}
               </Menu>
 
