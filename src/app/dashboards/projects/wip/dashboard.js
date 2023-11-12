@@ -10,7 +10,7 @@ import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
-import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
+import { getReferenceString, percentileToText, useFeatureFlag } from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../config/featureFlags";
@@ -119,7 +119,7 @@ function WipDashboard({
 
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">Stability Goal</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
       </div>
       <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
 
