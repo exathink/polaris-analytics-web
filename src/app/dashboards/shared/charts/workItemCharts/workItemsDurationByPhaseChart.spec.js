@@ -53,7 +53,7 @@ const fixedChartConfig = {
         width: 1,
         zIndex: 7,
         label: {
-          text: `p90 Lead Time Target=30 days`,
+          text: `90th pct. LT Target=30 days`,
           align: 'left',
           verticalAlign: 'top',
         }
@@ -65,7 +65,7 @@ const fixedChartConfig = {
         width: 1,
         zIndex: 7,
         label: {
-          text: `p90 Cycle Time Target=7 days`,
+          text: `90th pct. CT Target=7 days`,
           align: 'left',
           verticalAlign: 'top',
         }
