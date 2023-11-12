@@ -2,7 +2,7 @@ import React from 'react';
 import {Topics} from "../../../../meta/topics";
 
 const topic = {
-  ...Topics.motion,
+  ...Topics.wip,
   routes: [
     {
       match: '',

@@ -110,31 +110,29 @@ function WipDashboard({
             Exclude Motionless
           </Checkbox>
         </div>
+        <GroupingSelector
+          label="Show"
+          value={wipChartType}
+          onGroupingChanged={updateWipChartType}
+          groupings={[
+            {
+              key: "queue",
+              display: "Queueing",
+            },
+            {
+              key: "age",
+              display: "Aging",
+            },
+            {
+              key: "motion",
+              display: "Motion",
+            },
 
+          ]}
+          layout="col"
+        />
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
-        {ageLatencyFeatureFlag && (
-          <GroupingSelector
-            label="Show"
-            value={wipChartType}
-            onGroupingChanged={updateWipChartType}
-            groupings={[
-              {
-                key: "queue",
-                display: "Where",
-              },
-              {
-                key: "age",
-                display: "How long",
-              },
-              {
-                key: "motion",
-                display: "Last Moved",
-              },
-            ]}
-            layout="col"
-          />
-        )}
       </div>
       <DashboardRow>
         <DashboardWidget

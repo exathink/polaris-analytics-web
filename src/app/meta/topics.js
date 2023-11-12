@@ -6,7 +6,7 @@ import {
   ProjectOutlined,
   FunnelPlotOutlined,
   SettingOutlined,
-  RadarChartOutlined, AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined
+  RadarChartOutlined, AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -32,8 +32,8 @@ export const Topics = {
   },
   wip: {
     name: 'wip',
-    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
-    icon: 'ion-ios-pulse-strong'
+    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
+    Icon: BuildOutlined
   },
   queues: {
     name: 'wip',

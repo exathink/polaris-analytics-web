@@ -188,7 +188,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let codingHistogramElement = (
     <WorkItemsDetailHistogramChart
       chartConfig={{
-        title: `Age Analysis: ${customPhaseMapping.wip}`,
+        title: `Ageing Analysis: ${customPhaseMapping.wip}`,
         align: {align: "left"},
         subtitle: getSubTitleForHistogram({workItems: engineeringWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
@@ -218,7 +218,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   let deliveryHistogramElement = (
     <WorkItemsDetailHistogramChart
       chartConfig={{
-        title: `Age Analysis: ${customPhaseMapping.complete}`,
+        title: `Ageing Analysis: ${customPhaseMapping.complete}`,
         align: {align: "left"},
         subtitle: getSubTitleForHistogram({workItems: deliveryWorkItems, specsOnly, intl}),
         xAxisTitle: "Age in Days",
@@ -516,7 +516,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
   return (
     <div className={classNames(styles.cycleTimeLatencyDashboard, "tw-grid-rows-[9%_52%_39%]")}>
       <div className={styles.topControls}>
-        <div className={classNames(styles.title, "tw-text-2xl")}>Motion Analysis</div>
+        <div className={classNames(styles.title, "tw-text-2xl")}>Work In Process</div>
         <div className={styles.filters}>
           <SelectDropdown
             title="WorkStream"
@@ -635,32 +635,30 @@ export const DimensionCycleTimeLatencyDetailView = ({
             </Checkbox>
           </div>
 
-          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
+          <div>
+            <GroupingSelector
+              label="Show"
+              value={wipChartType}
+              onGroupingChanged={updateWipChartType}
+              groupings={[
+                {
+                  key: "queue",
+                  display: "Queueing",
+                },
+                {
+                  key: "age",
+                  display: "Aging",
+                },
+                {
+                  key: "motion",
+                  display: "Motion",
+                },
 
-          {ageLatencyFeatureFlag && (
-            <div>
-              <GroupingSelector
-                label="Show"
-                value={wipChartType}
-                onGroupingChanged={updateWipChartType}
-                groupings={[
-                  {
-                    key: "queue",
-                    display: "Where",
-                  },
-                  {
-                    key: "age",
-                    display: "How long",
-                  },
-                  {
-                    key: "motion",
-                    display: "Last Moved",
-                  },
-                ]}
-                layout="col"
-              />
-            </div>
-          )}
+              ]}
+              layout="col"
+            />
+          </div>
+          <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
           <div className="tw-mr-8 tw-w-8">
             <div className="tw-invisible">dummy</div>
