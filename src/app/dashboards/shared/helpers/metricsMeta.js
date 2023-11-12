@@ -13,6 +13,7 @@ import { ResponseTimeMetricsColor, WorkItemStateTypes } from "../config";
 export const projectDeliveryCycleFlowMetricsMeta = {
   leadTime: {
     display: "Lead Time",
+    shortDisplay: "LT",
     value: (cycle) => cycle.leadTime,
     targetMetric: 'leadTime',
     uom: 'days',
@@ -25,12 +26,14 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   // The next two entries encapsulate this logic in metricsMeta
   cycleTime: {
     display: "Cycle Time",
+    shortDisplay: "CT",
     value: (cycle) => cycle.cycleTime,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
   age: {
     display: "Age",
+    shortDisplay: "AG",
     value: (cycle) => cycle.cycleTime,
     targetMetric: 'cycleTime',
     uom: 'days',
@@ -38,6 +41,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   //
   duration: {
     display: "Coding",
+    shortDisplay: "CD",
     value: (cycle) => cycle.duration,
     targetMetric: 'cycleTime',
     uom: 'days',
@@ -50,12 +54,14 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   // The next two entries encapsulate this logic in metricsMeta
   latency: {
     display: "Last Moved",
+    shortDisplay: "LM",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
   },
   delivery: {
     display: "Shipping",
+    shortDisplay: "SH",
     value: (cycle) => cycle.latency,
     targetMetric: 'cycleTime',
     uom: 'days',
@@ -63,22 +69,26 @@ export const projectDeliveryCycleFlowMetricsMeta = {
   //
   effort: {
     display: "Effort",
+    shortDisplay: "EF",
     value: (cycle) => cycle.effort,
     uom: 'FTE Days',
   },
   authors: {
     display: "Authors",
+    shortDisplay: "AU",
     value: (cycle) => cycle.authorCount,
     uom: 'authors',
   },
   backlogTime: {
     display: "Define Time",
+    shortDisplay: "DT",
     value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
     targetMetric: 'leadTime',
     uom: 'days',
   },
   pullRequestAvgAge: {
     display: "Time to Review",
+    shortDisplay: "RT",
     value: (cycle) => cycle.pullRequestAvgAge,
     targetMetric: 'pullRequestAvgAge',
     uom: 'days',
