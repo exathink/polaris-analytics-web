@@ -55,7 +55,7 @@ export function NewFlowDashboard() {
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-8 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-11 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
@@ -82,11 +82,11 @@ export function NewFlowDashboard() {
           </Checkbox>
         </div>
       </div>
-      <div className="tw-col-span-2 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">TimeBox</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
-      <div className="tw-col-span-3 tw-col-start-6 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
+      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
         {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
@@ -116,7 +116,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="start-rate"
           title=""
-          className="tw-col-span-2 tw-col-start-2 tw-row-start-2"
+          className="tw-col-span-2 tw-col-start-1 tw-row-start-2"
           render={({view}) => {
             return (
               <StartRateWidget
@@ -143,7 +143,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="throughput-summary-card"
           title=""
-          className="tw-col-span-2 tw-col-start-6 tw-row-start-2 "
+          className="tw-col-span-2 tw-col-start-3 tw-row-start-2 "
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
@@ -181,7 +181,7 @@ export function NewFlowDashboard() {
       <DashboardRow>
         <DashboardWidget
           name="pipeline-funnel-summary"
-          className="tw-col-span-4 tw-col-start-3 tw-row-start-3"
+          className="tw-col-span-5 tw-col-start-4 tw-row-start-3"
           render={({view}) => (
             <ProjectPipelineFunnelWidget
               instanceKey={key}
@@ -209,8 +209,8 @@ export function NewFlowDashboard() {
                 funnelCenter: ["42%", "50%"],
                 title: "Flow, All Phases",
                 subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
-                series: {dataLabels: {fontSize: "14px"}},
-                legend: {title: {fontSize: "14px"}, fontSize: "14px"},
+                series: {dataLabels: {fontSize: "16px"}},
+                legend: {title: {fontSize: "18px"}, fontSize: "16px"},
               }}
             />
           )}
@@ -229,7 +229,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="wip-volume"
           title=""
-          className="tw-col-span-2 tw-col-start-4 tw-row-start-2"
+          className="tw-col-span-3 tw-col-start-5 tw-row-start-2"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
@@ -287,7 +287,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="wip-age"
           title=""
-          className="tw-col-span-2 tw-col-start-1 tw-row-start-4"
+          className="tw-col-span-2 tw-col-start-8 tw-row-start-2"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
@@ -314,7 +314,7 @@ export function NewFlowDashboard() {
         />
         <DashboardWidget
             name="quadrant-summary-pipeline"
-            className="tw-col-span-4 tw-col-start-3 tw-row-start-4"
+            className="tw-col-span-9 tw-col-start-2 tw-row-start-4"
             title={""}
             subtitle={""}
             render={({view}) => (
@@ -354,7 +354,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="cycletime-summary"
           title=""
-          className="tw-col-span-2 tw-col-start-7 tw-row-start-4"
+          className="tw-col-span-2 tw-col-start-10 tw-row-start-2"
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
