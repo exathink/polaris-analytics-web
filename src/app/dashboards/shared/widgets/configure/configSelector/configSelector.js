@@ -27,7 +27,7 @@ export const ConfigSelector = ({dimension, configTab, setConfigTab, settingsName
 
     {
       key: CONFIG_TABS.TIMEBOX_SETTINGS,
-      display: "TimeBox Settings",
+      display: "Stability Goal Settings",
     },
     {
       key: CONFIG_TABS.MEASUREMENT_SETTINGS,
