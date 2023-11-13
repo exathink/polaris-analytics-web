@@ -14,7 +14,18 @@ import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/
 import {capitalizeFirstLetter, pick} from "../../../../../helpers/utility";
 import Button from "../../../../../../components/uielements/button";
 
-const groupings = [METRICS.CYCLE_TIME];
+const groupings = [
+  {
+    key: METRICS.CYCLE_TIME,
+    display: "Work Item Cycle Time",
+  },
+  {
+    key: METRICS.LEAD_TIME,
+    display: "Work Item Lead Time",
+  }
+]
+
+
 
 export const ProjectResponseTimeSLASettingsView = ({
   data,
@@ -182,15 +193,12 @@ export const ProjectResponseTimeSLASettingsView = ({
     <React.Fragment>
       <div className={styles["flowMetricControlsWrapper"]} data-testid="flowmetrics-setting-view">
         <Flex w={1} justify={"center"}>
-          <span>Drag sliders to update timebox and confidence %</span>
+          <span>Drag sliders to update stability goal and confidence %</span>
         </Flex>
         <Flex w={1} className={styles["selectedMetricWrapper"]}>
           <GroupingSelector
             label={" "}
-            groupings={groupings.map((grouping) => ({
-              key: grouping,
-              display: "Work Items Stability Goal",
-            }))}
+            groupings={groupings}
             initialValue={selectedMetric}
             onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
           />
