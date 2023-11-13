@@ -701,13 +701,14 @@ export const MaxLeadTime = ({currentMeasurement, previousMeasurement, target, de
   />
 );
 
-export const PercentileLeadTime = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
+export const PercentileLeadTime = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, displayType,  deltaThreshold}) => (
   <ResponseTime
     title={title}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'percentileLeadTime'}
     displayName={'Lead Time'}
+    displayType={displayType}
     superScript={percentileToText(targetPercentile)}
     target={target}
     deltaThreshold={deltaThreshold}

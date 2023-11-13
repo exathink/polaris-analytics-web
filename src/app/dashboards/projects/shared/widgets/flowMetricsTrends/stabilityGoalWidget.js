@@ -10,7 +10,7 @@ import {
 import { Loading } from "../../../../../components/graphql/loading";
 import { logGraphQlError } from "../../../../../components/graphql/utils";
 import React from "react";
-import { PercentileCycleTime } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { PercentileCycleTime, PercentileLeadTime } from "../../../../shared/components/flowStatistics/flowStatistics";
 
 export const StabilityGoalWidget = ({
   dimension,
@@ -21,8 +21,11 @@ export const StabilityGoalWidget = ({
   days,
   measurementWindow,
   samplingFrequency,
+  metric='cycleTime',
   cycleTimeTarget,
   cycleTimeConfidenceTarget,
+  leadTimeTarget,
+  leadTimeConfidenceTarget,
   flowAnalysisPeriod,
   specsOnly,
   latestCommit,
@@ -38,7 +41,8 @@ export const StabilityGoalWidget = ({
     days: days,
     measurementWindow: measurementWindow,
     samplingFrequency: samplingFrequency,
-    targetPercentile,
+    leadTimeTargetPercentile: leadTimeConfidenceTarget || 1,
+    cycleTimeTargetPercentile: cycleTimeConfidenceTarget || 1,
     includeSubTasks,
     specsOnly,
     referenceString: getReferenceString(latestWorkItemEvent, latestCommit),
@@ -57,17 +61,36 @@ export const StabilityGoalWidget = ({
   return (
     <div className="tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">{"Stability Goal"}</div>
-        <div className="tw-flex tw-justify-start tw-text-xl">{`${percentileToText(cycleTimeConfidenceTarget)} Cycle Time <= ${cycleTimeTarget} Days`}</div>
-        <div className="tw-flex tw-justify-start tw-text-xl">
-          <PercentileCycleTime
-            title={"Actual "}
-            previousMeasurement={previous}
-            currentMeasurement={current}
-            target={cycleTimeTarget}
-            targetPercentile={cycleTimeConfidenceTarget}
-            displayType={'inlinerender'}
-          />
+      {
+        metric === 'cycleTime'?
+        <>
+          <div className="tw-flex tw-justify-start tw-text-xl">{`${percentileToText(cycleTimeConfidenceTarget)} Cycle Time <= ${cycleTimeTarget} Days`}</div>
+          <div className="tw-flex tw-justify-start tw-text-xl">
+            <PercentileCycleTime
+              title={"Actual "}
+              previousMeasurement={previous}
+              currentMeasurement={current}
+              target={cycleTimeTarget}
+              targetPercentile={cycleTimeConfidenceTarget}
+              displayType={'inlinerender'}
+            />
         </div>
+        </>
+          :
+          <>
+            <div className="tw-flex tw-justify-start tw-text-xl">{`${percentileToText(cycleTimeConfidenceTarget)} Lead Time <= ${leadTimeTarget} Days`}</div>
+            <div className="tw-flex tw-justify-start tw-text-xl">
+              <PercentileLeadTime
+                title={"Actual "}
+                previousMeasurement={previous}
+                currentMeasurement={current}
+                target={leadTimeTarget}
+                targetPercentile={leadTimeConfidenceTarget}
+                displayType={'inlinerender'}
+              />
+            </div>
+          </>
+      }
     </div>
   );
 };

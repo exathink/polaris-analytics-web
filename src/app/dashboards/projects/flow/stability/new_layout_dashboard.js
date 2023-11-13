@@ -63,6 +63,8 @@ export function NewFlowDashboard() {
     // targets
     cycleTimeTarget: cycleTimeTarget,
     cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
+    leadTimeTarget: leadTimeTarget,
+    leadTimeConfidenceTarget: leadTimeConfidenceTarget,
     // work item filters
     includeSubTasks: includeSubTasksFlowMetrics,
     specsOnly: specsOnly,
@@ -111,6 +113,7 @@ export function NewFlowDashboard() {
           key={specsOnly}
           dimension="project"
           instanceKey={key}
+          metric={'leadTime'}
           {...flowMetricTrendsArgs}
         />
       </div>
