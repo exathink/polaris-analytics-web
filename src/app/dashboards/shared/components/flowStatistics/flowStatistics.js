@@ -2,6 +2,7 @@ import React from "react";
 import {
   CustomStatistic,
   getMetricUtils,
+  InlineTrendMetric,
   Statistic,
   TrendIndicator,
   TrendIndicatorDisplayThreshold,
@@ -150,6 +151,21 @@ export const FlowStatistic = ({
               samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
             />
           }
+        />
+      );
+    }
+
+    case "inlinerender": {
+      return (
+        <InlineTrendMetric
+          title={title}
+          metricValue={metricValue}
+          uom={suffix}
+          currentValue={value}
+          previousValue={comp}
+          good={good}
+          samplingFrequency={currentMeasurement?.samplingFrequency || currentMeasurement?.measurementWindow}
+
         />
       );
     }
@@ -631,13 +647,14 @@ export const MaxCycleTime = ({currentMeasurement, previousMeasurement, target, d
   />
 );
 
-export const PercentileCycleTime = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, deltaThreshold}) => (
+export const PercentileCycleTime = ({title, currentMeasurement, previousMeasurement, target, targetPercentile, displayType, deltaThreshold}) => (
   <ResponseTime
     title={title}
     currentMeasurement={currentMeasurement}
     previousMeasurement={previousMeasurement}
     metric={'percentileCycleTime'}
     displayName={'Cycle Time'}
+    displayType={displayType}
     superScript={percentileToText(targetPercentile)}
     target={target}
     deltaThreshold={deltaThreshold}
