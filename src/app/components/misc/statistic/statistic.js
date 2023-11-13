@@ -167,6 +167,19 @@ export function TrendMetric({metricValue, uom, trendIndicator}) {
   );
 }
 
+export function InlineTrendMetric({title, metricValue, uom, currentValue,previousValue, good}) {
+  const intl = useIntl();
+  const {trendIndicatorIcon, trendValue, absDelta} = getTrendIndicatorUtils({currentValue, previousValue, good, intl});
+
+  return (
+    <span>
+      {title} {metricValue} {uom} <span className={`trendIcon`}>{trendIndicatorIcon}</span>
+    </span>
+  );
+}
+
+
+
 export function renderMetric(text) {
   return text === "N/A" ? <span className="tw-textSm">N/A</span> : <span className="tw-textXl">{text}</span>;
 }
