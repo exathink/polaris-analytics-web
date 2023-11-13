@@ -4,7 +4,7 @@ import {ResponseTimeSLASettingsDashboard} from "../../shared/widgets/configure/s
 import ConfigureDashboard from "./dashboard";
 import ValueStreamMapping from "./valueStreamMapping/topic";
 import ValueStreams from "./valueStreams/topic";
-import TimeboxSettings from "./timeBoxSettings/topic";
+import StabilityGoals from "./stabilityGoals/topic";
 import GeneralSettings from "./generalSettings/topic";
 import { ValueStreamMappingDashboard } from "./valueStreamMapping/dashboard";
 
@@ -19,13 +19,13 @@ const topic =  {
     },
     {
       subnav: true,
-      match: 'value-streams',
-      topic: ValueStreams
+      match: 'stability-goals',
+      topic: StabilityGoals
     },
     {
       subnav: true,
-      match: 'stability-settings',
-      topic: TimeboxSettings
+      match: 'value-streams',
+      topic: ValueStreams
     },
     {
       subnav: true,
