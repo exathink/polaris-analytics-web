@@ -15,6 +15,7 @@ import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits
 import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRateWidget";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
 import { percentileToText } from "../../../../helpers/utility";
+import { StabilityGoalWidget } from "../../shared/widgets/flowMetricsTrends/stabilityGoalWidget";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -77,7 +78,7 @@ export function NewFlowDashboard() {
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-11 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-11 tw-grid-rows-[11%_20%_48%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
@@ -104,11 +105,16 @@ export function NewFlowDashboard() {
           </Checkbox>
         </div>
       </div>
-      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Stability Goal</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
+      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1">
+        <StabilityGoalWidget
+
+          key={specsOnly}
+          dimension="project"
+          instanceKey={key}
+          {...flowMetricTrendsArgs}
+        />
       </div>
-      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
+      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-xl">
         {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
