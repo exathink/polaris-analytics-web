@@ -117,7 +117,7 @@ export const Topics = {
   },
   stabilitySettings: {
     name: 'stability',
-    display: () => (<FormattedMessage id='topics.stabilitySettings' defaultMessage="Stability"/>),
+    display: () => (<FormattedMessage id='topics.stabilitySettings' defaultMessage="Stability Goals"/>),
     Icon: FieldTimeOutlined
   },
   flow_mapping: {
