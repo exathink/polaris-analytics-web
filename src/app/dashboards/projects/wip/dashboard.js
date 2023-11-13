@@ -10,7 +10,7 @@ import {DimensionPipelineCycleTimeLatencyWidget} from "../../shared/widgets/work
 import {WorkItemScopeSelector} from "../../shared/components/workItemScopeSelector/workItemScopeSelector";
 
 import {DimensionWipSummaryWidget} from "../../shared/widgets/work_items/wip/cycleTimeLatency/dimensionWipSummaryWidget";
-import {getReferenceString, useFeatureFlag} from "../../../helpers/utility";
+import { getReferenceString, percentileToText, useFeatureFlag } from "../../../helpers/utility";
 import {GroupingSelector} from "../../shared/components/groupingSelector/groupingSelector";
 
 import {AGE_LATENCY_ENHANCEMENTS} from "../../../../config/featureFlags";
@@ -84,7 +84,7 @@ function WipDashboard({
     <Dashboard
       dashboard={`${dashboard_id}`}
       dashboardVideoConfig={WipDashboard.videoConfig}
-      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_72%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
+      className="tw-grid tw-grid-cols-6 tw-grid-rows-[8%_auto_97%] tw-gap-x-2 tw-gap-y-1 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-span-2 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
@@ -118,167 +118,34 @@ function WipDashboard({
       </div>
 
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">TimeBox</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+        <div className="tw-flex tw-justify-start">Stability Goal</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
       </div>
       <div className="tw-col-span-2 tw-col-start-5 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
+        <GroupingSelector
+          label="Show"
+          value={wipChartType}
+          onGroupingChanged={updateWipChartType}
+          groupings={[
+            {
+              key: "queue",
+              display: "Queueing",
+            },
+            {
+              key: "age",
+              display: "Aging",
+            },
+            {
+              key: "motion",
+              display: "Motion",
+            },
 
-        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
-        {ageLatencyFeatureFlag && (
-          <GroupingSelector
-            label="Show"
-            value={wipChartType}
-            onGroupingChanged={updateWipChartType}
-            groupings={[
-              {
-                key: "queue",
-                display: "Where",
-              },
-              {
-                key: "age",
-                display: "How long",
-              },
-              {
-                key: "motion",
-                display: "Last Moved",
-              },
-            ]}
-            layout="col"
-          />
-        )}
-      </div>
-      <DashboardRow>
-        <DashboardWidget
-          name="summary-wip"
-          className="tw-col-span-3 tw-col-start-1"
-          title={""}
-          render={({view}) => (
-            <DimensionWipSummaryWidget
-              dimension={DIMENSION}
-              instanceKey={key}
-              tags={workItemSelectors}
-              release={release}
-              specsOnly={specsOnly}
-              latestCommit={latestCommit}
-              displayBag={{
-                excludeMotionless: excludeMotionless,
-                traceabilityStat: (<ProjectTraceabilityTrendsWidget
-                    instanceKey={key}
-                    measurementWindow={flowAnalysisPeriod}
-                    days={flowAnalysisPeriod}
-                    samplingFrequency={flowAnalysisPeriod}
-                    context={context}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    displayBag={{displayType: "normStat"}}
-                    target={0.9}
-                  />),
-                traceability: (
-                  <ProjectTraceabilityTrendsWidget
-                    instanceKey={key}
-                    measurementWindow={flowAnalysisPeriod}
-                    days={flowAnalysisPeriod}
-                    samplingFrequency={flowAnalysisPeriod}
-                    context={context}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    latestCommit={latestCommit}
-                    displayBag={{displayType: "trendsCompareCard"}}
-                    target={0.9}
-                  />
-                ),
-              }}
-              latestWorkItemEvent={latestWorkItemEvent}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              targetPercentile={responseTimeConfidenceTarget}
-              leadTimeTargetPercentile={leadTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
-              days={flowAnalysisPeriod}
-              view={view}
-              includeSubTasks={includeSubTasksWipInspector}
-            />
-          )}
-          showDetail={false}
-          hideTitlesInDetailView={true}
+          ]}
+          layout="col"
         />
-        <div className="tw-col-span-3 tw-col-start-4 tw-h-full tw-bg-ghostwhite" data-testid="completed-work">
-          <div className="tw-grid tw-grid-cols-2 tw-gap-1">
-            <div className={classNames("tw-col-span-2 tw-ml-2 tw-font-normal", fontStyles["text-lg"])}>
-              Flow Metrics, Last {flowAnalysisPeriod} Days
-            </div>
-
-            <DashboardWidget
-              name="throughput-summary-card"
-              title=""
-              className=""
-              render={({view}) => {
-                return (
-                  <FlowMetricsTrendsWidget
-                    dimension="project"
-                    instanceKey={key}
-                    tags={workItemSelectors}
-                    release={release}
-                    // Summary Card Data
-                    // Throughput for a single measurement period
-                    // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-                    // days = measurementWindow = samplingFrequency
-                    // days is set to flowAnalysisPeriod by default
-                    days={flowAnalysisPeriod}
-                    measurementWindow={flowAnalysisPeriod}
-                    samplingFrequency={flowAnalysisPeriod}
-                    trendAnalysisPeriod={trendsAnalysisPeriod}
-                    flowAnalysisPeriod={flowAnalysisPeriod}
-                    targetPercentile={responseTimeConfidenceTarget}
-                    specsOnly={specsOnly}
-                    latestCommit={latestCommit}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    includeSubTasks={includeSubTasksWipInspector}
-                    view={view}
-                    displayBag={{
-                      metric: "volumeWithThroughput",
-                      displayType: "cardAdvanced",
-                      iconsShiftLeft: false,
-                      trendValueClass: "tw-text-2xl",
-                    }}
-                  />
-                );
-              }}
-            />
-
-            <DashboardWidget
-              name="cycletime-summary"
-              title=""
-              className=""
-              render={({view}) => {
-                return (
-                  <FlowMetricsTrendsWidget
-                    key={specsOnly}
-                    dimension="project"
-                    instanceKey={key}
-                    tags={workItemSelectors}
-                    release={release}
-                    days={flowAnalysisPeriod}
-                    measurementWindow={flowAnalysisPeriod}
-                    samplingFrequency={flowAnalysisPeriod}
-                    trendAnalysisPeriod={trendsAnalysisPeriod}
-                    flowAnalysisPeriod={flowAnalysisPeriod}
-                    targetPercentile={responseTimeConfidenceTarget}
-                    specsOnly={specsOnly}
-                    latestCommit={latestCommit}
-                    latestWorkItemEvent={latestWorkItemEvent}
-                    includeSubTasks={includeSubTasksWipInspector}
-                    cycleTimeTarget={cycleTimeTarget}
-                    displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
-                  />
-                );
-              }}
-              showDetail={false}
-            />
-          </div>
-        </div>
-      </DashboardRow>
+        <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
+      </div>
       <DashboardRow title={" "}>
         <DashboardWidget
           name="engineering"

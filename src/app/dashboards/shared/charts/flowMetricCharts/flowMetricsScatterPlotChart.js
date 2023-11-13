@@ -56,7 +56,7 @@ function getTargetPlotLine(selectedMetric, metricsMeta, metricTarget, targetConf
 }
 
 function getTargetActualPlotLine(candidateCycles, selectedMetric, targetConfidence, metricsMeta, intl) {
-  const selectedMetricDisplay = metricsMeta[selectedMetric].display;
+  const selectedMetricDisplay = metricsMeta[selectedMetric].shortDisplay;
   const metricValue = metricsMeta[selectedMetric].value
   const sorted = candidateCycles.filter(
     cycle => metricValue(cycle) != null
@@ -165,7 +165,7 @@ export const FlowMetricsScatterPlotChart = Chart({
         zoomType: "xy",
       },
       title: {
-        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
+        text: `${metricsMeta[selectedMetric].display} Stability, Last ${days} Days`,
       },
       subtitle: {
         text: (function () {

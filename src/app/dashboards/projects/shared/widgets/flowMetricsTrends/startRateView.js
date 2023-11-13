@@ -5,6 +5,7 @@
  */
 
 import {StartRate} from "../../../../shared/components/flowStatistics/flowStatistics";
+import { itemsDesc } from "../../../../shared/config";
 
 function getGoodnessIndicator(currentThroughputTrend, currentArrivalTrend, specsOnly) {
     const START_RATE_THRESHOLD = 5;
@@ -30,7 +31,7 @@ export function StartRateView({
   let [currentThroughputTrend] = cycleMetricsTrends;
   const dummy_target = 2;
   const startRate = currentArrivalTrend["arrivals"] ? currentArrivalTrend["arrivals"] / flowAnalysisPeriod : null;
-  const supportingMetric = currentArrivalTrend["arrivals"] ? <span>Start Rate: {startRate.toFixed(1)} / day</span> : <span></span>;
+  const supportingMetric = currentArrivalTrend["arrivals"] ? <span>Start Rate: {startRate.toFixed(1)} {itemsDesc(specsOnly)}/day</span> : <span></span>;
   return (
     <div className="tw-h-full tw-w-full">
       <StartRate

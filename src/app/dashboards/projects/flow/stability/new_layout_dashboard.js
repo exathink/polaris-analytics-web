@@ -14,6 +14,7 @@ import {Checkbox} from "antd";
 import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
 import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRateWidget";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
+import { percentileToText } from "../../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -39,7 +40,6 @@ export function NewFlowDashboard() {
   }, [workItemScope, volumeOrEffort]);
   
   const {
-    responseTimeConfidenceTarget,
     flowAnalysisPeriod,
     trendsAnalysisPeriod,
     includeSubTasksFlowMetrics,
@@ -55,7 +55,7 @@ export function NewFlowDashboard() {
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-8 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-11 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
@@ -82,11 +82,11 @@ export function NewFlowDashboard() {
           </Checkbox>
         </div>
       </div>
-      <div className="tw-col-span-2 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">TimeBox</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
+        <div className="tw-flex tw-justify-start">Stability Goal</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
       </div>
-      <div className="tw-col-span-3 tw-col-start-6 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
+      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
         {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
@@ -94,11 +94,11 @@ export function NewFlowDashboard() {
               groupings={[
                 {
                   key: "volume",
-                  display: "Residence Time",
+                  display: "Supply/Demand",
                 },
                 {
                   key: "effort",
-                  display: "Cost",
+                  display: "Effort",
                 },
               ]}
               initialValue={"volume"}
@@ -116,7 +116,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="start-rate"
           title=""
-          className="tw-col-span-2 tw-col-start-2 tw-row-start-2"
+          className="tw-col-span-2 tw-col-start-1 tw-row-start-2"
           render={({view}) => {
             return (
               <StartRateWidget
@@ -131,7 +131,7 @@ export function NewFlowDashboard() {
                 flowAnalysisPeriod={flowAnalysisPeriod}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
-                targetPercentile={responseTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
                 includeSubTasks={includeSubTasksFlowMetrics}
                 latestWorkItemEvent={latestWorkItemEvent}
                 displayBag={{displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
@@ -141,9 +141,9 @@ export function NewFlowDashboard() {
           showDetail={false}
         />
         <DashboardWidget
-          name="throughput-summary-card"
+          name="finish-rate"
           title=""
-          className="tw-col-span-2 tw-col-start-6 tw-row-start-2 "
+          className="tw-col-span-2 tw-col-start-3 tw-row-start-2 "
           render={({view}) => {
             return (
               <FlowMetricsTrendsWidget
@@ -161,7 +161,7 @@ export function NewFlowDashboard() {
                 samplingFrequency={flowAnalysisPeriod}
                 trendAnalysisPeriod={trendsAnalysisPeriod}
                 flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
                 specsOnly={specsOnly}
                 latestCommit={latestCommit}
                 latestWorkItemEvent={latestWorkItemEvent}
@@ -177,59 +177,10 @@ export function NewFlowDashboard() {
             );
           }}
         />
-      </DashboardRow>
-      <DashboardRow>
-        <DashboardWidget
-          name="pipeline-funnel-summary"
-          className="tw-col-span-4 tw-col-start-3 tw-row-start-3"
-          render={({view}) => (
-            <ProjectPipelineFunnelWidget
-              instanceKey={key}
-              tags={workItemSelectors}
-              release={release}
-              context={context}
-              workItemScope={workItemScope}
-              setWorkItemScope={setWorkItemScope}
-              latestWorkItemEvent={latestWorkItemEvent}
-              latestCommit={latestCommit}
-              days={flowAnalysisPeriod}
-              view={view}
-              showVolumeOrEffort={volumeOrEffort}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              latencyTarget={latencyTarget}
-              excludeMotionless={exclude}
-              includeSubTasks={{
-                includeSubTasksInClosedState: includeSubTasksFlowMetrics,
-                includeSubTasksInNonClosedState: includeSubTasksWipInspector,
-              }}
-              displayBag={{
-                funnelCenter: ["42%", "50%"],
-                title: "Flow, All Phases",
-                subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
-                series: {dataLabels: {fontSize: "14px"}},
-                legend: {title: {fontSize: "14px"}, fontSize: "14px"},
-              }}
-            />
-          )}
-          showDetail={true}
-          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
-        />
-
-      </DashboardRow>
-      <DashboardRow>
-        {/**
-         We are placing this widget here on the dashboard layout even though visually it
-         is on the second row. This is because the WIP query is expensive and we want to issue
-         it after the funnel query so that the funnel populates first and shows up on the page,
-         while the WIP query is loading.
-         **/}
         <DashboardWidget
           name="wip-volume"
           title=""
-          className="tw-col-span-2 tw-col-start-4 tw-row-start-2"
+          className="tw-col-span-3 tw-col-start-5 tw-row-start-2"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
@@ -237,7 +188,7 @@ export function NewFlowDashboard() {
                 instanceKey={key}
                 tags={workItemSelectors}
                 release={release}
-                targetPercentile={responseTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 leadTimeTarget={leadTimeTarget}
@@ -287,7 +238,7 @@ export function NewFlowDashboard() {
         <DashboardWidget
           name="wip-age"
           title=""
-          className="tw-col-span-2 tw-col-start-1 tw-row-start-4"
+          className="tw-col-span-2 tw-col-start-8 tw-row-start-2"
           render={({view}) => {
             return (
               <DimensionWipMetricsWidget
@@ -295,7 +246,7 @@ export function NewFlowDashboard() {
                 instanceKey={key}
                 tags={workItemSelectors}
                 release={release}
-                targetPercentile={responseTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
                 latencyTarget={latencyTarget}
                 specsOnly={specsOnly}
@@ -313,8 +264,81 @@ export function NewFlowDashboard() {
           showDetail={false}
         />
         <DashboardWidget
+          name="cycle-time"
+          title=""
+          className="tw-col-span-2 tw-col-start-10 tw-row-start-2"
+          render={({view}) => {
+            return (
+              <FlowMetricsTrendsWidget
+                key={specsOnly}
+                dimension="project"
+                instanceKey={key}
+                tags={workItemSelectors}
+                release={release}
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
+                trendAnalysisPeriod={trendsAnalysisPeriod}
+                flowAnalysisPeriod={flowAnalysisPeriod}
+                targetPercentile={cycleTimeConfidenceTarget}
+                specsOnly={specsOnly}
+                latestCommit={latestCommit}
+                latestWorkItemEvent={latestWorkItemEvent}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                cycleTimeTarget={cycleTimeTarget}
+                displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+              />
+            );
+          }}
+          showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
+          name="pipeline-funnel-summary"
+          className="tw-col-span-5 tw-col-start-4 tw-row-start-3"
+          render={({view}) => (
+            <ProjectPipelineFunnelWidget
+              instanceKey={key}
+              tags={workItemSelectors}
+              release={release}
+              context={context}
+              workItemScope={workItemScope}
+              setWorkItemScope={setWorkItemScope}
+              latestWorkItemEvent={latestWorkItemEvent}
+              latestCommit={latestCommit}
+              days={flowAnalysisPeriod}
+              view={view}
+              showVolumeOrEffort={volumeOrEffort}
+              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+              leadTimeTarget={leadTimeTarget}
+              cycleTimeTarget={cycleTimeTarget}
+              latencyTarget={latencyTarget}
+              excludeMotionless={exclude}
+              includeSubTasks={{
+                includeSubTasksInClosedState: includeSubTasksFlowMetrics,
+                includeSubTasksInNonClosedState: includeSubTasksWipInspector,
+              }}
+              displayBag={{
+                funnelCenter: ["42%", "50%"],
+                title: "Flow, All Phases",
+                subTitle: volumeOrEffort === "volume" ? "Residence Time" : "Cost of Unshipped Code",
+                series: {dataLabels: {fontSize: "16px"}},
+                legend: {title: {fontSize: "18px"}, fontSize: "16px"},
+              }}
+            />
+          )}
+          showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.TABULAR_DETAILS_VIEW}
+        />
+
+
+      </DashboardRow>
+      <DashboardRow>
+        <DashboardWidget
             name="quadrant-summary-pipeline"
-            className="tw-col-span-4 tw-col-start-3 tw-row-start-4"
+            className="tw-col-span-9 tw-col-start-2 tw-row-start-4"
             title={""}
             subtitle={""}
             render={({view}) => (
@@ -325,7 +349,7 @@ export function NewFlowDashboard() {
                 release={release}
                 display={"commonWipSummary"}
                 days={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
                 leadTimeTargetPercentile={leadTimeConfidenceTarget}
                 cycleTimeTargetPercentile={cycleTimeConfidenceTarget}
                 cycleTimeTarget={cycleTimeTarget}
@@ -348,38 +372,6 @@ export function NewFlowDashboard() {
             showDetail={false}
             hideTitlesInDetailView={true}
           />
-
-
-
-        <DashboardWidget
-          name="cycletime-summary"
-          title=""
-          className="tw-col-span-2 tw-col-start-7 tw-row-start-4"
-          render={({view}) => {
-            return (
-              <FlowMetricsTrendsWidget
-                key={specsOnly}
-                dimension="project"
-                instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={responseTimeConfidenceTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                cycleTimeTarget={cycleTimeTarget}
-                displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
-              />
-            );
-          }}
-          showDetail={false}
-        />
       </DashboardRow>
     </Dashboard>
   );

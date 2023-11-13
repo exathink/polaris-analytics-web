@@ -13,6 +13,7 @@ import {useQueryParamState} from "../../shared/helper/hooks";
 import {Checkbox} from "antd";
 import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits/traceability";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
+import { percentileToText } from "../../../../helpers/utility";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -82,8 +83,8 @@ export function NewFlowDashboard() {
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">TimeBox</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
+        <div className="tw-flex tw-justify-start">Stability Goal</div>
+        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
       </div>
       <div className="tw-col-span-3 tw-col-start-6 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
         {specsOnly && (

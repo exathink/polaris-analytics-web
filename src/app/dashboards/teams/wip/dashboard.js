@@ -86,7 +86,7 @@ function WipDashboard({
         </div>
       </div>
       <div className="tw-col-span-2 tw-col-start-3 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">TimeBox</div>
+        <div className="tw-flex tw-justify-start">Stability Goal</div>
         <div className="tw-flex tw-justify-start tw-text-base">{cycleTimeTarget} Days</div>
       </div>
       <div className="tw-col-span-3 tw-col-start-4 tw-row-start-1 tw-mr-2 tw-flex tw-items-baseline tw-justify-end tw-gap-8 tw-text-base">
@@ -110,31 +110,29 @@ function WipDashboard({
             Exclude Motionless
           </Checkbox>
         </div>
+        <GroupingSelector
+          label="Show"
+          value={wipChartType}
+          onGroupingChanged={updateWipChartType}
+          groupings={[
+            {
+              key: "queue",
+              display: "Queueing",
+            },
+            {
+              key: "age",
+              display: "Aging",
+            },
+            {
+              key: "motion",
+              display: "Motion",
+            },
 
+          ]}
+          layout="col"
+        />
         <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} layout="col" />
 
-        {ageLatencyFeatureFlag && (
-          <GroupingSelector
-            label="Show"
-            value={wipChartType}
-            onGroupingChanged={updateWipChartType}
-            groupings={[
-              {
-                key: "queue",
-                display: "Where",
-              },
-              {
-                key: "age",
-                display: "How long",
-              },
-              {
-                key: "motion",
-                display: "Last Moved",
-              },
-            ]}
-            layout="col"
-          />
-        )}
       </div>
       <DashboardRow>
         <DashboardWidget

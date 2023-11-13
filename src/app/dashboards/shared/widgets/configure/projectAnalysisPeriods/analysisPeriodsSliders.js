@@ -21,7 +21,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
   const analysisPeriodItems = [
     {
       id: "wipAnalysisPeriod",
-      title: "Wip Analysis Window",
+      title: "Branch Stability Window",
       period: wipPeriod,
       setPeriod: setWipRange,
       range: wipDaysMarks,
@@ -32,7 +32,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
     },
     {
       id: "flowAnalysisPeriod",
-      title: "Flow Analysis Window",
+      title: "Work Item Stability Window",
       period: flowPeriod,
       setPeriod: setFlowRange,
       range: flowDaysMarks,
@@ -44,7 +44,7 @@ export function AnalysisPeriodsSliders({wipPeriod, flowPeriod, trendsPeriod, ini
     },
     {
       id: "trendsAnalysisPeriod",
-      title: "Trends Analysis Window",
+      title: "Work Package Stability Window",
       period: trendsPeriod,
       setPeriod: setTrendsRange,
       range: trendsDaysMarks,

@@ -92,7 +92,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithLeadTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta["leadTime"].display} Scatter Plot`,
+        text: `${metricsMeta["leadTime"].display} Stability, Last 30 Days`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -104,7 +104,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             width: 1,
             zIndex: 7,
             label: {
-              text: expect.stringMatching(`p90 Lead Time Target=30 days`),
+              text: expect.stringMatching(`90th pct. LT Target=30 days`),
               align: "left",
               verticalAlign: "top",
             },
@@ -424,7 +424,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithCycleTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
+        text: `${metricsMeta[selectedMetric].display} Stability, Last 30 Days`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -436,7 +436,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             width: 1,
             zIndex: 7,
             label: {
-              text: expect.stringContaining(`p90 Cycle Time Target=7 days`),
+              text: expect.stringContaining(`90th pct. CT Target=7 days`),
               align: "left",
               verticalAlign: "top",
             },
@@ -699,7 +699,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithBacklogTime = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
+        text: `${metricsMeta[selectedMetric].display} Stability, Last 30 Days`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -711,7 +711,7 @@ describe("FlowMetricsScatterPlotChart", () => {
             width: 1,
             zIndex: 7,
             label: {
-              text: expect.stringContaining(`p90 Lead Time Target=7 days`),
+              text: expect.stringContaining(`90th pct. LT Target=7 days`),
               align: "left",
               verticalAlign: "top",
             },
@@ -824,7 +824,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithEffort = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
+        text: `${metricsMeta[selectedMetric].display} Stability, Last 30 Days`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,
@@ -897,7 +897,7 @@ describe("FlowMetricsScatterPlotChart", () => {
     const fixedChartConfigWithAuthors = {
       ...fixedChartConfig,
       title: {
-        text: `${metricsMeta[selectedMetric].display} Scatter Plot`,
+        text: `${metricsMeta[selectedMetric].display} Stability, Last 30 Days`,
       },
       yAxis: {
         ...fixedChartConfig.yAxis,

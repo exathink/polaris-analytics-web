@@ -6,14 +6,19 @@ import {
   ProjectOutlined,
   FunnelPlotOutlined,
   SettingOutlined,
-  RadarChartOutlined,
-}  from "@ant-design/icons";
+  RadarChartOutlined, AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined
+} from "@ant-design/icons";
 
 export const Topics = {
   flow: {
     name: 'flow',
-    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow Analyzer"/>),
+    display: () => (<FormattedMessage id='topics.flow' defaultMessage="Flow"/>),
     icon: 'ion-ios-infinite-outline'
+  },
+  stability: {
+    name: 'stability',
+    display: () => (<FormattedMessage id='topics.stability' defaultMessage="Stability"/>),
+    Icon: AimOutlined
   },
   flowTrends: {
     name: 'flowTrends',
@@ -27,8 +32,8 @@ export const Topics = {
   },
   wip: {
     name: 'wip',
-    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip Inspector"/>),
-    icon: 'ion-ios-pulse-strong'
+    display: () => (<FormattedMessage id='topics.wip' defaultMessage="Wip"/>),
+    Icon: BuildOutlined
   },
   queues: {
     name: 'wip',
@@ -36,9 +41,9 @@ export const Topics = {
     icon: 'ion-ios-pulse-strong'
   },
   motion: {
-    name: 'wip',
+    name: 'motion',
     display: () => (<FormattedMessage id='topics.motion' defaultMessage="Motion"/>),
-    icon: 'ion-ios-pulse-strong'
+    Icon: ArrowRightOutlined
   },
   productVideos: {
     name: 'productVideos',
@@ -73,12 +78,12 @@ export const Topics = {
   responseTime: {
     name: 'responseTime',
     display: () => (<FormattedMessage id='topics.responseTime' defaultMessage="Response Time Analysis"/>),
-    icon: 'ion-arrow-return-left'
+    Icon: HourglassOutlined
   },
   throughput: {
     name: 'throughput',
     display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput Analysis"/>),
-    icon: 'ion-arrow-right-a'
+    Icon: DashboardOutlined
   },
   value: {
     name: 'value',
