@@ -51,6 +51,28 @@ export function NewFlowDashboard() {
     latencyTarget,
     wipLimit,
   } = settingsWithDefaults;
+  
+  const flowMetricTrendsArgs = {
+    instanceKey: key,
+    // trends parameters
+    days: flowAnalysisPeriod,
+    measurementWindow: flowAnalysisPeriod,
+    samplingFrequency: flowAnalysisPeriod,
+    targetPercentile: cycleTimeConfidenceTarget,
+    // targets
+    cycleTimeTarget: cycleTimeTarget,
+    cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
+    // work item filters
+    includeSubTasks: includeSubTasksFlowMetrics,
+    specsOnly: specsOnly,
+    tags: workItemSelectors,
+    release: release,
+    // polling parameters
+    latestCommit: latestCommit,
+    latestWorkItemEvent: latestWorkItemEvent,
+    //other metadata
+    flowAnalysisPeriod: flowAnalysisPeriod,
+  }
 
   return (
     <Dashboard
@@ -123,18 +145,8 @@ export function NewFlowDashboard() {
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                targetPercentile={cycleTimeConfidenceTarget}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                latestWorkItemEvent={latestWorkItemEvent}
                 displayBag={{displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                {...flowMetricTrendsArgs}
               />
             );
           }}
@@ -149,23 +161,6 @@ export function NewFlowDashboard() {
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                // Summary Card Data
-                // Throughput for a single measurement period
-                // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-                // days = measurementWindow = samplingFrequency
-                // days is set to flowAnalysisPeriod by default
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={cycleTimeConfidenceTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
                 displayBag={{
                   metric: "volumeWithThroughput",
@@ -173,6 +168,7 @@ export function NewFlowDashboard() {
                   iconsShiftLeft: false,
                   trendValueClass: "tw-text-2xl",
                 }}
+                {...flowMetricTrendsArgs}
               />
             );
           }}
@@ -273,20 +269,8 @@ export function NewFlowDashboard() {
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={cycleTimeConfidenceTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                cycleTimeTarget={cycleTimeTarget}
                 displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                {...flowMetricTrendsArgs}
               />
             );
           }}
