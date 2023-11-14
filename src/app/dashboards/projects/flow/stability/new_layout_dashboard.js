@@ -16,7 +16,7 @@ import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRat
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
 import { percentileToText } from "../../../../helpers/utility";
 import { StabilityGoalWidget } from "../../shared/widgets/flowMetricsTrends/stabilityGoalWidget";
-import { METRICS } from "../../../shared/widgets/configure/projectResponseTimeSLASettings/constants";
+import { METRICS } from "../../../shared/widgets/configure/projectStabilityGoalsSettings/constants";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 

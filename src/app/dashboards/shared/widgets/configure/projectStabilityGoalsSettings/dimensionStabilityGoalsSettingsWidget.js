@@ -1,10 +1,10 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
-import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
+import {ProjectStabilityGoalSettingsView} from "./projectStabilityGoalSettingsView";
 import {useQueryProjectClosedDeliveryCycleDetail} from "../../../../projects/shared/hooks/useQueryProjectClosedDeliveryCycleDetail";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 
-export const ProjectResponseTimeSLASettingsWidget = ({
+export const DimensionStabilityGoalsSettingsWidget = ({
   dimension,
   instanceKey,
   specsOnly,
@@ -37,7 +37,7 @@ export const ProjectResponseTimeSLASettingsWidget = ({
   const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
 
   return (
-    <ProjectResponseTimeSLASettingsView
+    <ProjectStabilityGoalSettingsView
       data={projectDeliveryCycleData}
       dimension={dimension}
       instanceKey={instanceKey}

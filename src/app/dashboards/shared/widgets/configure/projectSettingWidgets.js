@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import {useProjectContext} from "../../../projects/projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
+import {DimensionStabilityGoalsSettingsWidget} from "./projectStabilityGoalsSettings";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import {ReleaseSettingsWidget} from "./measurementSettings/releaseSettingsWidget";
 import { StabilityGoalWidget } from "../../../projects/shared/widgets/flowMetricsTrends/stabilityGoalWidget";
 import { useQueryParamState } from "../../../projects/shared/helper/hooks";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
-import { METRICS } from "./projectResponseTimeSLASettings/constants";
+import { METRICS } from "./projectStabilityGoalsSettings/constants";
 
-export function ResponseTimeSLASettingsDashboard({dimension}) {
+export function ProjectStabilityGoalsSettingsDashboard() {
+  const dimension='project';
+
   const {
     project: {key, settingsWithDefaults},
     context,
@@ -73,7 +75,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
           className="tw-bg-white"
           render={({view}) => {
             return (
-              <ProjectResponseTimeSLASettingsWidget
+              <DimensionStabilityGoalsSettingsWidget
                 dimension={dimension}
                 instanceKey={key}
                 view={view}

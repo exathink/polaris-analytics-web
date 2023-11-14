@@ -5,7 +5,7 @@ import styles from "./dashboard.module.css";
 
 import {
   MeasurementSettingsDashboard,
-  ResponseTimeSLASettingsDashboard
+  ProjectStabilityGoalsSettingsDashboard
 } from "../../shared/widgets/configure/projectSettingWidgets";
 
 import { CONFIG_TABS, ConfigSelector } from "../../shared/widgets/configure/configSelector/configSelector";
@@ -27,7 +27,7 @@ ValueStreamMappingDashboard.videoConfig = {
 const componentsMap = {
   [CONFIG_TABS.DELIVERY_PROCESS_MAPPING]: <ValueStreamMappingDashboard />,
   [CONFIG_TABS.VALUE_STREAMS]: <ValueStreamWorkStreamEditorDashboard />,
-  [CONFIG_TABS.TIMEBOX_SETTINGS]: <ResponseTimeSLASettingsDashboard dimension={"project"} />,
+  [CONFIG_TABS.TIMEBOX_SETTINGS]: <ProjectStabilityGoalsSettingsDashboard dimension={"project"} />,
   [CONFIG_TABS.MEASUREMENT_SETTINGS]: <MeasurementSettingsDashboard dimension={"project"} />,
 };
 

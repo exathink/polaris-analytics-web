@@ -27,7 +27,7 @@ const groupings = [
 
 
 
-export const ProjectResponseTimeSLASettingsView = ({
+export const ProjectStabilityGoalSettingsView = ({
   data,
   dimension,
   instanceKey,

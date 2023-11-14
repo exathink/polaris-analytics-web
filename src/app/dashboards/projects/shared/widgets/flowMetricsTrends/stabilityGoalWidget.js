@@ -11,7 +11,7 @@ import { Loading } from "../../../../../components/graphql/loading";
 import { logGraphQlError } from "../../../../../components/graphql/utils";
 import React from "react";
 import { PercentileCycleTime, PercentileLeadTime } from "../../../../shared/components/flowStatistics/flowStatistics";
-import { METRICS } from "../../../../shared/widgets/configure/projectResponseTimeSLASettings/constants";
+import { METRICS } from "../../../../shared/widgets/configure/projectStabilityGoalsSettings/constants";
 
 export const StabilityGoalWidget = ({
   dimension,

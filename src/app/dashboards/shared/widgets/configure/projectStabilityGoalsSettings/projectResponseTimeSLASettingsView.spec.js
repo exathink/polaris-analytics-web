@@ -4,7 +4,7 @@ import * as settings from "./settingsReducer";
 import {waitFor, screen, fireEvent} from "@testing-library/react";
 import {GraphQLError} from "graphql";
 import {DIMENSION_UPDATE_SETTINGS} from "../../../hooks/useQueryProjectUpdateSettings";
-import {ProjectResponseTimeSLASettingsView} from "./projectResponseTimeSLASettingsView";
+import {ProjectStabilityGoalSettingsView} from "./projectStabilityGoalSettingsView";
 import { AppTerms } from "../../../config";
 
 beforeAll(() => {
@@ -132,7 +132,7 @@ describe("ProjectResponseTimeSLASettingsView", () => {
     describe("when there are workItems", () => {
       // TODO: seems below click event of metric tab is not firing because of ant design tab is not recieving event.
       test.skip("it renders correct title for Target and Confidence sliders", async () => {
-        renderWithProviders(<ProjectResponseTimeSLASettingsView {...propsFixture} />, projectUpdateSettingsMocks);
+        renderWithProviders(<ProjectStabilityGoalSettingsView {...propsFixture} />, projectUpdateSettingsMocks);
 
         await waitFor(() => {
           // this receives {type: UPDATE_DEFAULTS}
