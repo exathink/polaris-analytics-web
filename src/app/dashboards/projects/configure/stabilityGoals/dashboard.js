@@ -5,12 +5,12 @@
  */
 
 import { ProjectDashboard } from "../../projectDashboard";
-import {ResponseTimeSLASettingsDashboard} from "../../../shared/widgets/configure/projectSettingWidgets";
+import {ProjectStabilityGoalsSettingsDashboard} from "../../../shared/widgets/configure/projectSettingWidgets";
 import React from "react";
 
 const dashboard = (({viewerContext}) => (
   <ProjectDashboard>
-    <ResponseTimeSLASettingsDashboard dimension={'project'}/>
+    <ProjectStabilityGoalsSettingsDashboard/>
   </ProjectDashboard>
 ));
 

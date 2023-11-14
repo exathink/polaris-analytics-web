@@ -15,6 +15,8 @@ import { ProjectTraceabilityTrendsWidget } from "../../../shared/widgets/commits
 import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRateWidget";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
 import { percentileToText } from "../../../../helpers/utility";
+import { StabilityGoalWidget } from "../../shared/widgets/flowMetricsTrends/stabilityGoalWidget";
+import { METRICS } from "../../../shared/widgets/configure/projectStabilityGoalsSettings/constants";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -51,11 +53,35 @@ export function NewFlowDashboard() {
     latencyTarget,
     wipLimit,
   } = settingsWithDefaults;
+  
+  const flowMetricTrendsArgs = {
+    instanceKey: key,
+    // trends parameters
+    days: flowAnalysisPeriod,
+    measurementWindow: flowAnalysisPeriod,
+    samplingFrequency: flowAnalysisPeriod,
+    targetPercentile: cycleTimeConfidenceTarget,
+    // targets
+    cycleTimeTarget: cycleTimeTarget,
+    cycleTimeConfidenceTarget: cycleTimeConfidenceTarget,
+    leadTimeTarget: leadTimeTarget,
+    leadTimeConfidenceTarget: leadTimeConfidenceTarget,
+    // work item filters
+    includeSubTasks: includeSubTasksFlowMetrics,
+    specsOnly: specsOnly,
+    tags: workItemSelectors,
+    release: release,
+    // polling parameters
+    latestCommit: latestCommit,
+    latestWorkItemEvent: latestWorkItemEvent,
+    //other metadata
+    flowAnalysisPeriod: flowAnalysisPeriod,
+  }
 
   return (
     <Dashboard
       dashboard={`${dashboard_id}`}
-      className="tw-grid tw-grid-cols-11 tw-grid-rows-[8%_20%_52%_20%] tw-gap-2 tw-p-2"
+      className="tw-grid tw-grid-cols-11 tw-grid-rows-[11%_20%_48%_20%] tw-gap-2 tw-p-2"
       gridLayout={true}
     >
       <div className="tw-col-span-3 tw-col-start-1 tw-row-start-1 tw-flex tw-items-center tw-gap-8 tw-text-2xl tw-text-gray-300">
@@ -82,11 +108,17 @@ export function NewFlowDashboard() {
           </Checkbox>
         </div>
       </div>
-      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1 tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
-        <div className="tw-flex tw-justify-start">Stability Goal</div>
-        <div className="tw-flex tw-justify-start tw-text-base">{`${percentileToText(cycleTimeConfidenceTarget)} cycle time <= ${cycleTimeTarget} Days`}</div>
+      <div className="tw-col-span-5 tw-col-start-4 tw-row-start-1">
+        <StabilityGoalWidget
+
+          key={specsOnly}
+          dimension="project"
+          instanceKey={key}
+          metric={METRICS.CYCLE_TIME}
+          {...flowMetricTrendsArgs}
+        />
       </div>
-      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-base">
+      <div className="tw-col-span-3 tw-col-start-9 tw-row-start-1 tw-flex tw-items-center tw-justify-end tw-gap-4 tw-text-xl">
         {specsOnly && (
           <Flex align={"center"}>
             <GroupingSelector
@@ -123,18 +155,8 @@ export function NewFlowDashboard() {
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                targetPercentile={cycleTimeConfidenceTarget}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                latestWorkItemEvent={latestWorkItemEvent}
                 displayBag={{displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                {...flowMetricTrendsArgs}
               />
             );
           }}
@@ -149,23 +171,6 @@ export function NewFlowDashboard() {
               <FlowMetricsTrendsWidget
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                // Summary Card Data
-                // Throughput for a single measurement period
-                // There will always be 2 data points in this trend, the trend value compares the difference between the first and the second data point
-                // days = measurementWindow = samplingFrequency
-                // days is set to flowAnalysisPeriod by default
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={cycleTimeConfidenceTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
                 view={view}
                 displayBag={{
                   metric: "volumeWithThroughput",
@@ -173,6 +178,7 @@ export function NewFlowDashboard() {
                   iconsShiftLeft: false,
                   trendValueClass: "tw-text-2xl",
                 }}
+                {...flowMetricTrendsArgs}
               />
             );
           }}
@@ -273,20 +279,8 @@ export function NewFlowDashboard() {
                 key={specsOnly}
                 dimension="project"
                 instanceKey={key}
-                tags={workItemSelectors}
-                release={release}
-                days={flowAnalysisPeriod}
-                measurementWindow={flowAnalysisPeriod}
-                samplingFrequency={flowAnalysisPeriod}
-                trendAnalysisPeriod={trendsAnalysisPeriod}
-                flowAnalysisPeriod={flowAnalysisPeriod}
-                targetPercentile={cycleTimeConfidenceTarget}
-                specsOnly={specsOnly}
-                latestCommit={latestCommit}
-                latestWorkItemEvent={latestWorkItemEvent}
-                includeSubTasks={includeSubTasksFlowMetrics}
-                cycleTimeTarget={cycleTimeTarget}
                 displayBag={{metric: "cycleTime", displayType: "cardAdvanced", trendValueClass: "tw-text-2xl"}}
+                {...flowMetricTrendsArgs}
               />
             );
           }}

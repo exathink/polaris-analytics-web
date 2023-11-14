@@ -1,28 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import {useProjectContext} from "../../../projects/projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
+import {DimensionStabilityGoalsSettingsWidget} from "./projectStabilityGoalsSettings";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import {ReleaseSettingsWidget} from "./measurementSettings/releaseSettingsWidget";
+import { StabilityGoalWidget } from "../../../projects/shared/widgets/flowMetricsTrends/stabilityGoalWidget";
+import { useQueryParamState } from "../../../projects/shared/helper/hooks";
+import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
+import { METRICS } from "./projectStabilityGoalsSettings/constants";
 
-export function ResponseTimeSLASettingsDashboard({dimension}) {
+export function ProjectStabilityGoalsSettingsDashboard() {
+  const dimension='project';
+
   const {
     project: {key, settingsWithDefaults},
     context,
   } = useProjectContext();
-  const {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget} = settingsWithDefaults;
+  const {
+    flowAnalysisPeriod,
+    trendsAnalysisPeriod,
+    includeSubTasksFlowMetrics,
+    includeSubTasksWipInspector,
+    leadTimeConfidenceTarget,
+    cycleTimeConfidenceTarget,
+    cycleTimeTarget,
+    leadTimeTarget,
+    latencyTarget,
+    wipLimit,
+  } = settingsWithDefaults;
+
+  const [metric, setSelectedMetric] = useState(METRICS.CYCLE_TIME)
+  const {state} = useQueryParamState();
+  const workItemSelectors = state?.vs?.workItemSelectors??[];
+  const release = state?.release?.releaseValue;
 
   return (
     <Dashboard>
-      <DashboardRow h="94%">
+      <DashboardRow h="11%">
+        <DashboardWidget
+          w={1}
+          name="stability-goal-widget"
+          className="tw-bg-white"
+          render={({view}) => {
+            return (
+              <StabilityGoalWidget
+                dimension={dimension}
+                instanceKey={key}
+                view={view}
+                context={context}
+                metric={metric}
+                days={flowAnalysisPeriod}
+                measurementWindow={flowAnalysisPeriod}
+                samplingFrequency={flowAnalysisPeriod}
+                leadTimeTarget={leadTimeTarget}
+                cycleTimeTarget={cycleTimeTarget}
+                leadTimeConfidenceTarget={leadTimeConfidenceTarget}
+                cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
+                targetPercentile={cycleTimeConfidenceTarget}
+                specsOnly={false}
+                includeSubTasks={includeSubTasksFlowMetrics}
+                tags={workItemSelectors}
+                release={release}
+              />
+            );
+          }}
+          showDetail={false}
+        />
+      </DashboardRow>
+      <DashboardRow h="89%">
         <DashboardWidget
           w={1}
           name="flow-metrics-setting-widget"
           className="tw-bg-white"
           render={({view}) => {
             return (
-              <ProjectResponseTimeSLASettingsWidget
+              <DimensionStabilityGoalsSettingsWidget
                 dimension={dimension}
                 instanceKey={key}
                 view={view}
@@ -33,10 +86,13 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 specsOnly={false}
+                initialMetric={metric}
+                setSelectedMetric={setSelectedMetric}
               />
             );
           }}
-          showDetail={false}
+          showDetail={true}
+          showDetailTooltipType={DetailViewTooltipTypes.FOCUS_VIEW}
         />
       </DashboardRow>
     </Dashboard>

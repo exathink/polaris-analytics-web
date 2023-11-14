@@ -1,7 +1,7 @@
 import React from "react";
 import {ProjectDashboard} from "../../../projects/projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
-import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
+import {DimensionStabilityGoalsSettingsWidget} from "./projectStabilityGoalsSettings";
 import {ProjectAnalysisPeriodsWidget} from "./projectAnalysisPeriods/projectAnalysisPeriodsWidget";
 import {MeasurementSettingsWidget} from "./measurementSettings/measurementSettingsWidget";
 import {TeamDashboard} from "../../../teams/teamDashboard";
@@ -33,7 +33,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
                 className="tw-bg-white"
                 render={({view}) => {
                   return (
-                    <ProjectResponseTimeSLASettingsWidget
+                    <DimensionStabilityGoalsSettingsWidget
                       dimension={dimension}
                       instanceKey={key}
                       view={view}
