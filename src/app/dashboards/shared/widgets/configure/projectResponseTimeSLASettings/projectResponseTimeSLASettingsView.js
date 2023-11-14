@@ -36,6 +36,8 @@ export const ProjectResponseTimeSLASettingsView = ({
   targetMetrics,
   defectsOnly,
   specsOnly,
+  initialMetric=METRICS.CYCLE_TIME,
+  setSelectedMetric
 }) => {
   const model = React.useMemo(
     () =>
@@ -200,7 +202,10 @@ export const ProjectResponseTimeSLASettingsView = ({
             label={" "}
             groupings={groupings}
             initialValue={selectedMetric}
-            onGroupingChanged={(newState) => dispatch({type: actionTypes.UPDATE_METRIC, payload: newState})}
+            onGroupingChanged={(newState) => {
+              dispatch({ type: actionTypes.UPDATE_METRIC, payload: newState });
+              setSelectedMetric(newState);
+            }}
           />
           <div className={styles["targetControlButtons"]}>{getButtonElements()}</div>
         </Flex>

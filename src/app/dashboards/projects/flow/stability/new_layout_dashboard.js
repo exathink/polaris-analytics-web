@@ -16,6 +16,7 @@ import { StartRateWidget } from "../../shared/widgets/flowMetricsTrends/startRat
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
 import { percentileToText } from "../../../../helpers/utility";
 import { StabilityGoalWidget } from "../../shared/widgets/flowMetricsTrends/stabilityGoalWidget";
+import { METRICS } from "../../../shared/widgets/configure/projectResponseTimeSLASettings/constants";
 
 const dashboard_id = "dashboards.activity.projects.newFlow.instance";
 
@@ -113,7 +114,7 @@ export function NewFlowDashboard() {
           key={specsOnly}
           dimension="project"
           instanceKey={key}
-          metric={'leadTime'}
+          metric={METRICS.CYCLE_TIME}
           {...flowMetricTrendsArgs}
         />
       </div>

@@ -17,6 +17,8 @@ export const ProjectResponseTimeSLASettingsWidget = ({
   cycleTimeConfidenceTarget,
   days,
   defectsOnly,
+  initialMetric,
+  setSelectedMetric
 }) => {
   const {loading, error, data: projectDeliveryCycleData} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
@@ -44,6 +46,8 @@ export const ProjectResponseTimeSLASettingsWidget = ({
       targetMetrics={targetMetrics}
       defectsOnly={defectsOnly}
       specsOnly={specsOnly}
+      initialMetric={initialMetric}
+      setSelectedMetric={setSelectedMetric}
     />
   );
 };

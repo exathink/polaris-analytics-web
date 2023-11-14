@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {useProjectContext} from "../../../projects/projectDashboard";
 import {Dashboard, DashboardRow, DashboardWidget} from "../../../../framework/viz/dashboard";
 import {ProjectResponseTimeSLASettingsWidget} from "./projectResponseTimeSLASettings";
@@ -8,6 +8,7 @@ import {ReleaseSettingsWidget} from "./measurementSettings/releaseSettingsWidget
 import { StabilityGoalWidget } from "../../../projects/shared/widgets/flowMetricsTrends/stabilityGoalWidget";
 import { useQueryParamState } from "../../../projects/shared/helper/hooks";
 import { DetailViewTooltipTypes } from "../../../../framework/viz/dashboard/dashboardWidget";
+import { METRICS } from "./projectResponseTimeSLASettings/constants";
 
 export function ResponseTimeSLASettingsDashboard({dimension}) {
   const {
@@ -27,6 +28,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
     wipLimit,
   } = settingsWithDefaults;
 
+  const [metric, setSelectedMetric] = useState(METRICS.CYCLE_TIME)
   const {state} = useQueryParamState();
   const workItemSelectors = state?.vs?.workItemSelectors??[];
   const release = state?.release?.releaseValue;
@@ -45,6 +47,7 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
                 instanceKey={key}
                 view={view}
                 context={context}
+                metric={metric}
                 days={flowAnalysisPeriod}
                 measurementWindow={flowAnalysisPeriod}
                 samplingFrequency={flowAnalysisPeriod}
@@ -81,6 +84,8 @@ export function ResponseTimeSLASettingsDashboard({dimension}) {
                 leadTimeConfidenceTarget={leadTimeConfidenceTarget}
                 cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
                 specsOnly={false}
+                initialMetric={metric}
+                setSelectedMetric={setSelectedMetric}
               />
             );
           }}

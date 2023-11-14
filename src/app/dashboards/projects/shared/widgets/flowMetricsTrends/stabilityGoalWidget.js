@@ -11,6 +11,7 @@ import { Loading } from "../../../../../components/graphql/loading";
 import { logGraphQlError } from "../../../../../components/graphql/utils";
 import React from "react";
 import { PercentileCycleTime, PercentileLeadTime } from "../../../../shared/components/flowStatistics/flowStatistics";
+import { METRICS } from "../../../../shared/widgets/configure/projectResponseTimeSLASettings/constants";
 
 export const StabilityGoalWidget = ({
   dimension,
@@ -21,7 +22,7 @@ export const StabilityGoalWidget = ({
   days,
   measurementWindow,
   samplingFrequency,
-  metric='cycleTime',
+  metric=METRICS.CYCLE_TIME,
   cycleTimeTarget,
   cycleTimeConfidenceTarget,
   leadTimeTarget,
@@ -62,7 +63,7 @@ export const StabilityGoalWidget = ({
     <div className="tw-flex tw-flex-col tw-items-center tw-text-2xl tw-text-gray-300">
         <div className="tw-flex tw-justify-start">{"Stability Goal"}</div>
       {
-        metric === 'cycleTime'?
+        metric === METRICS.CYCLE_TIME?
         <>
           <div className="tw-flex tw-justify-start tw-text-xl">{`${percentileToText(cycleTimeConfidenceTarget)} Cycle Time <= ${cycleTimeTarget} Days`}</div>
           <div className="tw-flex tw-justify-start tw-text-xl">
