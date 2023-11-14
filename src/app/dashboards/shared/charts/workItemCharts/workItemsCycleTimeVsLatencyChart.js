@@ -78,7 +78,7 @@ function getSeriesByState(workItems, view, cycleTimeTarget, latencyTarget) {
         symbol: "circle",
       },
       allowPointSelect: true,
-
+      color: workItemFlowTypeColor(workItemsByState[state][0]?.flowType),
       data: workItemsByState[state].map((workItem) => ({
         x: workItem.cycleTime,
         y: workItem.latency || workItem.cycleTime,
