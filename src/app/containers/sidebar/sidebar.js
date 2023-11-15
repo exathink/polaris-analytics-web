@@ -19,6 +19,8 @@ import Library from "../../dashboards/library/context"
 import {VIDEO_GUIDANCE} from "../../../config/featureFlags";
 import classNames from 'classnames';
 
+import {VideoCameraOutlined} from "@ant-design/icons";
+
 const {Sider} = Layout;
 
 const {
@@ -27,6 +29,63 @@ const {
   changeCurrent,
   toggleCollapsed,
 } = appActions;
+
+function mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode) {
+  function mapRouteAsMenuGroup(route) {
+    return (
+      // We are simply inserting an empty menu group here
+      // Similar to a divider
+      <>
+        {route.divider && <Menu.Divider/>}
+        <Menu.ItemGroup title={route.group} key={`${route.group}`}/>
+      </>
+      )
+  }
+  function mapRouteAsSubmenu(route) {
+    return (
+      <Menu.SubMenu title={route.submenu} key={route.submenu}>
+        {
+          mapRoutesToMenuItems(route.routes, currentContext, submenuColor, mode)
+        }
+      </Menu.SubMenu>
+    )
+  }
+  function mapTopLevelRoute(route) {
+    const TopicIcon = route.topic.Icon;
+    return (
+      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
+        <Link
+          to={(location) => {
+            return {
+              ...location,
+              pathname: `${currentContext.urlFor(route)}`
+            };
+          }}
+        >
+            <span className="isoMenuHolder" style={submenuColor}>
+              {
+                route.topic.Icon ?
+                  <TopicIcon style={{ marginRight: "0px" }} />
+                  :
+                  <i className={route.topic.icon} />
+              }
+              <span
+                className={classNames("nav-text", mode === "vertical" ? "tw-ml-1" : "")}>{route.topic.display()}</span>
+            </span>
+        </Link>
+      </Menu.Item>
+    );
+  }
+
+  return activeTopicRoutes.map((route) => {
+    return route.group != null?
+      mapRouteAsMenuGroup(route) : (
+        route.submenu != null ?
+          mapRouteAsSubmenu(route):
+            mapTopLevelRoute(route)
+      );
+  });
+}
 
 class Sidebar extends Component {
   constructor(props) {
@@ -101,7 +160,7 @@ class Sidebar extends Component {
     const optionalTopics = this.props.optionalTopics || [];
 
     const topicRoutes = currentContext.routes().filter(
-      route => route.topic
+      route => route.topic || (route.group != null) || (route.submenu != null)
     )
 
     const visibleRoutes = topicRoutes.filter(
@@ -111,8 +170,8 @@ class Sidebar extends Component {
         (route.disallowedFeatures == null || route.disallowedFeatures.every(feature => !viewerContext.isFeatureFlagActive(feature)))
     )
     const activeTopicRoutes = [
-      ...visibleRoutes.filter(route => !route.topic.optional),
-      ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic.name === topic))
+      ...visibleRoutes.filter(route => !route.topic?.optional),
+      ...visibleRoutes.filter(route => optionalTopics.find(topic => route.topic?.name === topic))
     ];
     
     const menuProps = {
@@ -138,41 +197,19 @@ class Sidebar extends Component {
             <Scrollbars renderView={this.renderView} style={{height: scrollheight - 70}}>
               <Menu key={`top`} {...menuProps}>
                 {currentContext
-                  ? activeTopicRoutes.map((route) => {
-                    const TopicIcon = route.topic.Icon;
-                    return (
-                      <Menu.Item className="ant-menu-item" key={`${route.match}`} data-testid={route.match}>
-                      <Link
-                        to={(location) => {
-                          return {
-                            ...location,
-                            pathname: `${currentContext.urlFor(route)}`,
-                          };
-                        }}
-                      >
-                          <span className="isoMenuHolder" style={submenuColor}>
-                            {
-                              route.topic.Icon?
-                                <TopicIcon style={{marginRight: "0px"}} />
-                                :
-                                <i className={route.topic.icon} />
-                            }
-                            <span className={classNames("nav-text", mode==="vertical" ? "tw-ml-1": "")}>{route.topic.display()}</span>
-                          </span>
-                        </Link>
-                      </Menu.Item>
-                    )})
+                  ? mapRoutesToMenuItems(activeTopicRoutes, currentContext, submenuColor, mode)
                   : null}
               </Menu>
 
               {viewerContext.isFeatureFlagActive(VIDEO_GUIDANCE) && (
                 <Menu key={`bottom`} {...menuProps} style={{position: "absolute", bottom: "100px", left: "0"}}>
-                  {/* Divider */}
-                  <div style={{height: "1px", backgroundColor: "rgba(255, 255, 255, 0.65)"}}></div>
+
+                  <Menu.Divider/>
+
                   <Menu.Item className="ant-menu-item">
                     <Link to={Library.url_for}>
                       <span className="isoMenuHolder" style={submenuColor}>
-                        <i className={Library.icon} />
+                        <VideoCameraOutlined style={{marginRight: "0px"}}/>
                         <span className="tw-text-white">Content Library</span>
                       </span>
                     </Link>

@@ -226,9 +226,9 @@ const SidebarWrapper = styled.div`
       .ant-menu-submenu-vertical {
         > li:not(.ant-menu-item-group) {
           padding-left: ${props =>
-            props['data-rtl'] === 'rtl' ? '0px !important' : '74px !important'};
+            props['data-rtl'] === 'rtl' ? '0px !important' : '48px !important'};
           padding-right: ${props =>
-            props['data-rtl'] === 'rtl' ? '74px !important' : '0px !important'};
+            props['data-rtl'] === 'rtl' ? '48px !important' : '0px !important'};
           font-size: 13px;
           font-weight: 400;
           margin: 0;

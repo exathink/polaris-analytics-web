@@ -9,11 +9,32 @@ import AppContext from "../../../context";
 export const buildContextRouter = (context: Context, viewerContext: any = null, path: string = '') : React.ComponentType<any>  => {
   return class extends React.Component<any> {
 
+    // to support grouping in context menus, we started
+    // allowing non routable elements in the route tree.
+    // these need to be removed before creating the route tree
+    // from this node.
+    filterNonRoutable(routes) {
+      return routes.filter(
+        route => (route.group === undefined)
+      )
 
+    }
+
+    flatten(routes) {
+      return routes.reduce(
+        (flattened, route) =>
+          route.submenu != null ?
+            [...flattened, ...route.routes]
+            :
+            [...flattened, route],
+        []
+      )
+
+    }
 
     buildRoutes() {
       const {match} = this.props;
-      return context.routes.map(
+      return this.flatten(this.filterNonRoutable(context.routes)).map(
         (route: any, index: number) => {
           if (route.match === null) {
             throw new Error(`Route did not specify a match property`)
