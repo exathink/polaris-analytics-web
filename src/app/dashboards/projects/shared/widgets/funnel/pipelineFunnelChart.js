@@ -29,6 +29,10 @@ function getResidenceTime(workItemStateTypeCounts, days) {
       (workItemStateTypeCounts[WorkItemStateTypes.make] || 0) +
       (workItemStateTypeCounts[WorkItemStateTypes.deliver] || 0)
     ) / closeRate;
+    timeToClear[WorkItemStateTypes.open] = (
+      (workItemStateTypeCounts[WorkItemStateTypes.make] || 0) +
+      (workItemStateTypeCounts[WorkItemStateTypes.deliver] || 0)
+    ) / closeRate;
     timeToClear[WorkItemStateTypes.make] = (
       (workItemStateTypeCounts[WorkItemStateTypes.open] || 0) +
       (workItemStateTypeCounts[WorkItemStateTypes.make] || 0) +
@@ -101,7 +105,7 @@ export const PipelineFunnelChart = Chart({
             formatter: function() {
               return (
                 showVolumeOrEffort === "volume" ?
-                  this.point.stateType === WorkItemStateTypes.backlog && this.point.timeToClear ?
+                  ['backlog', 'open'].indexOf(this.point.stateType) >= 0 && this.point.timeToClear ?
                     `Supply: ${humanizeDuration(this.point.timeToClear)}`
                     :
                     this.point.stateType === WorkItemStateTypes.closed ?
@@ -165,7 +169,7 @@ export const PipelineFunnelChart = Chart({
         formatter: function() {
           let timeToClear = ``;
           if (this.point.timeToClear != null) {
-            if (this.point.name === workItemStateTypeDisplayName.backlog) {
+            if (['backlog', 'open'].indexOf(this.point.stateType) >= 0) {
               timeToClear =  `<br/>Supply: ${humanizeDuration(this.point.timeToClear)}`;
             } else {
               timeToClear = `<br/>Avg. Residence Time: ${humanizeDuration(this.point.timeToClear)}`;

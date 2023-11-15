@@ -41,6 +41,10 @@ const context : Context = {
         ContextControl: ProjectValueStreamsWidget,
         routes: [
           {
+            group: "Manage",
+            divider: true
+          },
+          {
             match: 'flow',
             topic: Flow
           },
@@ -54,22 +58,38 @@ const context : Context = {
             topic: Trends
           },
           {
-            match: 'repositories',
-            topic: Repositories
-          },
-          {
-            disallowedFeatures: [UI_NEW_CARD_DESIGN],
-            match: 'pull-requests',
-            topic: PullRequests
-          },
-          {
-            match: 'contributors',
-            topic: Contributors
-          },
-          {
             match: 'configure',
             topic: Configure
           },
+          {
+            group: 'Explore',
+            divider: true
+          },
+          {
+            match: "repositories",
+            topic: Repositories
+          },
+          {
+            match: "contributors",
+            topic: Contributors
+          },
+          /**
+          {
+            submenu: 'Explore',
+            routes: [
+              {
+                match: "repositories",
+                topic: Repositories
+              },
+              {
+                match: "contributors",
+                topic: Contributors
+              }
+            ]
+          },
+          **/
+
+
           {
             match: '',
             redirect: 'flow'
