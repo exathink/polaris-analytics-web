@@ -57,18 +57,18 @@ const context : Context = {
             topic: Trends
           },
           {
-            submenu: 'Inspect',
-            routes: [
-              {
-                match: "repositories",
-                topic: Repositories
-              },
-              {
-                match: "contributors",
-                topic: Contributors
-              }
-            ]
+            group: 'Explore',
+            divider: true
           },
+          {
+            match: "repositories",
+            topic: Repositories
+          },
+          {
+            match: "contributors",
+            topic: Contributors
+          },
+          /**
           {
             submenu: 'Explore',
             routes: [
@@ -82,7 +82,7 @@ const context : Context = {
               }
             ]
           },
-
+          **/
 
           {
             group: '',
