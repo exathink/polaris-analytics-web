@@ -149,6 +149,12 @@ export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) 
   );
 }
 
+export function getSelectedMetricKey(selectedMetric, selectedStateType) {
+  return (
+    projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)]?.targetMetric ?? selectedMetric
+  );
+}
+
 export function getSelectedPullRequestMetricDisplayName(selectedMetric, selectedStateType) {
   return selectedStateType === WorkItemStateTypes.closed ? 'Time to Review' : 'Age'
 }

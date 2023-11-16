@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
-import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
+import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName, getSelectedMetricKey} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
 import { AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc, itemsDesc, itemDesc } from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
@@ -124,10 +124,15 @@ const PhaseDetailView = ({
 
   React.useEffect(() => {
     setColState(prev => {
+      const [metricKey, headerName] = [
+        getSelectedMetricKey(prev.colId, selectedStateType),
+        getSelectedMetricDisplayName(prev.colId, selectedStateType),
+      ];
       return {
         ...prev,
+        headerName: headerName ?? prev.headerName,
         colData: workItemsWithAggregateDurations
-          .map((x) => x[getMetricsMetaKey(prev.colId, selectedStateType)])
+          .map((x) => x[metricKey])
           .sort(COL_TYPES[prev.colId].sorter ?? SORTER.no_sort),
       };
     })
