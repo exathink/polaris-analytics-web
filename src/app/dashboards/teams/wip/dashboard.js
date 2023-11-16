@@ -107,7 +107,7 @@ function WipDashboard({
             checked={exclude}
             className="!tw-mb-1 tw-self-end"
           >
-            Exclude Motionless
+            Noise suppression
           </Checkbox>
         </div>
         <GroupingSelector
