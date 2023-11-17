@@ -31,6 +31,7 @@ export function WorkItemsDetailHistogramTable({
   tableSelectedMetric,
   paginationOptions,
   onSortChanged,
+  gridRef,
 }) {
   return (
     <React.Fragment>
@@ -49,6 +50,7 @@ export function WorkItemsDetailHistogramTable({
       {tabSelection === "table" && (
         <div className="tw-h-full tw-w-full">
           <WorkItemsDetailTable
+            gridRef={gridRef}
             view={view}
             stateType={stateType}
             tableData={tableData}

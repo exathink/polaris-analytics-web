@@ -455,9 +455,9 @@ export const getHandleColumnVisible = (hidden_cols, setHiddenCols) => (params) =
    * columns for which we need to show aggregation component
    * @param {string[]} ColsToAggregate
    */
-  export const getOnSortChanged = (ColsToAggregate) => (params) => {
+  export const getOnSortChanged = (ColsToAggregate = []) => (params) => {
     const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-    if (sortState?.sort && ColsToAggregate.includes(sortState.colId)) {
+    if (sortState?.sort && (ColsToAggregate.includes(sortState.colId) || ColsToAggregate.length === 0)) {
       // clear prev range selection before applying new range selection
       params.api.clearRangeSelection();
 

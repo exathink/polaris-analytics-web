@@ -20,6 +20,7 @@ import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
+import { COLS_TO_AGGREGATE } from "../workItemsDetailTable";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -37,6 +38,7 @@ const PhaseDetailView = ({
   context,
   intl,
 }) => {
+  const gridRef = React.useRef();
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -139,6 +141,15 @@ const PhaseDetailView = ({
 
   }, [selectedStateType]);
 
+
+  React.useEffect(() => {
+      gridRef.current?.api?.clearRangeSelection?.();
+      gridRef.current?.api?.addCellRange({
+        rowStartIndex: 0,
+        rowEndIndex: workItemsWithAggregateDurations.length - 1,
+        columns: [colState.colId],
+      });
+  }, [workItemsWithAggregateDurations, colState.colId]);
 
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
@@ -283,6 +294,7 @@ const PhaseDetailView = ({
               }}
               clearFilters={resetFilterAndMetric}
               // table props
+              gridRef={gridRef}
               view={view}
               selectedFilter={selectedFilter}
               tableData={workItemsWithAggregateDurations}
@@ -300,8 +312,8 @@ const PhaseDetailView = ({
                       filteredColVals.push(node.data[colId]);
                     }
                   });
-                  const columnDefs = params.columnApi.columnModel.columnDefs;
-                  const headerName = columnDefs.find((x) => x.field === colId).headerName;
+                  const columnDefs = params.api.getColumnDefs();
+                  const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
                     colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
                     colId: colId,
