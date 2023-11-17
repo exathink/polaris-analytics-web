@@ -160,10 +160,10 @@ export const WorkItemsDetailTable = ({
   specsOnly,
   paginationOptions,
   onGridReady,
-  onSortChanged
+  onSortChanged,
+  gridRef
 }) => {
   const intl = useIntl();
-  const gridRef = React.useRef(null);
 
   const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
@@ -205,10 +205,6 @@ export const WorkItemsDetailTable = ({
       suppressFilterButton: true,
     },
   }), []);
-
-  React.useEffect(() => {
-    gridRef.current?.api?.clearRangeSelection();
-  }, [stateType]);
 
   const statusBar = React.useMemo(() => {
     return {
