@@ -142,11 +142,13 @@ const PhaseDetailView = ({
 
 
   React.useEffect(() => {
+    if (["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"].includes(colState.colId)) {
       gridRef.current?.api?.addCellRange({
         rowStartIndex: 0,
         rowEndIndex: workItemsWithAggregateDurations.length - 1,
         columns: [colState.colId],
       });
+    }
   }, [workItemsWithAggregateDurations, colState.colId]);
 
   const seriesData = React.useMemo(() => {
