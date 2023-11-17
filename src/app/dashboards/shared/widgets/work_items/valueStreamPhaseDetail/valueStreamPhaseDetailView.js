@@ -143,13 +143,12 @@ const PhaseDetailView = ({
 
 
   React.useEffect(() => {
-    if (COLS_TO_AGGREGATE.includes(colState.colId)) {
+      gridRef.current?.api?.clearRangeSelection?.();
       gridRef.current?.api?.addCellRange({
         rowStartIndex: 0,
         rowEndIndex: workItemsWithAggregateDurations.length - 1,
         columns: [colState.colId],
       });
-    }
   }, [workItemsWithAggregateDurations, colState.colId]);
 
   const seriesData = React.useMemo(() => {

@@ -237,7 +237,7 @@ export const WorkItemsDetailTable = ({
         ref={gridRef}
         onSortChanged={(params) => {
           onSortChanged(params);
-          getOnSortChanged(COLS_TO_AGGREGATE)(params);
+          getOnSortChanged()(params);
         }}
         enableRangeSelection={true}
         defaultExcelExportParams={{
