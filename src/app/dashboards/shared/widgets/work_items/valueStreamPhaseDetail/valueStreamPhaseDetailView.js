@@ -300,8 +300,8 @@ const PhaseDetailView = ({
                       filteredColVals.push(node.data[colId]);
                     }
                   });
-                  const columnDefs = params.columnApi.columnModel.columnDefs;
-                  const headerName = columnDefs.find((x) => x.field === colId).headerName;
+                  const columnDefs = params.api.getColumnDefs();
+                  const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
                     colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
                     colId: colId,
