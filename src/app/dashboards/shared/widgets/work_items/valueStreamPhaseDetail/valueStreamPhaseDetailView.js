@@ -37,6 +37,7 @@ const PhaseDetailView = ({
   context,
   intl,
 }) => {
+  const gridRef = React.useRef();
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -139,6 +140,14 @@ const PhaseDetailView = ({
 
   }, [selectedStateType]);
 
+
+  React.useEffect(() => {
+      gridRef.current?.api?.addCellRange({
+        rowStartIndex: 0,
+        rowEndIndex: workItemsWithAggregateDurations.length - 1,
+        columns: [colState.colId],
+      });
+  }, [workItemsWithAggregateDurations, colState.colId]);
 
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
@@ -283,6 +292,7 @@ const PhaseDetailView = ({
               }}
               clearFilters={resetFilterAndMetric}
               // table props
+              gridRef={gridRef}
               view={view}
               selectedFilter={selectedFilter}
               tableData={workItemsWithAggregateDurations}
