@@ -102,8 +102,8 @@ export function NewFlowDashboard() {
             style={{alignItems: "center"}}
           >
             <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4">
-              <div>Exclude</div>
-              <div>Motionless</div>
+              <div>Noise</div>
+              <div>Suppression</div>
             </div>
           </Checkbox>
         </div>

@@ -629,8 +629,7 @@ export const DimensionCycleTimeLatencyDetailView = ({
               style={{alignItems: "center"}}
             >
               <div className="tw-flex tw-flex-col tw-justify-center tw-leading-4 tw-mt-2">
-                <div>Exclude</div>
-                <div>Motionless</div>
+                <div>Noise Suppression</div>
               </div>
             </Checkbox>
           </div>

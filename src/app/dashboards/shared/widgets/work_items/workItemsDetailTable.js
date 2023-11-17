@@ -35,6 +35,8 @@ import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyU
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
+export const COLS_TO_AGGREGATE = ["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"];
+
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? item.leadTime : item.cycleTime;
 }
@@ -160,10 +162,10 @@ export const WorkItemsDetailTable = ({
   specsOnly,
   paginationOptions,
   onGridReady,
-  onSortChanged
+  onSortChanged,
+  gridRef
 }) => {
   const intl = useIntl();
-  const gridRef = React.useRef(null);
 
   const [hidden_cols, setHiddenCols] = useLocalStorage(HIDDEN_COLUMNS_KEY, []);
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
@@ -206,10 +208,6 @@ export const WorkItemsDetailTable = ({
     },
   }), []);
 
-  React.useEffect(() => {
-    gridRef.current?.api?.clearRangeSelection();
-  }, [stateType]);
-
   const statusBar = React.useMemo(() => {
     return {
       statusPanels: [
@@ -239,7 +237,7 @@ export const WorkItemsDetailTable = ({
         ref={gridRef}
         onSortChanged={(params) => {
           onSortChanged(params);
-          getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])(params);
+          getOnSortChanged()(params);
         }}
         enableRangeSelection={true}
         defaultExcelExportParams={{
