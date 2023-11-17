@@ -20,6 +20,7 @@ import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
+import { COLS_TO_AGGREGATE } from "../workItemsDetailTable";
 
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
@@ -142,7 +143,7 @@ const PhaseDetailView = ({
 
 
   React.useEffect(() => {
-    if (["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"].includes(colState.colId)) {
+    if (COLS_TO_AGGREGATE.includes(colState.colId)) {
       gridRef.current?.api?.addCellRange({
         rowStartIndex: 0,
         rowEndIndex: workItemsWithAggregateDurations.length - 1,

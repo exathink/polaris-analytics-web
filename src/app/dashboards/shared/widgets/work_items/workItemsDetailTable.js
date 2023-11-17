@@ -35,6 +35,8 @@ import { doesPairWiseFilterPass } from "./wip/cycleTimeLatency/cycleTimeLatencyU
 import {HIDDEN_COLUMNS_KEY} from "../../../../helpers/localStorageUtils";
 import { CardInspectorWithDrawer, useCardInspector } from "../../../work_items/cardInspector/cardInspectorUtils";
 
+export const COLS_TO_AGGREGATE = ["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"];
+
 function getLeadTimeOrAge(item, intl) {
   return isClosed(item.stateType) ? item.leadTime : item.cycleTime;
 }
@@ -235,7 +237,7 @@ export const WorkItemsDetailTable = ({
         ref={gridRef}
         onSortChanged={(params) => {
           onSortChanged(params);
-          getOnSortChanged(["cycleTimeOrLatency", "leadTimeOrAge", "effort", "duration", "latency", "delivery"])(params);
+          getOnSortChanged(COLS_TO_AGGREGATE)(params);
         }}
         enableRangeSelection={true}
         defaultExcelExportParams={{
