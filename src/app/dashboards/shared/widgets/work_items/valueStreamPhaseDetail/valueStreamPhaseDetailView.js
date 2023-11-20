@@ -21,6 +21,7 @@ import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/wo
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
 
+const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -240,9 +241,14 @@ const PhaseDetailView = ({
                     return {
                       ...prev,
                       headerName: headerName ?? prev.headerName,
-                      colData: workItemsWithAggregateDurations
-                        .map((x) => x[metricKey])
-                        .sort(COL_TYPES[prev.colId].sorter ?? SORTER.no_sort),
+                      colData: getWorkItemDurations(workItemsByStateType[stateType])
+                        .map((x) => {
+                          if(isTagsColumn(metricKey)){
+                            return COL_TYPES[metricKey].valueGetter(x["tags"])
+                          }
+                          return x[metricKey]
+                        })
+                        .sort(COL_TYPES[metricKey].sorter ?? SORTER.no_sort).flat(),
                     };
                   });
 
@@ -299,18 +305,20 @@ const PhaseDetailView = ({
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
+                const _colId = isTagsColumn(sortState?.colId) ? "tags" : sortState?.colId;
                 const colId = sortState?.colId;
                 if (sortState?.sort && supportedCols.includes(colId)) {
                   let filteredColVals = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
-                      filteredColVals.push(node.data[colId]);
+                      const {valueGetter} = COL_TYPES[colId]
+                      filteredColVals.push(valueGetter?.(node.data[_colId]) ?? node.data[colId]);
                     }
                   });
                   const columnDefs = params.api.getColumnDefs();
                   const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
-                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
+                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort).flat(),
                     colId: colId,
                     headerName,
                   });
