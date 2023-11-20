@@ -357,4 +357,27 @@ export const COL_TYPES = {
   leadTime: {type: "continous"},
   leadTimeOrAge: {type: "continous"},
   effort: {type: "continous"},
+
+  component: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).component;
+      return tags;
+    },
+  },
+  custom_type: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).custom_type;
+      return tags;
+    },
+  },
+  custom_tags: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).tags;
+      return tags;
+    },
+  },
+  tags: {}
 };
