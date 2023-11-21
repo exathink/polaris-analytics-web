@@ -22,6 +22,7 @@ import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
 
 const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
+const isTeamsColumn = col => col === "teams";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -246,6 +247,9 @@ const PhaseDetailView = ({
                           if(isTagsColumn(metricKey)){
                             return COL_TYPES[metricKey].valueGetter(x["tags"])
                           }
+                          if(isTeamsColumn(metricKey)){
+                            return COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])
+                          }
                           return x[metricKey]
                         })
                         .sort(COL_TYPES[metricKey].sorter ?? SORTER.no_sort).flat(),
@@ -305,7 +309,15 @@ const PhaseDetailView = ({
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
-                const _colId = isTagsColumn(sortState?.colId) ? "tags" : sortState?.colId;
+                
+                let _colId = sortState?.colId;     
+                if(isTagsColumn(sortState?.colId)){
+                  _colId = "tags";
+                }
+                if(isTeamsColumn(sortState?.colId)){
+                  _colId = "teamNodeRefs";
+                }
+
                 const colId = sortState?.colId;
                 if (sortState?.sort && supportedCols.includes(colId)) {
                   let filteredColVals = [];
