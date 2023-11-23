@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName, getSelectedMetricKey} from "../../../helpers/metricsMeta";
 import {VizItem, VizRow} from "../../../containers/layout";
-import { AppTerms, WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsAllDesc, itemsDesc, itemDesc } from "../../../config";
+import {  WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsDesc } from "../../../config";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {Flex} from "reflexbox";
 import "./valueStreamPhaseDetail.css";
@@ -20,8 +20,9 @@ import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
-import { COLS_TO_AGGREGATE } from "../workItemsDetailTable";
 
+const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
+const isTeamsColumn = col => col === "teams";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -53,7 +54,7 @@ const PhaseDetailView = ({
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
 
   const [selectedFilter, setFilter] = React.useState(null);
-  const [selectedMetric, setSelectedMetric] = React.useState(null);
+  const [selectedMetric, setSelectedMetric] = React.useState("state");
 
   /* Index the candidates by state type. These will be used to populate each tab */
   const workItemsByStateType = React.useMemo(
@@ -124,32 +125,6 @@ const PhaseDetailView = ({
     return `${workItemsWithAggregateDurations.length} ${itemsDesc(specsOnly)}`;
   }
 
-  React.useEffect(() => {
-    setColState(prev => {
-      const [metricKey, headerName] = [
-        getSelectedMetricKey(prev.colId, selectedStateType),
-        getSelectedMetricDisplayName(prev.colId, selectedStateType),
-      ];
-      return {
-        ...prev,
-        headerName: headerName ?? prev.headerName,
-        colData: workItemsWithAggregateDurations
-          .map((x) => x[metricKey])
-          .sort(COL_TYPES[prev.colId].sorter ?? SORTER.no_sort),
-      };
-    })
-
-  }, [selectedStateType]);
-
-
-  React.useEffect(() => {
-      gridRef.current?.api?.clearRangeSelection?.();
-      gridRef.current?.api?.addCellRange({
-        rowStartIndex: 0,
-        rowEndIndex: workItemsWithAggregateDurations.length - 1,
-        columns: [colState.colId],
-      });
-  }, [workItemsWithAggregateDurations, colState.colId]);
 
   const seriesData = React.useMemo(() => {
     const specsOnly = workItemScope === "specs";
@@ -257,6 +232,36 @@ const PhaseDetailView = ({
                 onGroupingChanged={(stateType) => {
                   setSelectedStateType(stateType);
                   resetFilterAndMetric();
+
+                  // set colstate on the event itself instead of useEffect
+                  setColState((prev) => {
+                    const [metricKey, headerName] = [
+                      getSelectedMetricKey(prev.colId, stateType),
+                      getSelectedMetricDisplayName(prev.colId, stateType),
+                    ];
+                    return {
+                      ...prev,
+                      headerName: headerName ?? prev.headerName,
+                      colData: getWorkItemDurations(workItemsByStateType[stateType])
+                        .map((x) => {
+                          if(isTagsColumn(metricKey)){
+                            return COL_TYPES[metricKey].valueGetter(x["tags"])
+                          }
+                          if(isTeamsColumn(metricKey)){
+                            return COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])
+                          }
+                          return x[metricKey]
+                        })
+                        .sort(COL_TYPES[metricKey].sorter ?? SORTER.no_sort).flat(),
+                    };
+                  });
+
+                  gridRef.current?.api?.clearRangeSelection?.();
+                  gridRef.current?.api?.addCellRange({
+                    rowStartIndex: 0,
+                    rowEndIndex: Number.POSITIVE_INFINITY,
+                    columns: [colState.colId],
+                  });
                 }}
                 layout="col"
                 className="tw-ml-4"
@@ -304,18 +309,28 @@ const PhaseDetailView = ({
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
+                
+                let _colId = sortState?.colId;     
+                if(isTagsColumn(sortState?.colId)){
+                  _colId = "tags";
+                }
+                if(isTeamsColumn(sortState?.colId)){
+                  _colId = "teamNodeRefs";
+                }
+
                 const colId = sortState?.colId;
                 if (sortState?.sort && supportedCols.includes(colId)) {
                   let filteredColVals = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
-                      filteredColVals.push(node.data[colId]);
+                      const {valueGetter} = COL_TYPES[colId]
+                      filteredColVals.push(valueGetter?.(node.data[_colId]) ?? node.data[colId]);
                     }
                   });
                   const columnDefs = params.api.getColumnDefs();
                   const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
-                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort),
+                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort).flat(),
                     colId: colId,
                     headerName,
                   });
