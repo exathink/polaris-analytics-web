@@ -20,6 +20,7 @@ import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
+import { ClearFilters } from "../../../components/clearFilters/clearFilters";
 
 const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
 const isTeamsColumn = col => col === "teams";
@@ -40,6 +41,16 @@ const PhaseDetailView = ({
   intl,
 }) => {
   const gridRef = React.useRef();
+
+  const [filteredData, setFilteredData] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {tableFilteredData: undefined, selectedMetric: undefined, selectedFilter: undefined}
+  );
+  const isChartFilterApplied = () => filteredData.tableFilteredData !== undefined;
+
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -168,34 +179,58 @@ const PhaseDetailView = ({
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
   }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
 
+  const continousValueseries = React.useMemo(() => getHistogramSeries({
+    id: colState.colId,
+    intl,
+    colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+    points: colState.colData,
+    name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
+    color: getSelectedMetricColor(colState.colId, selectedStateType),
+    visible: true,
+    originalData: workItemsWithAggregateDurations
+  }), [workItemsWithAggregateDurations, colState, intl, selectedStateType]);
+
   if (selectedStateType != null) {
     const specsOnly = workItemScope === "specs";
 
-    const continousValueseries = getHistogramSeries({
-      id: colState.colId,
-      intl,
-      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-      points: colState.colData,
-      name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
-      color: getSelectedMetricColor(colState.colId, selectedStateType),
-      visible: true,
-    });
-
     let chartElement;
+    let clearFilterElement = (
+      <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
+        <ClearFilters
+          selectedFilter={filteredData.selectedFilter}
+          selectedMetric={filteredData.selectedMetric}
+          stateType={selectedStateType}
+          handleClearClick={() => {
+            setFilteredData({tableFilteredData: undefined});
+          }}
+        />
+      </div>
+    );
+
     if (COL_TYPES[colState.colId].type === "continous") {
       chartElement = (
-        <WorkItemsDetailHistogramChart
-          chartConfig={{
-            title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${colState.headerName} Distribution`,
-            subtitle: getChartSubTitle(),
-            legendItemClick: () => {}
-        }}
-          selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
-          specsOnly={specsOnly}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          stateType={selectedStateType}
-          series={[continousValueseries]}
-        />
+        <>
+          {isChartFilterApplied() && clearFilterElement}
+          <WorkItemsDetailHistogramChart
+            chartConfig={{
+              title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${colState.headerName} Distribution`,
+              subtitle: getChartSubTitle(),
+              legendItemClick: () => {},
+            }}
+            onPointClick={(params) => {
+              setFilteredData({
+                tableFilteredData: params.bucket,
+                selectedMetric: params.selectedMetric,
+                selectedFilter: params.category,
+              });
+            }}
+            selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
+            specsOnly={specsOnly}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            stateType={selectedStateType}
+            series={[continousValueseries]}
+          />
+        </>
       );
     } else if(COL_TYPES[colState.colId].type === "category"){
       chartElement = (
@@ -302,7 +337,7 @@ const PhaseDetailView = ({
               gridRef={gridRef}
               view={view}
               selectedFilter={selectedFilter}
-              tableData={workItemsWithAggregateDurations}
+              tableData={filteredData.tableFilteredData ?? workItemsWithAggregateDurations}
               tableSelectedMetric={selectedMetric}
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
