@@ -132,8 +132,8 @@ const PhaseDetailView = ({
   }
 
   function getChartSubTitle() {
-
-    return `${workItemsWithAggregateDurations.length} ${itemsDesc(specsOnly)}`;
+    const result = isChartFilterApplied() ? filteredData.tableFilteredData : workItemsWithAggregateDurations;
+    return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
 
