@@ -190,6 +190,16 @@ const PhaseDetailView = ({
     originalData: workItemsWithAggregateDurations
   }), [workItemsWithAggregateDurations, colState, intl, selectedStateType]);
 
+
+  function suppressAllColumnMenus(suppressMenu) {
+    const allColumnDefs = gridRef.current?.columnApi.getAllColumns().map((column) => {
+      return {
+        ...column.getColDef(),
+        suppressMenu: suppressMenu,
+      };
+    });
+    gridRef.current?.api.setColumnDefs(allColumnDefs);
+  }
   if (selectedStateType != null) {
     const specsOnly = workItemScope === "specs";
 
@@ -202,6 +212,7 @@ const PhaseDetailView = ({
           stateType={selectedStateType}
           handleClearClick={() => {
             setFilteredData({tableFilteredData: undefined});
+            suppressAllColumnMenus(false);
           }}
         />
       </div>
@@ -223,6 +234,7 @@ const PhaseDetailView = ({
                 selectedMetric: params.selectedMetric,
                 selectedFilter: params.category,
               });
+              suppressAllColumnMenus(true);
             }}
             selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
             specsOnly={specsOnly}
@@ -297,6 +309,8 @@ const PhaseDetailView = ({
                     rowEndIndex: Number.POSITIVE_INFINITY,
                     columns: [colState.colId],
                   });
+
+                  setFilteredData({tableFilteredData: undefined});
                 }}
                 layout="col"
                 className="tw-ml-4"
