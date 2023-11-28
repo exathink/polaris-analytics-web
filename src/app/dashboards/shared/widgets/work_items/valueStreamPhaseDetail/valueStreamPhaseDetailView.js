@@ -95,7 +95,7 @@ const PhaseDetailView = ({
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const [colState, setColState] = React.useState({
-    colData: workItemsByStateType[selectedStateType]?.map((x) => x["state"])??[],
+    colData: workItemsByStateType[selectedStateType]??[],
     colId: "state",
     headerName: "State",
   });
@@ -183,7 +183,7 @@ const PhaseDetailView = ({
     id: colState.colId,
     intl,
     colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-    points: colState.colData,
+    points: colState.colData.map(x => x[colState.colId]),
     name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
     color: getSelectedMetricColor(colState.colId, selectedStateType),
     visible: true,
@@ -246,16 +246,28 @@ const PhaseDetailView = ({
       );
     } else if(COL_TYPES[colState.colId].type === "category"){
       chartElement = (
-        <ValueStreamDistributionChart
-          colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}
-          colId={colState.colId}
-          headerName={colState.headerName}
-          title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(specsOnly)} by ${colState.headerName} `}
-          subtitle={`${getChartSubTitle()}`}
-          specsOnly={specsOnly}
-          histogramSeries={continousValueseries}
-          stateType={selectedStateType}
-        />
+        <>
+          {isChartFilterApplied() && clearFilterElement}
+          <ValueStreamDistributionChart
+            colData={colState.colData}
+            colId={colState.colId}
+            onPointClick={(params) => {
+              setFilteredData({
+                tableFilteredData: params.bucket,
+                selectedMetric: params.selectedMetric,
+                selectedFilter: params.selectedFilter,
+              });
+              suppressAllColumnMenus(true);
+            }}
+            headerName={colState.headerName}
+            title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(specsOnly)} by ${
+              colState.headerName
+            } `}
+            subtitle={`${getChartSubTitle()}`}
+            specsOnly={specsOnly}
+            stateType={selectedStateType}
+          />
+        </>
       );
     }
 
@@ -289,17 +301,8 @@ const PhaseDetailView = ({
                     return {
                       ...prev,
                       headerName: headerName ?? prev.headerName,
-                      colData: getWorkItemDurations(workItemsByStateType[stateType])
-                        .map((x) => {
-                          if(isTagsColumn(metricKey)){
-                            return COL_TYPES[metricKey].valueGetter(x["tags"])
-                          }
-                          if(isTeamsColumn(metricKey)){
-                            return COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])
-                          }
-                          return x[metricKey]
-                        })
-                        .sort(COL_TYPES[metricKey].sorter ?? SORTER.no_sort).flat(),
+                      colId: metricKey,
+                      colData: getWorkItemDurations(workItemsByStateType[stateType]),
                     };
                   });
 
@@ -358,28 +361,18 @@ const PhaseDetailView = ({
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
-                
-                let _colId = sortState?.colId;     
-                if(isTagsColumn(sortState?.colId)){
-                  _colId = "tags";
-                }
-                if(isTeamsColumn(sortState?.colId)){
-                  _colId = "teamNodeRefs";
-                }
-
                 const colId = sortState?.colId;
                 if (sortState?.sort && supportedCols.includes(colId)) {
-                  let filteredColVals = [];
+                  let filteredNodes = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
-                      const {valueGetter} = COL_TYPES[colId]
-                      filteredColVals.push(valueGetter?.(node.data[_colId]) ?? node.data[colId]);
+                      filteredNodes.push(node.data);
                     }
                   });
                   const columnDefs = params.api.getColumnDefs();
                   const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
-                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort).flat(),
+                    colData: filteredNodes,
                     colId: colId,
                     headerName,
                   });
