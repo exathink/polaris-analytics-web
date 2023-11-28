@@ -3,37 +3,38 @@ import {Chart} from "../../../../../framework/viz/charts";
 import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/eventHandlers/defaultSelectionHandler";
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 import {Colors, WorkItemStateTypeColor, itemsDesc} from "../../../config";
-import {i18nNumber} from "../../../../../helpers/utility";
+import {i18nNumber, pick} from "../../../../../helpers/utility";
 
-function getSeries({data, colId}) {
+function getSeries({data, name}) {
   return {
-    name: colId,
+    name: name,
     data: data,
   };
 }
 
 export function getSeriesPoints({arr, colId, stateType}) {
   return arr.reduce((acc, item) => {
-    if (acc[item] != null) {
-      acc[item].y = acc[item].y + 1;
+    const colIdValue = item[colId];
+    if (acc[colIdValue] != null) {
+      acc[colIdValue] = {...acc[colIdValue], y: acc[colIdValue].y + 1, bucket: [...acc[colIdValue].bucket, item]};
     } else {
-      acc[item] = {y: 1, color: COL_TYPES[colId]?.color?.(item) ?? WorkItemStateTypeColor[stateType]};
+      acc[colIdValue] = {id: colIdValue, y: 1, color: COL_TYPES[colId]?.color?.(colIdValue) ?? WorkItemStateTypeColor[stateType], bucket: [item]};
     }
     return acc;
   }, {});
 }
 
 export const ValueStreamDistributionChart = Chart({
-  chartUpdateProps: (props) => props,
+  chartUpdateProps: (props) => pick(props, "title", "subtitle", "colData", "colId", "headerName", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
-  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName, stateType}) => {
+  getConfig: ({title, subtitle, intl, view, specsOnly, colData, colId, headerName, stateType, onPointClick}) => {
     const colDataMap = getSeriesPoints({arr: colData, colId, stateType});
-    const categories = Object.keys(colDataMap).map((x) => COL_TYPES[colId].transformCategoryLabels?.(x) ?? x);
 
+    const categories = Object.keys(colDataMap).map((x) => COL_TYPES[colId].transformCategoryLabels?.(x) ?? x);
     const colValues = Object.values(colDataMap);
-    const seriesObj = getSeries({data: colValues, colId});
+    const seriesObj = getSeries({data: colValues, name: headerName});
 
     return {
       chart: {
@@ -90,6 +91,16 @@ export const ValueStreamDistributionChart = Chart({
             select: {
               color: null,
               opacity: 0.5,
+            },
+          },
+          point: {
+            events: {
+              click: function () {
+                const selectedFilter = this.options.id;
+                const selectedMetric = this.series.userOptions.name;
+
+                onPointClick?.({...this, selectedMetric, selectedFilter});
+              },
             },
           },
           dataLabels: {
