@@ -4,6 +4,10 @@ import {DefaultSelectionEventHandler} from "../../../../../framework/viz/charts/
 import {tooltipHtml_v2} from "../../../../../framework/viz/charts/tooltip";
 import {Colors, WorkItemStateTypeColor, itemsDesc} from "../../../config";
 import {i18nNumber, pick} from "../../../../../helpers/utility";
+import { getSelectedMetricKey } from "../../../helpers/metricsMeta";
+
+const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
+const isTeamsColumn = col => col === "teams";
 
 function getSeries({data, name}) {
   return {
@@ -13,13 +17,37 @@ function getSeries({data, name}) {
 }
 
 export function getSeriesPoints({arr, colId, stateType}) {
-  return arr.reduce((acc, item) => {
-    const colIdValue = item[colId];
-    if (acc[colIdValue] != null) {
-      acc[colIdValue] = {...acc[colIdValue], y: acc[colIdValue].y + 1, bucket: [...acc[colIdValue].bucket, item]};
-    } else {
-      acc[colIdValue] = {id: colIdValue, y: 1, color: COL_TYPES[colId]?.color?.(colIdValue) ?? WorkItemStateTypeColor[stateType], bucket: [item]};
+  const metricKey = getSelectedMetricKey(colId, stateType);
+  const newArr = arr.map((x) => {
+    if(isTagsColumn(metricKey)){
+      return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["tags"])}
     }
+    if(isTeamsColumn(metricKey)){
+      return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])}
+    }
+    return x;
+  })
+  return newArr.reduce((acc, item) => {
+    let colIdValue = item[metricKey] ?? "Unassigned";
+    if (Array.isArray(colIdValue) && colIdValue.length > 0) {
+      colIdValue.forEach(x => {
+        if (acc[x] != null) {
+          acc[x] = {...acc[x], y: acc[x].y + 1, bucket: [...acc[x].bucket, item]};
+        } else {
+          acc[x] = {id: x, y: 1, color: COL_TYPES[metricKey]?.color?.(x) ?? WorkItemStateTypeColor[stateType], bucket: [item]};
+        }    
+      })
+    } else {
+      if (Array.isArray(colIdValue) && colIdValue.length === 0) {
+        colIdValue = "Unassigned";
+      }
+      if (acc[colIdValue] != null) {
+        acc[colIdValue] = {...acc[colIdValue], y: acc[colIdValue].y + 1, bucket: [...acc[colIdValue].bucket, item]};
+      } else {
+        acc[colIdValue] = {id: colIdValue, y: 1, color: COL_TYPES[metricKey]?.color?.(colIdValue) ?? WorkItemStateTypeColor[stateType], bucket: [item]};
+      }
+    }
+
     return acc;
   }, {});
 }

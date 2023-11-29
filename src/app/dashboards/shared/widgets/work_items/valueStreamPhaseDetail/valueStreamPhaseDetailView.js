@@ -22,8 +22,6 @@ import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
 import { ClearFilters } from "../../../components/clearFilters/clearFilters";
 
-const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
-const isTeamsColumn = col => col === "teams";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
