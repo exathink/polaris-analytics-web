@@ -45,12 +45,21 @@ const context = {
 
           },
           {
-            match: "repositories",
-            topic: Repositories
+                match: "repositories",
+                topic: Repositories
+          },
+          {
+            submenu: 'Inspect',
+            routes: [
+              {
+                match: "repositories",
+                topic: Repositories
+              },
+            ]
           },
           {
             match: "",
-            redirect: "value-streams"
+            redirect: "repositories"
           }
         ]
       }

@@ -73,7 +73,7 @@ const context : Context = {
             match: "contributors",
             topic: Contributors
           },
-          /**
+
           {
             submenu: 'Explore',
             routes: [
@@ -87,7 +87,7 @@ const context : Context = {
               }
             ]
           },
-          **/
+
 
 
           {

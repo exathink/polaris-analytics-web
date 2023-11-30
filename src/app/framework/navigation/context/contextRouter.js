@@ -21,7 +21,7 @@ export const buildContextRouter = (context: Context, viewerContext: any = null, 
     }
 
     flatten(routes) {
-      return routes.reduce(
+      const flattened = routes.reduce(
         (flattened, route) =>
           route.submenu != null ?
             [...flattened, ...route.routes]
@@ -29,7 +29,7 @@ export const buildContextRouter = (context: Context, viewerContext: any = null, 
             [...flattened, route],
         []
       )
-
+      return flattened;
     }
 
     buildRoutes() {
