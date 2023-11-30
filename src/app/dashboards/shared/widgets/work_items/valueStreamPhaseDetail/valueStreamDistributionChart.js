@@ -18,15 +18,23 @@ function getSeries({data, name}) {
 
 export function getSeriesPoints({arr, colId, stateType}) {
   const metricKey = getSelectedMetricKey(colId, stateType);
-  const newArr = arr.map((x) => {
-    if(isTagsColumn(metricKey)){
-      return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["tags"])}
-    }
-    if(isTeamsColumn(metricKey)){
-      return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])}
-    }
-    return x;
-  })
+  const newArr = arr
+    .map((x) => {
+      if (isTagsColumn(metricKey)) {
+        return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["tags"])};
+      }
+      if (isTeamsColumn(metricKey)) {
+        return {...x, [metricKey]: COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])};
+      }
+      return x;
+    })
+    .sort((a, b) => {
+      if (COL_TYPES[metricKey]?.sorter) {
+        return COL_TYPES[metricKey]?.sorter(a[metricKey], b[metricKey]);
+      }
+
+      return (a[metricKey] == null || (Array.isArray(a[metricKey]) && a[metricKey].length === 0) ? -1 : 1)
+    });
   return newArr.reduce((acc, item) => {
     let colIdValue = item[metricKey] ?? "Unassigned";
     if (Array.isArray(colIdValue) && colIdValue.length === 0) {
