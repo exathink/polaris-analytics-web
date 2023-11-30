@@ -106,7 +106,7 @@ const PhaseDetailView = ({
     }
   }, [selectedStateType, workItemsByStateType]);
 
-  const [resetComponentStateKey] = useResetComponentState();
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
   React.useEffect(() => {
     if (selectedFilter === null) {
@@ -210,6 +210,7 @@ const PhaseDetailView = ({
           stateType={selectedStateType}
           handleClearClick={() => {
             setFilteredData({tableFilteredData: undefined});
+            resetComponentState()
             suppressAllColumnMenus(false);
           }}
         />
@@ -247,6 +248,7 @@ const PhaseDetailView = ({
         <>
           {isChartFilterApplied() && clearFilterElement}
           <ValueStreamDistributionChart
+            key={resetComponentStateKey}
             colData={colState.colData}
             colId={colState.colId}
             onPointClick={(params) => {

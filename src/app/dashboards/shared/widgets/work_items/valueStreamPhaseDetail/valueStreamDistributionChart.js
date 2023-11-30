@@ -8,6 +8,9 @@ import { getSelectedMetricKey } from "../../../helpers/metricsMeta";
 
 const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
 const isTeamsColumn = col => col === "teams";
+function getNewSubtitle(count, specsOnly) {
+  return `${count} ${itemsDesc(specsOnly)}`;
+}
 
 function getSeries({data, name}) {
   return {
@@ -62,7 +65,7 @@ export function getSeriesPoints({arr, colId, stateType}) {
 }
 
 export const ValueStreamDistributionChart = Chart({
-  chartUpdateProps: (props) => pick(props, "title", "subtitle", "colData", "colId", "headerName", "stateType"),
+  chartUpdateProps: (props) => pick(props, "title", "colData", "colId", "headerName", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 
@@ -135,6 +138,9 @@ export const ValueStreamDistributionChart = Chart({
               click: function () {
                 const selectedFilter = this.options.id;
                 const selectedMetric = this.series.userOptions.name;
+
+                // set subtitle
+                this.series.chart.setSubtitle({text: getNewSubtitle(this.y, specsOnly)});
 
                 onPointClick?.({...this, selectedMetric, selectedFilter});
               },
