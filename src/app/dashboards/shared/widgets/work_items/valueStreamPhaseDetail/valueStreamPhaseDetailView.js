@@ -292,13 +292,9 @@ const PhaseDetailView = ({
 
                   // set colstate on the event itself instead of useEffect
                   setColState((prev) => {
-                    const [metricKey, headerName] = [
-                      getSelectedMetricKey(prev.colId, stateType),
-                      getSelectedMetricDisplayName(prev.colId, stateType),
-                    ];
+                    const metricKey = getSelectedMetricKey(prev.colId, stateType);
                     return {
                       ...prev,
-                      headerName: headerName ?? prev.headerName,
                       colId: metricKey,
                       colData: getWorkItemDurations(workItemsByStateType[stateType]),
                     };
