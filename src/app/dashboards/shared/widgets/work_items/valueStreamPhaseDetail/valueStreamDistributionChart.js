@@ -29,6 +29,10 @@ export function getSeriesPoints({arr, colId, stateType}) {
   })
   return newArr.reduce((acc, item) => {
     let colIdValue = item[metricKey] ?? "Unassigned";
+    if (Array.isArray(colIdValue) && colIdValue.length === 0) {
+      colIdValue = "Unassigned";
+    }
+
     if (Array.isArray(colIdValue) && colIdValue.length > 0) {
       colIdValue.forEach(x => {
         if (acc[x] != null) {
@@ -38,9 +42,6 @@ export function getSeriesPoints({arr, colId, stateType}) {
         }    
       })
     } else {
-      if (Array.isArray(colIdValue) && colIdValue.length === 0) {
-        colIdValue = "Unassigned";
-      }
       if (acc[colIdValue] != null) {
         acc[colIdValue] = {...acc[colIdValue], y: acc[colIdValue].y + 1, bucket: [...acc[colIdValue].bucket, item]};
       } else {
