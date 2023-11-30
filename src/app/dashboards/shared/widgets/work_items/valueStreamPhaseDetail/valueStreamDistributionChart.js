@@ -65,7 +65,7 @@ export function getSeriesPoints({arr, colId, stateType}) {
 }
 
 export const ValueStreamDistributionChart = Chart({
-  chartUpdateProps: (props) => pick(props, "title", "colData", "colId", "headerName", "stateType"),
+  chartUpdateProps: (props) => pick(props, "title", "colData", "specsOnly",  "colId", "headerName", "stateType"),
   eventHandler: DefaultSelectionEventHandler,
   mapPoints: (points, _) => points.map((point) => point),
 

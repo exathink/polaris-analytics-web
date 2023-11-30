@@ -134,10 +134,11 @@ const PhaseDetailView = ({
     return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
+  React.useEffect(() => {
+    setColState(prev => ({...prev, colData: getWorkItemDurations(workItemsByStateType[selectedStateType])}))
+  },[workItemsByStateType, selectedStateType]);
 
   const seriesData = React.useMemo(() => {
-    const specsOnly = workItemScope === "specs";
-
     const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
       isClosed(selectedStateType) ? w["leadTime"] : w["cycleTime"]
     );
@@ -175,7 +176,7 @@ const PhaseDetailView = ({
     });
 
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
-  }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
+  }, [specsOnly, intl, selectedStateType, workItemsWithAggregateDurations]);
 
   const continousValueseries = React.useMemo(() => getHistogramSeries({
     id: colState.colId,
@@ -199,7 +200,6 @@ const PhaseDetailView = ({
     gridRef.current?.api.setColumnDefs(allColumnDefs);
   }
   if (selectedStateType != null) {
-    const specsOnly = workItemScope === "specs";
 
     let chartElement;
     let clearFilterElement = (
