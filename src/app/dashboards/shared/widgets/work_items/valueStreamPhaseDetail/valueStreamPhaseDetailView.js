@@ -20,9 +20,8 @@ import { ValueStreamDistributionChart } from "./valueStreamDistributionChart";
 import { WorkItemsDetailHistogramChart } from "../../../charts/workItemCharts/workItemsDetailHistorgramChart";
 import { COL_TYPES } from "../../../../../components/tables/tableCols";
 import { SORTER } from "../../../../../components/tables/tableUtils";
+import { ClearFilters } from "../../../components/clearFilters/clearFilters";
 
-const isTagsColumn = col => ["custom_type", "component", "custom_tags"].includes(col);
-const isTeamsColumn = col => col === "teams";
 
 const COL_WIDTH_BOUNDARIES = [1, 3, 7, 14, 30, 60, 90];
 
@@ -40,6 +39,16 @@ const PhaseDetailView = ({
   intl,
 }) => {
   const gridRef = React.useRef();
+
+  const [filteredData, setFilteredData] = React.useReducer(
+    (data, partialData) => ({
+      ...data,
+      ...partialData,
+    }),
+    {tableFilteredData: undefined, selectedMetric: undefined, selectedFilter: undefined}
+  );
+  const isChartFilterApplied = () => filteredData.tableFilteredData !== undefined;
+
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -84,7 +93,7 @@ const PhaseDetailView = ({
   const [selectedGrouping, setSelectedGrouping] = useState(defaultSelectedGrouping);
 
   const [colState, setColState] = React.useState({
-    colData: workItemsByStateType[selectedStateType]?.map((x) => x["state"])??[],
+    colData: workItemsByStateType[selectedStateType]??[],
     colId: "state",
     headerName: "State",
   });
@@ -97,7 +106,7 @@ const PhaseDetailView = ({
     }
   }, [selectedStateType, workItemsByStateType]);
 
-  const [resetComponentStateKey] = useResetComponentState();
+  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
   React.useEffect(() => {
     if (selectedFilter === null) {
@@ -121,14 +130,15 @@ const PhaseDetailView = ({
   }
 
   function getChartSubTitle() {
-
-    return `${workItemsWithAggregateDurations.length} ${itemsDesc(specsOnly)}`;
+    const result = isChartFilterApplied() ? filteredData.tableFilteredData : workItemsWithAggregateDurations;
+    return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
+  React.useEffect(() => {
+    setColState(prev => ({...prev, colData: getWorkItemDurations(workItemsByStateType[selectedStateType])}))
+  },[workItemsByStateType, selectedStateType]);
 
   const seriesData = React.useMemo(() => {
-    const specsOnly = workItemScope === "specs";
-
     const pointsLeadTimeOrAge = workItemsWithAggregateDurations.map((w) =>
       isClosed(selectedStateType) ? w["leadTime"] : w["cycleTime"]
     );
@@ -166,49 +176,98 @@ const PhaseDetailView = ({
     });
 
     return [seriesLeadTimeOrAge, seriesCycleTimeOrLatency, seriesEffort];
-  }, [workItemScope, intl, selectedStateType, workItemsWithAggregateDurations]);
+  }, [specsOnly, intl, selectedStateType, workItemsWithAggregateDurations]);
 
-  if (selectedStateType != null) {
-    const specsOnly = workItemScope === "specs";
+  const continousValueseries = React.useMemo(() => getHistogramSeries({
+    id: colState.colId,
+    intl,
+    colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+    points: colState.colData.map(x => x[colState.colId]),
+    name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
+    color: getSelectedMetricColor(colState.colId, selectedStateType),
+    visible: true,
+    originalData: workItemsWithAggregateDurations
+  }), [workItemsWithAggregateDurations, colState, intl, selectedStateType]);
 
-    const continousValueseries = getHistogramSeries({
-      id: colState.colId,
-      intl,
-      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-      points: colState.colData,
-      name: getSelectedMetricDisplayName(colState.colId, selectedStateType),
-      color: getSelectedMetricColor(colState.colId, selectedStateType),
-      visible: true,
+
+  function suppressAllColumnMenus(suppressMenu) {
+    const allColumnDefs = gridRef.current?.columnApi.getAllColumns().map((column) => {
+      return {
+        ...column.getColDef(),
+        suppressMenu: suppressMenu,
+      };
     });
+    gridRef.current?.api.setColumnDefs(allColumnDefs);
+  }
+  if (selectedStateType != null) {
 
     let chartElement;
+    let clearFilterElement = (
+      <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
+        <ClearFilters
+          selectedFilter={filteredData.selectedFilter}
+          selectedMetric={filteredData.selectedMetric}
+          stateType={selectedStateType}
+          handleClearClick={() => {
+            setFilteredData({tableFilteredData: undefined});
+            resetComponentState()
+            suppressAllColumnMenus(false);
+          }}
+        />
+      </div>
+    );
+
     if (COL_TYPES[colState.colId].type === "continous") {
       chartElement = (
-        <WorkItemsDetailHistogramChart
-          chartConfig={{
-            title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${colState.headerName} Distribution`,
-            subtitle: getChartSubTitle(),
-            legendItemClick: () => {}
-        }}
-          selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
-          specsOnly={specsOnly}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          stateType={selectedStateType}
-          series={[continousValueseries]}
-        />
+        <>
+          {isChartFilterApplied() && clearFilterElement}
+          <WorkItemsDetailHistogramChart
+            chartConfig={{
+              title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${colState.headerName} Distribution`,
+              subtitle: getChartSubTitle(),
+              legendItemClick: () => {},
+            }}
+            onPointClick={(params) => {
+              setFilteredData({
+                tableFilteredData: params.bucket,
+                selectedMetric: params.selectedMetric,
+                selectedFilter: params.category,
+              });
+              suppressAllColumnMenus(true);
+            }}
+            selectedMetric={getMetricsMetaKey(colState.colId, selectedStateType)}
+            specsOnly={specsOnly}
+            colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+            stateType={selectedStateType}
+            series={[continousValueseries]}
+          />
+        </>
       );
     } else if(COL_TYPES[colState.colId].type === "category"){
       chartElement = (
-        <ValueStreamDistributionChart
-          colData={colState.colData.map((x) => (x == null ? "Unassigned" : x))}
-          colId={colState.colId}
-          headerName={colState.headerName}
-          title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(specsOnly)} by ${colState.headerName} `}
-          subtitle={`${getChartSubTitle()}`}
-          specsOnly={specsOnly}
-          histogramSeries={continousValueseries}
-          stateType={selectedStateType}
-        />
+        <>
+          {isChartFilterApplied() && clearFilterElement}
+          <ValueStreamDistributionChart
+            key={resetComponentStateKey}
+            colData={colState.colData}
+            colId={colState.colId}
+            onPointClick={(params) => {
+              setFilteredData({
+                tableFilteredData: params.bucket,
+                selectedMetric: params.selectedMetric,
+                selectedFilter: params.selectedFilter,
+              });
+              suppressAllColumnMenus(true);
+            }}
+            headerName={colState.headerName}
+            title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(specsOnly)} by ${
+              colState.headerName
+            } `}
+            subtitle={`${getChartSubTitle()}`}
+            specsOnly={specsOnly}
+            stateType={selectedStateType}
+          />
+        </>
       );
     }
 
@@ -235,24 +294,11 @@ const PhaseDetailView = ({
 
                   // set colstate on the event itself instead of useEffect
                   setColState((prev) => {
-                    const [metricKey, headerName] = [
-                      getSelectedMetricKey(prev.colId, stateType),
-                      getSelectedMetricDisplayName(prev.colId, stateType),
-                    ];
+                    const metricKey = getSelectedMetricKey(prev.colId, stateType);
                     return {
                       ...prev,
-                      headerName: headerName ?? prev.headerName,
-                      colData: getWorkItemDurations(workItemsByStateType[stateType])
-                        .map((x) => {
-                          if(isTagsColumn(metricKey)){
-                            return COL_TYPES[metricKey].valueGetter(x["tags"])
-                          }
-                          if(isTeamsColumn(metricKey)){
-                            return COL_TYPES[metricKey].valueGetter(x["teamNodeRefs"])
-                          }
-                          return x[metricKey]
-                        })
-                        .sort(COL_TYPES[metricKey].sorter ?? SORTER.no_sort).flat(),
+                      colId: metricKey,
+                      colData: getWorkItemDurations(workItemsByStateType[stateType]),
                     };
                   });
 
@@ -262,6 +308,8 @@ const PhaseDetailView = ({
                     rowEndIndex: Number.POSITIVE_INFINITY,
                     columns: [colState.colId],
                   });
+
+                  setFilteredData({tableFilteredData: undefined});
                 }}
                 layout="col"
                 className="tw-ml-4"
@@ -302,35 +350,25 @@ const PhaseDetailView = ({
               gridRef={gridRef}
               view={view}
               selectedFilter={selectedFilter}
-              tableData={workItemsWithAggregateDurations}
+              tableData={filteredData.tableFilteredData ?? workItemsWithAggregateDurations}
               tableSelectedMetric={selectedMetric}
               setShowPanel={setShowPanel}
               setWorkItemKey={setWorkItemKey}
               onSortChanged={(params) => {
                 const sortState = params.columnApi.getColumnState().find((x) => x.sort);
                 const supportedCols = Object.keys(COL_TYPES);
-                
-                let _colId = sortState?.colId;     
-                if(isTagsColumn(sortState?.colId)){
-                  _colId = "tags";
-                }
-                if(isTeamsColumn(sortState?.colId)){
-                  _colId = "teamNodeRefs";
-                }
-
                 const colId = sortState?.colId;
                 if (sortState?.sort && supportedCols.includes(colId)) {
-                  let filteredColVals = [];
+                  let filteredNodes = [];
                   params.api.forEachNodeAfterFilter((node) => {
                     if (!node.group) {
-                      const {valueGetter} = COL_TYPES[colId]
-                      filteredColVals.push(valueGetter?.(node.data[_colId]) ?? node.data[colId]);
+                      filteredNodes.push(node.data);
                     }
                   });
                   const columnDefs = params.api.getColumnDefs();
                   const headerName = columnDefs.find((x) => x.colId === colId).headerName;
                   setColState({
-                    colData: filteredColVals.sort(COL_TYPES[colId].sorter ?? SORTER.no_sort).flat(),
+                    colData: filteredNodes,
                     colId: colId,
                     headerName,
                   });
