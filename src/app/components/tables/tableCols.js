@@ -342,12 +342,15 @@ export function getReleaseStatusCol(){
 }
 
 export const COL_TYPES = {
-  state: {type: "category", color: x => WorkItemStateTypeColor[x]},
+  state: {type: "category", color: (x) => WorkItemStateTypeColor[x]},
   releaseStatus: {type: "category"},
   workItemType: {
     type: "category",
-    transformCategoryLabels: (x) => `<span style="display:inline-flex;align-items:center;gap:2px">${workItemTypeImageMapFromPublic[x]} <span>${capitalizeFirstLetter(x)}</span></span>`,
-    color: x => WorkItemColorMap[x]
+    transformCategoryLabels: (x) =>
+      `<span style="display:inline-flex;align-items:center;gap:2px">${
+        workItemTypeImageMapFromPublic[x]
+      } <span>${capitalizeFirstLetter(x)}</span></span>`,
+    color: (x) => WorkItemColorMap[x],
   },
   workItemsSourceName: {type: "category"},
   priority: {type: "category", sorter: SORTER.string_compare},
@@ -357,4 +360,35 @@ export const COL_TYPES = {
   leadTime: {type: "continous"},
   leadTimeOrAge: {type: "continous"},
   effort: {type: "continous"},
+
+  component: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).component;
+      return tags;
+    },
+  },
+  custom_type: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).custom_type;
+      return tags;
+    },
+  },
+  custom_tags: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const tags = parseTags(fieldValue).tags;
+      return tags;
+    },
+  },
+  tags: {},
+  teams: {
+    type: "category",
+    valueGetter: (fieldValue) => {
+      const teams = fieldValue.map((t) => t.teamName);
+      return teams;
+    },
+  },
+  workStreams: {type: "category"},
 };
