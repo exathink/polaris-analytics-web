@@ -95,7 +95,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     }
 
     const columnDefs = gridRef.current.api.getColumnDefs();
-    const headerName = columnDefs.find((x) => x.colId === selectedColId).headerName;
+    const headerName = columnDefs.find((x) => x.colId === selectedColId)?.headerName;
     return headerName;
   };
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -169,7 +169,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
         <ClearFilters
           selectedFilter={selectedBarState.selectedFilter}
-          selectedMetric={selectedColId}
+          selectedMetric={getSelectedColumnHeaderName()}
           stateType={selectedStateType}
           handleClearClick={() => {
             setSelectedBarState({selectedBarData: undefined});
@@ -193,7 +193,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onPointClick={(params) => {
             setSelectedBarState({
               selectedBarData: params.bucket,
-              selectedMetric: selectedColId,
               selectedFilter: params.category,
             });
             suppressAllColumnMenus({gridRef, suppressMenu: true});
