@@ -256,7 +256,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             setSelectedStateType(stateType);
 
             // need to update few colIds based on closed/open stateTypes
-            setSelectedColId((prev) => getMetricsMetaKey(prev.colId, stateType));
+            setSelectedColId((prevSelectedColId) => getMetricsMetaKey(prevSelectedColId, stateType));
 
             applyRangeSelectionOnColumn(gridRef, selectedColId);
           }}
