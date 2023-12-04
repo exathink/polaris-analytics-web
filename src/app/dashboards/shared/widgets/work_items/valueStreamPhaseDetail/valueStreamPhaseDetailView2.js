@@ -84,9 +84,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   );
 
   // derived state
+  
   const getSelectedColumnData = React.useCallback(
-    () => candidateWorkItems.map((c) => c[getMetricsMetaKey(selectedColId, selectedStateType)]),
-    [candidateWorkItems, selectedColId, selectedStateType]
+    () => candidateWorkItems.map((c) => c[selectedColId]),
+    [candidateWorkItems, selectedColId]
   );
   const getSelectedColumnHeaderName = () => {
     if(gridRef.current == null){
@@ -197,7 +198,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             });
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
-          selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
+          selectedMetric={selectedColId}
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           stateType={selectedStateType}
@@ -283,7 +284,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             const colId = sortState?.colId;
             if (sortState?.sort && supportedCols.includes(colId)) {
               // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
-              setSelectedColId(colId);
+              setSelectedColId(getMetricsMetaKey(colId, selectedStateType));
             }
           }}
           onGridReady={(params) => {
