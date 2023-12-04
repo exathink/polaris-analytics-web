@@ -209,7 +209,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       chartElement = (
         <ValueStreamDistributionChart
           key={resetComponentStateKey}
-          colData={getSelectedColumnData()}
+          colData={candidateWorkItems}
           colId={selectedColId}
           onPointClick={(params) => {
             setSelectedBarState({
