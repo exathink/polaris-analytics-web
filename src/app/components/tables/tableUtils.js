@@ -423,6 +423,15 @@ export function ArrayCol({value}) {
   );
 }
 
+export function applyRangeSelectionOnColumn(gridRef, colId) {
+  gridRef.current?.api.clearRangeSelection?.();
+  gridRef.current?.api.addCellRange({
+    rowStartIndex: 0,
+    rowEndIndex: Number.POSITIVE_INFINITY,
+    columns: [colId],
+  });
+}
+
 export const getHandleColumnVisible = (hidden_cols, setHiddenCols) => (params) => {
   if (params.column != null && params.column.getUserProvidedColDef().hide != null) {
     const colId = params.column.getColId();
