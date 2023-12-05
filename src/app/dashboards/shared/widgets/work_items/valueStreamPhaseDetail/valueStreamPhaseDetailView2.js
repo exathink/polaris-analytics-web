@@ -71,7 +71,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
-  // selected columnId state on column click
+  // selected columnId state on table column click
   const [selectedColId, setSelectedColId] = React.useState("state");
 
   // maintain selectedBarState, when clicked on Chart column bar
@@ -95,8 +95,11 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     }
 
     const columnDefs = gridRef.current.api.getColumnDefs();
-    const headerName = columnDefs.find((x) => x.colId === selectedColId)?.headerName;
-    return headerName;
+    const selectedColDef = columnDefs.find((x) => x.colId === selectedColId);
+    if (selectedColDef) {
+      return selectedColDef.headerName;
+    }
+    return ""
   };
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
