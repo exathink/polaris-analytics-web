@@ -241,27 +241,25 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   function getStateTypeGroupingTabs() {
     return (
-      <>
-        <GroupingSelector
-          label={`Phase: ${WorkItemStateTypeDisplayName[selectedStateType]}`}
-          groupings={stateTypes.map((stateType) => ({
-            key: stateType,
-            display: WorkItemStateTypeDisplayName[stateType],
-            style: {
-              backgroundColor: WorkItemStateTypeColor[stateType],
-              color: "#ffffff",
-            },
-          }))}
-          initialValue={selectedStateType}
-          onGroupingChanged={(stateType) => {
-            // main state for this callback
-            setSelectedStateType(stateType);
-            applyRangeSelectionOnColumn(gridRef, selectedColId);
-          }}
-          layout="col"
-          className="tw-ml-4"
-        />
-      </>
+      <GroupingSelector
+        label={`Phase: ${WorkItemStateTypeDisplayName[selectedStateType]}`}
+        groupings={stateTypes.map((stateType) => ({
+          key: stateType,
+          display: WorkItemStateTypeDisplayName[stateType],
+          style: {
+            backgroundColor: WorkItemStateTypeColor[stateType],
+            color: "#ffffff",
+          },
+        }))}
+        initialValue={selectedStateType}
+        onGroupingChanged={(stateType) => {
+          // main state for this callback
+          setSelectedStateType(stateType);
+          applyRangeSelectionOnColumn(gridRef, selectedColId);
+        }}
+        layout="col"
+        className="tw-ml-4"
+      />
     );
   }
 
