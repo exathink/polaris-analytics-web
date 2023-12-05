@@ -202,7 +202,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             });
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
-          selectedMetric={selectedColId}
+          selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           stateType={selectedStateType}
