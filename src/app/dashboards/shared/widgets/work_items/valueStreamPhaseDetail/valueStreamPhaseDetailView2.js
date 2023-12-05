@@ -82,7 +82,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   );
 
   // derived state
-  
+
   const getSelectedColumnData = React.useCallback(() => {
     // need to update few colIds based on closed/open stateTypes
     const newSelectedColId = getMetricsMetaKey(selectedColId, selectedStateType);
@@ -90,7 +90,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   }, [candidateWorkItems, selectedColId, selectedStateType]);
 
   const getSelectedColumnHeaderName = () => {
-    if(gridRef.current == null){
+    if (gridRef.current == null) {
       return "State";
     }
 
@@ -99,7 +99,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     if (selectedColDef) {
       return selectedColDef.headerName;
     }
-    return ""
+    return "";
   };
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -267,29 +267,27 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   function getTableElement() {
     return (
-      <>
-        <WorkItemsDetailTable
-          key={resetComponentStateKey}
-          gridRef={gridRef}
-          stateType={selectedStateType}
-          tableData={selectedBarState.selectedBarData ?? candidateWorkItems}
-          context={context}
-          colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-          specsOnly={true}
-          onSortChanged={(params) => {
-            const sortState = params.columnApi.getColumnState().find((x) => x.sort);
-            const supportedCols = Object.keys(COL_TYPES);
-            const colId = sortState?.colId;
-            if (sortState?.sort && supportedCols.includes(colId)) {
-              // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
-              setSelectedColId(colId);
-            }
-          }}
-          onGridReady={(params) => {
-            defaultOnGridReady(params);
-          }}
-        />
-      </>
+      <WorkItemsDetailTable
+        key={resetComponentStateKey}
+        gridRef={gridRef}
+        stateType={selectedStateType}
+        tableData={selectedBarState.selectedBarData ?? candidateWorkItems}
+        context={context}
+        colWidthBoundaries={COL_WIDTH_BOUNDARIES}
+        specsOnly={true}
+        onSortChanged={(params) => {
+          const sortState = params.columnApi.getColumnState().find((x) => x.sort);
+          const supportedCols = Object.keys(COL_TYPES);
+          const colId = sortState?.colId;
+          if (sortState?.sort && supportedCols.includes(colId)) {
+            // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
+            setSelectedColId(colId);
+          }
+        }}
+        onGridReady={(params) => {
+          defaultOnGridReady(params);
+        }}
+      />
     );
   }
   // end
