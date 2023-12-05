@@ -185,7 +185,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     );
 
     if (COL_TYPES[selectedColId].type === "continous") {
-      debugger;
       chartElement = (
         <WorkItemsDetailHistogramChart
           key={resetComponentStateKey}
