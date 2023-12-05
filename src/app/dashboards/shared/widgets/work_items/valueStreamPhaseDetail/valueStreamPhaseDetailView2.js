@@ -85,10 +85,12 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // derived state
   
-  const getSelectedColumnData = React.useCallback(
-    () => candidateWorkItems.map((c) => c[selectedColId]),
-    [candidateWorkItems, selectedColId]
-  );
+  const getSelectedColumnData = React.useCallback(() => {
+    // need to update few colIds based on closed/open stateTypes
+    const newSelectedColId = getMetricsMetaKey(selectedColId, selectedStateType);
+    return candidateWorkItems.map((c) => c[newSelectedColId]);
+  }, [candidateWorkItems, selectedColId, selectedStateType]);
+
   const getSelectedColumnHeaderName = () => {
     if(gridRef.current == null){
       return "State";
@@ -256,10 +258,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onGroupingChanged={(stateType) => {
             // main state for this callback
             setSelectedStateType(stateType);
-
-            // need to update few colIds based on closed/open stateTypes
-            setSelectedColId((prevSelectedColId) => getMetricsMetaKey(prevSelectedColId, stateType));
-
             applyRangeSelectionOnColumn(gridRef, selectedColId);
           }}
           layout="col"
