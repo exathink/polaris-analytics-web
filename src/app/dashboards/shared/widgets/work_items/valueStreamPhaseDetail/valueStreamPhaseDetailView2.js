@@ -103,20 +103,21 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   };
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  const continousValueseries = React.useMemo(
-    () =>
-      getHistogramSeries({
-        id: selectedColId,
-        intl,
-        colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-        points: getSelectedColumnData(),
-        name: getSelectedMetricDisplayName(selectedColId, selectedStateType),
-        color: getSelectedMetricColor(selectedColId, selectedStateType),
-        visible: true,
-        originalData: candidateWorkItems,
-      }),
-    [candidateWorkItems, getSelectedColumnData, intl, selectedColId, selectedStateType]
-  );
+  const continousValueseries = React.useMemo(() => {
+    const newSelectedColId = getMetricsMetaKey(selectedColId, selectedStateType);
+    const selectedColumnData = candidateWorkItems.map((c) => c[newSelectedColId]);
+
+    return getHistogramSeries({
+      id: selectedColId,
+      intl,
+      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+      points: selectedColumnData,
+      name: getSelectedMetricDisplayName(selectedColId, selectedStateType),
+      color: getSelectedMetricColor(selectedColId, selectedStateType),
+      visible: true,
+      originalData: candidateWorkItems,
+    });
+  }, [candidateWorkItems, intl, selectedColId, selectedStateType]);
 
   // state to maintain currently applied filters
   // maintain that in stack (appliedFilters => stack of filter objects)
@@ -175,8 +176,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           selectedMetric={getSelectedColumnHeaderName()}
           stateType={selectedStateType}
           handleClearClick={() => {
-            setSelectedBarState({selectedBarData: undefined});
             resetComponentState();
+            setSelectedBarState({selectedBarData: undefined});
             suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
@@ -184,8 +185,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     );
 
     if (COL_TYPES[selectedColId].type === "continous") {
+      debugger;
       chartElement = (
         <WorkItemsDetailHistogramChart
+          key={resetComponentStateKey}
           chartConfig={{
             title: `${
               WorkItemStateTypeDisplayName[selectedStateType]
@@ -291,7 +294,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   // end
 
   return (
-    <div className="tw-h-full tw-grid tw-grid-rows-[45%_5%_50%] tw-gap-2" >
+    <div className="tw-h-full tw-grid tw-grid-rows-[45%_5%_50%] tw-gap-2">
       <div>{getChartElement()}</div>
       <div className="tw-flex tw-justify-center">{getStateTypeGroupingTabs()}</div>
       <div>{getTableElement()}</div>
