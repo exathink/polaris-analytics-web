@@ -156,14 +156,14 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // here we can simply derive state to be used in render
   function getWorkItemScopeElement() {
-    <div className="workItemScopeSelector">
+    return (
       <WorkItemScopeSelector
         className={"specsAllSelector"}
         workItemScope={workItemScope}
         setWorkItemScope={setWorkItemScope}
         layout="col"
       />
-    </div>;
+    );
   }
 
   function getChartElement() {
@@ -291,11 +291,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   // end
 
   return (
-    <div>
-      <div>{getWorkItemScopeElement()}</div>
+    <div className="tw-h-full tw-grid tw-grid-rows-[45%_5%_50%] tw-gap-2" >
       <div>{getChartElement()}</div>
       <div className="tw-flex tw-justify-center">{getStateTypeGroupingTabs()}</div>
-      <div className="tw-h-full">{getTableElement()}</div>
+      <div>{getTableElement()}</div>
     </div>
   );
 }
