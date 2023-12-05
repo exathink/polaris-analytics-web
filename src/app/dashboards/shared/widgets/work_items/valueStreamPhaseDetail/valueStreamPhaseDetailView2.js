@@ -10,7 +10,6 @@ import {COL_WIDTH_BOUNDARIES} from "../wip/cycleTimeLatency/cycleTimeLatencyUtil
 import {COL_TYPES} from "../../../../../components/tables/tableCols";
 import {WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsDesc} from "../../../config";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
-import {CardInspectorWithDrawer, useCardInspector} from "../../../../work_items/cardInspector/cardInspectorUtils";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
@@ -68,7 +67,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const specsOnly = workItemScope === "specs";
 
   // All the hooks and state we define here
-  const {workItemKey, setWorkItemKey, showPanel, setShowPanel} = useCardInspector();
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
   // selected columnId state on table column click
@@ -290,12 +288,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onGridReady={(params) => {
             defaultOnGridReady(params);
           }}
-        />
-        <CardInspectorWithDrawer
-          workItemKey={workItemKey}
-          showPanel={showPanel}
-          setShowPanel={setShowPanel}
-          context={context}
         />
       </>
     );
