@@ -80,7 +80,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       ...data,
       ...partialData,
     }),
-    {selectedBarData: [], selectedFilter: undefined}
+    {selectedBarData: undefined, selectedFilter: undefined}
   );
 
   // derived state
@@ -274,7 +274,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           key={resetComponentStateKey}
           gridRef={gridRef}
           stateType={selectedStateType}
-          tableData={candidateWorkItems}
+          tableData={selectedBarState.selectedBarData ?? candidateWorkItems}
           context={context}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           specsOnly={true}
