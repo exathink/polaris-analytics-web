@@ -90,7 +90,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   }, [candidateWorkItems, selectedColId, selectedStateType]);
 
   const getSelectedColumnHeaderName = () => {
-    if (gridRef.current == null) {
+    if (gridRef.current == null || gridRef.current.api == null) {
       return "State";
     }
 
@@ -117,7 +117,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       visible: true,
       originalData: candidateWorkItems,
     });
-  }, [candidateWorkItems, intl, selectedColId, selectedStateType]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candidateWorkItems, intl, selectedColId, selectedStateType, resetComponentStateKey]);
 
   // state to maintain currently applied filters
   // maintain that in stack (appliedFilters => stack of filter objects)
