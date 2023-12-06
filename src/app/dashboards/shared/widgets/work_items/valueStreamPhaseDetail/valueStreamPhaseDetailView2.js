@@ -12,7 +12,7 @@ import {WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsDesc} from "../
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
-import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName} from "../../../helpers/metricsMeta";
+import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName, getSelectedMetricKey} from "../../../helpers/metricsMeta";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
@@ -104,7 +104,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const continousValueseries = React.useMemo(() => {
-    const newSelectedColId = getMetricsMetaKey(selectedColId, selectedStateType);
+    const newSelectedColId = getSelectedMetricKey(selectedColId, selectedStateType);
     const selectedColumnData = candidateWorkItems.map((c) => c[newSelectedColId]);
 
     return getHistogramSeries({
@@ -256,7 +256,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         }))}
         initialValue={selectedStateType}
         onGroupingChanged={(stateType) => {
-          // main state for this callback
           setSelectedStateType(stateType);
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
