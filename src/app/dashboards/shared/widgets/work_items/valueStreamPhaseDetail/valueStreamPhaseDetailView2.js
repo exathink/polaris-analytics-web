@@ -12,7 +12,12 @@ import {WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsDesc} from "../
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
 import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
-import {getMetricsMetaKey, getSelectedMetricColor, getSelectedMetricDisplayName, getSelectedMetricKey} from "../../../helpers/metricsMeta";
+import {
+  getMetricsMetaKey,
+  getSelectedMetricColor,
+  getSelectedMetricDisplayName,
+  getSelectedMetricKey,
+} from "../../../helpers/metricsMeta";
 import {WorkItemScopeSelector} from "../../../components/workItemScopeSelector/workItemScopeSelector";
 import {useCustomPhaseMapping} from "../../../../projects/projectDashboard";
 import {ClearFilters} from "../../../components/clearFilters/clearFilters";
@@ -31,7 +36,7 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
   gridRef.current?.api.setColumnDefs(allColumnDefs);
 }
 
-function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemScope}) {
+function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemScope, workItemScopeVisible}) {
   //#region Initially have the workItems defined properly
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
@@ -111,7 +116,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       visible: true,
       originalData: candidateWorkItems,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidateWorkItems, intl, selectedColId, selectedStateType, resetComponentStateKey]);
 
   // state to maintain currently applied filters
@@ -152,14 +157,18 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // here we can simply derive state to be used in render
   function getWorkItemScopeElement() {
-    return (
-      <WorkItemScopeSelector
-        className={"specsAllSelector"}
-        workItemScope={workItemScope}
-        setWorkItemScope={setWorkItemScope}
-        layout="col"
-      />
-    );
+    if (workItemScopeVisible) {
+      return (
+        <WorkItemScopeSelector
+          className={"specsAllSelector"}
+          workItemScope={workItemScope}
+          setWorkItemScope={setWorkItemScope}
+          layout="col"
+        />
+      );
+    } else {
+      return null;
+    }
   }
 
   function getChartElement() {
@@ -287,7 +296,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   // end
 
   return (
-    <div className="tw-h-full tw-grid tw-grid-rows-[45%_5%_50%] tw-gap-2">
+    <div className="tw-grid tw-h-full tw-grid-rows-[45%_5%_50%] tw-gap-2">
       <div>{getChartElement()}</div>
       <div className="tw-flex tw-justify-center">{getStateTypeGroupingTabs()}</div>
       <div>{getTableElement()}</div>
