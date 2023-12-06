@@ -293,7 +293,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       />
     );
   }
-  // end
 
   return (
     <div className="tw-grid tw-h-full tw-grid-rows-[45%_5%_50%] tw-gap-2">
