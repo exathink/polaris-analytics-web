@@ -154,6 +154,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       visible: true,
       originalData: candidateWorkItems,
     });
+
+    /**
+     * fixed issue with histogram chart selection not getting cleared, by using resetComponentStateKey in dep array
+     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidateWorkItems, intl, selectedColId, selectedStateType, resetComponentStateKey]);
 
