@@ -1,7 +1,7 @@
 import React from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 import {useQueryDimensionWorkItemDetails} from "../hooks/useQueryDimensionWorkItemDetails";
-import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView";
+import {ValueStreamPhaseDetailView} from "./valueStreamPhaseDetailView2";
 import {logGraphQlError} from "../../../../../components/graphql/utils";
 import {useChildState} from "../../../../../helpers/hooksUtil";
 import { getReferenceString } from "../../../../../helpers/utility";
