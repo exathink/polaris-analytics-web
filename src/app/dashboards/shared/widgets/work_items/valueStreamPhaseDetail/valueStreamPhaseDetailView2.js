@@ -36,18 +36,25 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
   gridRef.current?.api.setColumnDefs(allColumnDefs);
 }
 
+export const actionTypes = {
+  Update_Selected_Col_Id: "Update_Selected_Col_Id",
+  Update_Selected_Col_Header: "Update_Selected_Col_Header",
+  Update_Selected_Bar_Data: "Update_Selected_Bar_Data",
+  Update_Selected_Filter: "Update_Selected_Filter",
+};
+
 export function phaseDetailReducer(state, action) {
   switch (action.type) {
-    case "Update_Selected_Col_Id": {
+    case actionTypes.Update_Selected_Col_Id: {
       return {...state, selectedColId: action.payload};
     }
-    case "Update_Selected_Col_Header": {
+    case actionTypes.Update_Selected_Col_Header: {
       return {...state, selectedColHeader: action.payload};
     }
-    case "Update_Selected_Bar_Data": {
+    case actionTypes.Update_Selected_Bar_Data: {
       return {...state, selectedBarData: action.payload};
     }
-    case "Update_Selected_Filter": {
+    case actionTypes.Update_Selected_Filter: {
       return {...state, selectedFilter: action.payload};
     }
     default: {
@@ -125,7 +132,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       return "";
     };
 
-    dispatch({type: "Update_Selected_Col_Header", payload: getSelectedColumnHeaderName()})
+    dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName()})
 
   }, [selectedColId, selectedStateType])
 
@@ -207,7 +214,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           stateType={selectedStateType}
           handleClearClick={() => {
             resetComponentState();
-            dispatch({type: "Update_Selected_Bar_Data", payload: undefined})
+            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined})
             suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
@@ -226,8 +233,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             legendItemClick: () => {},
           }}
           onPointClick={(params) => {
-            dispatch({type: "Update_Selected_Bar_Data", payload: params.bucket})
-            dispatch({type: "Update_Selected_Filter", payload: params.category})
+            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket})
+            dispatch({type: actionTypes.Update_Selected_Filter, payload: params.category})
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
@@ -244,8 +251,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           colData={candidateWorkItems}
           colId={selectedColId}
           onPointClick={(params) => {
-            dispatch({type: "Update_Selected_Bar_Data", payload: params.bucket})
-            dispatch({type: "Update_Selected_Filter", payload: params.selectedFilter})
+            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket})
+            dispatch({type: actionTypes.Update_Selected_Filter, payload: params.selectedFilter})
 
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
@@ -307,7 +314,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           const colId = sortState?.colId;
           if (sortState?.sort && supportedCols.includes(colId)) {
             // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
-            dispatch({type: "Update_Selected_Col_Id", payload: colId});
+            dispatch({type: actionTypes.Update_Selected_Col_Id, payload: colId});
 
           }
         }}
