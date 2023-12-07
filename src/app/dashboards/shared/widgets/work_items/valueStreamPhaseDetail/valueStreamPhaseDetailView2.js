@@ -83,12 +83,14 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
   );
 
+  /* priority order to select the default open tab when we first render this component */
+  const initialSelectedStateType =
+    ["closed", "wip", "complete", "open", "backlog"].find(
+      (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
+    ) || stateTypes[0];
+
   const initialState = {
-    /* priority order to select the default open tab when we first render this component */
-    selectedStateType:
-      ["closed", "wip", "complete", "open", "backlog"].find(
-        (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
-      ) || stateTypes[0],
+    selectedStateType: initialSelectedStateType,
     // selected columnId state on table column click
     selectedColId: "state",
     selectedColHeader: "State",
