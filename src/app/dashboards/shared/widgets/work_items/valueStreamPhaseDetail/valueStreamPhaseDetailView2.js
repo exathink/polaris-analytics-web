@@ -76,6 +76,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // selected columnId state on table column click
   const [selectedColId, setSelectedColId] = React.useState("state");
+  const [selectedColHeader, setSelectedColHeader] = React.useState("State");
 
   // maintain selectedBarState, when clicked on Chart column bar
   const [selectedBarState, setSelectedBarState] = React.useReducer(
@@ -88,18 +89,24 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // derived state
 
-  const getSelectedColumnHeaderName = () => {
-    if (gridRef.current == null || gridRef.current.api == null) {
-      return "State";
-    }
+  React.useEffect(() => {
+    const getSelectedColumnHeaderName = () => {
+      if (gridRef.current == null || gridRef.current.api == null) {
+        return "State";
+      }
+  
+      const columnDefs = gridRef.current.api.getColumnDefs();
+      const selectedColDef = columnDefs.find((x) => x.colId === selectedColId);
+      if (selectedColDef) {
+        return selectedColDef.headerName;
+      }
+      return "";
+    };
 
-    const columnDefs = gridRef.current.api.getColumnDefs();
-    const selectedColDef = columnDefs.find((x) => x.colId === selectedColId);
-    if (selectedColDef) {
-      return selectedColDef.headerName;
-    }
-    return "";
-  };
+    setSelectedColHeader(getSelectedColumnHeaderName())
+
+  }, [selectedColId, selectedStateType])
+
   //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const continousValueseries = React.useMemo(() => {
@@ -177,7 +184,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
         <ClearFilters
           selectedFilter={selectedBarState.selectedFilter}
-          selectedMetric={getSelectedColumnHeaderName()}
+          selectedMetric={selectedColHeader}
           stateType={selectedStateType}
           handleClearClick={() => {
             resetComponentState();
@@ -195,7 +202,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           chartConfig={{
             title: `${
               WorkItemStateTypeDisplayName[selectedStateType]
-            } Phase, ${getSelectedColumnHeaderName()} Distribution`,
+            } Phase, ${selectedColHeader} Distribution`,
             subtitle: getChartSubTitle(),
             legendItemClick: () => {},
           }}
@@ -226,10 +233,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             });
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
-          headerName={getSelectedColumnHeaderName()}
+          headerName={selectedColHeader}
           title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(
             specsOnly
-          )} by ${getSelectedColumnHeaderName()} `}
+          )} by ${selectedColHeader} `}
           subtitle={`${getChartSubTitle()}`}
           specsOnly={specsOnly}
           stateType={selectedStateType}
