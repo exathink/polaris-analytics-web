@@ -132,6 +132,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       return "";
     };
 
+    /**
+     * when we are switching between stateType tabs, table with updated colHeaders is rendered
+     * those headers are not reflected using gridRef, hence we need to maintain this state.
+     */
     dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName()})
 
   }, [selectedColId, selectedStateType])
