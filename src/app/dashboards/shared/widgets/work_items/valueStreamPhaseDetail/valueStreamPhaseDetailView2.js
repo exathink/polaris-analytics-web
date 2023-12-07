@@ -36,6 +36,27 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
   gridRef.current?.api.setColumnDefs(allColumnDefs);
 }
 
+export function phaseDetailReducer(state, action) {
+  switch (action.type) {
+    case "Update_Selected_Col_Id": {
+      return {...state, selectedColId: action.payload};
+    }
+    case "Update_Selected_Col_Header": {
+      return {...state, selectedColHeader: action.payload};
+    }
+    case "Update_Selected_Bar_Data": {
+      return {...state, selectedBarData: action.payload};
+    }
+    case "Update_Selected_Filter": {
+      return {...state, selectedFilter: action.payload};
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`);
+    }
+  }
+}
+
+
 function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemScope, workItemScopeVisible}) {
   //#region Initially have the workItems defined properly
   const workItems = React.useMemo(() => {
@@ -74,17 +95,18 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   // All the hooks and state we define here
   const [resetComponentStateKey, resetComponentState] = useResetComponentState();
 
-  // selected columnId state on table column click
-  const [selectedColId, setSelectedColId] = React.useState("state");
-  const [selectedColHeader, setSelectedColHeader] = React.useState("State");
+  const initialState = {
+    // selected columnId state on table column click
+    selectedColId: "state",
+    selectedColHeader: "State",
+    // maintain selectedBarState, when clicked on Chart column bar
+    selectedBarData: undefined,
+    selectedFilter: undefined,
+  };
 
-  // maintain selectedBarState, when clicked on Chart column bar
-  const [selectedBarState, setSelectedBarState] = React.useReducer(
-    (data, partialData) => ({
-      ...data,
-      ...partialData,
-    }),
-    {selectedBarData: undefined, selectedFilter: undefined}
+  const [{selectedColId, selectedColHeader, selectedBarData, selectedFilter}, dispatch] = React.useReducer(
+    phaseDetailReducer,
+    initialState
   );
 
   // derived state
@@ -103,11 +125,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       return "";
     };
 
-    setSelectedColHeader(getSelectedColumnHeaderName())
+    dispatch({type: "Update_Selected_Col_Header", payload: getSelectedColumnHeaderName()})
 
   }, [selectedColId, selectedStateType])
-
-  //   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const continousValueseries = React.useMemo(() => {
     const newSelectedColId = getSelectedMetricKey(selectedColId, selectedStateType);
@@ -131,7 +151,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // use the filterFns infra for filtering data
 
-  // End
 
   const uniqWorkItemsSources = React.useMemo(
     () => getUniqItems(workItems, (item) => item.workItemsSourceKey),
@@ -156,9 +175,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     );
   }
 
-  const isChartFilterApplied = () => selectedBarState.selectedBarData !== undefined;
+  const isChartFilterApplied = () => selectedBarData !== undefined;
   function getChartSubTitle() {
-    const result = isChartFilterApplied() ? selectedBarState.selectedBarData : candidateWorkItems;
+    const result = isChartFilterApplied() ? selectedBarData : candidateWorkItems;
     return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
@@ -183,12 +202,12 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     let clearFilterElement = (
       <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
         <ClearFilters
-          selectedFilter={selectedBarState.selectedFilter}
+          selectedFilter={selectedFilter}
           selectedMetric={selectedColHeader}
           stateType={selectedStateType}
           handleClearClick={() => {
             resetComponentState();
-            setSelectedBarState({selectedBarData: undefined});
+            dispatch({type: "Update_Selected_Bar_Data", payload: undefined})
             suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
@@ -207,10 +226,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             legendItemClick: () => {},
           }}
           onPointClick={(params) => {
-            setSelectedBarState({
-              selectedBarData: params.bucket,
-              selectedFilter: params.category,
-            });
+            dispatch({type: "Update_Selected_Bar_Data", payload: params.bucket})
+            dispatch({type: "Update_Selected_Filter", payload: params.category})
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
@@ -227,10 +244,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           colData={candidateWorkItems}
           colId={selectedColId}
           onPointClick={(params) => {
-            setSelectedBarState({
-              selectedBarData: params.bucket,
-              selectedFilter: params.selectedFilter,
-            });
+            dispatch({type: "Update_Selected_Bar_Data", payload: params.bucket})
+            dispatch({type: "Update_Selected_Filter", payload: params.selectedFilter})
+
             suppressAllColumnMenus({gridRef, suppressMenu: true});
           }}
           headerName={selectedColHeader}
@@ -281,7 +297,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         key={resetComponentStateKey}
         gridRef={gridRef}
         stateType={selectedStateType}
-        tableData={selectedBarState.selectedBarData ?? candidateWorkItems}
+        tableData={selectedBarData ?? candidateWorkItems}
         context={context}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         specsOnly={true}
@@ -291,7 +307,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           const colId = sortState?.colId;
           if (sortState?.sort && supportedCols.includes(colId)) {
             // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
-            setSelectedColId(colId);
+            dispatch({type: "Update_Selected_Col_Id", payload: colId});
+
           }
         }}
         onGridReady={(params) => {
