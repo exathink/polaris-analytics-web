@@ -186,6 +186,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     );
   }
 
+  function clearChartFilter() {
+    dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
+  }
+  
   const isChartFilterApplied = () => selectedBarData !== undefined;
   function getChartSubTitle() {
     const result = isChartFilterApplied() ? selectedBarData : candidateWorkItems;
@@ -218,7 +222,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           stateType={selectedStateType}
           handleClearClick={() => {
             resetComponentState();
-            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
+            clearChartFilter()
             suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
@@ -292,6 +296,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         initialValue={selectedStateType}
         onGroupingChanged={(stateType) => {
           dispatch({type: actionTypes.Update_Selected_State_Type, payload: stateType});
+          clearChartFilter()
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
         layout="col"
