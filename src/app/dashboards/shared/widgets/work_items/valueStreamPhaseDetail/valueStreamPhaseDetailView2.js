@@ -142,6 +142,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   // update chartData whenever specsOnly flag changes
   React.useEffect(() => {
     dispatch({type: actionTypes.Update_Current_Chart_Data, payload: candidateWorkItems});
+    dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
   }, [specsOnly, candidateWorkItems]);
 
   const continousValueseries = React.useMemo(() => {
