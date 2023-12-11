@@ -332,9 +332,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   }
 
   return (
-    <div className="tw-grid tw-h-full tw-grid-rows-[45%_5%_50%] tw-gap-2">
+    <div className="tw-grid tw-h-full tw-grid-rows-[50%_50%] tw-gap-2">
+      <div className="tw-flex tw-absolute tw-top-[-3.3rem] tw-left-[40%] tw-justify-center">{getStateTypeGroupingTabs()}</div>
       <div>{getChartElement()}</div>
-      <div className="tw-flex tw-justify-center">{getStateTypeGroupingTabs()}</div>
       <div>{getTableElement()}</div>
     </div>
   );

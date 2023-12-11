@@ -42,7 +42,7 @@ export const ProjectPipelineFunnelDetailDashboard = ({
         controls={
           [
             () => (
-              <div style={{ marginLeft: "20px", minWidth: "300px" }}>
+              <div style={{ marginLeft: "20px", minWidth: "300px", marginBottom: "20px", marginTop: "5px" }}>
                 <Flex align={"center"}>
                   <Box w={"100%"}>
                     <WorkItemScopeSelector workItemScope={workItemScope} setWorkItemScope={setWorkItemScope} />
