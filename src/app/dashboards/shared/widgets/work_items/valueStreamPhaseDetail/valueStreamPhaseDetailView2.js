@@ -37,6 +37,8 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
 }
 
 export const actionTypes = {
+  Update_Selected_State_Type: "Update_Selected_State_Type",
+  Update_Candidate_Work_Items: "Update_Candidate_Work_Items",
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
   Update_Selected_Col_Header: "Update_Selected_Col_Header",
   Update_Current_Chart_Data: "Update_Current_Chart_Data",
@@ -46,6 +48,12 @@ export const actionTypes = {
 
 export function phaseDetailReducer(state, action) {
   switch (action.type) {
+    case actionTypes.Update_Selected_State_Type: {
+      return {...state, selectedStateType: action.payload};
+    }
+    case actionTypes.Update_Candidate_Work_Items: {
+      return {...state, candidateWorkItems: action.payload};
+    }
     case actionTypes.Update_Selected_Col_Id: {
       return {...state, selectedColId: action.payload};
     }
@@ -88,28 +96,32 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     ["closed", "wip", "complete", "open", "backlog"].find(
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0];
-  const [selectedStateType, setSelectedStateType] = React.useState(initialSelectedStateType);
-
-  // workItems by selectedStateType
-  const candidateWorkItems = React.useMemo(() => {
-    return getWorkItemDurations(workItemsByStateType[selectedStateType]);
-  }, [workItemsByStateType, selectedStateType]);
-
+  const initialCandidateWorkItems = getWorkItemDurations(workItemsByStateType[initialSelectedStateType]);
   const initialState = {
+    selectedStateType: initialSelectedStateType,
+    candidateWorkItems: initialCandidateWorkItems,
     // selected columnId state on table column click
     selectedColId: "state",
     selectedColHeader: "State",
     // currentChartData used to render chart
-    currentChartData: candidateWorkItems,
+    currentChartData: initialCandidateWorkItems,
     // maintain selectedBarState, when clicked on Chart column bar
     selectedBarData: undefined,
     selectedFilter: undefined,
   };
 
-  const [{selectedColId, selectedColHeader, currentChartData, selectedBarData, selectedFilter}, dispatch] = React.useReducer(
-    phaseDetailReducer,
-    initialState
-  );
+  const [
+    {
+      selectedStateType,
+      candidateWorkItems,
+      selectedColId,
+      selectedColHeader,
+      currentChartData,
+      selectedBarData,
+      selectedFilter,
+    },
+    dispatch,
+  ] = React.useReducer(phaseDetailReducer, initialState);
 
   //#endregion
 
@@ -192,6 +204,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   function clearChartFilter() {
     dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
+    dispatch({type: actionTypes.Update_Current_Chart_Data, payload: candidateWorkItems});
   }
 
   const isChartFilterApplied = () => selectedBarData !== undefined;
@@ -307,8 +320,16 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         }))}
         initialValue={selectedStateType}
         onGroupingChanged={(stateType) => {
-          setSelectedStateType(stateType);
-          clearChartFilter();
+          dispatch({type: actionTypes.Update_Selected_State_Type, payload: stateType});
+          const _candidateWorkItems = getWorkItemDurations(workItemsByStateType[stateType]);
+          dispatch({
+            type: actionTypes.Update_Candidate_Work_Items,
+            payload: _candidateWorkItems,
+          });
+          dispatch({type: actionTypes.Update_Current_Chart_Data, payload: _candidateWorkItems});
+          //clear selected bar data, i.e table data
+          dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
+
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
         layout="col"
