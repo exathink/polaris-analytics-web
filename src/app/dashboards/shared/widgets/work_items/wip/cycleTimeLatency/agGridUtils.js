@@ -258,6 +258,12 @@ export const CustomFloatingFilter = React.forwardRef((props, ref) => {
               inputRef.current.value = `${parentModel.filter} - ${parentModel.filterTo}`
             }
           }
+          if (parentModel.values != null && parentModel.values.length > 0) {
+            const [firstVal] = parentModel.values;
+            if (firstVal === null) {
+              inputRef.current.value = "Unassigned";
+            }
+          }
         }
       },
     };
