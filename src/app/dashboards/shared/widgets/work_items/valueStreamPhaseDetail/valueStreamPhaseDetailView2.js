@@ -26,19 +26,8 @@ import {ValueStreamDistributionChart} from "./valueStreamDistributionChart";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 
-function suppressAllColumnMenus({gridRef, suppressMenu}) {
-  const allColumnDefs = gridRef.current?.columnApi.getAllColumns().map((column) => {
-    return {
-      ...column.getColDef(),
-      suppressMenu: suppressMenu,
-    };
-  });
-  gridRef.current?.api.setColumnDefs(allColumnDefs);
-}
-
 export const actionTypes = {
   Update_Selected_State_Type: "Update_Selected_State_Type",
-  Update_Candidate_Work_Items: "Update_Candidate_Work_Items",
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
   Update_Selected_Col_Header: "Update_Selected_Col_Header",
   Update_Current_Chart_Data: "Update_Current_Chart_Data",
@@ -50,9 +39,6 @@ export function phaseDetailReducer(state, action) {
   switch (action.type) {
     case actionTypes.Update_Selected_State_Type: {
       return {...state, selectedStateType: action.payload};
-    }
-    case actionTypes.Update_Candidate_Work_Items: {
-      return {...state, candidateWorkItems: action.payload};
     }
     case actionTypes.Update_Selected_Col_Id: {
       return {...state, selectedColId: action.payload};
@@ -76,7 +62,6 @@ export function phaseDetailReducer(state, action) {
 }
 
 function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemScope, workItemScopeVisible}) {
-  //#region Initially have the workItems defined properly
   const workItems = React.useMemo(() => {
     const edges = data?.[dimension]?.["workItems"]?.["edges"] ?? [];
     return edges.map((edge) => edge.node);
@@ -99,7 +84,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const initialCandidateWorkItems = getWorkItemDurations(workItemsByStateType[initialSelectedStateType]);
   const initialState = {
     selectedStateType: initialSelectedStateType,
-    candidateWorkItems: initialCandidateWorkItems,
     // selected columnId state on table column click
     selectedColId: "state",
     selectedColHeader: "State",
@@ -113,7 +97,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const [
     {
       selectedStateType,
-      candidateWorkItems,
       selectedColId,
       selectedColHeader,
       currentChartData,
@@ -123,7 +106,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     dispatch,
   ] = React.useReducer(phaseDetailReducer, initialState);
 
-  //#endregion
+  const candidateWorkItems = React.useMemo(
+    () => getWorkItemDurations(workItemsByStateType[selectedStateType]),
+    [selectedStateType, workItemsByStateType]
+  );
 
   const intl = useIntl();
   const gridRef = React.useRef();
@@ -321,12 +307,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         onGroupingChanged={(stateType) => {
           dispatch({type: actionTypes.Update_Selected_State_Type, payload: stateType});
           const _candidateWorkItems = getWorkItemDurations(workItemsByStateType[stateType]);
-          dispatch({
-            type: actionTypes.Update_Candidate_Work_Items,
-            payload: _candidateWorkItems,
-          });
           dispatch({type: actionTypes.Update_Current_Chart_Data, payload: _candidateWorkItems});
-          //clear selected bar data, i.e table data
           dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
 
           applyRangeSelectionOnColumn(gridRef, selectedColId);
