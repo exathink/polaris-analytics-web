@@ -143,6 +143,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   React.useEffect(() => {
     dispatch({type: actionTypes.Update_Current_Chart_Data, payload: candidateWorkItems});
     dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
+    gridRef?.current?.api?.setFilterModel?.(null);
   }, [specsOnly, candidateWorkItems]);
 
   const continousValueseries = React.useMemo(() => {
