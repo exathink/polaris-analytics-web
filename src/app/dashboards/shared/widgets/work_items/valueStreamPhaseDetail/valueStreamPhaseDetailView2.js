@@ -241,7 +241,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onPointClick={(params) => {
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
             dispatch({type: actionTypes.Update_Selected_Filter, payload: params.category});
-            suppressAllColumnMenus({gridRef, suppressMenu: true});
+
+            gridRef.current.api.setFilterModel({[selectedColId]: {values: [params.category]}})
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
@@ -260,7 +261,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
             dispatch({type: actionTypes.Update_Selected_Filter, payload: params.selectedFilter});
 
-            suppressAllColumnMenus({gridRef, suppressMenu: true});
+            gridRef.current.api.setFilterModel({[selectedColId]: {values: [params.selectedFilter]}})
           }}
           headerName={selectedColHeader}
           title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(
@@ -311,7 +312,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         key={resetComponentStateKey}
         gridRef={gridRef}
         stateType={selectedStateType}
-        tableData={selectedBarData ?? candidateWorkItems}
+        tableData={candidateWorkItems}
         context={context}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
         specsOnly={true}
