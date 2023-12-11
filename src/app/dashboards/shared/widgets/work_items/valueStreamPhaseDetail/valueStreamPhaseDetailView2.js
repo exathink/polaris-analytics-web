@@ -240,7 +240,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           handleClearClick={() => {
             resetComponentState();
             clearChartFilter();
-            suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
       </div>
