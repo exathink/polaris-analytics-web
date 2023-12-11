@@ -39,6 +39,7 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
 export const actionTypes = {
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
   Update_Selected_Col_Header: "Update_Selected_Col_Header",
+  Update_Current_Chart_Data: "Update_Current_Chart_Data",
   Update_Selected_Bar_Data: "Update_Selected_Bar_Data",
   Update_Selected_Filter: "Update_Selected_Filter",
 };
@@ -50,6 +51,9 @@ export function phaseDetailReducer(state, action) {
     }
     case actionTypes.Update_Selected_Col_Header: {
       return {...state, selectedColHeader: action.payload};
+    }
+    case actionTypes.Update_Current_Chart_Data: {
+      return {...state, currentChartData: action.payload};
     }
     case actionTypes.Update_Selected_Bar_Data: {
       return {...state, selectedBarData: action.payload};
@@ -95,15 +99,17 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     // selected columnId state on table column click
     selectedColId: "state",
     selectedColHeader: "State",
+    // currentChartData used to render chart
+    currentChartData: candidateWorkItems,
     // maintain selectedBarState, when clicked on Chart column bar
     selectedBarData: undefined,
     selectedFilter: undefined,
   };
 
-  const [{selectedColId, selectedColHeader, selectedBarData, selectedFilter}, dispatch] =
-    React.useReducer(phaseDetailReducer, initialState);
-
-
+  const [{selectedColId, selectedColHeader, currentChartData, selectedBarData, selectedFilter}, dispatch] = React.useReducer(
+    phaseDetailReducer,
+    initialState
+  );
 
   //#endregion
 
@@ -137,7 +143,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   const continousValueseries = React.useMemo(() => {
     const newSelectedColId = getSelectedMetricKey(selectedColId, selectedStateType);
-    const selectedColumnData = candidateWorkItems.map((c) => c[newSelectedColId]);
+    const selectedColumnData = currentChartData.map((c) => c[newSelectedColId]);
 
     return getHistogramSeries({
       id: selectedColId,
@@ -147,14 +153,14 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       name: getSelectedMetricDisplayName(selectedColId, selectedStateType),
       color: getSelectedMetricColor(selectedColId, selectedStateType),
       visible: true,
-      originalData: candidateWorkItems,
+      originalData: currentChartData,
     });
 
     /**
      * fixed issue with histogram chart selection not getting cleared, by using resetComponentStateKey in dep array
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidateWorkItems, intl, selectedColId, selectedStateType, resetComponentStateKey]);
+  }, [currentChartData, intl, selectedColId, selectedStateType, resetComponentStateKey]);
 
   // state to maintain currently applied filters
   // maintain that in stack (appliedFilters => stack of filter objects)
@@ -187,7 +193,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   function clearChartFilter() {
     dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
   }
-  
+
   const isChartFilterApplied = () => selectedBarData !== undefined;
   function getChartSubTitle() {
     const result = isChartFilterApplied() ? selectedBarData : candidateWorkItems;
@@ -220,7 +226,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           stateType={selectedStateType}
           handleClearClick={() => {
             resetComponentState();
-            clearChartFilter()
+            clearChartFilter();
             suppressAllColumnMenus({gridRef, suppressMenu: false});
           }}
         />
@@ -242,7 +248,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
-            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.category]}})
+            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.category]}});
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
@@ -255,7 +261,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
       chartElement = (
         <ValueStreamDistributionChart
           key={resetComponentStateKey}
-          colData={candidateWorkItems}
+          colData={currentChartData}
           colId={selectedColId}
           onPointClick={(params) => {
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
@@ -263,7 +269,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
-            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.selectedFilter]}})
+            gridRef.current.api.setFilterModel({
+              ...existingFilters,
+              [selectedColId]: {values: [params.selectedFilter]},
+            });
           }}
           headerName={selectedColHeader}
           title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(
@@ -299,7 +308,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         initialValue={selectedStateType}
         onGroupingChanged={(stateType) => {
           setSelectedStateType(stateType);
-          clearChartFilter()
+          clearChartFilter();
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
         layout="col"
@@ -325,6 +334,15 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           if (sortState?.sort && supportedCols.includes(colId)) {
             // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
             dispatch({type: actionTypes.Update_Selected_Col_Id, payload: colId});
+
+            let filteredNodes = [];
+            params.api.forEachNodeAfterFilter((node) => {
+              if (!node.group) {
+                filteredNodes.push(node.data);
+              }
+            });
+
+            dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
           }
         }}
         onGridReady={(params) => {
@@ -336,7 +354,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   return (
     <div className="tw-grid tw-h-full tw-grid-rows-[50%_50%] tw-gap-2">
-      <div className="tw-flex tw-absolute tw-top-[-3.3rem] tw-left-[40%] tw-justify-center">{getStateTypeGroupingTabs()}</div>
+      <div className="tw-absolute tw-top-[-3.3rem] tw-left-[40%] tw-flex tw-justify-center">
+        {getStateTypeGroupingTabs()}
+      </div>
       <div>{getChartElement()}</div>
       <div>{getTableElement()}</div>
     </div>
