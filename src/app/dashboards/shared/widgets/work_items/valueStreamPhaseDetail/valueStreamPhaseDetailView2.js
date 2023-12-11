@@ -139,6 +139,11 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName()});
   }, [selectedColId, selectedStateType]);
 
+  // update chartData whenever specsOnly flag changes
+  React.useEffect(() => {
+    dispatch({type: actionTypes.Update_Current_Chart_Data, payload: candidateWorkItems});
+  }, [specsOnly, candidateWorkItems]);
+
   const continousValueseries = React.useMemo(() => {
     const newSelectedColId = getSelectedMetricKey(selectedColId, selectedStateType);
     const selectedColumnData = currentChartData.map((c) => c[newSelectedColId]);
@@ -327,7 +332,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         tableData={candidateWorkItems}
         context={context}
         colWidthBoundaries={COL_WIDTH_BOUNDARIES}
-        specsOnly={true}
+        specsOnly={specsOnly}
         onSortChanged={(params) => {
           const sortState = params.columnApi.getColumnState().find((x) => x.sort);
           const supportedCols = Object.keys(COL_TYPES);
