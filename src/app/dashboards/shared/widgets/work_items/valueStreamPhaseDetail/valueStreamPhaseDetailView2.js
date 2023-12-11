@@ -37,7 +37,6 @@ function suppressAllColumnMenus({gridRef, suppressMenu}) {
 }
 
 export const actionTypes = {
-  Update_Selected_State_Type: "Update_Selected_State_Type",
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
   Update_Selected_Col_Header: "Update_Selected_Col_Header",
   Update_Selected_Bar_Data: "Update_Selected_Bar_Data",
@@ -46,9 +45,6 @@ export const actionTypes = {
 
 export function phaseDetailReducer(state, action) {
   switch (action.type) {
-    case actionTypes.Update_Selected_State_Type: {
-      return {...state, selectedStateType: action.payload};
-    }
     case actionTypes.Update_Selected_Col_Id: {
       return {...state, selectedColId: action.payload};
     }
@@ -88,9 +84,14 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     ["closed", "wip", "complete", "open", "backlog"].find(
       (stateType) => workItemsByStateType[stateType] && workItemsByStateType[stateType].length > 0
     ) || stateTypes[0];
+  const [selectedStateType, setSelectedStateType] = React.useState(initialSelectedStateType);
+
+  // workItems by selectedStateType
+  const candidateWorkItems = React.useMemo(() => {
+    return getWorkItemDurations(workItemsByStateType[selectedStateType]);
+  }, [workItemsByStateType, selectedStateType]);
 
   const initialState = {
-    selectedStateType: initialSelectedStateType,
     // selected columnId state on table column click
     selectedColId: "state",
     selectedColHeader: "State",
@@ -99,13 +100,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     selectedFilter: undefined,
   };
 
-  const [{selectedStateType, selectedColId, selectedColHeader, selectedBarData, selectedFilter}, dispatch] =
+  const [{selectedColId, selectedColHeader, selectedBarData, selectedFilter}, dispatch] =
     React.useReducer(phaseDetailReducer, initialState);
 
-  // workItems by selectedStateType
-  const candidateWorkItems = React.useMemo(() => {
-    return getWorkItemDurations(workItemsByStateType[selectedStateType]);
-  }, [workItemsByStateType, selectedStateType]);
+
 
   //#endregion
 
@@ -262,7 +260,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onPointClick={(params) => {
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
             dispatch({type: actionTypes.Update_Selected_Filter, payload: params.selectedFilter});
-            
+
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
             gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.selectedFilter]}})
@@ -300,7 +298,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         }))}
         initialValue={selectedStateType}
         onGroupingChanged={(stateType) => {
-          dispatch({type: actionTypes.Update_Selected_State_Type, payload: stateType});
+          setSelectedStateType(stateType);
           clearChartFilter()
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
