@@ -242,7 +242,9 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
             dispatch({type: actionTypes.Update_Selected_Filter, payload: params.category});
 
-            gridRef.current.api.setFilterModel({[selectedColId]: {values: [params.category]}})
+            // get existing filters
+            const existingFilters = gridRef.current.api.getFilterModel();
+            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.category]}})
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
@@ -260,8 +262,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           onPointClick={(params) => {
             dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
             dispatch({type: actionTypes.Update_Selected_Filter, payload: params.selectedFilter});
-
-            gridRef.current.api.setFilterModel({[selectedColId]: {values: [params.selectedFilter]}})
+            
+            // get existing filters
+            const existingFilters = gridRef.current.api.getFilterModel();
+            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.selectedFilter]}})
           }}
           headerName={selectedColHeader}
           title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(
