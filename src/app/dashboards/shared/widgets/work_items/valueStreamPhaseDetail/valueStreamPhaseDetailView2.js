@@ -253,7 +253,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
-            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [params.category]}});
+            const _selectedFilter = params.category === "Unassigned" ? null : params.category
+            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [_selectedFilter]}});
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
@@ -274,9 +275,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
+            const _selectedFilter = params.selectedFilter === "Unassigned" ? null : params.selectedFilter
             gridRef.current.api.setFilterModel({
               ...existingFilters,
-              [selectedColId]: {values: [params.selectedFilter]},
+              [selectedColId]: {values: [_selectedFilter]},
             });
           }}
           headerName={selectedColHeader}
