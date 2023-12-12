@@ -198,6 +198,16 @@ export function getFilteredRowCountValue(gridApi) {
   return filteredRowCount;
 }
 
+export function getFilteredNodes(gridApi) {
+  let filteredNodes = [];
+  gridApi.forEachNodeAfterFilter((node) => {
+    if (!node.group) {
+      filteredNodes.push(node.data);
+    }
+  });
+  return filteredNodes;
+}
+
 export function getTotalRowCount(gridApi) {
   let totalRowCount = 0;
   gridApi.forEachNode((node) => {

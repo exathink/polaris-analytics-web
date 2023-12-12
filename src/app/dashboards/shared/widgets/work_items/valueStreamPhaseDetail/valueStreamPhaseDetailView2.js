@@ -25,6 +25,7 @@ import {WorkItemsDetailHistogramChart} from "../../../charts/workItemCharts/work
 import {ValueStreamDistributionChart} from "./valueStreamDistributionChart";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
+import {getFilteredNodes} from "../wip/cycleTimeLatency/agGridUtils";
 
 export const actionTypes = {
   Update_Selected_State_Type: "Update_Selected_State_Type",
@@ -255,13 +256,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
               );
               setAppliedFilters(allFilters);
 
-              let filteredNodes = [];
-              gridRef.current.api.forEachNodeAfterFilter((node) => {
-                if (!node.group) {
-                  filteredNodes.push(node.data);
-                }
-              });
-
+              let filteredNodes = getFilteredNodes(gridRef.current.api);
               dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
             }}
           />
@@ -400,13 +395,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
             dispatch({type: actionTypes.Update_Selected_Col_Id, payload: colId});
 
-            let filteredNodes = [];
-            params.api.forEachNodeAfterFilter((node) => {
-              if (!node.group) {
-                filteredNodes.push(node.data);
-              }
-            });
-
+            let filteredNodes = getFilteredNodes(gridRef.current.api);
             dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
           }
         }}
