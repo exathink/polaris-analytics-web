@@ -226,19 +226,44 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   function getChartElement() {
     let chartElement;
-    let clearFilterElement = (
-      <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20">
-        <ClearFilters
-          selectedFilter={selectedFilter}
-          selectedMetric={selectedColHeader}
-          stateType={selectedStateType}
-          handleClearClick={() => {
-            resetComponentState();
-            clearChartFilter();
-          }}
-        />
-      </div>
-    );
+    const clearFilterElements = appliedFilters.map((filter, index) => {
+      return (
+        <div
+          key={filter.selectedFilter}
+          className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer"
+          style={{top: 50 * index}}
+        >
+          <ClearFilters
+            selectedFilter={filter.selectedFilter}
+            selectedMetric={filter.selectedMetric}
+            stateType={selectedStateType}
+            handleClearClick={() => {
+              gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
+
+              const existingFilters = gridRef.current.api.getFilterModel();
+              const allFilters = Object.entries(existingFilters).map(
+                ([
+                  selectedMetric,
+                  {
+                    values: [selectedFilter],
+                  },
+                ]) => ({selectedMetric, selectedFilter})
+              );
+              setAppliedFilters(allFilters);
+
+              let filteredNodes = [];
+              gridRef.current.api.forEachNodeAfterFilter((node) => {
+                if (!node.group) {
+                  filteredNodes.push(node.data);
+                }
+              });
+
+              dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
+            }}
+          />
+        </div>
+      );
+    });
 
     if (COL_TYPES[selectedColId].type === "continous") {
       chartElement = (
@@ -320,7 +345,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
     return (
       <>
-        {isChartFilterApplied() && clearFilterElement}
+        {isChartFilterApplied() && clearFilterElements}
         {chartElement};
       </>
     );
