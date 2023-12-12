@@ -163,12 +163,12 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
   // use the filterFns infra for filtering data
 
-  const onChartPointClick = () => (params) => {
+  const onChartPointClick = (filterKey) => (params) => {
     dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
 
     // get existing filters
     const existingFilters = gridRef.current.api.getFilterModel();
-    const _selectedFilter = params.category === "Unassigned" ? null : params.category;
+    const _selectedFilter = params[filterKey] === "Unassigned" ? null : params[filterKey];
     existingFilters[selectedColId] = {values: [_selectedFilter]};
 
     const allFilters = Object.entries(existingFilters).map(
@@ -218,7 +218,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         }
       });
     }
-    
+
     return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
@@ -282,26 +282,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             subtitle: getChartSubTitle(),
             legendItemClick: () => {},
           }}
-          onPointClick={(params) => {
-            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
-
-            // get existing filters
-            const existingFilters = gridRef.current.api.getFilterModel();
-            const _selectedFilter = params.category === "Unassigned" ? null : params.category;
-            existingFilters[selectedColId] = {values: [_selectedFilter]};
-
-            const allFilters = Object.entries(existingFilters).map(
-              ([
-                selectedMetric,
-                {
-                  values: [selectedFilter],
-                },
-              ]) => ({selectedMetric, selectedFilter})
-            );
-            setAppliedFilters(allFilters);
-
-            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [_selectedFilter]}});
-          }}
+          onPointClick={onChartPointClick("category")}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
@@ -315,26 +296,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           key={resetComponentStateKey}
           colData={currentChartData}
           colId={selectedColId}
-          onPointClick={(params) => {
-            dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
-
-            // get existing filters
-            const existingFilters = gridRef.current.api.getFilterModel();
-            const _selectedFilter = params.selectedFilter === "Unassigned" ? null : params.selectedFilter;
-            existingFilters[selectedColId] = {values: [_selectedFilter]};
-
-            const allFilters = Object.entries(existingFilters).map(
-              ([
-                selectedMetric,
-                {
-                  values: [selectedFilter],
-                },
-              ]) => ({selectedMetric, selectedFilter})
-            );
-            setAppliedFilters(allFilters);
-
-            gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [_selectedFilter]}});
-          }}
+          onPointClick={onChartPointClick("selectedFilter")}
           headerName={selectedColHeader}
           title={`${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${itemsDesc(
             specsOnly
