@@ -76,6 +76,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     (stateTypeA, stateTypeB) => WorkItemStateTypeSortOrder[stateTypeA] - WorkItemStateTypeSortOrder[stateTypeB]
   );
 
+  const [appliedFilters, setAppliedFilters] = React.useState([]);
+
   /* priority order to select the default open tab when we first render this component */
   const initialSelectedStateType =
     ["closed", "wip", "complete", "open", "backlog"].find(
@@ -254,6 +256,18 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
             const _selectedFilter = params.category === "Unassigned" ? null : params.category
+            existingFilters[selectedColId] = {values: [_selectedFilter]};
+
+            const allFilters = Object.entries(existingFilters).map(
+              ([
+                selectedMetric,
+                {
+                  values: [selectedFilter],
+                },
+              ]) => ({selectedMetric, selectedFilter})
+            );
+            setAppliedFilters(allFilters);
+
             gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [_selectedFilter]}});
           }}
           selectedMetric={getMetricsMetaKey(selectedColId, selectedStateType)}
@@ -276,6 +290,18 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
             // get existing filters
             const existingFilters = gridRef.current.api.getFilterModel();
             const _selectedFilter = params.selectedFilter === "Unassigned" ? null : params.selectedFilter
+            existingFilters[selectedColId] = {values: [_selectedFilter]};
+
+            const allFilters = Object.entries(existingFilters).map(
+              ([
+                selectedMetric,
+                {
+                  values: [selectedFilter],
+                },
+              ]) => ({selectedMetric, selectedFilter})
+            );
+            setAppliedFilters(allFilters);
+
             gridRef.current.api.setFilterModel({
               ...existingFilters,
               [selectedColId]: {values: [_selectedFilter]},
