@@ -211,12 +211,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   function getChartSubTitle() {
     let result = candidateWorkItems;
     if (gridRef.current?.api) {
-      result = [];
-      gridRef.current?.api?.forEachNodeAfterFilter?.((node) => {
-        if (!node.group) {
-          result.push(node.data);
-        }
-      });
+      result = getFilteredNodes(gridRef.current.api);
     }
 
     return `${result.length} ${itemsDesc(specsOnly)}`;
