@@ -197,14 +197,18 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     );
   }
 
-  function clearChartFilter() {
-    dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
-    dispatch({type: actionTypes.Update_Current_Chart_Data, payload: candidateWorkItems});
-  }
-
   const isChartFilterApplied = () => selectedBarData !== undefined;
   function getChartSubTitle() {
-    const result = isChartFilterApplied() ? selectedBarData : candidateWorkItems;
+    let result = candidateWorkItems;
+    if(gridRef.current?.api){
+      result = [];
+      gridRef.current?.api?.forEachNodeAfterFilter?.((node) => {
+        if (!node.group) {
+          result.push(node.data);
+        }
+      });
+    }
+    
     return `${result.length} ${itemsDesc(specsOnly)}`;
   }
 
