@@ -4,6 +4,7 @@ import React from "react";
 import {Checkbox, Menu, Button} from "antd";
 import {getContainerNode} from "../../../../../../helpers/utility";
 import {LabelValue} from "../../../../../../helpers/components";
+import {flushSync} from "react-dom";
 
 export function CustomHeader(props) {
   const [ascSort, setAscSort] = React.useState("inactive");
@@ -118,7 +119,7 @@ export const MultiCheckboxFilter = React.forwardRef((props, ref) => {
 
       setModel(model) {
         if (!model) {
-          setFilterState([]);
+          flushSync(() => setFilterState([]));
         } else {
           setFilterState(model.values);
         }
