@@ -365,7 +365,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           const supportedCols = Object.keys(COL_TYPES);
           const colId = sortState?.colId;
           if (sortState?.sort && supportedCols.includes(colId)) {
-            // only have colId state from sort click, not maintain data here, you can calculate data on render using colId
             dispatch({type: actionTypes.Update_Selected_Col_Id, payload: colId});
 
             let filteredNodes = getFilteredNodes(gridRef.current.api);
