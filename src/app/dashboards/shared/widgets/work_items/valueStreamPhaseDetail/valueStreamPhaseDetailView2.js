@@ -11,7 +11,6 @@ import {COL_TYPES} from "../../../../../components/tables/tableCols";
 import {WorkItemStateTypeColor, WorkItemStateTypeSortOrder, itemsDesc} from "../../../config";
 import {getWorkItemDurations} from "../clientSideFlowMetrics";
 import {GroupingSelector} from "../../../components/groupingSelector/groupingSelector";
-import {useResetComponentState} from "../../../../projects/shared/helper/hooks";
 import {
   getMetricsMetaKey,
   getSelectedMetricColor,
@@ -26,6 +25,15 @@ import {ValueStreamDistributionChart} from "./valueStreamDistributionChart";
 import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getFilteredNodes} from "../wip/cycleTimeLatency/agGridUtils";
+
+const getSelectedColumnHeaderName = (gridApi, selectedColId) => {
+  const columnDefs = gridApi.getColumnDefs();
+  const selectedColDef = columnDefs.find((x) => x.colId === selectedColId);
+  if (selectedColDef) {
+    return selectedColDef.headerName;
+  }
+  return "";
+};
 
 function getHeaderForColumn(gridApi, colId) {
   const columnDefs = gridApi.getColumnDefs();
@@ -130,27 +138,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const gridRef = React.useRef();
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const specsOnly = workItemScope === "specs";
-
-  React.useEffect(() => {
-    const getSelectedColumnHeaderName = () => {
-      if (gridRef.current == null || gridRef.current.api == null) {
-        return "State";
-      }
-
-      const columnDefs = gridRef.current.api.getColumnDefs();
-      const selectedColDef = columnDefs.find((x) => x.colId === selectedColId);
-      if (selectedColDef) {
-        return selectedColDef.headerName;
-      }
-      return "";
-    };
-
-    /**
-     * when we are switching between stateType tabs, table with updated colHeaders is rendered
-     * those headers are not reflected using gridRef, hence we need to maintain this state.
-     */
-    dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName()});
-  }, [selectedColId, selectedStateType]);
 
   // update chartData whenever specsOnly flag changes
   React.useEffect(() => {
@@ -335,6 +322,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           dispatch({type: actionTypes.Update_Current_Chart_Data, payload: _candidateWorkItems});
           dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: undefined});
 
+          dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName(gridRef.current.api, selectedColId)});
           applyRangeSelectionOnColumn(gridRef, selectedColId);
         }}
         layout="col"
@@ -358,7 +346,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           const colId = sortState?.colId;
           if (sortState?.sort && supportedCols.includes(colId)) {
             dispatch({type: actionTypes.Update_Selected_Col_Id, payload: colId});
-
+            dispatch({type: actionTypes.Update_Selected_Col_Header, payload: getSelectedColumnHeaderName(gridRef.current.api, colId)});
             let filteredNodes = getFilteredNodes(gridRef.current.api);
             dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
           }
