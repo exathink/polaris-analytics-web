@@ -166,11 +166,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChartData, intl, selectedColId, selectedStateType]);
 
-  // state to maintain currently applied filters
-  // maintain that in stack (appliedFilters => stack of filter objects)
-
-  // use the filterFns infra for filtering data
-
   const onChartPointClick = (filterKey) => (params) => {
     dispatch({type: actionTypes.Update_Selected_Bar_Data, payload: params.bucket});
 
