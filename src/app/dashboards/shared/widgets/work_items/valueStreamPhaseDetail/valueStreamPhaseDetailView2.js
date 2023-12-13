@@ -141,22 +141,24 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     const newSelectedColId = getSelectedMetricKey(selectedColId, selectedStateType);
     const selectedColumnData = currentChartData.map((c) => c[newSelectedColId]);
 
-    return getHistogramSeries({
-      id: selectedColId,
-      intl,
-      colWidthBoundaries: COL_WIDTH_BOUNDARIES,
-      points: selectedColumnData,
-      name: getSelectedMetricDisplayName(selectedColId, selectedStateType),
-      color: getSelectedMetricColor(selectedColId, selectedStateType),
-      visible: true,
-      originalData: currentChartData,
-    });
+    return [
+      getHistogramSeries({
+        id: selectedColId,
+        intl,
+        colWidthBoundaries: COL_WIDTH_BOUNDARIES,
+        points: selectedColumnData,
+        name: getSelectedMetricDisplayName(selectedColId, selectedStateType),
+        color: getSelectedMetricColor(selectedColId, selectedStateType),
+        visible: true,
+        originalData: currentChartData,
+      }),
+    ];
 
     /**
      * fixed issue with histogram chart selection not getting cleared, by using resetComponentStateKey in dep array
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChartData, intl, selectedColId, selectedStateType, resetComponentStateKey]);
+  }, [currentChartData, intl, selectedColId, selectedStateType]);
 
   // state to maintain currently applied filters
   // maintain that in stack (appliedFilters => stack of filter objects)
@@ -282,7 +284,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           specsOnly={specsOnly}
           colWidthBoundaries={COL_WIDTH_BOUNDARIES}
           stateType={selectedStateType}
-          series={[continousValueseries]}
+          series={continousValueseries}
         />
       );
     } else if (COL_TYPES[selectedColId].type === "category") {
