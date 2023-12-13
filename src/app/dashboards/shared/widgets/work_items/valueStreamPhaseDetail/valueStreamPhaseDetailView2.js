@@ -131,8 +131,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   const WorkItemStateTypeDisplayName = useCustomPhaseMapping();
   const specsOnly = workItemScope === "specs";
 
-  const [resetComponentStateKey, resetComponentState] = useResetComponentState();
-
   React.useEffect(() => {
     const getSelectedColumnHeaderName = () => {
       if (gridRef.current == null || gridRef.current.api == null) {
@@ -283,7 +281,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     if (COL_TYPES[selectedColId].type === "continous") {
       chartElement = (
         <WorkItemsDetailHistogramChart
-          key={resetComponentStateKey}
           chartConfig={{
             title: `${WorkItemStateTypeDisplayName[selectedStateType]} Phase, ${selectedColHeader} Distribution`,
             subtitle: getChartSubTitle(),
@@ -300,7 +297,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     } else if (COL_TYPES[selectedColId].type === "category") {
       chartElement = (
         <ValueStreamDistributionChart
-          key={resetComponentStateKey}
           colData={currentChartData}
           colId={selectedColId}
           onPointClick={onChartPointClick("selectedFilter")}
@@ -353,7 +349,6 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   function getTableElement() {
     return (
       <WorkItemsDetailTable
-        key={resetComponentStateKey}
         gridRef={gridRef}
         stateType={selectedStateType}
         tableData={candidateWorkItems}
