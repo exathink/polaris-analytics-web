@@ -36,6 +36,21 @@ function getHeaderForColumn(gridApi, colId) {
   return colId;
 }
 
+function getAllFilterModels(gridApi, existingFilters) {
+  const allFilters = Object.entries(existingFilters).map(
+    ([
+      selectedMetric,
+      {
+        values: [selectedFilter],
+      },
+    ]) => {
+      const selectedHeader = getHeaderForColumn(gridApi, selectedMetric);
+      return {selectedMetric, selectedFilter: selectedFilter ?? "Unassigned", selectedHeader};
+    }
+  );
+  return allFilters;
+}
+
 export const actionTypes = {
   Update_Selected_State_Type: "Update_Selected_State_Type",
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
@@ -181,21 +196,11 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     const existingFilters = gridRef.current.api.getFilterModel();
     const _selectedFilter = params[filterKey] === "Unassigned" ? null : params[filterKey];
     existingFilters[selectedColId] = {values: [_selectedFilter]};
-
-    const allFilters = Object.entries(existingFilters).map(
-      ([
-        selectedMetric,
-        {
-          values: [selectedFilter],
-        },
-      ]) => {
-        const selectedHeader = getHeaderForColumn(gridRef.current.api, selectedMetric)
-        return {selectedMetric, selectedFilter, selectedHeader}
-      }
-    );
+    
+    const allFilters = getAllFilterModels(gridRef.current.api, existingFilters);
     setAppliedFilters(allFilters);
 
-    gridRef.current.api.setFilterModel({...existingFilters, [selectedColId]: {values: [_selectedFilter]}});
+    gridRef.current.api.setFilterModel(existingFilters);
   };
 
   const uniqWorkItemsSources = React.useMemo(
@@ -264,17 +269,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
               gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
 
               const existingFilters = gridRef.current.api.getFilterModel();
-              const allFilters = Object.entries(existingFilters).map(
-                ([
-                  selectedMetric,
-                  {
-                    values: [selectedFilter],
-                  },
-                ]) => {
-                  const selectedHeader = getHeaderForColumn(gridRef.current.api, selectedMetric)
-                  return {selectedMetric, selectedFilter, selectedHeader}
-                }
-              );
+              const allFilters = getAllFilterModels(gridRef.current.api, existingFilters);
               setAppliedFilters(allFilters);
 
               let filteredNodes = getFilteredNodes(gridRef.current.api);
