@@ -27,6 +27,15 @@ import {getHistogramSeries} from "../../../../projects/shared/helper/utils";
 import {withNavigationContext} from "../../../../../framework/navigation/components/withNavigationContext";
 import {getFilteredNodes} from "../wip/cycleTimeLatency/agGridUtils";
 
+function getHeaderForColumn(gridApi, colId) {
+  const columnDefs = gridApi.getColumnDefs();
+  const selectedColDef = columnDefs.find((x) => x.colId === colId);
+  if (selectedColDef) {
+    return selectedColDef.headerName;
+  }
+  return colId;
+}
+
 export const actionTypes = {
   Update_Selected_State_Type: "Update_Selected_State_Type",
   Update_Selected_Col_Id: "Update_Selected_Col_Id",
@@ -179,7 +188,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         {
           values: [selectedFilter],
         },
-      ]) => ({selectedMetric, selectedFilter})
+      ]) => {
+        const selectedHeader = getHeaderForColumn(gridRef.current.api, selectedMetric)
+        return {selectedMetric, selectedFilter, selectedHeader}
+      }
     );
     setAppliedFilters(allFilters);
 
@@ -246,7 +258,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         >
           <ClearFilters
             selectedFilter={filter.selectedFilter}
-            selectedMetric={filter.selectedMetric}
+            selectedMetric={filter.selectedHeader}
             stateType={selectedStateType}
             handleClearClick={() => {
               gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
@@ -258,7 +270,10 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
                   {
                     values: [selectedFilter],
                   },
-                ]) => ({selectedMetric, selectedFilter})
+                ]) => {
+                  const selectedHeader = getHeaderForColumn(gridRef.current.api, selectedMetric)
+                  return {selectedMetric, selectedFilter, selectedHeader}
+                }
               );
               setAppliedFilters(allFilters);
 
