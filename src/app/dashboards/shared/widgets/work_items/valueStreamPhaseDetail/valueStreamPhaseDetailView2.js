@@ -257,13 +257,13 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
         res = null;
       } else {
         res = (
-          <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">{elems}</div>
+          <div className="tw-absolute tw-right-12 tw-top-16 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">{elems}</div>
         );
       }
     } else {
       res = (
         <Popover content={<div className="tw-flex tw-flex-col tw-gap-4 tw-p-2">{elems}</div>} placement="bottom">
-          <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">
+          <div className="tw-absolute tw-right-12 tw-top-16 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">
             <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
               <div>{elems[0]}</div>
               <div className="tw-text-3xl">...</div>
@@ -375,10 +375,13 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
   }
 
   return (
-    <div className="tw-grid tw-h-full tw-grid-rows-[50%_50%] tw-gap-2">
-      <div className="tw-absolute tw-top-[-3.3rem] tw-left-[40%] tw-flex tw-justify-center">
-        {getStateTypeGroupingTabs()}
+    <div className="tw-grid tw-h-full tw-grid-rows-[5%_45%_50%] tw-gap-2">
+      <div className="tw-flex tw-items-center tw-justify-between">
+        <div id="dummy" className="tw-w-8 tw-h-4"></div>
+        <div className="tw-flex tw-justify-center tw-ml-12">{getStateTypeGroupingTabs()}</div>
+        <div className="tw-mr-20">{getWorkItemScopeElement()}</div>
       </div>
+
       <div>{getChartElement()}</div>
       <div>{getTableElement()}</div>
     </div>

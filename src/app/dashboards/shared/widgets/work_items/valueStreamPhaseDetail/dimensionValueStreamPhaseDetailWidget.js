@@ -66,7 +66,7 @@ export const DimensionValueStreamPhaseDetailWidget = ({
       targetMetrics={targetMetrics}
       workItemScope={workItemScope}
       setWorkItemScope={setWorkItemScope}
-      workItemScopeVisible={!parentWorkItemScope}
+      workItemScopeVisible={true}
       defaultToHistogram={defaultToHistogram}
     />
   );
