@@ -239,7 +239,8 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
           stateType={selectedStateType}
           handleClearClick={() => {
             gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
-
+            gridRef.current?.api.clearRangeSelection?.();
+            
             const existingFilters = gridRef.current.api.getFilterModel();
             const allFilters = getAllFilterModels(gridRef.current.api, existingFilters);
             setAppliedFilters(allFilters);
