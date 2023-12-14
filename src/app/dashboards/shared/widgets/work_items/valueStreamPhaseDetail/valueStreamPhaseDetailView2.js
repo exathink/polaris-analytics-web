@@ -2,7 +2,7 @@ import React from "react";
 import {buildIndex, getUniqItems} from "../../../../../helpers/utility";
 import {VizItem, VizRow} from "../../../containers/layout";
 import {Flex} from "reflexbox";
-import {Alert} from "antd";
+import {Alert, Popover} from "antd";
 import {useIntl} from "react-intl";
 import {WorkItemsDetailTable} from "../workItemsDetailTable";
 import {applyRangeSelectionOnColumn, defaultOnGridReady} from "../../../../../components/tables/tableUtils";
@@ -229,34 +229,55 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
     }
   }
 
-  function getChartElement() {
-    let chartElement;
-    const clearFilterElements = appliedFilters.map((filter, index) => {
+  function getClearFilters() {
+    let elems = appliedFilters.map((filter) => {
       return (
-        <div
-          key={filter.selectedFilter}
-          className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer"
-          style={{top: 50 * index}}
-        >
-          <ClearFilters
-            selectedFilter={filter.selectedFilter}
-            selectedMetric={filter.selectedHeader}
-            stateType={selectedStateType}
-            handleClearClick={() => {
-              gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
+        <ClearFilters
+          key={filter.selectedMetric}
+          selectedFilter={filter.selectedFilter}
+          selectedMetric={filter.selectedHeader}
+          stateType={selectedStateType}
+          handleClearClick={() => {
+            gridRef.current?.api?.destroyFilter?.(filter.selectedMetric);
 
-              const existingFilters = gridRef.current.api.getFilterModel();
-              const allFilters = getAllFilterModels(gridRef.current.api, existingFilters);
-              setAppliedFilters(allFilters);
+            const existingFilters = gridRef.current.api.getFilterModel();
+            const allFilters = getAllFilterModels(gridRef.current.api, existingFilters);
+            setAppliedFilters(allFilters);
 
-              let filteredNodes = getFilteredNodes(gridRef.current.api);
-              dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
-            }}
-          />
-        </div>
+            let filteredNodes = getFilteredNodes(gridRef.current.api);
+            dispatch({type: actionTypes.Update_Current_Chart_Data, payload: filteredNodes});
+          }}
+        />
       );
     });
 
+    let res;
+    if (appliedFilters.length <= 1) {
+      if (appliedFilters.length === 0) {
+        res = null;
+      } else {
+        res = (
+          <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">{elems}</div>
+        );
+      }
+    } else {
+      res = (
+        <Popover content={<div className="tw-flex tw-flex-col tw-gap-4 tw-p-2">{elems}</div>} placement="bottom">
+          <div className="tw-absolute tw-right-12 tw-top-0 tw-z-20 tw-cursor-pointer tw-bg-white tw-p-2">
+            <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
+              <div>{elems[0]}</div>
+              <div className="tw-text-3xl">...</div>
+            </div>
+          </div>
+        </Popover>
+      );
+    }
+
+    return res;
+  }
+
+  function getChartElement() {
+    let chartElement;
     if (COL_TYPES[selectedColId].type === "continous") {
       chartElement = (
         <WorkItemsDetailHistogramChart
@@ -292,7 +313,7 @@ function PhaseDetailView({dimension, data, context, workItemScope, setWorkItemSc
 
     return (
       <>
-        {isChartFilterApplied() && clearFilterElements}
+        {isChartFilterApplied() && getClearFilters()}
         {chartElement};
       </>
     );
