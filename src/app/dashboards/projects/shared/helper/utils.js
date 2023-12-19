@@ -59,10 +59,18 @@ export function getHistogramCategories(colWidthBoundaries, uom) {
 
 export function getHistogramSeries({intl, colWidthBoundaries, points, color, visible, name, id, originalData=[]}) {
   const allPairsData = allPairs(colWidthBoundaries);
-  const data = new Array(allPairsData.length).fill({y: 0, total: 0, bucket: []});
+  const data = new Array(allPairsData.length + 1).fill({y: 0, total: 0, bucket: []});
   points.forEach((y, index) => {
-    for (let i = 0; i < allPairsData.length; i++) {
-      const [x1, x2] = allPairsData[i];
+    if (y == null) {
+      data[0] = {
+        y: data[0].y + 1,
+        total: data[0].total + y,
+        bucket: [...data[0].bucket, originalData[index]],
+      };
+      return;
+    }
+    for (let i = 1; i < allPairsData.length + 1; i++) {
+      const [x1, x2] = allPairsData[i - 1];
       if (y >= x1 && y < x2) {
         data[i] = {y: data[i].y + 1, total: data[i].total + y, bucket: [...data[i].bucket, originalData[index]]};
 
