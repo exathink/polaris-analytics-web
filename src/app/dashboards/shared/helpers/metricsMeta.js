@@ -15,6 +15,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Lead Time",
     shortDisplay: "LT",
     value: (cycle) => cycle.leadTime,
+    valueMetric: "leadTime",
     targetMetric: 'leadTime',
     uom: 'days',
   },
@@ -28,6 +29,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Cycle Time",
     shortDisplay: "CT",
     value: (cycle) => cycle.cycleTime,
+    valueMetric: "cycleTime",
     targetMetric: 'cycleTime',
     uom: 'days',
   },
@@ -35,6 +37,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Age",
     shortDisplay: "AG",
     value: (cycle) => cycle.cycleTime,
+    valueMetric: "cycleTime",
     targetMetric: 'cycleTime',
     uom: 'days',
   },
@@ -43,6 +46,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Coding",
     shortDisplay: "CD",
     value: (cycle) => cycle.duration,
+    valueMetric: "duration",
     targetMetric: 'cycleTime',
     uom: 'days',
   },
@@ -56,6 +60,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Last Moved",
     shortDisplay: "LM",
     value: (cycle) => cycle.latency,
+    valueMetric: "latency",
     targetMetric: 'cycleTime',
     uom: 'days',
   },
@@ -63,6 +68,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Shipping",
     shortDisplay: "SH",
     value: (cycle) => cycle.latency,
+    valueMetric: "latency",
     targetMetric: 'cycleTime',
     uom: 'days',
   },
@@ -71,18 +77,21 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Effort",
     shortDisplay: "EF",
     value: (cycle) => cycle.effort,
+    valueMetric: "effort",
     uom: 'FTE Days',
   },
   authors: {
     display: "Authors",
     shortDisplay: "AU",
     value: (cycle) => cycle.authorCount,
+    valueMetric: "authorCount",
     uom: 'authors',
   },
   backlogTime: {
     display: "Define Time",
     shortDisplay: "DT",
     value: (cycle) => (cycle.cycleTime > 0 ? cycle.leadTime - cycle.cycleTime : 0),
+    valueMetric: "cycleTime",
     targetMetric: 'leadTime',
     uom: 'days',
   },
@@ -90,6 +99,7 @@ export const projectDeliveryCycleFlowMetricsMeta = {
     display: "Time to Review",
     shortDisplay: "RT",
     value: (cycle) => cycle.pullRequestAvgAge,
+    valueMetric: "pullRequestAvgAge",
     targetMetric: 'pullRequestAvgAge',
     uom: 'days',
   },
@@ -151,7 +161,7 @@ export function getSelectedMetricDisplayName(selectedMetric, selectedStateType) 
 
 export function getSelectedMetricKey(selectedMetric, selectedStateType) {
   return (
-    projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)]?.targetMetric ?? selectedMetric
+    projectDeliveryCycleFlowMetricsMeta[getMetricsMetaKey(selectedMetric, selectedStateType)]?.valueMetric ?? selectedMetric
   );
 }
 

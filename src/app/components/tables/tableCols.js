@@ -279,7 +279,7 @@ export function getStateCol({filters}) {
     field: "state",
     headerName: "State",
     autoHeight: true,
-    width: 250,
+    width: 375,
     cellRenderer: React.memo(StateTypeCol),
     comparator: (valA, valB, a, b) => {
       if (!a || !b) {

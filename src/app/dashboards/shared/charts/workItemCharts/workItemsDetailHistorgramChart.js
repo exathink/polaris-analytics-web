@@ -74,7 +74,7 @@ export const WorkItemsDetailHistogramChart = Chart({
         title: {
           text: chartConfig?.xAxisTitle || getSelectedMetricDisplayName(selectedMetric, stateType),
         },
-        categories: getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom),
+        categories: [ "Unassigned", ...getHistogramCategories(colWidthBoundaries, projectDeliveryCycleFlowMetricsMeta[selectedMetric].uom)],
         crosshair: true,
       },
 
