@@ -5,7 +5,7 @@ import Activity from "./activity/topic";
 import Contributors from "./contributors/topic";
 import Project from "./projects/topic";
 import Repositories from "./repositories/topic";
-
+import Network from "./network/topic";
 import { Contexts } from "../../meta/contexts";
 import { instanceMatchPattern } from "../../framework/navigation/context/helpers";
 import { SYSTEM_TEAMS } from "../../../config/featureFlags";
@@ -47,6 +47,10 @@ const context = {
           {
             match: "repositories",
             topic: Repositories
+          },
+          {
+            match: "network",
+            topic: Network
           },
           {
             match: "",
