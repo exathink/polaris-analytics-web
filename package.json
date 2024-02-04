@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "clone": "^2.1.1",
+    "cytoscape": "3.2.19",
     "d64": "^1.0.0",
     "formik": "^1.5.4",
     "graphql": "15.5.0",
@@ -30,6 +31,7 @@
     "react": "^17.0.2",
     "react-automata": "^4.0.4",
     "react-custom-scrollbars": "^4.1.2",
+    "react-cytoscapejs": "^2.0.0",
     "react-dom": "^17.0.2",
     "react-flip-move": "^3.0.2",
     "react-ga": "^3.1.2",
@@ -90,10 +92,10 @@
     "resetMocks": false,
     "transform": {
       "^.+\\.[j]sx?$": "babel-jest"
-      },
+    },
     "transformIgnorePatterns": [
       "node_modules/(?!@shotgunjed)/"
-      ]
+    ]
   },
   "eslintConfig": {
     "extends": [
