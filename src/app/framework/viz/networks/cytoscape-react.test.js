@@ -44,4 +44,6 @@ test("Cytoscape component should expose an instance of the cytoscape graph", () 
   renderCytoscape({ ref: cyRef });
   const graph = cyRef.current;
   expect(graph).not.toBeNull();
+  expect(graph.nodes().length).toBe(0)
+  expect(graph.edges().length).toBe(0)
 });
