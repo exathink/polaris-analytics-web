@@ -25,8 +25,8 @@ const style = [
 ];
 
 const elements = [
-  { data: { id: "node1" }, position: { x: 0, y: 0 } },
-  { data: { id: "node2" }, position: { x: 0, y: 0 } },
+  { data: { id: "node1" }},
+  { data: { id: "node2" }},
   { data: { id: "edge1", source: "node1", target: "node2" } }
 ];
 
@@ -58,5 +58,14 @@ describe('Cytoscape Component', () => {
     expect(cyContainerStyle.width).toEqual(containerStyle.width);
     expect(cyContainerStyle.height).toEqual(containerStyle.height);
   });
+
+  it('sets the elements of the cytoscape component', () => {
+    const cyRef = React.createRef();
+    renderCytoscape({ ref: cyRef, elements });
+    const graph = cyRef.current;
+    expect(graph).not.toBeNull();
+    expect(graph.nodes().length).toBe(2);
+    expect(graph.edges().length).toBe(1);
+  })
 });
 

@@ -12,7 +12,9 @@ const Cytoscape = React.forwardRef(
     const containerRef = useRef();
 
     useEffect(() => {
-      let cy = cytoscape();
+      let cy = cytoscape({
+        elements
+      });
 
       if (ref != null) {
         ref.current = cy;
