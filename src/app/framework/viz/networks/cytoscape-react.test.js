@@ -7,7 +7,7 @@
 import Cytoscape from "./cytoscape-react";
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 // ...other imports
 
 const layout = { name: "preset" };
@@ -38,7 +38,7 @@ function getNodePositions(graph) {
   return graph.nodes().map(node => node.position());
 }
 
-describe("Cytoscape Component", () => {
+describe("Cytoscape Component API", () => {
 
   it("renders with empty props", () => {
     const { container } = renderCytoscape();
@@ -95,3 +95,34 @@ describe("Cytoscape Component", () => {
   });
 });
 
+describe('Cytoscape component lifecycle', () => {
+  let cyRef;
+
+  beforeEach(() => {
+    cyRef = { current: {} };
+  });
+
+  afterEach(cleanup);
+
+  it('Recreates the cytoscape instance only when elements or layout change', () => {
+    const elements1 = [{ /* First set of elements */ }];
+    const elements2 = [{ /* Second set of elements */ }];
+    const layout1 = { /* First layout */ };
+    const layout2 = { /* Second layout */ };
+
+    const { rerender } = render(<Cytoscape ref={cyRef} elements={elements1} layout={layout1} />);
+    const cyInstance1 = cyRef.current;
+
+    // Re-render with the same elements and layout. Instance should not change
+    rerender(<Cytoscape ref={cyRef} elements={elements1} layout={layout1} />);
+    const cyInstance2 = cyRef.current;
+
+    expect(cyInstance2).toBe(cyInstance1);
+
+    // Re-render with new elements and layout. Instance should change
+    rerender(<Cytoscape ref={cyRef} elements={elements2} layout={layout2} />);
+    const cyInstance3 = cyRef.current;
+
+    expect(cyInstance3).not.toBe(cyInstance2);
+  });
+});

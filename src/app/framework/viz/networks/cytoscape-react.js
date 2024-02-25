@@ -21,6 +21,8 @@ import cytoscape from "cytoscape";
 function Cytoscape({ id, elements, layout, containerStyle }, ref) {
   const containerRef = useRef();
 
+
+  /* When the config changes, re-initialize the cytoscape instance and set the ref */
   useEffect(() => {
     let cy = cytoscape({
       elements,
@@ -32,7 +34,7 @@ function Cytoscape({ id, elements, layout, containerStyle }, ref) {
     }
 
     return () => cy.destroy();
-  }, []);
+  }, [elements,layout]);
 
   return <div data-testid={id} ref={containerRef} style={containerStyle} />;
 };
