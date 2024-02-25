@@ -8,7 +8,7 @@ import React, { useEffect, useRef } from "react";
 import cytoscape from 'cytoscape';
 
 const Cytoscape = React.forwardRef(
-  ({ elements, layout, style }, ref) => {
+  ({ elements, layout, containerStyle }, ref) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const Cytoscape = React.forwardRef(
       return () => cy.destroy();
     }, []);
 
-    return <div ref={containerRef} />;
+    return <div ref={containerRef} style={containerStyle}/>;
   });
 
 export default Cytoscape;

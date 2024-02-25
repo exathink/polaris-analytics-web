@@ -12,8 +12,8 @@ import { render } from "@testing-library/react";
 
 const layout = { name: "preset" };
 
+const containerStyle = { width: '500px', height: '500px' };
 const style = [
-  { style: { width: "500px", height: "500px" } },
   {
     selector: "node",
     style: { content: "data(id)" }
@@ -34,16 +34,29 @@ function renderCytoscape(props = {}) {
   return render(<Cytoscape {...props} />);
 }
 
-test("renders Cytoscape with required props", () => {
-  const { container } = renderCytoscape();
-  expect(container).toBeInTheDocument();
+describe('Cytoscape Component', () => {
+
+  it("renders with empty props", () => {
+    const { container } = renderCytoscape();
+    expect(container).toBeInTheDocument();
+  });
+
+  it("should expose an instance of the cytoscape graph as a ref", () => {
+    const cyRef = React.createRef();
+    renderCytoscape({ ref: cyRef });
+    const graph = cyRef.current;
+    expect(graph).not.toBeNull();
+    expect(graph.nodes().length).toBe(0);
+    expect(graph.edges().length).toBe(0);
+  });
+
+  it('sets the style on the container of the cytoscape component', () => {
+    const { container } = renderCytoscape({
+      containerStyle
+    });
+    const cyContainerStyle = container.firstChild.style;
+    expect(cyContainerStyle.width).toEqual(containerStyle.width);
+    expect(cyContainerStyle.height).toEqual(containerStyle.height);
+  });
 });
 
-test("Cytoscape component should expose an instance of the cytoscape graph", () => {
-  const cyRef = React.createRef();
-  renderCytoscape({ ref: cyRef });
-  const graph = cyRef.current;
-  expect(graph).not.toBeNull();
-  expect(graph.nodes().length).toBe(0)
-  expect(graph.edges().length).toBe(0)
-});
