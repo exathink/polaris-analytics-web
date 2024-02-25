@@ -105,24 +105,27 @@ describe('Cytoscape component lifecycle', () => {
   afterEach(cleanup);
 
   it('Recreates the cytoscape instance only when elements or layout change', () => {
-    const elements1 = [{ /* First set of elements */ }];
-    const elements2 = [{ /* Second set of elements */ }];
-    const layout1 = { /* First layout */ };
-    const layout2 = { /* Second layout */ };
 
-    const { rerender } = render(<Cytoscape ref={cyRef} elements={elements1} layout={layout1} />);
+    const { rerender } = render(<Cytoscape ref={cyRef} elements={elements} layout={layout} />);
     const cyInstance1 = cyRef.current;
 
     // Re-render with the same elements and layout. Instance should not change
-    rerender(<Cytoscape ref={cyRef} elements={elements1} layout={layout1} />);
+    rerender(<Cytoscape ref={cyRef} elements={elements} layout={layout} />);
     const cyInstance2 = cyRef.current;
 
     expect(cyInstance2).toBe(cyInstance1);
 
-    // Re-render with new elements and layout. Instance should change
-    rerender(<Cytoscape ref={cyRef} elements={elements2} layout={layout2} />);
+    // Re-render with new elements. Instance should change
+    rerender(<Cytoscape ref={cyRef} elements={[{}]} layout={layout} />);
     const cyInstance3 = cyRef.current;
 
     expect(cyInstance3).not.toBe(cyInstance2);
+    // Re-render with new layout. Instance should change
+    rerender(<Cytoscape ref={cyRef} elements={elements} layout={{}} />);
+    const cyInstance4 = cyRef.current;
+
+    expect(cyInstance4).not.toBe(cyInstance3);
+
+
   });
 });
