@@ -12,7 +12,7 @@ import { render } from "@testing-library/react";
 
 const layout = { name: "preset" };
 
-const containerStyle = { width: '500px', height: '500px' };
+const containerStyle = { width: "500px", height: "500px" };
 const style = [
   {
     selector: "node",
@@ -25,8 +25,8 @@ const style = [
 ];
 
 const elements = [
-  { data: { id: "node1" }},
-  { data: { id: "node2" }},
+  { data: { id: "node1" } },
+  { data: { id: "node2" } },
   { data: { id: "edge1", source: "node1", target: "node2" } }
 ];
 
@@ -34,7 +34,11 @@ function renderCytoscape(props = {}) {
   return render(<Cytoscape {...props} />);
 }
 
-describe('Cytoscape Component', () => {
+function getNodePositions(graph) {
+  return graph.nodes().map(node => node.position());
+}
+
+describe("Cytoscape Component", () => {
 
   it("renders with empty props", () => {
     const { container } = renderCytoscape();
@@ -50,7 +54,7 @@ describe('Cytoscape Component', () => {
     expect(graph.edges().length).toBe(0);
   });
 
-  it('sets the style on the container of the cytoscape component', () => {
+  it("sets the style on the container of the cytoscape component", () => {
     const { container } = renderCytoscape({
       containerStyle
     });
@@ -59,13 +63,35 @@ describe('Cytoscape Component', () => {
     expect(cyContainerStyle.height).toEqual(containerStyle.height);
   });
 
-  it('sets the elements of the cytoscape component', () => {
+  it("sets the elements of the cytoscape component", () => {
     const cyRef = React.createRef();
     renderCytoscape({ ref: cyRef, elements });
     const graph = cyRef.current;
     expect(graph).not.toBeNull();
     expect(graph.nodes().length).toBe(2);
     expect(graph.edges().length).toBe(1);
-  })
+  });
+  it("sets the default layout of the cytoscape component", () => {
+    const cyRef = React.createRef();
+    renderCytoscape({ ref: cyRef, elements, layout });
+    const graph = cyRef.current;
+    expect(graph).not.toBeNull();
+
+    expect(getNodePositions(graph)).toEqual([
+      { x: 0, y: 0 },
+      { x: 0, y: 0 }
+    ]);
+  });
+  it("sets a custom layout of the cytoscape component", () => {
+    const cyRef = React.createRef();
+    renderCytoscape({ ref: cyRef, elements, layout: {name: 'grid'} });
+    const graph = cyRef.current;
+    expect(graph).not.toBeNull();
+
+    expect(getNodePositions(graph)).not.toEqual([
+      { x: 0, y: 0 },
+      { x: 0, y: 0 }
+    ]);
+  });
 });
 

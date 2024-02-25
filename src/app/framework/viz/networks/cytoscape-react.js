@@ -5,25 +5,36 @@
  */
 
 import React, { useEffect, useRef } from "react";
-import cytoscape from 'cytoscape';
+import cytoscape from "cytoscape";
 
-const Cytoscape = React.forwardRef(
-  ({ elements, layout, containerStyle }, ref) => {
-    const containerRef = useRef();
+/**
+ * Initializes a Cytoscape instance and renders it in a container element.
+ *
+ * @param {Object} config - The configuration options for Cytoscape.
+ * @param {Array} config.elements - An array of node and edge elements to render.
+ * @param {Object} config.layout - The layout options for the graph.
+ * @param {Object} config.containerStyle - The CSS styles for the container element.
+ * @param {Object} ref - The reference to the Cytoscape instance, if provided.
+ *
+ * @return {React.ReactElement} - The React element representing the Cytoscape graph.
+ */
+function Cytoscape({ id, elements, layout, containerStyle }, ref) {
+  const containerRef = useRef();
 
-    useEffect(() => {
-      let cy = cytoscape({
-        elements
-      });
+  useEffect(() => {
+    let cy = cytoscape({
+      elements,
+      layout
+    });
 
-      if (ref != null) {
-        ref.current = cy;
-      }
+    if (ref != null) {
+      ref.current = cy;
+    }
 
-      return () => cy.destroy();
-    }, []);
+    return () => cy.destroy();
+  }, []);
 
-    return <div ref={containerRef} style={containerStyle}/>;
-  });
+  return <div data-testid={id} ref={containerRef} style={containerStyle} />;
+};
 
-export default Cytoscape;
+export default React.forwardRef(Cytoscape);
