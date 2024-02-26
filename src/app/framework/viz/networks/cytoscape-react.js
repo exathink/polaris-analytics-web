@@ -18,15 +18,17 @@ import cytoscape from "cytoscape";
  *
  * @return {React.ReactElement} - The React element representing the Cytoscape graph.
  */
-function Cytoscape({ elements, layout, containerStyle, testId, ...rest }, ref) {
+function Cytoscape({ elements, layout, headless, containerStyle, testId, ...rest }, ref) {
   const containerRef = useRef();
 
 
   /* When the config changes, re-initialize the cytoscape instance and set the ref */
   useEffect(() => {
     let cy = cytoscape({
+      headless,
       elements,
       layout,
+      container: containerRef.current,
       ...rest
     });
 
