@@ -6,8 +6,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import CytoscapeComponent from "react-cytoscapejs";
-import axios from "axios";
+import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 
 const graphQL = {
   "data": {
@@ -3456,9 +3455,9 @@ class CytoGraph extends React.Component {
 
     const elements = this.importedNetworkClosedLoop();
 
-    return <CytoscapeComponent
+    return <Cytoscape
       elements={elements}
-      style={{ width: "1200px", height: "1200px" }}
+      containerStyle={{ width: "1200px", height: "1200px" }}
       layout={{
         name: "preset",
         concentric: function(node) {

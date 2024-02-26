@@ -49,6 +49,10 @@ const context = {
             topic: Repositories
           },
           {
+            match: "network",
+            topic: Network
+          },
+          {
             match: "",
             redirect: "value-streams"
           }
