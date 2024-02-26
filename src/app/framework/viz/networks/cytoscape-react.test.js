@@ -33,7 +33,7 @@ const elements = [
 const defaults = {
   /* All tests run headless. Cytoscape rendering does not work in node environments, */
   headless: true
-}
+};
 
 
 /**
@@ -48,7 +48,7 @@ const defaults = {
  */
 function renderCytoscape(props = {}, rerender = null) {
   if (rerender != null) {
-    return rerender(<Cytoscape {...defaults} {...props}/>);
+    return rerender(<Cytoscape {...defaults} {...props} />);
   } else {
     return render(<Cytoscape {...defaults} {...props} />);
   }
@@ -102,6 +102,8 @@ describe("Cytoscape Component API", () => {
       {x: 0, y: 0}
     ]);
   });
+
+
   it("sets a custom layout of the cytoscape component", () => {
     const cyRef = React.createRef();
     renderCytoscape({
@@ -146,7 +148,7 @@ describe("Cytoscape component lifecycle", () => {
       ref: cyRef,
       elements,
       layout
-    }, rerender)
+    }, rerender);
 
     const cyInstance2 = cyRef.current;
 
@@ -157,16 +159,16 @@ describe("Cytoscape component lifecycle", () => {
       ref: cyRef,
       elements: [],
       layout
-    }, rerender)
+    }, rerender);
     const cyInstance3 = cyRef.current;
 
     expect(cyInstance3).not.toBe(cyInstance2);
     // Re-render with new layout. Instance should change
-   renderCytoscape({
+    renderCytoscape({
       ref: cyRef,
       elements,
-      layout: {name: 'null'}
-    }, rerender)
+      layout: {name: "null"}
+    }, rerender);
     const cyInstance4 = cyRef.current;
 
     expect(cyInstance4).not.toBe(cyInstance3);
