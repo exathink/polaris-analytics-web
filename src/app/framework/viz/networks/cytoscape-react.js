@@ -54,7 +54,7 @@ function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, tes
     }
   }, [elements,layout]);
 
-  return <div data-testid={testId} ref={containerRef} style={containerStyle} />;
+  return <div data-testid={testId} ref={containerRef} style={containerStyle} className="tw-w-full tw-h-full" />;
 };
 
 export default React.forwardRef(Cytoscape);
