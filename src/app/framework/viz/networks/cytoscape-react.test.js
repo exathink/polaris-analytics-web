@@ -30,8 +30,29 @@ const elements = [
   {data: {id: "edge1", source: "node1", target: "node2"}}
 ];
 
-function renderCytoscape(props = {}) {
-  return render(<Cytoscape headless={true} {...props} />);
+const defaults = {
+  /* All tests run headless. Cytoscape rendering does not work in node environments, */
+  headless: true
+}
+
+
+/**
+ * Renders a Cytoscape component with the given props.
+ *
+ * @param {Object} props - The props to be passed to the Cytoscape component.
+ * @param {function} rerender - The function to be called when rerendering the Cytoscape component. This is
+ * can be obtained from the return value of a previous render operation
+ * eg. const {rerender} = renderCytoscape()
+ *
+ * @return {ReactElement} The rendered Cytoscape component.
+ */
+function renderCytoscape(props = {}, rerender = null) {
+  if (rerender != null) {
+    return rerender(<Cytoscape {...defaults} {...props}/>);
+  } else {
+    return render(<Cytoscape {...defaults} {...props} />);
+  }
+
 }
 
 function getNodePositions(graph) {
@@ -85,7 +106,9 @@ describe("Cytoscape Component API", () => {
   it("sets a custom layout of the cytoscape component", () => {
     const cyRef = React.createRef();
     renderCytoscape({
-      ref: cyRef, elements, layout: {
+      ref: cyRef,
+      elements,
+      layout: {
         name: "grid",
         fit: true, // whether to fit to viewport
         padding: 30, // fit padding
@@ -118,26 +141,42 @@ describe("Cytoscape component lifecycle", () => {
 
   it("Recreates the cytoscape instance only when elements or layout change", () => {
 
-    const {rerender} = render(<Cytoscape ref={cyRef} elements={elements} layout={layout} headless={true} />);
+    const {rerender} = renderCytoscape({
+      ref: cyRef,
+      elements,
+      layout
+    });
     const cyInstance1 = cyRef.current;
 
     // Re-render with the same elements and layout. Instance should not change
-    rerender(<Cytoscape ref={cyRef} elements={elements} layout={layout} headless={true} />);
+    renderCytoscape({
+      ref: cyRef,
+      elements,
+      layout
+    }, rerender)
+
     const cyInstance2 = cyRef.current;
 
     expect(cyInstance2).toBe(cyInstance1);
 
     // Re-render with new elements. Instance should change
-    rerender(<Cytoscape ref={cyRef} elements={[{}]} layout={layout} headless={true} />);
+    renderCytoscape({
+      ref: cyRef,
+      elements: [],
+      layout
+    }, rerender)
     const cyInstance3 = cyRef.current;
 
     expect(cyInstance3).not.toBe(cyInstance2);
     // Re-render with new layout. Instance should change
-    rerender(<Cytoscape ref={cyRef} elements={elements} layout={{}} headless={true} />);
+   renderCytoscape({
+      ref: cyRef,
+      elements,
+      layout: {name: 'null'}
+    }, rerender)
     const cyInstance4 = cyRef.current;
 
     expect(cyInstance4).not.toBe(cyInstance3);
-
 
   });
 });
