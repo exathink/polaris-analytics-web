@@ -46,7 +46,7 @@ const defaults = {
  *
  * @return {ReactElement} The rendered Cytoscape component.
  */
-function renderCytoscape(props = {}, rerender = null) {
+export function renderCytoscape(props = {}, rerender = null) {
   if (rerender != null) {
     return rerender(<Cytoscape {...defaults} {...props} />);
   } else {
