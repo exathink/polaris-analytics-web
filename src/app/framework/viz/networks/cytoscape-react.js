@@ -33,7 +33,12 @@ function Cytoscape({ elements, layout, headless, containerStyle, testId, ...rest
     });
 
     if (ref != null) {
+      const previous = ref.current;
       ref.current = cy;
+      /* clean up the old instance */
+      if (previous != null) {
+        previous.destroy();
+      }
     }
 
     return () => cy.destroy();

@@ -52,7 +52,6 @@ function renderCytoscape(props = {}, rerender = null) {
   } else {
     return render(<Cytoscape {...defaults} {...props} />);
   }
-
 }
 
 function getNodePositions(graph) {
@@ -131,16 +130,10 @@ describe("Cytoscape Component API", () => {
 });
 
 describe("Cytoscape component lifecycle", () => {
-  let cyRef;
-
-  beforeEach(() => {
-    cyRef = {current: {}};
-  });
-
   afterEach(cleanup);
 
   it("Recreates the cytoscape instance only when elements or layout change", () => {
-
+    const cyRef = React.createRef();
     const {rerender} = renderCytoscape({
       ref: cyRef,
       elements,
