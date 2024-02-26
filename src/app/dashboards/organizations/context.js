@@ -1,14 +1,13 @@
 import React from "react";
-import { FormattedMessage } from "react-intl.macro";
+import {FormattedMessage} from "react-intl.macro";
 import FourZeroFour from "../../../containers/Page/404";
-import Activity from "./activity/topic";
 import Contributors from "./contributors/topic";
 import Project from "./projects/topic";
 import Repositories from "./repositories/topic";
 import Network from "./network/topic";
-import { Contexts } from "../../meta/contexts";
-import { instanceMatchPattern } from "../../framework/navigation/context/helpers";
-import { SYSTEM_TEAMS } from "../../../config/featureFlags";
+import {Contexts} from "../../meta/contexts";
+import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
+import {NETWORK_VIZ} from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -40,7 +39,6 @@ const context = {
           {
 
             match: "contributors",
-            requiredFeatures: [SYSTEM_TEAMS],
             topic: Contributors
 
           },
@@ -49,6 +47,7 @@ const context = {
             topic: Repositories
           },
           {
+            requiredFeatures: [NETWORK_VIZ],
             match: "network",
             topic: Network
           },
