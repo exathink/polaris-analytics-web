@@ -18,7 +18,7 @@ import cytoscape from "cytoscape";
  *
  * @return {React.ReactElement} - The React element representing the Cytoscape graph.
  */
-function Cytoscape({ id, elements, layout, containerStyle }, ref) {
+function Cytoscape({ id, elements, layout, containerStyle, ...rest }, ref) {
   const containerRef = useRef();
 
 
@@ -26,7 +26,8 @@ function Cytoscape({ id, elements, layout, containerStyle }, ref) {
   useEffect(() => {
     let cy = cytoscape({
       elements,
-      layout
+      layout,
+      ...rest
     });
 
     if (ref != null) {
