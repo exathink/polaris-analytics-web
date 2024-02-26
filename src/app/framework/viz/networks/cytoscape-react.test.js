@@ -174,4 +174,21 @@ describe("Cytoscape component lifecycle", () => {
     expect(cyInstance4).not.toBe(cyInstance3);
 
   });
+
+  it('Maintains a stable ref', () => {
+    const cyRef = React.createRef();
+    const {rerender} = renderCytoscape({
+      ref: cyRef,
+    });
+    const cyInstance1 = cyRef.current;
+
+    // Re-render with the same elements and layout. Instance should not change
+    renderCytoscape({
+      ref: cyRef,
+    }, rerender);
+
+    const cyInstance2 = cyRef.current;
+
+    expect(cyInstance2).toBe(cyInstance1)
+  })
 });
