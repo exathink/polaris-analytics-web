@@ -68,7 +68,7 @@ describe("Cytoscape Component API", () => {
   it("should expose an instance of the cytoscape graph as a ref", () => {
     const cyRef = React.createRef();
     renderCytoscape({ref: cyRef});
-    const graph = cyRef.current;
+    const graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
     expect(graph.nodes().length).toBe(0);
     expect(graph.edges().length).toBe(0);
@@ -86,7 +86,7 @@ describe("Cytoscape Component API", () => {
   it("sets the elements of the cytoscape component", () => {
     const cyRef = React.createRef();
     renderCytoscape({ref: cyRef, elements});
-    const graph = cyRef.current;
+    const graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
     expect(graph.nodes().length).toBe(2);
     expect(graph.edges().length).toBe(1);
@@ -94,7 +94,7 @@ describe("Cytoscape Component API", () => {
   it("sets the default layout of the cytoscape component", () => {
     const cyRef = React.createRef();
     renderCytoscape({ref: cyRef, elements, layout});
-    const graph = cyRef.current;
+    const graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
 
     expect(getNodePositions(graph)).toEqual([
@@ -121,7 +121,7 @@ describe("Cytoscape Component API", () => {
         }
       }
     });
-    const graph = cyRef.current;
+    const graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
 
     expect(getNodePositions(graph)).not.toEqual([
@@ -141,7 +141,7 @@ describe("Cytoscape component lifecycle", () => {
       elements,
       layout
     });
-    const cyInstance1 = cyRef.current;
+    const cyInstance1 = cyRef.current.cy();
 
     // Re-render with the same elements and layout. Instance should not change
     renderCytoscape({
@@ -150,7 +150,7 @@ describe("Cytoscape component lifecycle", () => {
       layout
     }, rerender);
 
-    const cyInstance2 = cyRef.current;
+    const cyInstance2 = cyRef.current.cy();
 
     expect(cyInstance2).toBe(cyInstance1);
 
@@ -160,7 +160,7 @@ describe("Cytoscape component lifecycle", () => {
       elements: [],
       layout
     }, rerender);
-    const cyInstance3 = cyRef.current;
+    const cyInstance3 = cyRef.current.cy();
 
     expect(cyInstance3).not.toBe(cyInstance2);
     // Re-render with new layout. Instance should change
@@ -169,7 +169,7 @@ describe("Cytoscape component lifecycle", () => {
       elements,
       layout: {name: "null"}
     }, rerender);
-    const cyInstance4 = cyRef.current;
+    const cyInstance4 = cyRef.current.cy();
 
     expect(cyInstance4).not.toBe(cyInstance3);
 
@@ -180,14 +180,14 @@ describe("Cytoscape component lifecycle", () => {
     const {rerender} = renderCytoscape({
       ref: cyRef,
     });
-    const cyInstance1 = cyRef.current;
+    const cyInstance1 = cyRef.current.cy();
 
     // Re-render with the same elements and layout. Instance should not change
     renderCytoscape({
       ref: cyRef,
     }, rerender);
 
-    const cyInstance2 = cyRef.current;
+    const cyInstance2 = cyRef.current.cy();
 
     expect(cyInstance2).toBe(cyInstance1)
   })

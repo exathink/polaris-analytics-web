@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useImperativeHandle, useRef} from "react";
 import cytoscape from "cytoscape";
 
 /**
@@ -22,7 +22,15 @@ import cytoscape from "cytoscape";
 function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, testId, ...rest }, ref) {
   const containerRef = useRef();
 
+  const cyRef = useRef();
 
+  useImperativeHandle(ref, () => {
+    return {
+      cy() {
+        return cyRef.current
+      }
+    }
+  });
   /* When the config changes, re-initialize the cytoscape instance and set the ref */
   useEffect(() => {
     let cy = cytoscape({
@@ -33,17 +41,17 @@ function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, tes
       layout,
       ...rest
     });
-
-    if (ref != null) {
-      const previous = ref.current;
-      ref.current = cy;
-      /* clean up the old instance */
-      if (previous != null) {
-        previous.destroy();
-      }
+    const previous = cyRef.current;
+    cyRef.current = cy;
+    if(previous != null) {
+      previous.destroy()
     }
 
-    return () => cy.destroy();
+    return () =>  {
+      if (cyRef.current != null) {
+        cyRef.current.destroy();
+      }
+    }
   }, [elements,layout]);
 
   return <div data-testid={testId} ref={containerRef} style={containerStyle} />;
