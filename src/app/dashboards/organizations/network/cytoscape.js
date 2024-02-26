@@ -3457,7 +3457,6 @@ class CytoGraph extends React.Component {
 
     return <Cytoscape
       elements={elements}
-      containerStyle={{ width: "1200px", height: "1200px" }}
       layout={{
         name: "preset",
         concentric: function(node) {
