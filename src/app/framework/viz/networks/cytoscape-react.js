@@ -18,7 +18,7 @@ import cytoscape from "cytoscape";
  *
  * @return {React.ReactElement} - The React element representing the Cytoscape graph.
  */
-function Cytoscape({ id, elements, layout, containerStyle, ...rest }, ref) {
+function Cytoscape({ elements, layout, containerStyle, testId, ...rest }, ref) {
   const containerRef = useRef();
 
 
@@ -37,7 +37,7 @@ function Cytoscape({ id, elements, layout, containerStyle, ...rest }, ref) {
     return () => cy.destroy();
   }, [elements,layout]);
 
-  return <div data-testid={id} ref={containerRef} style={containerStyle} />;
+  return <div data-testid={testId} ref={containerRef} style={containerStyle} />;
 };
 
 export default React.forwardRef(Cytoscape);
