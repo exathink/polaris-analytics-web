@@ -15,7 +15,7 @@
  * All attributes on the graphql parent and child nodes are available as attributes on the cytoscape nodes.
  */
 export function graphqlConnectionToCyElements(connection, parentKey, childKey) {
-  const parentNode = connection.data[parentKey];
+  const parentNode = connection[parentKey];
   if (parentNode) {
     const childNodes = parentNode[childKey].edges.map(edge => edge.node);
     if (childNodes) {  // Added null check for childNodes
