@@ -6,8 +6,8 @@
 
 import Cytoscape from "./cytoscape-react";
 
-import React from "react";
-import {render, cleanup} from "@testing-library/react";
+import React, {useImperativeHandle} from "react";
+import {render, cleanup, screen} from "@testing-library/react";
 // ...other imports
 
 const layout = {name: "preset"};
@@ -191,4 +191,31 @@ describe("Cytoscape component lifecycle", () => {
 
     expect(cyInstance2).toBe(cyInstance1)
   })
+});
+
+
+describe("Cytoscape Child", () => {
+
+  const CytoscapeClient = React.forwardRef( function ({testId}, ref) {
+    const cyRef = React.useRef();
+
+    useImperativeHandle(ref, () => ({
+      cy: () => cyRef.current?.cy()
+    }))
+
+    return <Cytoscape ref={cyRef} testId={testId} {...defaults} />
+  });
+
+  it('Renders as a child component', async () => {
+    const cyRef = React.createRef();
+
+    render(<CytoscapeClient ref={cyRef} testId='test-client'/>)
+    const component = await screen.findByTestId('test-client')
+
+    expect (component).not.toBeNull()
+    const graph = cyRef.current.cy()
+    expect(graph.nodes()).not.toBeNull();
+  })
+
+
 });
