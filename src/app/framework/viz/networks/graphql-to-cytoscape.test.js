@@ -33,10 +33,10 @@ describe("graphqlConnectionToCyElements", () => {
     const actualOutput = graphqlConnectionToCyElements(connectionData, "organization", "projects");
 
     const expectedOutput = [
-      {data: {id: orgUUID, name: "Org1", nodeType: "Organization", key: orgUUID}},
-      {data: {key: proj1UUID, name: "Project1", id: proj1UUID, nodeType: "Project", archived: false}},
+      {data: {id: orgUUID, name: "Org1", nodeType: "Organization", key: orgUUID, connectionDepth: 0}},
+      {data: {key: proj1UUID, name: "Project1", id: proj1UUID, nodeType: "Project", archived: false, connectionDepth:1}},
       {data: {id: `${orgUUID}_${proj1UUID}`, source: orgUUID, target: proj1UUID}},
-      {data: {key: proj2UUID, name: "Project2", id: proj2UUID, nodeType: "Project", archived: true}},
+      {data: {key: proj2UUID, name: "Project2", id: proj2UUID, nodeType: "Project", archived: true, connectionDepth: 1}},
       {data: {id: `${orgUUID}_${proj2UUID}`, source: orgUUID, target: proj2UUID}}
     ];
     expect(actualOutput).toEqual(expectedOutput);
