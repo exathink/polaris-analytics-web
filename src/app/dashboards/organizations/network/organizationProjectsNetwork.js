@@ -26,15 +26,7 @@ export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
             name
             key
             projects(
-                interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan, CycleMetricsTrends, ContributorCount, ArchivedStatus]
-                cycleMetricsTrendsArgs: {
-                    days:$days,
-                    measurementWindow:$measurementWindow,
-                    samplingFrequency:$samplingFrequency,
-                    specsOnly: $specsOnly
-                    includeSubTasks: $includeSubTasks
-                    metrics: [avg_lead_time, avg_cycle_time, total_effort, work_items_with_commits]
-                }
+                interfaces: [CommitSummary, RepositoryCount, ContributorCount]
                 contributorCountDays: 30
             ) {
                 count
@@ -45,12 +37,6 @@ export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
                         key
                         archived
                         contributorCount
-                        cycleMetricsTrends {
-                            avgLeadTime
-                            avgCycleTime
-                            totalEffort
-                            workItemsWithCommits
-                        }
                         repositoryCount
                         latestCommit
                         latestWorkItemEvent

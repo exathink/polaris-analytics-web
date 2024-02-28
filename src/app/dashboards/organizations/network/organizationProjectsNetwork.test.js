@@ -34,12 +34,6 @@ const mocks = [
                   key: "P1",
                   archived: false,
                   contributorCount: 3,
-                  cycleMetricsTrends: {
-                    avgLeadTime: 10.5,
-                    avgCycleTime: 14.7,
-                    totalEffort: 243,
-                    workItemsWithCommits: 2
-                  },
                   repositoryCount: 2,
                   latestCommit: "abc123",
                   latestWorkItemEvent: "event1",
@@ -67,12 +61,6 @@ const mocks = [
                   key: "P2",
                   archived: false,
                   contributorCount: 10,
-                  cycleMetricsTrends: {
-                    avgLeadTime: 15.5,
-                    avgCycleTime: 22.7,
-                    totalEffort: 460,
-                    workItemsWithCommits: 3
-                  },
                   repositoryCount: 4,
                   latestCommit: "def456",
                   latestWorkItemEvent: "event2",
