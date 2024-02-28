@@ -3,19 +3,14 @@ import {useQuery} from "@apollo/client";
 import {render, waitFor, screen} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
 
-import OrganizationProjectsNetwork, {GET_ORGANIZATION_PROJECTS_QUERY} from "./organizationProjectsNetwork";
+import OrganizationProjectsNetwork, {GET_ORGANIZATION_PROJECTS_NETWORK_QUERY} from "./organizationProjectsNetwork";
 
 const mocks = [
   {
     request: {
-      query: GET_ORGANIZATION_PROJECTS_QUERY,
+      query: GET_ORGANIZATION_PROJECTS_NETWORK_QUERY,
       variables: {
         organizationKey: "org1",
-        days: 7,
-        measurementWindow: 10,
-        samplingFrequency: 1,
-        specsOnly: false,
-        includeSubTasks: false
       }
     },
     result: {
@@ -108,11 +103,6 @@ describe("Projects component", () => {
         <OrganizationProjectsNetwork
           ref={cyRef}
           organizationKey="org1"
-          days={7}
-          measurementWindow={10}
-          samplingFrequency={1}
-          specsOnly={false}
-          includeSubTasks={false}
           testId={'my-graph'}
           cytoscapeOptions={{headless: true}}
         />

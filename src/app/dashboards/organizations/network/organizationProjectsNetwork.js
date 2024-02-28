@@ -12,14 +12,9 @@ import React, {useEffect, useImperativeHandle, useRef} from "react";
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 
-export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
-    query organizationProjects(
+export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
+    query organizationProjectsNetwork(
         $organizationKey: String!
-        $days: Int!
-        $measurementWindow: Int!
-        $samplingFrequency: Int!
-        $specsOnly: Boolean!
-        $includeSubTasks: Boolean!
     ) {
         organization(key: $organizationKey) {
             id
@@ -57,21 +52,11 @@ export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
 
 export function useQueryOrganizationProjects({
                                                organizationKey,
-                                               days,
-                                               measurementWindow,
-                                               samplingFrequency,
-                                               specsOnly,
-                                               includeSubTasks
                                              }) {
-  return useQuery(GET_ORGANIZATION_PROJECTS_QUERY, {
+  return useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
     service: analytics_service,
     variables: {
       organizationKey: organizationKey,
-      days: days,
-      measurementWindow: measurementWindow,
-      samplingFrequency: samplingFrequency,
-      specsOnly: specsOnly,
-      includeSubTasks: includeSubTasks
     },
     errorPolicy: "all",
     fetchPolicy: "cache-and-network"
@@ -80,14 +65,8 @@ export function useQueryOrganizationProjects({
 
 function OrganizationProjectsNetwork({
    organizationKey,
-   days,
-   measurementWindow,
-   samplingFrequency,
-   specsOnly,
-   includeSubTasks,
    cytoscapeOptions,
    testId,
-
  }, ref) {
 
   const cyRef = React.useRef();
@@ -96,8 +75,8 @@ function OrganizationProjectsNetwork({
     cy: () => cyRef.current?.cy()
   }));
 
-  const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_QUERY, {
-    variables: {organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}
+  const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
+    variables: {organizationKey}
   });
 
   if (loading) return "Loading...";
