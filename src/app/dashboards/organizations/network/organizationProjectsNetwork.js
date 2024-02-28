@@ -68,11 +68,12 @@ function initLayout() {
   return ({
     name: "concentric",
     concentric: function(node) {
-      return -3 * node.data("concentric");
+      return -200*(node.data("connectionDepth"));
     },
     fit: true,
-    startAngle: 2 * Math.PI,
-    sweep: 0.7854 * 6
+    nodeDimensionsIncludeLabels: true,
+    equidistant: true,
+    minNodeSpacing: 10,
   });
 }
 
@@ -85,7 +86,7 @@ function initStyleSheet() {
       "text-halign": "center",
       "color": "rgb(77,77,77)",
       "font-family": "Roboto, sans-serif",
-      "font-size": 5,
+      "font-size": 10,
 
       "font-weight": "normal",
       "background-color": "rgb(39,169,230)",
@@ -101,7 +102,7 @@ function initStyleSheet() {
       "shape": "round-rectangle",
       "height": 60.0,
       "width": 120.0,
-      "font-size": 10,
+      "font-size": 12,
     }
   }, {
     "selector": "node[nodeType = 'Project']",
@@ -109,7 +110,7 @@ function initStyleSheet() {
       "shape": "ellipse",
       "height": 50.0,
       "width": 100.0,
-      "font-size": 6,
+      "font-size": 8,
     }
   },{
     "selector": "node[state_type = 'wait']",
@@ -141,42 +142,15 @@ function initStyleSheet() {
       "font-weight": "normal",
       "source-arrow-color": "rgb(0,0,0)",
       "target-arrow-color": "rgba(50,70,159,0.4)",
-      "target-arrow-fill": "rgba(50,70,159,0.4)",
+
 
       "text-opacity": 1.0,
       "line-color": "rgba(117,117,128,0.4)",
       "line-style": "solid",
       "opacity": 1.0,
       "font-size": 10,
-      width: 1,
-      "curve-style": "haystack",
-      "content": "data(weight)"
-    }
-  }, {
-    "selector": "edge[weight > 28.38297778][weight < 274]",
-    "css": {
-      "line-color": "mapData(weight,28.38297778,274,rgb(33,145,140),rgb(68,2,86))"
-    }
-  }, {
-    "selector": "edge[weight > 1][weight < 28.38297778]",
-    "css": {
-      "line-color": "mapData(weight,1,28.38297778,rgb(247,252,245),rgb(33,145,140))",
-      "target-arrow-color": "mapData(weight,1,28.38297778,rgb(247,252,245),rgb(33,145,140))",
-      "target-arrow-fill": "mapData(weight,1,28.38297778,rgb(247,252,245),rgb(33,145,140))",
-      "color": "mapData(weight,1,28.38297778,rgb(247,252,245),rgb(33,145,140))"
-    }
-  }, {
-    "selector": "edge[weight = 1]",
-    "css": {
-      "line-color": "rgb(247,252,245)",
-      "target-arrow-color": "rgb(247,252,245)",
-      "target-arrow-fill": "rgba(247,252,245)",
-      color: "rgb(247,252,245)"
-    }
-  }, {
-    "selector": "edge[weight < 1]",
-    "css": {
-      "line-color": "rgb(253,231,37)"
+      "width": 1,
+      "curve-style": "unbundled-bezier",
     }
   }];
 }
