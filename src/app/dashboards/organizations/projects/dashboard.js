@@ -16,6 +16,8 @@ import {Contexts} from "../../../meta";
 import {injectIntl} from "react-intl";
 import {displayPlural} from "../../../i18n";
 
+import OrganizationProjectsNetwork from "../network/organizationProjectsNetwork";
+
 const dashboard_id = 'dashboards.projects.organization.instance';
 
 
@@ -84,7 +86,7 @@ export default injectIntl(({intl}) => (
                 w={1}
                 name={`${displayPlural(intl, Contexts.projects)}`}
                 render={() => (
-                <ProjectsTableWidget
+                <OrganizationProjectsNetwork
                   organizationKey={organization.key}
                   days={30}
                   measurementWindow={30}
