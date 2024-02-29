@@ -12,6 +12,7 @@ import React, {useEffect, useImperativeHandle, useRef} from "react";
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
+import {Images} from "../../../framework/viz/networks/backgroundImages";
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
     query organizationProjectsNetwork(
@@ -104,6 +105,11 @@ function initStyleSheet() {
       "height": 60.0,
       "width": 120.0,
       "font-size": 12,
+      "background-image": Images.SITEMAP,
+      'background-width': '10px',
+      'background-height': '10px',
+      'background-position-x': '50%',
+      'background-position-y': '10%'
     }
   }, {
     "selector": "node[nodeType = 'Project']",
@@ -112,7 +118,7 @@ function initStyleSheet() {
       "height": 50.0,
       "width": 100.0,
       "font-size": 8,
-      "background-color": "data(activityColor)"
+      "background-color": "data(activityColor)",
     }
   },{
     "selector": "node[state_type = 'wait']",
