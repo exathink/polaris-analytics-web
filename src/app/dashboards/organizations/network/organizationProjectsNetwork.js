@@ -81,7 +81,7 @@ function initLayout() {
 function initStyleSheet() {
   return [{
     selector: "node",
-    css: {
+    style: {
       "text-opacity": 1.0,
       "text-valign": "center",
       "text-halign": "center",
@@ -116,29 +116,29 @@ function initStyleSheet() {
     }
   },{
     "selector": "node[state_type = 'wait']",
-    "css": {
+    "style": {
       "background-color": "rgb(158,188,218)"
     }
   }, {
     "selector": "node[state_type = 'active']",
-    "css": {
+    "style": {
       "background-color": "rgb(35,139,69)"
     }
   }, {
     "selector": "node[state_type = 'terminal']",
-    "css": {
+    "style": {
       "background-color": "rgb(201,148,199)"
     }
   }, {
     "selector": "node:selected",
-    "css": {
+    "style": {
       "border-color": "rgba(117,117,128,0.4)",
       "border-width": 1
 
     }
   }, {
     "selector": "edge",
-    "css": {
+    "style": {
       "source-arrow-shape": "circle",
       "source-arrow-fill": "hollow",
       "target-arrow-shape": "triangle",
