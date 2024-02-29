@@ -16,6 +16,8 @@ import {Contexts} from "../../../meta";
 import {injectIntl} from "react-intl";
 import {displayPlural} from "../../../i18n";
 
+import OrganizationProjectsNetwork from "../network/organizationProjectsNetwork";
+
 const dashboard_id = 'dashboards.projects.organization.instance';
 
 
@@ -31,7 +33,7 @@ export default injectIntl(({intl}) => (
             dashboard={`${dashboard_id}`}
           >
             <DashboardRow
-              h='22%'
+              h='60%'
               title={displayPlural(intl, Contexts.projects)}
               controls={[
                 () =>
@@ -41,48 +43,26 @@ export default injectIntl(({intl}) => (
               ]}
             >
               <DashboardWidget
-                w={1 / 2}
-                name={`value-stream-activity-levels`}
-                render={
-                  ({view}) =>
-                    <ChildDimensionActivityProfileWidget
-                      dimension={'organization'}
-                      instanceKey={organization.key}
-                      childDimension={'projects'}
-                      context={context}
-                      childContext={Projects}
-                      enableDrillDown={true}
-                      view={view}
-                      referenceDate={lastRefresh}
-                      referenceCount={organization.workItemsSourceCount}
-                    />
-                }
+                w={1}
+                name={`network`}
+                render={() => (
+                <OrganizationProjectsNetwork
+                  organizationKey={organization.key}
+                  days={30}
+                  measurementWindow={30}
+                  samplingFrequency={30}
+                  specsOnly={true}
+                  includeSubTasks={false}
+                />
+              )}
                 showDetail={true}
               />
-              <DashboardWidget
-                w={1 / 2}
-                name={`most-active-value-stream`}
-                render={
-                  ({view}) =>
-                    <DimensionMostActiveChildrenWidget
-                      dimension={'organization'}
-                      instanceKey={organization.key}
-                      childConnection={'recentlyActiveProjects'}
-                      context={context}
-                      childContext={Projects}
-                      top={10}
-                      latestCommit={organization.latestCommit}
-                      days={1}
-                      view={view}
-                    />
-                }
-                showDetail={true}
-              />
+
             </DashboardRow>
-            <DashboardRow h={"68%"}>
+            <DashboardRow h={"30%"}>
               <DashboardWidget
                 w={1}
-                name={`${displayPlural(intl, Contexts.projects)}`}
+                name={`table`}
                 render={() => (
                 <ProjectsTableWidget
                   organizationKey={organization.key}
