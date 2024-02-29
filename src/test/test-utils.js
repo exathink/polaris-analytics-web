@@ -4,6 +4,11 @@ import {formatDateTime} from "../app/i18n";
 import {toMoment} from "../app/helpers/utility";
 import moment from "moment";
 
+export const cloneDeep = require('lodash/cloneDeep');
+export const set = require('lodash/set');
+export const get = require('lodash/get');
+
+
 /* i18n Helpers */
 
 export function getIntl() {
@@ -43,4 +48,8 @@ export function expectSetsAreEqual(arraya, arrayb) {
 
 export function getNDaysAgo(n) {
   return moment().subtract(n, "days").utc().format("YYYY-MM-DDTHH:mm:ss");
+}
+
+export function findNested(object, path, condition) {
+  return get(object, path)?.find(condition)
 }
