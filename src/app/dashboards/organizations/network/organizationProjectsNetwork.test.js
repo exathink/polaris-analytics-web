@@ -2,110 +2,110 @@ import React from "react";
 import {useQuery} from "@apollo/client";
 import {render, waitFor, screen} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
-import {Colors} from "../../shared/config"
+import {Colors} from "../../shared/config";
 import OrganizationProjectsNetwork, {GET_ORGANIZATION_PROJECTS_NETWORK_QUERY} from "./organizationProjectsNetwork";
 import {genDateBeforeNow} from "../../../helpers/utility";
 
-const mocks = [
-  {
-    request: {
-      query: GET_ORGANIZATION_PROJECTS_NETWORK_QUERY,
-      variables: {
-        organizationKey: "org1"
-      }
-    },
-    result: {
-      data: {
-        organization: {
-          id: "org1",
-          name: "Organization 1",
-          key: "O1",
-          __typename: "Organization",
-          projects: {
-            count: 2,
-            edges: [
-              {
-                node: {
-                  id: "proj1",
-                  name: "Project 1",
-                  key: "P1",
-                  archived: false,
-                  contributorCount: 3,
-                  repositoryCount: 2,
-                  latestCommit: genDateBeforeNow(100),
-                  latestWorkItemEvent: null,
-                  workItemsSources: {
-                    count: 2,
-                    edges: [
-                      {
-                        node: {
-                          name: "Work Item 1"
+import {findNested} from "../../../../test/test-utils";
+
+
+function mockRequest() {
+  return [
+    {
+      request: {
+        query: GET_ORGANIZATION_PROJECTS_NETWORK_QUERY,
+        variables: {
+          organizationKey: "org1"
+        }
+      },
+      result: {
+        data: {
+          organization: {
+            id: "org1",
+            name: "Organization 1",
+            key: "O1",
+            __typename: "Organization",
+            projects: {
+              count: 2,
+              edges: [
+                {
+                  node: {
+                    id: "proj1",
+                    name: "Project 1",
+                    key: "P1",
+                    archived: false,
+                    contributorCount: 3,
+                    repositoryCount: 2,
+                    latestCommit: null,
+                    latestWorkItemEvent: null,
+                    workItemsSources: {
+                      count: 2,
+                      edges: [
+                        {
+                          node: {
+                            name: "Work Item 1"
+                          }
+                        },
+                        {
+                          node: {
+                            name: "Work Item 2"
+                          }
                         }
-                      },
-                      {
-                        node: {
-                          name: "Work Item 2"
+                      ]
+                    },
+                    __typename: "Project"
+                  }
+                },
+                {
+                  node: {
+                    id: "proj2",
+                    name: "Project 2",
+                    key: "P2",
+                    archived: false,
+                    contributorCount: 10,
+                    repositoryCount: 4,
+                    latestCommit: null,
+                    latestWorkItemEvent: null,
+                    workItemsSources: {
+                      count: 4,
+                      edges: [
+                        {
+                          node: {
+                            name: "Work Item 3"
+                          }
+                        },
+                        {
+                          node: {
+                            name: "Work Item 4"
+                          }
+                        },
+                        {
+                          node: {
+                            name: "Work Item 5"
+                          }
+                        },
+                        {
+                          node: {
+                            name: "Work Item 6"
+                          }
                         }
-                      }
-                    ]
-                  },
-                  __typename: "Project"
+                      ]
+                    },
+                    __typename: "Project"
+                  }
                 }
-              },
-              {
-                node: {
-                  id: "proj2",
-                  name: "Project 2",
-                  key: "P2",
-                  archived: false,
-                  contributorCount: 10,
-                  repositoryCount: 4,
-                  latestCommit: null,
-                  latestWorkItemEvent: genDateBeforeNow(10),
-                  workItemsSources: {
-                    count: 4,
-                    edges: [
-                      {
-                        node: {
-                          name: "Work Item 3"
-                        }
-                      },
-                      {
-                        node: {
-                          name: "Work Item 4"
-                        }
-                      },
-                      {
-                        node: {
-                          name: "Work Item 5"
-                        }
-                      },
-                      {
-                        node: {
-                          name: "Work Item 6"
-                        }
-                      }
-                    ]
-                  },
-                  __typename: "Project"
-                }
-              }
-            ]
+              ]
+            }
           }
         }
       }
     }
-  }
-];
+  ];
+};
 
-describe("Organization Projects Component", () => {
-  let cyRef, targetElement, graph = null;
-
-  beforeEach(async () => {
-    cyRef = React.createRef();
-
-    const {getByText} = render(
-      <MockedProvider mocks={mocks} addTypename={true}>
+function renderOrganizationProjectsNetwork(mockRequest, cyRef) {
+    return render(
+      <MockedProvider mocks={mockRequest} addTypename={true}>
         <OrganizationProjectsNetwork
           ref={cyRef}
           organizationKey="org1"
@@ -114,7 +114,13 @@ describe("Organization Projects Component", () => {
         />
       </MockedProvider>
     );
+  }
 
+describe("Organization Projects Component", () => {
+  let cyRef, targetElement, graph = null;
+  beforeEach(async () => {
+    cyRef = React.createRef();
+    renderOrganizationProjectsNetwork(mockRequest(), cyRef);
     targetElement = await screen.findByTestId("my-graph");
     graph = cyRef.current?.cy();
   });
@@ -135,23 +141,99 @@ describe("Organization Projects Component", () => {
     expect(graph.elements("node[nodeType = 'Organization']").length).toBe(1);
 
   });
-  it("sets the activityColor for project nodes", async () => {
-    expect(graph).not.toBeNull();
-    const projectAttributes = graph.elements("node[nodeType = 'Project']").map(
-      node => {
-        const {name, activityColor} = node.data();
-        return ({name, activityColor});
+});
+
+describe("Component Activity Colors", () => {
+  let cyRef, targetElement, graph = null;
+
+  function getProjectActivityColors(graph) {
+      const projectAttributes = graph.elements("node[nodeType = 'Project']").map(
+        node => {
+          const {name, activityColor} = node.data();
+          return ({name, activityColor});
+        }
+      );
+      return projectAttributes;
+    }
+
+  async function renderComponentAndGetActivityColors(request) {
+      renderOrganizationProjectsNetwork(request, cyRef);
+      targetElement = await screen.findByTestId("my-graph");
+
+      graph = cyRef.current?.cy();
+      expect(graph).not.toBeNull();
+
+      return getProjectActivityColors(graph);
+  }
+
+  beforeEach(async () => {
+    cyRef = React.createRef();
+  });
+
+  it("sets the activity color to INITIAL for project nodes when neither latestCommit or latestWorkItemEvent is specified", async () => {
+    const request = mockRequest();
+
+    const activityColors = await renderComponentAndGetActivityColors(request);
+
+    expect(activityColors).toStrictEqual([
+      {
+        "name": "Project 1",
+        "activityColor": Colors.ActivityLevel.INITIAL
+      },
+      {
+        "name": "Project 2",
+        "activityColor": Colors.ActivityLevel.INITIAL
       }
+    ]);
+  });
+
+  it("sets the activityColor for project nodes when latestCommit is specified ", async () => {
+
+    const request = mockRequest();
+    /* Update the latestCommit for a project */
+    const project1 = findNested(
+      request[0],
+      'result.data.organization.projects.edges',
+      (edge) => edge.node.name == 'Project 1'
     );
-    /* These are activity colors defined in */
-    expect(projectAttributes).toStrictEqual([
+    project1.node.latestCommit = genDateBeforeNow(100);
+
+    const activityColors = await renderComponentAndGetActivityColors(request);
+
+    expect(activityColors).toStrictEqual([
       {
         "name": "Project 1",
         "activityColor": Colors.ActivityLevel.DORMANT
       },
       {
         "name": "Project 2",
+        "activityColor": Colors.ActivityLevel.INITIAL
+      }
+    ]);
+  });
+
+  it("sets the activityColor for project nodes when latestCommit is specified ", async () => {
+
+    const request = mockRequest();
+
+    /* Update the latestWorkItemEvent for a project */
+    const project1 = findNested(
+      request[0],
+      'result.data.organization.projects.edges',
+      (edge) => edge.node.name == 'Project 1'
+    );
+    project1.node.latestWorkItemEvent = genDateBeforeNow(10);
+
+    const activityColors = await renderComponentAndGetActivityColors(request);
+
+    expect(activityColors).toStrictEqual([
+      {
+        "name": "Project 1",
         "activityColor": Colors.ActivityLevel.ACTIVE
+      },
+      {
+        "name": "Project 2",
+        "activityColor": Colors.ActivityLevel.INITIAL
       }
     ]);
   });
