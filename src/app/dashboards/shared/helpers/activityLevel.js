@@ -65,15 +65,17 @@ export const ACTIVITY_LEVELS_REVERSED = [...ACTIVITY_LEVELS].reverse();
 
 export function getActivityLevel(activitySummary: ActivitySummary): ActivityLevel {
   const level = ACTIVITY_LEVELS.find(level => level.isMember(activitySummary));
-  return level || ACTIVITY_LEVEL_UNKNOWN
+  return level || ACTIVITY_LEVEL_INITIAL
 }
 
-export function getActivityLevelFromDate(latestCommit) {
-  const days_since_latest_commit = daysSinceDate(latestCommit);
+export function getActivityLevelFromDate(latestCommit, latestWorkItemEvent) {
+  if(!(latestCommit || latestWorkItemEvent)) return ACTIVITY_LEVEL_INITIAL
+
+  const days_since_latest_commit = daysSinceDate(latestCommit) || daysSinceDate(latestWorkItemEvent);
   const level = ACTIVITY_LEVELS.find(level => level.isMember({
     days_since_latest_commit: days_since_latest_commit
   }));
-  return level || ACTIVITY_LEVEL_UNKNOWN
+  return level || ACTIVITY_LEVEL_INITIAL
 }
 
 export function withActivityLevel(activitySummary) {
