@@ -26,8 +26,9 @@ export function graphqlConnectionToCyElements(connection, parentKey, childKey) {
         data: {
           name,
           key,
-          typename: parentNode.__typename,
-          id: parentNode.key
+          nodeType: parentNode.__typename,
+          id: parentNode.key,
+          connectionDepth: 0
         }
       });
 
@@ -37,8 +38,9 @@ export function graphqlConnectionToCyElements(connection, parentKey, childKey) {
         elements.push({
           data: {
             ...nodeWithoutTypename,
-            typename: __typename, // renamed __typename to typename
-            id: childNode.key
+            nodeType: __typename, // renamed __typename to typename
+            id: childNode.key,
+            connectionDepth: 1,
           }
         });
 

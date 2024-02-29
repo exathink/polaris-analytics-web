@@ -1,5 +1,6 @@
 import React from 'react';
 import {Topics} from "../../../meta/topics";
+import {NETWORK_VIZ} from "../../../../config/featureFlags";
 
 
 const topic =  {
@@ -8,6 +9,11 @@ const topic =  {
     {
       match: 'new',
       component: React.lazy(() => import('./manage/addProject'))
+    },
+    {
+      requiredFeatures: [NETWORK_VIZ],
+      match: '',
+      component: React.lazy(() => import('./network_dashboard'))
     },
     {
       match: '',

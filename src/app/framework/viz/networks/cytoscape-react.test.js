@@ -113,12 +113,6 @@ describe("Cytoscape Component API", () => {
         name: "grid",
         fit: true, // whether to fit to viewport
         padding: 30, // fit padding
-        boundingBox: {
-          x1: 0,
-          y1: 0,
-          w: 10,
-          h: 10
-        }
       }
     });
     const graph = cyRef.current.cy();

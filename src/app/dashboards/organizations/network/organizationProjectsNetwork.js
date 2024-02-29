@@ -11,22 +11,18 @@ import React, {useEffect, useImperativeHandle, useRef} from "react";
 
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
+import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
 
-export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
-    query organizationProjects(
+export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
+    query organizationProjectsNetwork(
         $organizationKey: String!
-        $days: Int!
-        $measurementWindow: Int!
-        $samplingFrequency: Int!
-        $specsOnly: Boolean!
-        $includeSubTasks: Boolean!
     ) {
         organization(key: $organizationKey) {
             id
             name
             key
             projects(
-                interfaces: [CommitSummary, RepositoryCount, ContributorCount]
+                interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan, ContributorCount]
                 contributorCountDays: 30
             ) {
                 count
@@ -56,39 +52,117 @@ export const GET_ORGANIZATION_PROJECTS_QUERY = gql`
 `;
 
 export function useQueryOrganizationProjects({
-                                               organizationKey,
-                                               days,
-                                               measurementWindow,
-                                               samplingFrequency,
-                                               specsOnly,
-                                               includeSubTasks
+                                               organizationKey
                                              }) {
-  return useQuery(GET_ORGANIZATION_PROJECTS_QUERY, {
+  return useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
     service: analytics_service,
     variables: {
-      organizationKey: organizationKey,
-      days: days,
-      measurementWindow: measurementWindow,
-      samplingFrequency: samplingFrequency,
-      specsOnly: specsOnly,
-      includeSubTasks: includeSubTasks
+      organizationKey: organizationKey
     },
     errorPolicy: "all",
     fetchPolicy: "cache-and-network"
   });
 }
 
-function OrganizationProjectsNetwork({
-   organizationKey,
-   days,
-   measurementWindow,
-   samplingFrequency,
-   specsOnly,
-   includeSubTasks,
-   cytoscapeOptions,
-   testId,
 
- }, ref) {
+function initLayout() {
+  return ({
+    name: "concentric",
+    concentric: function(node) {
+      return -200*(node.data("connectionDepth"));
+    },
+    fit: true,
+    nodeDimensionsIncludeLabels: true,
+    equidistant: true,
+    minNodeSpacing: 10,
+  });
+}
+
+function initStyleSheet() {
+  return [{
+    selector: "node",
+    css: {
+      "text-opacity": 1.0,
+      "text-valign": "center",
+      "text-halign": "center",
+      "color": "rgb(77,77,77)",
+      "font-family": "Roboto, sans-serif",
+      "font-size": 10,
+
+      "font-weight": "normal",
+      "background-color": "rgb(39,169,230)",
+      "background-opacity": 1.0,
+      "border-color": "rgb(0,102,153)",
+      "border-opacity": 1.0,
+
+      "content": "data(name)"
+    }
+  },{
+    "selector": "node[nodeType = 'Organization']",
+    "style": {
+      "shape": "round-rectangle",
+      "height": 60.0,
+      "width": 120.0,
+      "font-size": 12,
+    }
+  }, {
+    "selector": "node[nodeType = 'Project']",
+    "style": {
+      "shape": "ellipse",
+      "height": 50.0,
+      "width": 100.0,
+      "font-size": 8,
+      "background-color": "data(activityColor)"
+    }
+  },{
+    "selector": "node[state_type = 'wait']",
+    "css": {
+      "background-color": "rgb(158,188,218)"
+    }
+  }, {
+    "selector": "node[state_type = 'active']",
+    "css": {
+      "background-color": "rgb(35,139,69)"
+    }
+  }, {
+    "selector": "node[state_type = 'terminal']",
+    "css": {
+      "background-color": "rgb(201,148,199)"
+    }
+  }, {
+    "selector": "node:selected",
+    "css": {
+      "border-color": "rgba(117,117,128,0.4)",
+      "border-width": 1
+
+    }
+  }, {
+    "selector": "edge",
+    "css": {
+      "source-arrow-shape": "circle",
+      "source-arrow-fill": "hollow",
+      "target-arrow-shape": "triangle",
+      "font-weight": "normal",
+      "source-arrow-color": "rgba(50,70,159,0.11)",
+      "target-arrow-color": "rgba(50,70,159,0.4)",
+
+
+      "text-opacity": 1.0,
+      "line-color": "rgba(117,117,128,0.4)",
+      "line-style": "solid",
+      "opacity": 1.0,
+      "font-size": 10,
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+    }
+  }];
+}
+
+function OrganizationProjectsNetwork({
+                                       organizationKey,
+                                       cytoscapeOptions,
+                                       testId
+                                     }, ref) {
 
   const cyRef = React.useRef();
 
@@ -96,8 +170,21 @@ function OrganizationProjectsNetwork({
     cy: () => cyRef.current?.cy()
   }));
 
-  const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_QUERY, {
-    variables: {organizationKey, days, measurementWindow, samplingFrequency, specsOnly, includeSubTasks}
+  useEffect(()=> {
+    const cy = cyRef.current?.cy()
+    if (cy != null) {
+      cy.nodes().forEach(
+        node => {
+          node.data(
+            'activityColor', getActivityLevelFromDate(node.data('latestCommit'), node.data('latestWorkItemEvent'))?.color
+          )
+        }
+      )
+    }
+  })
+
+  const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
+    variables: {organizationKey}
   });
 
   if (loading) return "Loading...";
@@ -106,7 +193,13 @@ function OrganizationProjectsNetwork({
   const elements = graphqlConnectionToCyElements(data, "organization", "projects");
 
   return (
-    <Cytoscape ref={cyRef} testId={testId} elements={elements} {...cytoscapeOptions} />
+    <Cytoscape
+      ref={cyRef}
+      elements={elements}
+      layout={initLayout()}
+      stylesheet={initStyleSheet()}
+      {...cytoscapeOptions}
+      testId={testId} />
   );
 };
 
