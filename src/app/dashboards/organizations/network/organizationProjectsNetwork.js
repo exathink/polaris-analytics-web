@@ -11,6 +11,7 @@ import React, {useEffect, useImperativeHandle, useRef} from "react";
 
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
+import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
     query organizationProjectsNetwork(
@@ -21,7 +22,7 @@ export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
             name
             key
             projects(
-                interfaces: [CommitSummary, RepositoryCount, ContributorCount]
+                interfaces: [CommitSummary, RepositoryCount, WorkItemEventSpan, ContributorCount]
                 contributorCountDays: 30
             ) {
                 count
@@ -111,6 +112,7 @@ function initStyleSheet() {
       "height": 50.0,
       "width": 100.0,
       "font-size": 8,
+      "background-color": "data(activityColor)"
     }
   },{
     "selector": "node[state_type = 'wait']",
@@ -137,10 +139,11 @@ function initStyleSheet() {
   }, {
     "selector": "edge",
     "css": {
-
+      "source-arrow-shape": "circle",
+      "source-arrow-fill": "hollow",
       "target-arrow-shape": "triangle",
       "font-weight": "normal",
-      "source-arrow-color": "rgb(0,0,0)",
+      "source-arrow-color": "rgba(50,70,159,0.11)",
       "target-arrow-color": "rgba(50,70,159,0.4)",
 
 
@@ -166,6 +169,19 @@ function OrganizationProjectsNetwork({
   useImperativeHandle(ref, () => ({
     cy: () => cyRef.current?.cy()
   }));
+
+  useEffect(()=> {
+    const cy = cyRef.current?.cy()
+    if (cy != null) {
+      cy.nodes().forEach(
+        node => {
+          node.data(
+            'activityColor', getActivityLevelFromDate(node.data('latestCommit'), node.data('latestWorkItemEvent'))?.color
+          )
+        }
+      )
+    }
+  })
 
   const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
     variables: {organizationKey}

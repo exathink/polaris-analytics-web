@@ -71,9 +71,9 @@ export function getActivityLevel(activitySummary: ActivitySummary): ActivityLeve
 export function getActivityLevelFromDate(latestCommit, latestWorkItemEvent) {
   if(!(latestCommit || latestWorkItemEvent)) return ACTIVITY_LEVEL_INITIAL
 
-  const days_since_latest_commit = daysSinceDate(latestCommit) || daysSinceDate(latestWorkItemEvent);
+  const activity_date =   daysSinceDate(latestWorkItemEvent) || daysSinceDate(latestCommit);
   const level = ACTIVITY_LEVELS.find(level => level.isMember({
-    days_since_latest_commit: days_since_latest_commit
+    days_since_latest_commit: activity_date
   }));
   return level || ACTIVITY_LEVEL_INITIAL
 }
