@@ -7,6 +7,21 @@
 import React, {useEffect, useImperativeHandle, useRef} from "react";
 import cytoscape from "cytoscape";
 
+function headlessModePatch(headless, layout) {
+  /* when running in headless mode, layouts need an explicit bounding box provided*/
+  if (headless) {
+    return ({
+      boundingBox: {
+          x1: 0,
+          y1: 0,
+          w: 10,
+          h: 10
+        },
+      ...layout
+    });
+  }
+  return layout
+}
 /**
  * Initializes a Cytoscape instance and renders it in a container element.
  *
@@ -38,7 +53,7 @@ function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, tes
       style: stylesheet,
       headless,
       elements,
-      layout,
+      layout: headlessModePatch(headless, layout),
       ...rest
     });
     const previous = cyRef.current;
@@ -53,6 +68,7 @@ function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, tes
       }
     }
   }, [elements,layout]);
+
 
   return <div data-testid={testId} ref={containerRef} style={containerStyle} className="tw-w-full tw-h-full" />;
 };

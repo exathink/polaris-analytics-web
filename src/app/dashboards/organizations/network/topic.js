@@ -2,7 +2,7 @@ import React from 'react';
 import {Topics} from "../../../meta/index";
 
 const topic = {
-  ...Topics.organizations,
+  ...Topics.network,
   routes: [
     {
       match: '',
