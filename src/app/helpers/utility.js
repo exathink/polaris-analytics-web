@@ -227,6 +227,14 @@ export function getPeriodString(date, period) {
   return `${priorDate} - ${currentDate}`;
 }
 
+export function genDateBeforeNow(daysBefore) {
+  return moment.utc().subtract(daysBefore, 'days');
+}
+
+export function genDateAfterNow(daysBefore) {
+  return moment.utc().subtract(daysBefore, 'days');
+}
+
 export function isToday(serverCommitDate) {
   return moment.duration(moment.utc().diff(toMoment(serverCommitDate))).asDays() < 1;
 }

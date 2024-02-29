@@ -6,7 +6,8 @@ import {
   ProjectOutlined,
   FunnelPlotOutlined,
   SettingOutlined,
-  RadarChartOutlined, AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined
+  AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined,
+  PartitionOutlined
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -175,11 +176,6 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.work' defaultMessage="Work"/>),
     icon: 'ion-clipboard'
   },
-  settings: {
-    name: 'settings',
-    display: () => (<FormattedMessage id='topics.settings' defaultMessage="Settings"/>),
-    icon: 'ion-ios-cog'
-  },
   admin: {
     name: 'admin',
     display: () => (<FormattedMessage id='topics.admin' defaultMessage="Admin"/>),
@@ -214,5 +210,10 @@ export const Topics = {
     name: 'home',
     display: () => (<FormattedMessage id='topics.home' defaultMessage="Home"/>),
     icon: 'ion-ios-home'
+  },
+  network: {
+    name: 'network',
+    display: () => (<FormattedMessage id='topics.network' defaultMessage="Network"/>),
+    Icon: PartitionOutlined
   },
 };
