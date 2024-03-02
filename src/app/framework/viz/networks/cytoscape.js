@@ -38,78 +38,96 @@ export function headlessModePatch(headless, layout) {
   return layout;
 }
 
+const attachPopper = element => {
+  element.popper({
+    content: () => {
+      let div = document.createElement("div");
+      div.innerHTML = ``;
+      document.body.appendChild(div);
+      return div;
+    },
+    popper: {}
+  });
+};
+
+export function initPopper(cy, selector) {
+  cy.elements(selector).forEach(
+    attachPopper
+  );
+}
+
 /**
  * Initializes default tooltips for the given cytoscape collection.
+ * Expects that initPopper has been called first.
  * @param {cytoscape.Core} cy - The cytoscape instance to attach tooltips to.
+ * @param {string} events - The events to bind the tooltips to.
+ * @param {string} selector - The optional selector to filter elements that tooltips should be attached to.
  */
-export function attachTooltips(collection) {
-    collection.forEach(
-      element => {
-        element.popper({
-          content: () => {
-            let div = document.createElement("div");
-            div.innerHTML = ``;
-            document.body.appendChild(div);
-            return div;
-          },
-          popper: {}
-        });
-        element.on("mouseover", function(event) {
-          const node = event.target;
-          const instance = tippy(document.createElement("div"), {
-            getReferenceClientRect: () => node.popperRef().getBoundingClientRect(),
-            content: () => {
-              const div = document.createElement("div");
-              div.innerHTML = event.target.data("tooltip") ? event.target.data("tooltip")() : ``;
-              return div;
-            },
-            theme: "light",
-            arrow: true,
-            trigger: "click"
-          });
-
-          instance.show();
-
-          event.target.on("mouseout", function(event) {
-            instance.destroy();
-          });
-        });
+export function attachTooltips(cy, events, selector = false) {
+  cy.on(events, selector, function(event) {
+      const element = event.target;
+      if (element.popperRef == null) {
+        attachPopper(element);
       }
-    );
 
+      const instance = tippy(document.createElement("div"), {
+        getReferenceClientRect: () => element.popperRef().getBoundingClientRect(),
+        content: () => {
+          const div = document.createElement("div");
+          div.innerHTML = element.data("tooltip") ? element.data("tooltip")() : ``;
+          return div;
+        },
+        theme: "light",
+        arrow: true,
+        trigger: "click"
+      });
+
+      instance.show();
+
+      element.on("mouseout", function(event) {
+        instance.destroy();
+      });
+    }
+  );
+
+}
+export function initContextMenu(cy, events, selector = null, transient = false) {
+  function createContextMenuContainer(element) {
+    if (element.popperRef == null) {
+      attachPopper(element);
+    }
+    return tippy(document.createElement("div"), {
+      content: () => {
+        let div = document.createElement("div");
+        ReactDOM.render(
+          <Menu
+            mode="horizontal"
+            theme="dark"
+          >
+            <Menu.Item key="1">A</Menu.Item>
+            <Menu.Item key="2">B</Menu.Item>
+            <Menu.Item key="3">C</Menu.Item>
+          </Menu>,
+          div
+        );
+        return div;
+      },
+      hideOnClick: transient,
+      trigger: "manual",
+      getReferenceClientRect: element.popperRef().getBoundingClientRect
+    });
   }
 
-
-export function initContextMenu(cy) {
-  cy.on("tap", "node", function(event) {
-      let node = event.target;
-      let instance = getScratch(node, SCRATCH.CONTEXT_MENU);
+  cy.on(events, selector, function(event) {
+      let element = event.target;
+      let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
       if (instance != null) {
         instance.destroy();
-        setScratch(node, SCRATCH.CONTEXT_MENU, null);
+        setScratch(element, SCRATCH.CONTEXT_MENU, null);
       } else {
-        instance = tippy(document.createElement("div"), {
-          content: () => {
-            let div = document.createElement("div");
-            ReactDOM.render(
-              <Menu
-                mode="horizontal"
-                theme="dark"
-              >
-                <Menu.Item key="1">A</Menu.Item>
-                <Menu.Item key="2">B</Menu.Item>
-                <Menu.Item key="3">C</Menu.Item>
-              </Menu>,
-              div
-            );
-            return div;
-          },
-          hideOnClick: false,
-          trigger: "manual",
-          getReferenceClientRect: node.popperRef().getBoundingClientRect
-        });
+        instance = createContextMenuContainer(element);
         instance.show();
-        setScratch(node, SCRATCH.CONTEXT_MENU, instance);
+        setScratch(element, SCRATCH.CONTEXT_MENU, instance);
       }
     }
   );

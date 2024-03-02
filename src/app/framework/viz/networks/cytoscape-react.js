@@ -5,7 +5,7 @@
  */
 
 import React, {useEffect, useImperativeHandle, useRef} from "react";
-import {cytoscape, headlessModePatch, initContextMenu, attachTooltips} from "./cytoscape";
+import {cytoscape, headlessModePatch, initContextMenu, attachTooltips, initPopper} from "./cytoscape";
 
 
 /**
@@ -49,6 +49,8 @@ function Cytoscape(
     if (previous != null) {
       previous.destroy();
     }
+    // set up popper
+    initPopper(cy, 'node');
     return cy;
   }
 
@@ -65,11 +67,11 @@ function Cytoscape(
   useEffect(() => {
     const cy = initCytoscape();
     if (enableTooltips) {
-      attachTooltips(cy.nodes());
+      attachTooltips(cy, "mouseover", "node");
     }
 
     if (enableContextMenu) {
-      initContextMenu(cy);
+      initContextMenu(cy, "tap", "node");
     }
 
     return () => {
