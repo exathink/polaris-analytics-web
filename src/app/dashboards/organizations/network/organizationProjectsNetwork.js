@@ -4,15 +4,17 @@
  *
  */
 
-import {useQuery, gql} from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 
 import {analytics_service} from "../../../services/graphql";
-import React, {useEffect, useImperativeHandle, useRef} from "react";
+import React, {useEffect, useImperativeHandle} from "react";
 
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
 import {Images} from "../../../framework/viz/networks/backgroundImages";
+import {tooltipHtml_v2} from "../../../framework/viz/charts/tooltip";
+
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
     query organizationProjectsNetwork(
@@ -70,7 +72,7 @@ function initLayout() {
   return ({
     name: "concentric",
     concentric: function(node) {
-      return -200*(node.data("connectionDepth"));
+      return -10 * (node.data("connectionDepth"));
     },
     fit: true,
     nodeDimensionsIncludeLabels: true,
@@ -98,29 +100,35 @@ function initStyleSheet() {
 
       "content": "data(name)"
     }
-  },{
+  }, {
     "selector": "node[nodeType = 'Organization']",
     "style": {
       "shape": "round-rectangle",
       "height": 60.0,
       "width": 120.0,
-      "font-size": 12,
+      "font-size": 18,
       "background-image": Images.SITEMAP,
-      'background-width': '10px',
-      'background-height': '10px',
-      'background-position-x': '50%',
-      'background-position-y': '10%'
+      "background-width": "10px",
+      "background-height": "10px",
+      "background-position-x": "50%",
+      "background-position-y": "10%"
     }
   }, {
     "selector": "node[nodeType = 'Project']",
     "style": {
       "shape": "ellipse",
-      "height": 50.0,
-      "width": 100.0,
-      "font-size": 8,
+      "height": 76,
+      "width": 76,
+      "font-size": 14,
       "background-color": "data(activityColor)",
+      "background-image": Images.QUEUE,
+      "background-opacity": 1,
+      "background-fit": "cover",
+      "text-valign": "bottom",
+      'text-margin-y': '5'
+
     }
-  },{
+  }, {
     "selector": "node[state_type = 'wait']",
     "style": {
       "background-color": "rgb(158,188,218)"
@@ -139,7 +147,7 @@ function initStyleSheet() {
     "selector": "node:selected",
     "style": {
       "border-color": "rgba(117,117,128,0.4)",
-      "border-width": 1
+      "border-width": 3
 
     }
   }, {
@@ -159,7 +167,7 @@ function initStyleSheet() {
       "opacity": 1.0,
       "font-size": 10,
       "width": 1,
-      "curve-style": "unbundled-bezier",
+      "curve-style": "unbundled-bezier"
     }
   }];
 }
@@ -176,18 +184,33 @@ function OrganizationProjectsNetwork({
     cy: () => cyRef.current?.cy()
   }));
 
-  useEffect(()=> {
-    const cy = cyRef.current?.cy()
+  useEffect(() => {
+    const cy = cyRef.current?.cy();
     if (cy != null) {
       cy.nodes().forEach(
         node => {
           node.data(
-            'activityColor', getActivityLevelFromDate(node.data('latestCommit'), node.data('latestWorkItemEvent'))?.color
-          )
+            "activityColor", getActivityLevelFromDate(node.data("latestCommit"), node.data("latestWorkItemEvent"))?.color
+          ).data(
+            "tooltip", () => {
+              return (
+                node.data("nodeType") === "Project" ?
+                  tooltipHtml_v2({
+                      header: `Value Stream: ${node.data("name")}`,
+                      body: [
+                        [`Lead Time`, `30`],
+                        [`Cost: `, ` 90 FTE Days`]
+                      ]
+                    }
+                  )
+                  :
+                  ``
+              );
+            });
         }
-      )
+      );
     }
-  })
+  });
 
   const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
     variables: {organizationKey}
@@ -204,6 +227,8 @@ function OrganizationProjectsNetwork({
       elements={elements}
       layout={initLayout()}
       stylesheet={initStyleSheet()}
+      enableTooltips={true}
+      enableContextMenu={true}
       {...cytoscapeOptions}
       testId={testId} />
   );
