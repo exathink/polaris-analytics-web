@@ -28,8 +28,8 @@ function Cytoscape(
     stylesheet,
     containerStyle,
     testId,
-    enableTooltips = true,
-    enableContextMenu = true,
+    enableTooltips = false,
+    enableContextMenu = false,
     ...rest
   }, ref) {
   const containerRef = useRef();
