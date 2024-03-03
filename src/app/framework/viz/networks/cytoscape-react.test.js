@@ -7,8 +7,9 @@
 import Cytoscape from "./cytoscape-react";
 
 import React, {useImperativeHandle} from "react";
-import {render, cleanup, screen} from "@testing-library/react";
-// ...other imports
+import {render, cleanup, screen, findByTestId} from "@testing-library/react";
+import {getScratch} from "./scratch";
+import {Menu} from "antd";
 
 const layout = {name: "preset"};
 
@@ -124,6 +125,88 @@ describe("Cytoscape Component API", () => {
     ]);
   });
 });
+
+
+describe("Initialize tooltips", () => {
+
+  it('initializes popper ref', () => {
+    const cyRef = React.createRef();
+    renderCytoscape({ref: cyRef, elements});
+    const graph = cyRef.current.cy();
+    expect(graph).not.toBeNull();
+
+    graph.elements().forEach(
+      element => {
+        expect(element.popperRef).not.toBeNull();
+      }
+    )
+  })
+  it('shows a tooltip on mouseover', async () => {
+    const cyRef = React.createRef();
+
+    const hiThere = 'Hi there!';
+    renderCytoscape({
+      ref: cyRef,
+      elements,
+      tooltip: {
+        enable: true,
+        tooltip: () => hiThere
+      }});
+    const graph = cyRef.current.cy();
+    expect(graph).not.toBeNull();
+
+    const node = graph.nodes()[0];
+    node.emit('mouseover');
+    const tooltip = await screen.findByText(hiThere)
+    expect(tooltip).toBeInTheDocument();
+
+  })
+})
+
+describe("Initialize context menu", () => {
+
+  let cyRef, graph = null;
+
+  beforeEach(() => {
+    cyRef = React.createRef();
+    renderCytoscape({
+      ref: cyRef,
+      elements,
+      contextMenu: {
+        enable: true,
+        menu: () => (
+          <Menu
+            data-testid={'menu1'}
+            mode="horizontal"
+            theme="dark"
+          >
+            <Menu.Item key="1">A</Menu.Item>
+            <Menu.Item key="2">B</Menu.Item>
+            <Menu.Item key="3">C</Menu.Item>
+          </Menu>
+        )
+      }});
+    graph = cyRef.current.cy();
+    expect(graph).not.toBeNull();
+  })
+
+  it('shows a context menu on tap', async () => {
+    const node = graph.nodes()[0];
+    node.emit('tap');
+    const contextMenu = await screen.findByTestId('menu1')
+    expect(contextMenu).toBeInTheDocument();
+
+  })
+
+  it('hides the context menu on a second tap', async () => {
+    const node = graph.nodes()[0];
+    node.emit('tap');
+    const contextMenu = await screen.findByTestId('menu1')
+    expect(contextMenu).toBeInTheDocument();
+    node.emit('tap');
+    expect(screen.queryByTestId('menu1')).toBeNull()
+  })
+})
 
 describe("Cytoscape component lifecycle", () => {
   afterEach(cleanup);

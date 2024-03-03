@@ -12,7 +12,7 @@ import tippy_ from "tippy.js";
 import "tippy.js/themes/light.css";
 import {getScratch, SCRATCH, setScratch} from "./scratch";
 import ReactDOM from "react-dom";
-import {Menu} from "antd";
+
 import React from "react";
 
 export const cytoscape = cytoscape_;
@@ -63,7 +63,7 @@ export function initPopper(cy, selector) {
  * @param {string} events - The events to bind the tooltips to.
  * @param {string} selector - The optional selector to filter elements that tooltips should be attached to.
  */
-export function attachTooltips(cy, events, selector = false) {
+export function attachTooltips(cy, events, selector = false, tooltip) {
   cy.on(events, selector, function(event) {
       const element = event.target;
       if (element.popperRef == null) {
@@ -74,7 +74,7 @@ export function attachTooltips(cy, events, selector = false) {
         getReferenceClientRect: () => element.popperRef().getBoundingClientRect(),
         content: () => {
           const div = document.createElement("div");
-          div.innerHTML = element.data("tooltip") ? element.data("tooltip")() : ``;
+          div.innerHTML = tooltip?.tooltip() || ``;
           return div;
         },
         theme: "light",
@@ -91,28 +91,22 @@ export function attachTooltips(cy, events, selector = false) {
   );
 
 }
-export function initContextMenu(cy, events, selector = null, transient = false) {
+export function initContextMenu(cy, events, selector = null, contextMenu) {
   function createContextMenuContainer(element) {
     if (element.popperRef == null) {
       attachPopper(element);
     }
+    const Menu = contextMenu?.menu;
     return tippy(document.createElement("div"), {
       content: () => {
         let div = document.createElement("div");
         ReactDOM.render(
-          <Menu
-            mode="horizontal"
-            theme="dark"
-          >
-            <Menu.Item key="1">A</Menu.Item>
-            <Menu.Item key="2">B</Menu.Item>
-            <Menu.Item key="3">C</Menu.Item>
-          </Menu>,
+          <Menu/>,
           div
         );
         return div;
       },
-      hideOnClick: transient,
+      hideOnClick: contextMenu?.transient,
       trigger: "manual",
       getReferenceClientRect: element.popperRef().getBoundingClientRect
     });

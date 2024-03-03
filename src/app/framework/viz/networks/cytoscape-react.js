@@ -28,8 +28,8 @@ function Cytoscape(
     stylesheet,
     containerStyle,
     testId,
-    enableTooltips = false,
-    enableContextMenu = false,
+    tooltip={enable: false, tooltip: () => ``},
+    contextMenu = {enable: false, menu: () => null, transient: false},
     ...rest
   }, ref) {
   const containerRef = useRef();
@@ -66,12 +66,12 @@ function Cytoscape(
   /* When the config changes, re-initialize the cytoscape instance and set the ref */
   useEffect(() => {
     const cy = initCytoscape();
-    if (enableTooltips) {
-      attachTooltips(cy, "mouseover", "node");
+    if (tooltip?.enable) {
+      attachTooltips(cy, "mouseover", "node", tooltip);
     }
 
-    if (enableContextMenu) {
-      initContextMenu(cy, "tap", "node");
+    if (contextMenu?.enable) {
+      initContextMenu(cy, "tap", "node", contextMenu);
     }
 
     return () => {
