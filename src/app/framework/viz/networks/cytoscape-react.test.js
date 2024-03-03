@@ -7,6 +7,7 @@
 import Cytoscape from "./cytoscape-react";
 
 import React, {useImperativeHandle} from "react";
+import ReactDOM from "react-dom";
 import {render, cleanup, screen, findByTestId} from "@testing-library/react";
 import {getScratch} from "./scratch";
 import {Menu} from "antd";
@@ -113,7 +114,7 @@ describe("Cytoscape Component API", () => {
       layout: {
         name: "grid",
         fit: true, // whether to fit to viewport
-        padding: 30, // fit padding
+        padding: 30 // fit padding
       }
     });
     const graph = cyRef.current.cy();
@@ -129,7 +130,7 @@ describe("Cytoscape Component API", () => {
 
 describe("Initialize tooltips", () => {
 
-  it('initializes popper ref', () => {
+  it("initializes popper ref", () => {
     const cyRef = React.createRef();
     renderCytoscape({ref: cyRef, elements});
     const graph = cyRef.current.cy();
@@ -139,29 +140,53 @@ describe("Initialize tooltips", () => {
       element => {
         expect(element.popperRef).not.toBeNull();
       }
-    )
-  })
-  it('shows a tooltip on mouseover', async () => {
+    );
+  });
+  it("shows a tooltip on mouseover", async () => {
     const cyRef = React.createRef();
 
-    const hiThere = 'Hi there!';
+    const hiThere = "Hi there!";
     renderCytoscape({
       ref: cyRef,
       elements,
       tooltip: {
         enable: true,
         tooltip: () => hiThere
-      }});
+      }
+    });
     const graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
 
     const node = graph.nodes()[0];
-    node.emit('mouseover');
-    const tooltip = await screen.findByText(hiThere)
+    node.emit("mouseover");
+    const tooltip = await screen.findByText(hiThere);
     expect(tooltip).toBeInTheDocument();
 
-  })
-})
+  });
+  it("shows an element specific tooltip", async () => {
+    const cyRef = React.createRef();
+
+    const hiThere = "Hi there!";
+    renderCytoscape({
+      ref: cyRef,
+      elements,
+      tooltip: {
+        enable: true,
+        tooltip: (element) => {
+          return element?.data("id") ?? ``;
+        }
+      }
+    });
+    const graph = cyRef.current.cy();
+    expect(graph).not.toBeNull();
+
+    const node = graph.nodes()[0];
+    node.emit("mouseover");
+    const tooltip = await screen.findByText(node.data("id"));
+    expect(tooltip).toBeInTheDocument();
+
+  });
+});
 
 describe("Initialize context menu", () => {
 
@@ -174,39 +199,35 @@ describe("Initialize context menu", () => {
       elements,
       contextMenu: {
         enable: true,
-        menu: () => (
-          <Menu
-            data-testid={'menu1'}
-            mode="horizontal"
-            theme="dark"
-          >
-            <Menu.Item key="1">A</Menu.Item>
-            <Menu.Item key="2">B</Menu.Item>
-            <Menu.Item key="3">C</Menu.Item>
-          </Menu>
-        )
-      }});
+        menu: () => {
+          return (
+            <Menu
+              data-testid={"menu1"}
+              mode="horizontal"
+              theme="dark"
+            >
+              <Menu.Item key="1">A</Menu.Item>
+              <Menu.Item key="2">B</Menu.Item>
+              <Menu.Item key="3">C</Menu.Item>
+            </Menu>
+          );
+        }
+      }
+    });
     graph = cyRef.current.cy();
     expect(graph).not.toBeNull();
-  })
+  });
 
-  it('shows a context menu on tap', async () => {
+  it("shows a context menu on tap and hides it on the next tap", async () => {
     const node = graph.nodes()[0];
-    node.emit('tap');
-    const contextMenu = await screen.findByTestId('menu1')
+    node.emit("tap");
+    const contextMenu = await screen.findByTestId("menu1");
     expect(contextMenu).toBeInTheDocument();
+    node.emit("tap");
+    expect(screen.queryByTestId("menu1")).toBeNull();
+  });
 
-  })
-
-  it('hides the context menu on a second tap', async () => {
-    const node = graph.nodes()[0];
-    node.emit('tap');
-    const contextMenu = await screen.findByTestId('menu1')
-    expect(contextMenu).toBeInTheDocument();
-    node.emit('tap');
-    expect(screen.queryByTestId('menu1')).toBeNull()
-  })
-})
+});
 
 describe("Cytoscape component lifecycle", () => {
   afterEach(cleanup);
@@ -252,47 +273,47 @@ describe("Cytoscape component lifecycle", () => {
 
   });
 
-  it('Maintains a stable ref', () => {
+  it("Maintains a stable ref", () => {
     const cyRef = React.createRef();
     const {rerender} = renderCytoscape({
-      ref: cyRef,
+      ref: cyRef
     });
     const cyInstance1 = cyRef.current.cy();
 
     // Re-render with the same elements and layout. Instance should not change
     renderCytoscape({
-      ref: cyRef,
+      ref: cyRef
     }, rerender);
 
     const cyInstance2 = cyRef.current.cy();
 
-    expect(cyInstance2).toBe(cyInstance1)
-  })
+    expect(cyInstance2).toBe(cyInstance1);
+  });
 });
 
 
 describe("Cytoscape Child", () => {
 
-  const CytoscapeClient = React.forwardRef( function ({testId}, ref) {
+  const CytoscapeClient = React.forwardRef(function({testId}, ref) {
     const cyRef = React.useRef();
 
     useImperativeHandle(ref, () => ({
       cy: () => cyRef.current?.cy()
-    }))
+    }));
 
-    return <Cytoscape ref={cyRef} testId={testId} {...defaults} />
+    return <Cytoscape ref={cyRef} testId={testId} {...defaults} />;
   });
 
-  it('Renders as a child component', async () => {
+  it("Renders as a child component", async () => {
     const cyRef = React.createRef();
 
-    render(<CytoscapeClient ref={cyRef} testId='test-client'/>)
-    const component = await screen.findByTestId('test-client')
+    render(<CytoscapeClient ref={cyRef} testId="test-client" />);
+    const component = await screen.findByTestId("test-client");
 
-    expect (component).not.toBeNull()
-    const graph = cyRef.current.cy()
+    expect(component).not.toBeNull();
+    const graph = cyRef.current.cy();
     expect(graph.nodes()).not.toBeNull();
-  })
+  });
 
 
 });

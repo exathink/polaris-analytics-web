@@ -74,7 +74,7 @@ export function attachTooltips(cy, events, selector = false, tooltip) {
         getReferenceClientRect: () => element.popperRef().getBoundingClientRect(),
         content: () => {
           const div = document.createElement("div");
-          div.innerHTML = tooltip?.tooltip() || ``;
+          div.innerHTML = tooltip?.tooltip(element) || ``;
           return div;
         },
         theme: "light",

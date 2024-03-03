@@ -14,6 +14,7 @@ import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
 import {Images} from "../../../framework/viz/networks/backgroundImages";
 import {tooltipHtml_v2} from "../../../framework/viz/charts/tooltip";
+import {Menu} from "antd";
 
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
@@ -77,7 +78,7 @@ function initLayout() {
     fit: true,
     nodeDimensionsIncludeLabels: true,
     equidistant: true,
-    minNodeSpacing: 10,
+    minNodeSpacing: 10
   });
 }
 
@@ -125,7 +126,7 @@ function initStyleSheet() {
       "background-opacity": 1,
       "background-fit": "cover",
       "text-valign": "bottom",
-      'text-margin-y': '5'
+      "text-margin-y": "5"
 
     }
   }, {
@@ -191,22 +192,7 @@ function OrganizationProjectsNetwork({
         node => {
           node.data(
             "activityColor", getActivityLevelFromDate(node.data("latestCommit"), node.data("latestWorkItemEvent"))?.color
-          ).data(
-            "tooltip", () => {
-              return (
-                node.data("nodeType") === "Project" ?
-                  tooltipHtml_v2({
-                      header: `Value Stream: ${node.data("name")}`,
-                      body: [
-                        [`Lead Time`, `30`],
-                        [`Cost: `, ` 90 FTE Days`]
-                      ]
-                    }
-                  )
-                  :
-                  ``
-              );
-            });
+          );
         }
       );
     }
@@ -227,8 +213,40 @@ function OrganizationProjectsNetwork({
       elements={elements}
       layout={initLayout()}
       stylesheet={initStyleSheet()}
-      enableTooltips={true}
-      enableContextMenu={true}
+      tooltip={{
+        enable: true,
+        tooltip: (element) => {
+          return (
+            element.data("nodeType") === "Project" ?
+              tooltipHtml_v2({
+                  header: `Project: ${element.data("name")}`,
+                  body: [
+                    [`Lead Time`, `30`],
+                    [`Cost: `, ` 90 FTE Days`]
+                  ]
+                }
+              )
+              :
+              ``
+          );
+        }
+      }}
+      contextMenu={{
+        enable: true,
+        menu: () => {
+          return (
+            <Menu
+              data-testid={"organization-projects-context-menu"}
+              mode="horizontal"
+              theme="dark"
+            >
+              <Menu.Item key="1">A</Menu.Item>
+              <Menu.Item key="2">B</Menu.Item>
+              <Menu.Item key="3">C</Menu.Item>
+            </Menu>
+          );
+        }
+      }}
       {...cytoscapeOptions}
       testId={testId} />
   );
