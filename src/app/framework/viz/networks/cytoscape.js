@@ -91,24 +91,28 @@ export function attachTooltips(cy, events, selector = false, tooltip) {
   );
 
 }
+
 export function initContextMenu(cy, events, selector = null, contextMenu) {
   function createContextMenuContainer(element) {
     if (element.popperRef == null) {
       attachPopper(element);
     }
-    const Menu = contextMenu?.menu;
+    const menuContainer = document.createElement("div");
+    const ContextMenu = contextMenu?.menu;
     return tippy(document.createElement("div"), {
-      content: () => {
-        let div = document.createElement("div");
+      getReferenceClientRect: element.popperRef().getBoundingClientRect(),
+      content: menuContainer,
+      onCreate: (instance) => {
         ReactDOM.render(
-          <Menu/>,
-          div
+          <ContextMenu  tippy={instance}/>,
+          menuContainer
         );
-        return div;
+      },
+      onDestroy: (instance) => {
+        ReactDOM.unmountComponentAtNode(menuContainer);
       },
       hideOnClick: contextMenu?.transient,
       trigger: "manual",
-      getReferenceClientRect: element.popperRef().getBoundingClientRect
     });
   }
 

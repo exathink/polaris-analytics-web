@@ -218,6 +218,11 @@ describe("Initialize context menu", () => {
     expect(graph).not.toBeNull();
   });
 
+  afterEach(() => {
+    // Clear all mocks after each test
+    jest.clearAllMocks();
+  });
+
   it("shows a context menu on tap and hides it on the next tap", async () => {
     const node = graph.nodes()[0];
     node.emit("tap");
@@ -225,6 +230,16 @@ describe("Initialize context menu", () => {
     expect(contextMenu).toBeInTheDocument();
     node.emit("tap");
     expect(screen.queryByTestId("menu1")).toBeNull();
+  });
+
+  it("cleans up the ReactDOM node that the context menu is rendered in", async () => {
+    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
+    const node = graph.nodes()[0];
+    node.emit("tap");
+    const contextMenu = await screen.findByTestId("menu1");
+    expect(contextMenu).toBeInTheDocument();
+    node.emit("tap");
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
 });
