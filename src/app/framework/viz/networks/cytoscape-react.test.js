@@ -197,7 +197,7 @@ describe("Initialize context menu", () => {
     renderCytoscape({
       ref: cyRef,
       elements,
-      contextMenu: {
+      tapMenu: {
         enable: true,
         menu: () => {
           return (
@@ -226,8 +226,8 @@ describe("Initialize context menu", () => {
   it("shows a context menu on tap and hides it on the next tap", async () => {
     const node = graph.nodes()[0];
     node.emit("tap");
-    const contextMenu = await screen.findByTestId("menu1");
-    expect(contextMenu).toBeInTheDocument();
+    const tapMenu = await screen.findByTestId("menu1");
+    expect(tapMenu).toBeInTheDocument();
     node.emit("tap");
     expect(screen.queryByTestId("menu1")).toBeNull();
   });
@@ -236,8 +236,8 @@ describe("Initialize context menu", () => {
     const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
     const node = graph.nodes()[0];
     node.emit("tap");
-    const contextMenu = await screen.findByTestId("menu1");
-    expect(contextMenu).toBeInTheDocument();
+    const tapMenu = await screen.findByTestId("menu1");
+    expect(tapMenu).toBeInTheDocument();
     node.emit("tap");
     expect(spy).toHaveBeenCalledTimes(1);
   });

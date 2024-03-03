@@ -92,40 +92,40 @@ export function attachTooltips(cy, selector = false, tooltip) {
 
 }
 
-export function initContextMenu(cy, selector = null, contextMenu) {
-  function createContextMenuContainer(element) {
+export function initTapMenu(cy, selector = null, tapMenu) {
+  function createTapMenuContainer(element) {
     if (element.popperRef == null) {
       attachPopper(element);
     }
     const menuContainer = document.createElement("div");
-    const ContextMenu = contextMenu?.menu;
+    const TapMenu = tapMenu?.menu;
     return tippy(document.createElement("div"), {
       getReferenceClientRect: element.popperRef().getBoundingClientRect(),
       content: menuContainer,
       onCreate: (instance) => {
         ReactDOM.render(
-          <ContextMenu  tippy={instance}/>,
+          <TapMenu  tippy={instance}/>,
           menuContainer
         );
       },
       onDestroy: (instance) => {
         ReactDOM.unmountComponentAtNode(menuContainer);
       },
-      hideOnClick: contextMenu?.transient,
+      hideOnClick: tapMenu?.transient,
       trigger: "manual",
     });
   }
 
   cy.on("tap", selector, function(event) {
       let element = event.target;
-      let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+      let instance = getScratch(element, SCRATCH.TAP_MENU);
       if (instance != null) {
         instance.destroy();
-        setScratch(element, SCRATCH.CONTEXT_MENU, null);
+        setScratch(element, SCRATCH.TAP_MENU, null);
       } else {
-        instance = createContextMenuContainer(element);
+        instance = createTapMenuContainer(element);
         instance.show();
-        setScratch(element, SCRATCH.CONTEXT_MENU, instance);
+        setScratch(element, SCRATCH.TAP_MENU, instance);
       }
     }
   );

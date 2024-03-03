@@ -7,7 +7,7 @@
 import tippy from "tippy.js";
 
 export const SCRATCH = {
-  CONTEXT_MENU: "_tippyContextMenu"
+  TAP_MENU: "_tippyTapMenu"
 };
 
 export function getScratch(node, key) {
