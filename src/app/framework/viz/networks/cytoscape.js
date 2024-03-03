@@ -63,8 +63,8 @@ export function initPopper(cy, selector) {
  * @param {string} events - The events to bind the tooltips to.
  * @param {string} selector - The optional selector to filter elements that tooltips should be attached to.
  */
-export function attachTooltips(cy, events, selector = false, tooltip) {
-  cy.on(events, selector, function(event) {
+export function attachTooltips(cy, selector = false, tooltip) {
+  cy.on("mouseover", selector, function(event) {
       const element = event.target;
       if (element.popperRef == null) {
         attachPopper(element);
@@ -92,7 +92,7 @@ export function attachTooltips(cy, events, selector = false, tooltip) {
 
 }
 
-export function initContextMenu(cy, events, selector = null, contextMenu) {
+export function initContextMenu(cy, selector = null, contextMenu) {
   function createContextMenuContainer(element) {
     if (element.popperRef == null) {
       attachPopper(element);
@@ -116,7 +116,7 @@ export function initContextMenu(cy, events, selector = null, contextMenu) {
     });
   }
 
-  cy.on(events, selector, function(event) {
+  cy.on("tap", selector, function(event) {
       let element = event.target;
       let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
       if (instance != null) {
