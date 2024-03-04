@@ -118,11 +118,11 @@ export function initContextMenu(cy, events, selector = null, contextMenu) {
   cy.on(events, selector, function(event) {
       let element = event.target;
       let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
-      const contentContainer = document.createElement("div");
       if (instance != null) {
         instance.destroy();
         setScratch(element, SCRATCH.CONTEXT_MENU, null);
       } else {
+        const contentContainer = document.createElement("div");
         instance = createContextMenuContainer(element, contentContainer);
         instance.show();
         setScratch(element, SCRATCH.CONTEXT_MENU, instance);
