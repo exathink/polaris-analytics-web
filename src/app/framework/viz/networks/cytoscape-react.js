@@ -67,7 +67,7 @@ function Cytoscape(
   useEffect(() => {
     const cy = initCytoscape();
     if (tooltip?.enable) {
-      attachTooltips(cy, "mouseover", "node", tooltip);
+      attachTooltips(cy, "node", tooltip);
     }
 
     if (contextMenu?.enable) {
