@@ -71,7 +71,7 @@ function Cytoscape(
     }
 
     if (contextMenu?.enable) {
-      initContextMenu(cy, "tap", "node", contextMenu);
+      initContextMenu(cy, "node", contextMenu);
     }
 
     return () => {
