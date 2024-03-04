@@ -92,19 +92,22 @@ export function attachTooltips(cy, events, selector = false, tooltip) {
 
 }
 export function initContextMenu(cy, events, selector = null, contextMenu) {
-  function createContextMenuContainer(element) {
+  function createContextMenuContainer(element, contentContainer) {
     if (element.popperRef == null) {
       attachPopper(element);
     }
     const Menu = contextMenu?.menu;
+
     return tippy(document.createElement("div"), {
+      onDestroy(instance) {
+        ReactDOM.unmountComponentAtNode(contentContainer)
+      },
       content: () => {
-        let div = document.createElement("div");
         ReactDOM.render(
           <Menu/>,
-          div
+          contentContainer
         );
-        return div;
+        return contentContainer;
       },
       hideOnClick: contextMenu?.transient,
       trigger: "manual",
@@ -115,11 +118,12 @@ export function initContextMenu(cy, events, selector = null, contextMenu) {
   cy.on(events, selector, function(event) {
       let element = event.target;
       let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+      const contentContainer = document.createElement("div");
       if (instance != null) {
         instance.destroy();
         setScratch(element, SCRATCH.CONTEXT_MENU, null);
       } else {
-        instance = createContextMenuContainer(element);
+        instance = createContextMenuContainer(element, contentContainer);
         instance.show();
         setScratch(element, SCRATCH.CONTEXT_MENU, instance);
       }

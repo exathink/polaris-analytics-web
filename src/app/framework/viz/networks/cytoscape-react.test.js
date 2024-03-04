@@ -227,6 +227,17 @@ describe("Initialize context menu", () => {
     expect(screen.queryByTestId("menu1")).toBeNull();
   });
 
+  it("cleans up the ReactDOM node that the context menu is rendered in", async () => {
+    const contextMenuId  = "menu1";
+    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
+    const node = graph.nodes()[0];
+    node.emit("tap");
+    const contextMenu = await screen.findByTestId(contextMenuId);
+    expect(contextMenu).toBeInTheDocument();
+    node.emit("tap");
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
 });
 
 describe("Cytoscape component lifecycle", () => {
