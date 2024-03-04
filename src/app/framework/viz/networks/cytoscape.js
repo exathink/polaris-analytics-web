@@ -99,19 +99,19 @@ export function initContextMenu(cy, events, selector = null, contextMenu) {
     const Menu = contextMenu?.menu;
 
     return tippy(document.createElement("div"), {
-      onDestroy(instance) {
-        ReactDOM.unmountComponentAtNode(contentContainer)
-      },
-      content: () => {
+      content: contentContainer,
+      getReferenceClientRect: element.popperRef().getBoundingClientRect,
+      onCreate(instance) {
         ReactDOM.render(
           <Menu/>,
           contentContainer
         );
-        return contentContainer;
+      },
+      onDestroy(instance) {
+        ReactDOM.unmountComponentAtNode(contentContainer)
       },
       hideOnClick: contextMenu?.transient,
       trigger: "manual",
-      getReferenceClientRect: element.popperRef().getBoundingClientRect
     });
   }
 
