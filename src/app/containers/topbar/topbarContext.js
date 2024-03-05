@@ -33,9 +33,16 @@ export default withNavigationContext(({context}) => {
     Comp = context.context.ContextControl;
   }
 
+  const Icon = context.Icon();
+
   return (
     <div className="topBarContext" data-testid="topBarContext">
-      <i className={context.icon()} style={contextStyle} />
+      {
+        Icon ?
+        <Icon style={{fontSize: "18pt", ...contextStyle}}/>
+          :
+        <i className={context.icon()} style={contextStyle} />
+      }
       <span className="topBarLabel">{element}</span>
 
       {Comp && <Comp context={context} />}

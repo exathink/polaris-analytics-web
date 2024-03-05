@@ -5,23 +5,9 @@
  */
 
 import React, {useEffect, useImperativeHandle, useRef} from "react";
-import cytoscape from "cytoscape";
+import {cytoscape, headlessModePatch, initSelectionDetailView, attachTooltips, initPopper} from "./cytoscape";
 
-function headlessModePatch(headless, layout) {
-  /* when running in headless mode, layouts need an explicit bounding box provided*/
-  if (headless) {
-    return ({
-      boundingBox: {
-          x1: 0,
-          y1: 0,
-          w: 10,
-          h: 10
-        },
-      ...layout
-    });
-  }
-  return layout
-}
+
 /**
  * Initializes a Cytoscape instance and renders it in a container element.
  *
@@ -34,20 +20,22 @@ function headlessModePatch(headless, layout) {
  *
  * @return {React.ReactElement} - The React element representing the Cytoscape graph.
  */
-function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, testId, ...rest }, ref) {
+function Cytoscape(
+  {
+    elements,
+    layout,
+    headless,
+    stylesheet,
+    containerStyle,
+    testId,
+    tooltip={enable: false, tooltip: () => ``},
+    selectionDetailView = {enable: false, component: () => null, transient: false},
+    ...rest
+  }, ref) {
   const containerRef = useRef();
-
   const cyRef = useRef();
 
-  useImperativeHandle(ref, () => {
-    return {
-      cy() {
-        return cyRef.current
-      }
-    }
-  });
-  /* When the config changes, re-initialize the cytoscape instance and set the ref */
-  useEffect(() => {
+  function initCytoscape() {
     let cy = cytoscape({
       container: containerRef.current,
       style: stylesheet,
@@ -58,16 +46,40 @@ function Cytoscape({ elements, layout, headless, stylesheet, containerStyle, tes
     });
     const previous = cyRef.current;
     cyRef.current = cy;
-    if(previous != null) {
-      previous.destroy()
+    if (previous != null) {
+      previous.destroy();
+    }
+    // set up popper
+    initPopper(cy, 'node');
+    return cy;
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      cy() {
+        return cyRef.current;
+      }
+    };
+  });
+
+
+  /* When the config changes, re-initialize the cytoscape instance and set the ref */
+  useEffect(() => {
+    const cy = initCytoscape();
+    if (tooltip?.enable) {
+      attachTooltips(cy, "node", tooltip);
     }
 
-    return () =>  {
+    if (selectionDetailView?.enable) {
+      initSelectionDetailView(cy, "node", selectionDetailView);
+    }
+
+    return () => {
       if (cyRef.current != null) {
         cyRef.current.destroy();
       }
-    }
-  }, [elements,layout]);
+    };
+  }, [elements, layout]);
 
 
   return <div data-testid={testId} ref={containerRef} style={containerStyle} className="tw-w-full tw-h-full" />;

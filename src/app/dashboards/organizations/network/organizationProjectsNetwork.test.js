@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import {useQuery} from "@apollo/client";
 import {render, waitFor, screen} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
@@ -7,6 +8,7 @@ import OrganizationProjectsNetwork, {GET_ORGANIZATION_PROJECTS_NETWORK_QUERY} fr
 import {genDateBeforeNow} from "../../../helpers/utility";
 
 import {findNested} from "../../../../test/test-utils";
+import {renderCytoscape} from "../../../framework/viz/networks/cytoscape-react.test";
 
 function mockRequest() {
   return [
@@ -143,6 +145,7 @@ describe("Organization Projects Component", () => {
   });
 });
 
+
 describe("Component Activity Colors", () => {
   let cyRef, targetElement, graph = null;
 
@@ -238,7 +241,48 @@ describe("Component Activity Colors", () => {
     ]);
   });
 
+
+
 });
+
+describe("Tooltips", () => {
+  let cyRef, targetElement, graph = null;
+    beforeEach(async () => {
+      cyRef = React.createRef();
+      renderOrganizationProjectsNetwork(mockRequest(), cyRef);
+      targetElement = await screen.findByTestId("my-graph");
+      graph = cyRef.current?.cy();
+    });
+
+  it('shows a tooltip on mouseover', async () => {
+      const projectNode = graph.elements("node[nodeType = 'Project']")[0];
+      projectNode.emit('mouseover');
+      const tooltip = await screen.findByText(`Project: ${projectNode.data('name')}`)
+      expect(tooltip).toBeInTheDocument();
+  })
+})
+
+describe("Context Menu", () => {
+  let cyRef, targetElement, graph = null;
+    beforeEach(async () => {
+      cyRef = React.createRef();
+      renderOrganizationProjectsNetwork(mockRequest(), cyRef);
+      targetElement = await screen.findByTestId("my-graph");
+      graph = cyRef.current?.cy();
+    });
+
+  it("shows a context menu on tapselect and hides it on the next unselect", async () => {
+    const contextMenuId  = "organization-projects-context-menu";
+
+    const node = graph.nodes()[0];
+    node.emit("tapselect");
+    const contextMenu = await screen.findByTestId(contextMenuId);
+    expect(contextMenu).toBeInTheDocument();
+    node.emit("unselect");
+    expect(screen.queryByTestId(contextMenuId)).toBeNull();
+  })
+
+})
 
 
 
