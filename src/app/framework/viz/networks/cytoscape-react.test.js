@@ -257,6 +257,7 @@ describe("Context Menu Behavior", () => {
 
   it("cleans up the react dom node on unselect", async () => {
     const contextMenuId  = "menu1";
+    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
     let node = graph.nodes()[0];
     node.emit("tapselect");
     const contextMenu = await screen.findByTestId(contextMenuId);
