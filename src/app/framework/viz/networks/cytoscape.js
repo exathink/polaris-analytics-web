@@ -56,24 +56,6 @@ export function initPopper(cy, selector) {
   );
 }
 
-export function getPopperContainer(instance) {
-  return instance?.popperInstance?.state?.elements?.popper
-}
-
-function isInside(clickPosition, instance) {
-    const tippyContainer = getPopperContainer(instance);
-    if( tippyContainer && clickPosition) {
-      const {clientX, clientY} = clickPosition;
-      const {left, right, top, bottom} = tippyContainer.getBoundingClientRect();
-      return (
-        clientX >= left &&
-        clientX <= right &&
-        clientY >= top &&
-        clientY <= bottom
-      );
-    }
-    return false;
-  }
 
 /**
  * Initializes default tooltips for the given cytoscape collection.
@@ -123,22 +105,27 @@ export function initContextMenu(cy, selector = null, contextMenu) {
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
       content: (instance) => {
         ReactDOM.render(
-          <Menu />,
+          <div style={{
+            zIndex: 10, // need to make sure this sits on top of the cytoscape canvas and grabs events first.
+            pointerEvents: "all" // workaround setting tippy.interactive: true causes some odd failures, but we force it in the CSS instead,
+          }}>
+            <Menu />
+          </div>,
           contentContainer
         );
         return contentContainer;
       },
       onCreate: (instance) => {
-        instance?.popper?.setAttribute('data-testid', 'tippy-container')
+        instance?.popper?.setAttribute("data-testid", "tippy-container");
       },
       onDestroy(instance) {
         ReactDOM.unmountComponentAtNode(contentContainer);
       },
       hideOnClick: false,
+      interactive: false,
       trigger: "manual"
     });
   }
-
 
 
   cy.on("tapselect", selector, function(event) {
@@ -163,33 +150,12 @@ export function initContextMenu(cy, selector = null, contextMenu) {
 
 
   cy.on("unselect", selector, function(event) {
-      console.log("unselect");
       let element = event.target;
       let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
       if (instance != null && !instance.isDestroyed) {
-        const clickPosition = getScratch(cy, SCRATCH.GLOBAL_LAST_CLICK_OUTSIDE_EVENT);
-        if (!isInside(clickPosition, instance)) {
-          instance.destroy();
-          setScratch(element, SCRATCH.CONTEXT_MENU, null);
-        } else {
-          // we will swallow this deselect event
-          console.log("deselect swallowed");
-          element.select(); // reselect the node.
-          event.stopImmediatePropagation();
-          setScratch(cy, SCRATCH.GLOBAL_LAST_CLICK_OUTSIDE_EVENT, null);
-        }
+        instance.destroy();
+        setScratch(element, SCRATCH.CONTEXT_MENU, null);
       }
     }
   );
-  cy.on("tap click", function(event) {
-    // The event object has details of where the click occurred
-    const evtTarget = event.target;
-
-    if (evtTarget === cy) {
-      console.log("tap on background (outside the graph)");
-      // Accessing the original DOM click event
-      const {clientX, clientY} = event.originalEvent;
-      setScratch(cy, SCRATCH.GLOBAL_LAST_CLICK_OUTSIDE_EVENT, {clientX, clientY});
-    }
-  });
 }

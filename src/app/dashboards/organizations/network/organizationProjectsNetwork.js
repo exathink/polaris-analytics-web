@@ -14,7 +14,7 @@ import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
 import {Images} from "../../../framework/viz/networks/backgroundImages";
 import {tooltipHtml_v2} from "../../../framework/viz/charts/tooltip";
-import {Menu} from "antd";
+import {Menu, Button} from "antd";
 
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
