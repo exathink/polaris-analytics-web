@@ -9,7 +9,7 @@ import Cytoscape from "./cytoscape-react";
 import React, {useImperativeHandle} from "react";
 import ReactDOM from "react-dom";
 import {render, cleanup, screen, findByTestId} from "@testing-library/react";
-import {getScratch} from "./scratch";
+import {getScratch, SCRATCH} from "./scratch";
 import {Menu} from "antd";
 
 const layout = {name: "preset"};
@@ -188,7 +188,7 @@ describe("Initialize tooltips", () => {
   });
 });
 
-describe("Initialize context menu", () => {
+describe("Context Menu Behavior", () => {
 
   let cyRef, graph = null;
 
@@ -218,24 +218,51 @@ describe("Initialize context menu", () => {
     expect(graph).not.toBeNull();
   });
 
-  it("shows a context menu on tap and hides it on the next tap", async () => {
-    const node = graph.nodes()[0];
-    node.emit("tap");
-    const contextMenu = await screen.findByTestId("menu1");
-    expect(contextMenu).toBeInTheDocument();
-    node.emit("tap");
-    expect(screen.queryByTestId("menu1")).toBeNull();
-  });
+  /*
+    In the following, test cases, the state of the context menu is expressed as
+    {ns: <boolean>, ms: <null | boolean>}
+    where ns = node selection state: selected, deselected,
+    and ms = menu state: null | visible | invisible.
 
-  it("cleans up the ReactDOM node that the context menu is rendered in", async () => {
+    Transitions are written as (event, current state) => next state.
+   */
+  it("has initial state: {ns: false, ms: null}", async () => {
+    const node = graph.nodes()[0];
+    expect(node.selected()).toBeFalsy();
+    expect(getScratch(node, SCRATCH.CONTEXT_MENU)).toBeUndefined();
+  })
+
+  it("shows the menu on an initial tap select", async () => {
+    // Transition: (tapselect, {ns: false, ms: null}) => {ns: false, ms: true}
+    let node = graph.nodes()[0];
+    node = node.emit("tapselect");
+    const contextMenu = await screen.findByTestId("menu1");
+    expect(getScratch(node, SCRATCH.CONTEXT_MENU)).toBeDefined();
+    node.emit("unselect");
+
+  })
+  it("hides the menu on unselect", async () => {
     const contextMenuId  = "menu1";
     const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
     const node = graph.nodes()[0];
-    node.emit("tap");
+    node.emit("tapselect");
     const contextMenu = await screen.findByTestId(contextMenuId);
     expect(contextMenu).toBeInTheDocument();
-    node.emit("tap");
-    expect(spy).toHaveBeenCalledTimes(1);
+    node.emit("unselect");
+    expect(spy).toHaveBeenCalled();
+  });
+
+
+
+  it("cleans up the react dom node on unselect", async () => {
+    const contextMenuId  = "menu1";
+    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
+    const node = graph.nodes()[0];
+    node.emit("tapselect");
+    const contextMenu = await screen.findByTestId(contextMenuId);
+    expect(contextMenu).toBeInTheDocument();
+    node.emit("unselect");
+    expect(spy).toHaveBeenCalled();
   });
 
 });

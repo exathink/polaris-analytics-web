@@ -63,7 +63,7 @@ export function initPopper(cy, selector) {
  * @param {string} events - The events to bind the tooltips to.
  * @param {string} selector - The optional selector to filter elements that tooltips should be attached to.
  */
-export function attachTooltips(cy,  selector = false, tooltip) {
+export function attachTooltips(cy, selector = false, tooltip) {
   cy.on("mouseover", selector, function(event) {
       const element = event.target;
       if (element.popperRef == null) {
@@ -91,6 +91,7 @@ export function attachTooltips(cy,  selector = false, tooltip) {
   );
 
 }
+
 export function initContextMenu(cy, selector = null, contextMenu) {
   function createContextMenuContainer(element, contentContainer) {
     if (element.popperRef == null) {
@@ -101,31 +102,49 @@ export function initContextMenu(cy, selector = null, contextMenu) {
     return tippy(document.createElement("div"), {
       content: contentContainer,
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
-      onCreate(instance) {
+      content: (instance) => {
         ReactDOM.render(
           <Menu/>,
           contentContainer
         );
+        return contentContainer;
       },
       onDestroy(instance) {
-        ReactDOM.unmountComponentAtNode(contentContainer)
+        ReactDOM.unmountComponentAtNode(contentContainer);
       },
-      hideOnClick: contextMenu?.transient,
-      trigger: "manual",
+      hideOnClick: false,
+      trigger: "manual"
     });
   }
 
-  cy.on("tap", selector, function(event) {
+  cy.on("tapselect", selector, function(event) {
+      //tapselect is emitted only in a deselected state, ie a second tapselect does not
+      // trigger anything
       let element = event.target;
       let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+
       if (instance != null) {
+        // normally should not happen, but we clean up anyway before assigning
+        // a new instance here.
         instance.destroy();
         setScratch(element, SCRATCH.CONTEXT_MENU, null);
-      } else {
-        const contentContainer = document.createElement("div");
-        instance = createContextMenuContainer(element, contentContainer);
-        instance.show();
-        setScratch(element, SCRATCH.CONTEXT_MENU, instance);
+      }
+      // initialize the context menu.
+      const contentContainer = document.createElement("div");
+      instance = createContextMenuContainer(element, contentContainer);
+      instance.show();
+      setScratch(element, SCRATCH.CONTEXT_MENU, instance);
+    }
+  );
+
+
+  cy.on("unselect", selector, function(event) {
+
+      let element = event.target;
+      let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+      if (instance != null && !instance.isDestroyed) {
+        instance.destroy();
+        setScratch(element, SCRATCH.CONTEXT_MENU, null);
       }
     }
   );
