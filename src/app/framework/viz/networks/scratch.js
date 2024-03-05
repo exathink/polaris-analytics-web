@@ -7,7 +7,7 @@
 import tippy from "tippy.js";
 
 export const SCRATCH = {
-  CONTEXT_MENU: "_tippyContextMenu",
+  SELECTION_DETAIL_COMPONENT: "_tippyContextMenu",
   GLOBAL_LAST_CLICK_OUTSIDE_EVENT: "_globalLastClickOutside"
 };
 

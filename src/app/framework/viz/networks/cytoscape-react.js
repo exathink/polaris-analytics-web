@@ -5,7 +5,7 @@
  */
 
 import React, {useEffect, useImperativeHandle, useRef} from "react";
-import {cytoscape, headlessModePatch, initContextMenu, attachTooltips, initPopper} from "./cytoscape";
+import {cytoscape, headlessModePatch, initSelectionDetailView, attachTooltips, initPopper} from "./cytoscape";
 
 
 /**
@@ -29,7 +29,7 @@ function Cytoscape(
     containerStyle,
     testId,
     tooltip={enable: false, tooltip: () => ``},
-    contextMenu = {enable: false, menu: () => null, transient: false},
+    selectionDetailView = {enable: false, component: () => null, transient: false},
     ...rest
   }, ref) {
   const containerRef = useRef();
@@ -70,8 +70,8 @@ function Cytoscape(
       attachTooltips(cy, "node", tooltip);
     }
 
-    if (contextMenu?.enable) {
-      initContextMenu(cy, "node", contextMenu);
+    if (selectionDetailView?.enable) {
+      initSelectionDetailView(cy, "node", selectionDetailView);
     }
 
     return () => {

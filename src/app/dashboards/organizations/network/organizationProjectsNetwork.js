@@ -231,9 +231,9 @@ function OrganizationProjectsNetwork({
           );
         }
       }}
-      contextMenu={{
+      selectionDetailView={{
         enable: true,
-        menu: () => {
+        component: () => {
           return (
             <Menu
               data-testid={"organization-projects-context-menu"}

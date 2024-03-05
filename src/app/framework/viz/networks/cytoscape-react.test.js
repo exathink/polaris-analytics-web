@@ -198,9 +198,9 @@ describe("Context Menu Behavior", () => {
     renderCytoscape({
       ref: cyRef,
       elements,
-      contextMenu: {
+      selectionDetailView: {
         enable: true,
-        menu: () => {
+        component: () => {
           return (
             <Menu
               data-testid={"menu1"}
@@ -230,25 +230,25 @@ describe("Context Menu Behavior", () => {
   it("has initial state: {ns: false, ms: null}", async () => {
     const node = graph.nodes()[0];
     expect(node.selected()).toBeFalsy();
-    expect(getScratch(node, SCRATCH.CONTEXT_MENU)).toBeUndefined();
+    expect(getScratch(node, SCRATCH.SELECTION_DETAIL_COMPONENT)).toBeUndefined();
   })
 
   it("shows the menu on an initial tap select", async () => {
     // Transition: (tapselect, {ns: false, ms: null}) => {ns: false, ms: true}
     let node = graph.nodes()[0];
     node = node.emit("tapselect");
-    const contextMenu = await screen.findByTestId("menu1");
-    expect(getScratch(node, SCRATCH.CONTEXT_MENU)).toBeDefined();
+    const selectionDetailView = await screen.findByTestId("menu1");
+    expect(getScratch(node, SCRATCH.SELECTION_DETAIL_COMPONENT)).toBeDefined();
     node.emit("unselect");
 
   })
   it("hides the menu on unselect", async () => {
-    const contextMenuId  = "menu1";
+    const selectionDetailViewId  = "menu1";
     const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
     const node = graph.nodes()[0];
     node.emit("tapselect");
-    const contextMenu = await screen.findByTestId(contextMenuId);
-    expect(contextMenu).toBeInTheDocument();
+    const selectionDetailView = await screen.findByTestId(selectionDetailViewId);
+    expect(selectionDetailView).toBeInTheDocument();
     node.emit("unselect");
     expect(spy).toHaveBeenCalled();
   });
@@ -256,12 +256,12 @@ describe("Context Menu Behavior", () => {
 
 
   it("cleans up the react dom node on unselect", async () => {
-    const contextMenuId  = "menu1";
+    const selectionDetailViewId  = "menu1";
     const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
     let node = graph.nodes()[0];
     node.emit("tapselect");
-    const contextMenu = await screen.findByTestId(contextMenuId);
-    expect(contextMenu).toBeInTheDocument();
+    const selectionDetailView = await screen.findByTestId(selectionDetailViewId);
+    expect(selectionDetailView).toBeInTheDocument();
     node.emit("unselect");
     expect(spy).toHaveBeenCalled();
   });

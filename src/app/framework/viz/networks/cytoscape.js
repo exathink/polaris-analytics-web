@@ -93,12 +93,12 @@ export function attachTooltips(cy, selector = false, tooltip) {
 
 }
 
-export function initContextMenu(cy, selector = null, contextMenu) {
+export function initSelectionDetailView(cy, selector = null, selectionDetailView) {
   function createContextMenuContainer(element, contentContainer) {
     if (element.popperRef == null) {
       attachPopper(element);
     }
-    const Menu = contextMenu?.menu;
+    const ViewComponent = selectionDetailView?.component;
 
     return tippy(document.createElement("div"), {
       content: contentContainer,
@@ -109,7 +109,7 @@ export function initContextMenu(cy, selector = null, contextMenu) {
             zIndex: 10, // need to make sure this sits on top of the cytoscape canvas and grabs events first.
             pointerEvents: "all" // workaround setting tippy.interactive: true causes some odd failures, but we force it in the CSS instead,
           }}>
-            <Menu />
+            <ViewComponent />
           </div>,
           contentContainer
         );
@@ -136,29 +136,29 @@ export function initContextMenu(cy, selector = null, contextMenu) {
       //tapselect is emitted only in a deselected state, ie a second tapselect does not
       // trigger anything
       let element = event.target;
-      let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+      let instance = getScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT);
 
       if (instance != null) {
         // normally should not happen, but we clean up anyway before assigning
         // a new instance here.
         instance.destroy();
-        setScratch(element, SCRATCH.CONTEXT_MENU, null);
+        setScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT, null);
       }
       // initialize the context menu.
       const contentContainer = document.createElement("div");
       instance = createContextMenuContainer(element, contentContainer);
       instance.show();
-      setScratch(element, SCRATCH.CONTEXT_MENU, instance);
+      setScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT, instance);
     }
   );
 
 
   cy.on("unselect", selector, function(event) {
       let element = event.target;
-      let instance = getScratch(element, SCRATCH.CONTEXT_MENU);
+      let instance = getScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT);
       if (instance != null && !instance.isDestroyed) {
         instance.destroy();
-        setScratch(element, SCRATCH.CONTEXT_MENU, null);
+        setScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT, null);
       }
     }
   );
