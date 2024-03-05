@@ -4,8 +4,6 @@
  *
  */
 
-import tippy from "tippy.js";
-
 export const SCRATCH = {
   SELECTION_DETAIL_COMPONENT: "_tippyContextMenu",
   GLOBAL_LAST_CLICK_OUTSIDE_EVENT: "_globalLastClickOutside"

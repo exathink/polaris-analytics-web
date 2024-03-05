@@ -101,7 +101,6 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
     const ViewComponent = selectionDetailView?.component;
 
     return tippy(document.createElement("div"), {
-      content: contentContainer,
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
       content: (instance) => {
         ReactDOM.render(
