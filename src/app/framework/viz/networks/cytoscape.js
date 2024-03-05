@@ -161,4 +161,12 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
       }
     }
   );
+
+  cy.on("free", selector,  function(event) {
+      let element = event.target;
+      let instance = getScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT);
+      if(instance != null) {
+        instance.popperInstance?.update();
+      }
+  })
 }
