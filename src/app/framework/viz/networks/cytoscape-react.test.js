@@ -8,9 +8,10 @@ import Cytoscape from "./cytoscape-react";
 
 import React, {useImperativeHandle} from "react";
 import ReactDOM from "react-dom";
-import {render, cleanup, screen, findByTestId} from "@testing-library/react";
+import {render, cleanup, screen, findByTestId, fireEvent} from "@testing-library/react";
 import {getScratch, SCRATCH} from "./scratch";
 import {Menu} from "antd";
+import {getPopperContainer} from "./cytoscape";
 
 const layout = {name: "preset"};
 
@@ -256,14 +257,14 @@ describe("Context Menu Behavior", () => {
 
   it("cleans up the react dom node on unselect", async () => {
     const contextMenuId  = "menu1";
-    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
-    const node = graph.nodes()[0];
+    let node = graph.nodes()[0];
     node.emit("tapselect");
     const contextMenu = await screen.findByTestId(contextMenuId);
     expect(contextMenu).toBeInTheDocument();
     node.emit("unselect");
     expect(spy).toHaveBeenCalled();
   });
+
 
 });
 

@@ -8,13 +8,14 @@ import tippy from "tippy.js";
 
 export const SCRATCH = {
   CONTEXT_MENU: "_tippyContextMenu",
+  GLOBAL_LAST_CLICK_OUTSIDE_EVENT: "_globalLastClickOutside"
 };
 
-export function getScratch(node, key) {
-  return node.scratch(key);
+export function getScratch(element, key) {
+  return element.scratch(key);
 }
 
 // All the scratch keys we will be maintaining.
-export function setScratch(node, key, value) {
-  node.scratch(key, value);
+export function setScratch(element, key, value) {
+  element.scratch(key, value);
 }

@@ -271,14 +271,14 @@ describe("Context Menu", () => {
       graph = cyRef.current?.cy();
     });
 
-  it("shows a context menu on tap and hides it on the next tap", async () => {
+  it("shows a context menu on tapselect and hides it on the next unselect", async () => {
     const contextMenuId  = "organization-projects-context-menu";
 
     const node = graph.nodes()[0];
-    node.emit("tap");
+    node.emit("tapselect");
     const contextMenu = await screen.findByTestId(contextMenuId);
     expect(contextMenu).toBeInTheDocument();
-    node.emit("tap");
+    node.emit("unselect");
     expect(screen.queryByTestId(contextMenuId)).toBeNull();
   })
 
