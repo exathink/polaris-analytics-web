@@ -4,14 +4,18 @@
  *
  */
 
-import {useQuery, gql} from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 
 import {analytics_service} from "../../../services/graphql";
-import React, {useEffect, useImperativeHandle, useRef} from "react";
+import React, {useEffect, useImperativeHandle} from "react";
 
 import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
 import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
 import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
+import {Images} from "../../../framework/viz/networks/backgroundImages";
+import {tooltipHtml_v2} from "../../../framework/viz/charts/tooltip";
+import {Menu, Button} from "antd";
+
 
 export const GET_ORGANIZATION_PROJECTS_NETWORK_QUERY = gql`
     query organizationProjectsNetwork(
@@ -69,19 +73,19 @@ function initLayout() {
   return ({
     name: "concentric",
     concentric: function(node) {
-      return -200*(node.data("connectionDepth"));
+      return -10 * (node.data("connectionDepth"));
     },
     fit: true,
     nodeDimensionsIncludeLabels: true,
     equidistant: true,
-    minNodeSpacing: 10,
+    minNodeSpacing: 10
   });
 }
 
 function initStyleSheet() {
   return [{
     selector: "node",
-    css: {
+    style: {
       "text-opacity": 1.0,
       "text-valign": "center",
       "text-halign": "center",
@@ -97,48 +101,59 @@ function initStyleSheet() {
 
       "content": "data(name)"
     }
-  },{
+  }, {
     "selector": "node[nodeType = 'Organization']",
     "style": {
       "shape": "round-rectangle",
       "height": 60.0,
       "width": 120.0,
-      "font-size": 12,
+      "font-size": 18,
+      "background-image": Images.SITEMAP,
+      "background-width": "10px",
+      "background-height": "10px",
+      "background-position-x": "50%",
+      "background-position-y": "10%"
     }
   }, {
     "selector": "node[nodeType = 'Project']",
     "style": {
       "shape": "ellipse",
-      "height": 50.0,
-      "width": 100.0,
-      "font-size": 8,
-      "background-color": "data(activityColor)"
+      "height": 76,
+      "width": 76,
+      "font-size": 14,
+      "background-color": "data(activityColor)",
+      "background-image": Images.QUEUE,
+      "background-opacity": 1,
+      "background-fit": "cover",
+      "text-valign": "bottom",
+      "text-margin-y": "5"
+
     }
-  },{
+  }, {
     "selector": "node[state_type = 'wait']",
-    "css": {
+    "style": {
       "background-color": "rgb(158,188,218)"
     }
   }, {
     "selector": "node[state_type = 'active']",
-    "css": {
+    "style": {
       "background-color": "rgb(35,139,69)"
     }
   }, {
     "selector": "node[state_type = 'terminal']",
-    "css": {
+    "style": {
       "background-color": "rgb(201,148,199)"
     }
   }, {
     "selector": "node:selected",
-    "css": {
+    "style": {
       "border-color": "rgba(117,117,128,0.4)",
-      "border-width": 1
+      "border-width": 3
 
     }
   }, {
     "selector": "edge",
-    "css": {
+    "style": {
       "source-arrow-shape": "circle",
       "source-arrow-fill": "hollow",
       "target-arrow-shape": "triangle",
@@ -153,7 +168,7 @@ function initStyleSheet() {
       "opacity": 1.0,
       "font-size": 10,
       "width": 1,
-      "curve-style": "unbundled-bezier",
+      "curve-style": "unbundled-bezier"
     }
   }];
 }
@@ -170,18 +185,18 @@ function OrganizationProjectsNetwork({
     cy: () => cyRef.current?.cy()
   }));
 
-  useEffect(()=> {
-    const cy = cyRef.current?.cy()
+  useEffect(() => {
+    const cy = cyRef.current?.cy();
     if (cy != null) {
       cy.nodes().forEach(
         node => {
           node.data(
-            'activityColor', getActivityLevelFromDate(node.data('latestCommit'), node.data('latestWorkItemEvent'))?.color
-          )
+            "activityColor", getActivityLevelFromDate(node.data("latestCommit"), node.data("latestWorkItemEvent"))?.color
+          );
         }
-      )
+      );
     }
-  })
+  });
 
   const {loading, error, data} = useQuery(GET_ORGANIZATION_PROJECTS_NETWORK_QUERY, {
     variables: {organizationKey}
@@ -198,6 +213,40 @@ function OrganizationProjectsNetwork({
       elements={elements}
       layout={initLayout()}
       stylesheet={initStyleSheet()}
+      tooltip={{
+        enable: true,
+        tooltip: (element) => {
+          return (
+            element.data("nodeType") === "Project" ?
+              tooltipHtml_v2({
+                  header: `Project: ${element.data("name")}`,
+                  body: [
+                    [`Lead Time`, `30`],
+                    [`Cost: `, ` 90 FTE Days`]
+                  ]
+                }
+              )
+              :
+              ``
+          );
+        }
+      }}
+      selectionDetailView={{
+        enable: true,
+        component: () => {
+          return (
+            <Menu
+              data-testid={"organization-projects-context-menu"}
+              mode="horizontal"
+              theme="dark"
+            >
+              <Menu.Item key="1">A</Menu.Item>
+              <Menu.Item key="2">B</Menu.Item>
+              <Menu.Item key="3">C</Menu.Item>
+            </Menu>
+          );
+        }
+      }}
       {...cytoscapeOptions}
       testId={testId} />
   );

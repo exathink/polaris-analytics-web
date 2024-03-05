@@ -36,6 +36,10 @@ export class ActiveContext {
     return this.context.color;
   }
 
+  Icon() {
+    return this.context.Icon;
+  }
+
   icon() {
     return this.context.icon;
   }

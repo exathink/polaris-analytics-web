@@ -1,6 +1,6 @@
 import React from 'react';
 import {defineMessages, FormattedMessage} from 'react-intl.macro';
-
+import {ApartmentOutlined} from "@ant-design/icons";
 
 const messages = defineMessages({
   accounts: {
@@ -83,7 +83,7 @@ export const Contexts = {
           values={{quantity: quantity}}
         />
       },
-    icon: 'ion-ios-albums',
+    Icon: ApartmentOutlined,
     color: '#356eb2'
   },
   projects: {
