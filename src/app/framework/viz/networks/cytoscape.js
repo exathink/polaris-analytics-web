@@ -122,7 +122,11 @@ export function initContextMenu(cy, selector = null, contextMenu) {
         ReactDOM.unmountComponentAtNode(contentContainer);
       },
       hideOnClick: false,
+      // explicitly setting to false here because there are odd errors when it is set to
+      // true. We are compensating for this by setting the css properties of the div in which the react DOM
+      // is mounted
       interactive: false,
+
       trigger: "manual"
     });
   }
