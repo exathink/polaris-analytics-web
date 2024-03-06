@@ -98,14 +98,16 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
     if (element.popperRef == null) {
       attachPopper(element);
     }
+    const tippyRoot =  document.createElement("div");
     const ViewComponent = selectionDetailView?.component;
 
-    return tippy(document.createElement("div"), {
+    return tippy(tippyRoot, {
+      appendTo: document.getElementById("app-content-area"),
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
       content: (instance) => {
         ReactDOM.render(
           <div style={{
-            zIndex: 10, // need to make sure this sits on top of the cytoscape canvas and grabs events first.
+            // need to make sure this sits on top of the cytoscape canvas and grabs events first.
             pointerEvents: "all" // workaround setting tippy.interactive: true causes some odd failures, but we force it in the CSS instead,
           }}>
             <ViewComponent />
@@ -148,6 +150,7 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
       instance = createContextMenuContainer(element, contentContainer);
       instance.show();
       setScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT, instance);
+      cy.userPanningEnabled(false);
     }
   );
 
@@ -158,15 +161,27 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
       if (instance != null && !instance.isDestroyed) {
         instance.destroy();
         setScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT, null);
+        cy.userPanningEnabled(true);
       }
     }
   );
 
-  cy.on("free", selector,  function(event) {
-      let element = event.target;
-      let instance = getScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT);
-      if(instance != null) {
-        instance.popperInstance?.update();
-      }
-  })
+  function updatePopperForSelectionDetail(element) {
+
+    let instance = getScratch(element, SCRATCH.SELECTION_DETAIL_COMPONENT);
+    if (instance != null) {
+      instance.popperInstance?.update();
+    }
+  }
+
+  cy.on("free", selector, function(event) {
+    updatePopperForSelectionDetail(event.target);
+  });
+
+  cy.on("pan", function() {
+    console.log("pan");
+    cy.elements(selector).forEach(function(element) {
+      updatePopperForSelectionDetail(element);
+    });
+  });
 }
