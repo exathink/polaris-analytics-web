@@ -1,44 +1,21 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { store} from './redux/store';
-import AllRoutes from './router';
-import { ThemeProvider } from 'styled-components';
-import { ConfigProvider } from 'antd';
-import { IntlProvider } from 'react-intl';
-import themes from './config/themes';
-import AppLocale from './app/i18n';
-import config, {
-  getCurrentLanguage
-} from './containers/LanguageSwitcher/config';
-import { themeConfig } from './config';
-import AppHolder from './polarisFlowStyle';
-import {DefaultApolloProvider} from "./app/services/graphql";
+import React from "react";
+import AllRoutes from "./router";
+import AppLocale from "./app/i18n";
+import config, {getCurrentLanguage} from "./containers/LanguageSwitcher/config";
 import {initGA} from "./app/ga";
-import {getContainerNode} from "./app/helpers/utility";
+import AppContextProvider from "./app/framework/appContextProvider";
 
 const currentAppLocale =
-  AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
+  AppLocale[getCurrentLanguage(config.defaultLanguage || "english").locale];
+
 
 // Run the Google Analytics initialization
 initGA();
 
 const PolarisFlowApp = () => (
-  <ConfigProvider locale={currentAppLocale.antd} getPopupContainer={getContainerNode}>
-    <IntlProvider
-      locale={currentAppLocale.locale}
-      messages={currentAppLocale.messages}
-    >
-      <ThemeProvider theme={themes[themeConfig.theme]}>
-        <AppHolder>
-          <DefaultApolloProvider>
-            <Provider store={store}>
-              <AllRoutes/>
-            </Provider>
-          </DefaultApolloProvider>
-        </AppHolder>
-      </ThemeProvider>
-    </IntlProvider>
-  </ConfigProvider>
+  <AppContextProvider>
+    <AllRoutes/>
+  </AppContextProvider>
 );
 export default PolarisFlowApp;
-export { AppLocale };
+export {AppLocale};

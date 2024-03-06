@@ -10,8 +10,13 @@ import React, {useImperativeHandle} from "react";
 import ReactDOM from "react-dom";
 import {render, cleanup, screen, findByTestId, fireEvent} from "@testing-library/react";
 import {getScratch, SCRATCH} from "./scratch";
+import {MockedProvider} from "@apollo/client/testing";
+import {gql, useQuery} from "@apollo/client";
+
 import {Menu} from "antd";
 import {getPopperContainer} from "./cytoscape";
+import AppContextProvider from "../../appContextProvider";
+
 
 const layout = {name: "preset"};
 
@@ -231,7 +236,7 @@ describe("Context Menu Behavior", () => {
     const node = graph.nodes()[0];
     expect(node.selected()).toBeFalsy();
     expect(getScratch(node, SCRATCH.SELECTION_DETAIL_COMPONENT)).toBeUndefined();
-  })
+  });
 
   it("shows the menu on an initial tap select", async () => {
     // Transition: (tapselect, {ns: false, ms: null}) => {ns: false, ms: true}
@@ -241,10 +246,10 @@ describe("Context Menu Behavior", () => {
     expect(getScratch(node, SCRATCH.SELECTION_DETAIL_COMPONENT)).toBeDefined();
     node.emit("unselect");
 
-  })
+  });
   it("hides the menu on unselect", async () => {
-    const selectionDetailViewId  = "menu1";
-    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
+    const selectionDetailViewId = "menu1";
+    const spy = jest.spyOn(ReactDOM, "unmountComponentAtNode");
     const node = graph.nodes()[0];
     node.emit("tapselect");
     const selectionDetailView = await screen.findByTestId(selectionDetailViewId);
@@ -254,10 +259,9 @@ describe("Context Menu Behavior", () => {
   });
 
 
-
   it("cleans up the react dom node on unselect", async () => {
-    const selectionDetailViewId  = "menu1";
-    const spy = jest.spyOn(ReactDOM, 'unmountComponentAtNode');
+    const selectionDetailViewId = "menu1";
+    const spy = jest.spyOn(ReactDOM, "unmountComponentAtNode");
     let node = graph.nodes()[0];
     node.emit("tapselect");
     const selectionDetailView = await screen.findByTestId(selectionDetailViewId);
@@ -356,4 +360,109 @@ describe("Cytoscape Child", () => {
   });
 
 
+});
+
+describe("SelectDetailView component rendering", () => {
+  it("should render a simple button component in SelectionDetailView", async () => {
+    const ButtonComponent = () => <button>Click me</button>;
+
+    const cyRef = React.createRef();
+    renderCytoscape({
+      ref: cyRef,
+      elements,
+      selectionDetailView: {
+        enable: true,
+        component: ButtonComponent
+      }
+    });
+    const graph = cyRef.current.cy();
+    expect(graph).not.toBeNull();
+
+    const node = graph.nodes()[0];
+    node.emit("tapselect");
+
+    const selectionDetailView = await screen.findByText("Click me");
+    expect(selectionDetailView).toBeInTheDocument();
+
+    node.emit("unselect");
+  });
+
+
+  describe("GraphQL Component Rendering", () => {
+    // Define a GraphQL query
+    const SAMPLE_QUERY = gql`
+        query SampleQuery {
+            sample {
+                text
+            }
+        }
+    `;
+
+// Create a component that calls the query and displays data from the result
+    const SampleComponent = () => {
+      const {loading, error, data} = useQuery(SAMPLE_QUERY);
+
+      if (loading) return "Loading...";
+      if (error) return `Error! ${error.message}`;
+
+      return <div>{data.sample.text}</div>;
+    };
+
+// Create a mock that intercepts the GraphQL request and return a fake response
+    const mocks = [
+      {
+        request: {
+          query: SAMPLE_QUERY
+        },
+        result: {
+          data: {
+            sample: {
+              text: "Mock text"
+            }
+          }
+        }
+      }
+    ];
+
+    beforeEach(() => {
+
+    });
+
+
+    it("renders data from GraphQL query in SelectionDetailView", async () => {
+      const cyRef = React.createRef();
+      // Mock the AppContext provider so we can override the Apollo provider for the tests
+
+      const {findByText} = render(
+        <Cytoscape
+          ref={cyRef}
+          elements={elements}
+          layout={layout}
+          selectionDetailView={{
+            enable: true,
+            component: () => {
+              return (
+                // The component must provide its own app context to enable the
+                // features like graphql access.
+                // We use the standard AppContextProvider and then mock the Apollo provider.
+                <AppContextProvider>
+                  <MockedProvider mocks={mocks} addTypename={false}>
+                    <SampleComponent />
+                  </MockedProvider>
+                </AppContextProvider>
+              );
+            }
+          }}
+          {...defaults}
+        />
+      );
+      const graph = cyRef.current.cy();
+      const node = graph.nodes()[0];
+      node.emit("tapselect");
+      expect(graph).not.toBeNull();
+
+      const selectionDetailView = await findByText("Mock text");
+      expect(selectionDetailView).toBeVisible();
+    });
+  });
 });
