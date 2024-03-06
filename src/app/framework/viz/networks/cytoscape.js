@@ -102,7 +102,7 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
     const ViewComponent = selectionDetailView?.component;
 
     return tippy(tippyRoot, {
-      appendTo: document.getElementById("app-content-area"),
+      appendTo: cy.container() || document.createElement("div"),
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
       content: (instance) => {
         ReactDOM.render(
