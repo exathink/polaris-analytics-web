@@ -95,7 +95,7 @@ export function attachTooltips(cy, selector = false, tooltip) {
 
 export function initSelectionDetailView(cy, selector = null, selectionDetailView) {
   function createContextMenuContainer(element, contentContainer) {
-    if (element.popperRef == null) {
+    if (!element.popperRef) {
       attachPopper(element);
     }
     const tippyRoot =  document.createElement("div");
@@ -105,12 +105,13 @@ export function initSelectionDetailView(cy, selector = null, selectionDetailView
       appendTo: cy.container() || document.createElement("div"),
       getReferenceClientRect: element.popperRef().getBoundingClientRect,
       content: (instance) => {
+
         ReactDOM.render(
           <div style={{
             // need to make sure this sits on top of the cytoscape canvas and grabs events first.
             pointerEvents: "all" // workaround setting tippy.interactive: true causes some odd failures, but we force it in the CSS instead,
           }}>
-            <ViewComponent />
+            {ViewComponent && <ViewComponent />}
           </div>,
           contentContainer
         );
