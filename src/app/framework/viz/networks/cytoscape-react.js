@@ -29,7 +29,13 @@ function Cytoscape(
     containerStyle,
     testId,
     tooltip={enable: false, tooltip: () => ``},
-    selectionDetailView = {enable: false, component: () => null, transient: false},
+    selectionDetailView = {
+      enable: false,
+      component: (
+        {
+          graphElement, // The component that was clicked
+          tippyInstance // The tippy instance that holds the component
+        }) => null, transient: false},
     ...rest
   }, ref) {
   const containerRef = useRef();

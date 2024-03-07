@@ -389,50 +389,46 @@ describe("SelectDetailView component rendering", () => {
 
 
   describe("GraphQL Component Rendering", () => {
-    // Define a GraphQL query
-    const SAMPLE_QUERY = gql`
-        query SampleQuery {
-            sample {
-                text
-            }
-        }
-    `;
-
-// Create a component that calls the query and displays data from the result
-    const SampleComponent = () => {
-      const {loading, error, data} = useQuery(SAMPLE_QUERY);
-
-      if (loading) return "Loading...";
-      if (error) return `Error! ${error.message}`;
-
-      return <div>{data.sample.text}</div>;
-    };
-
-// Create a mock that intercepts the GraphQL request and return a fake response
-    const mocks = [
-      {
-        request: {
-          query: SAMPLE_QUERY
-        },
-        result: {
-          data: {
-            sample: {
-              text: "Mock text"
-            }
-          }
-        }
-      }
-    ];
-
-    beforeEach(() => {
-
-    });
 
 
     it("renders data from GraphQL query in SelectionDetailView", async () => {
-      const cyRef = React.createRef();
-      // Mock the AppContext provider so we can override the Apollo provider for the tests
 
+      // Define a GraphQL query
+      const SAMPLE_QUERY = gql`
+          query SampleQuery {
+              sample {
+                  text
+              }
+          }
+      `;
+
+      // Create a component that calls the query and displays data from the result
+      const SampleComponent = () => {
+        const {loading, error, data} = useQuery(SAMPLE_QUERY);
+
+        if (loading) return "Loading...";
+        if (error) return `Error! ${error.message}`;
+
+        return <div>{data.sample.text}</div>;
+      };
+
+      // Create a mock that intercepts the GraphQL request and return a fake response
+      const mocks = [
+        {
+          request: {
+            query: SAMPLE_QUERY
+          },
+          result: {
+            data: {
+              sample: {
+                text: "Mock text"
+              }
+            }
+          }
+        }
+      ];
+
+      const cyRef = React.createRef();
       const {findByText} = render(
         <Cytoscape
           ref={cyRef}
@@ -462,6 +458,46 @@ describe("SelectDetailView component rendering", () => {
       expect(graph).not.toBeNull();
 
       const selectionDetailView = await findByText("Mock text");
+      expect(selectionDetailView).toBeVisible();
+    });
+
+    it("renders passes the selected element to the rendered component", async () => {
+
+      const elements = [
+        {data: {id: "node1", name: "apple"}},
+        {data: {id: "node2", name: "orange"}},
+        {data: {id: "edge1", source: "node1", target: "node2"}}
+      ];
+      const cyRef = React.createRef();
+      // test component that takes an element as argument.
+
+      const SampleComponent = ({element}) => {
+        return <div>{element.data("name")}</div>;
+      };
+
+
+      const {findByText} = render(
+        <Cytoscape
+          ref={cyRef}
+          elements={elements}
+          layout={layout}
+          selectionDetailView={{
+            enable: true,
+            component: ({graphElement}) => {
+              return (
+                <SampleComponent element={graphElement}/>
+              );
+            }
+          }}
+          {...defaults}
+        />
+      );
+      const graph = cyRef.current.cy();
+      const node = graph.nodes()[0];
+      node.emit("tapselect");
+      expect(graph).not.toBeNull();
+
+      const selectionDetailView = await findByText(node.data('name'));
       expect(selectionDetailView).toBeVisible();
     });
   });
