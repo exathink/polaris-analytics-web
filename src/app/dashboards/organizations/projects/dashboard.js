@@ -84,9 +84,9 @@ export default injectIntl(({intl}) => (
             <DashboardRow h={"68%"}>
               <DashboardWidget
                 w={1}
-                name={`${displayPlural(intl, Contexts.projects)}`}
+                name={`table`}
                 render={() => (
-                <OrganizationProjectsNetwork
+                <ProjectsTableWidget
                   organizationKey={organization.key}
                   days={30}
                   measurementWindow={30}

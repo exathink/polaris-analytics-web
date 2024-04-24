@@ -11,11 +11,6 @@ const topic =  {
       component: React.lazy(() => import('./manage/addProject'))
     },
     {
-      requiredFeatures: [NETWORK_VIZ],
-      match: '',
-      component: React.lazy(() => import('./network_dashboard'))
-    },
-    {
       match: '',
       component: React.lazy(() => import('./dashboard'))
     }
