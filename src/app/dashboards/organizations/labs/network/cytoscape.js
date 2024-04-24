@@ -6,7 +6,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
+import Cytoscape from "../../../../framework/viz/networks/cytoscape-react";
 
 const graphQL = {
   "data": {

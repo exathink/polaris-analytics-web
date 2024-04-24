@@ -4,7 +4,7 @@ import FourZeroFour from "../../../containers/Page/404";
 import Contributors from "./contributors/topic";
 import Project from "./projects/topic";
 import Repositories from "./repositories/topic";
-import Network from "./network/topic";
+import Network from "./labs/network/topic";
 import Labs from "./labs/topic";
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";

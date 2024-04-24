@@ -16,7 +16,7 @@ import {Contexts} from "../../../meta";
 import {injectIntl} from "react-intl";
 import {displayPlural} from "../../../i18n";
 
-import OrganizationProjectsNetwork from "../network/organizationProjectsNetwork";
+import OrganizationProjectsNetwork from "../labs/network/organizationProjectsNetwork";
 
 const dashboard_id = 'dashboards.projects.organization.instance';
 

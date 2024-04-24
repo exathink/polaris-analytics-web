@@ -1,5 +1,5 @@
 import React from 'react';
-import {Topics} from "../../../meta/index";
+import {Topics} from "../../../../meta";
 
 const topic = {
   ...Topics.network,

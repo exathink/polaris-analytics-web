@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import {useQuery} from "@apollo/client";
 import {render, waitFor, screen} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
-import {Colors} from "../../shared/config";
+import {Colors} from "../../../shared/config";
 import OrganizationProjectsNetwork, {GET_ORGANIZATION_PROJECTS_NETWORK_QUERY} from "./organizationProjectsNetwork";
-import {genDateBeforeNow} from "../../../helpers/utility";
+import {genDateBeforeNow} from "../../../../helpers/utility";
 
-import {findNested} from "../../../../test/test-utils";
-import {renderCytoscape} from "../../../framework/viz/networks/cytoscape-react.test";
+import {findNested} from "../../../../../test/test-utils";
+import {renderCytoscape} from "../../../../framework/viz/networks/cytoscape-react.test";
 
 function mockRequest() {
   return [

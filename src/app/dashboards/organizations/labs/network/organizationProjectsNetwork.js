@@ -6,14 +6,14 @@
 
 import {gql, useQuery} from "@apollo/client";
 
-import {analytics_service} from "../../../services/graphql";
+import {analytics_service} from "../../../../services/graphql";
 import React, {useEffect, useImperativeHandle} from "react";
 
-import {graphqlConnectionToCyElements} from "../../../framework/viz/networks/graphql-cytoscape";
-import Cytoscape from "../../../framework/viz/networks/cytoscape-react";
-import {getActivityLevelFromDate} from "../../shared/helpers/activityLevel";
-import {Images} from "../../../framework/viz/networks/backgroundImages";
-import {tooltipHtml_v2} from "../../../framework/viz/charts/tooltip";
+import {graphqlConnectionToCyElements} from "../../../../framework/viz/networks/graphql-cytoscape";
+import Cytoscape from "../../../../framework/viz/networks/cytoscape-react";
+import {getActivityLevelFromDate} from "../../../shared/helpers/activityLevel";
+import {Images} from "../../../../framework/viz/networks/backgroundImages";
+import {tooltipHtml_v2} from "../../../../framework/viz/charts/tooltip";
 import {Menu, Button} from "antd";
 
 
