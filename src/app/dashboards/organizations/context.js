@@ -5,9 +5,10 @@ import Contributors from "./contributors/topic";
 import Project from "./projects/topic";
 import Repositories from "./repositories/topic";
 import Network from "./network/topic";
+import Labs from "./labs/topic";
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
-import {NETWORK_VIZ} from "../../../config/featureFlags";
+import {NETWORK_VIZ, LABS} from "../../../config/featureFlags";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -47,9 +48,9 @@ const context = {
             topic: Repositories
           },
           {
-            requiredFeatures: [NETWORK_VIZ],
-            match: "network",
-            topic: Network
+            requiredFeatures: [LABS],
+            match: "labs",
+            topic: Labs
           },
           {
             match: "",

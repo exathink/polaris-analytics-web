@@ -11,5 +11,5 @@ export const TABLE_PAGINATION = 'ui.table_pagination';
 export const AGE_LATENCY_ENHANCEMENTS = 'ui.age_latency_enhancements';
 export const FLOW_DASHBOARD_NEW_LAYOUT = 'ui.flow_dashboard_new_layout';
 export const NETWORK_VIZ = 'ui.network_viz';
-
+export const LABS = 'system.labs';
 

@@ -7,7 +7,8 @@ import {
   FunnelPlotOutlined,
   SettingOutlined,
   AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined,
-  PartitionOutlined
+  PartitionOutlined,
+  ExperimentOutlined
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -215,5 +216,10 @@ export const Topics = {
     name: 'network',
     display: () => (<FormattedMessage id='topics.network' defaultMessage="Network"/>),
     Icon: PartitionOutlined
+  },
+  labs: {
+    name: 'labs',
+    display: () => (<FormattedMessage id='topics.labs' defaultMessage="Labs"/>),
+    Icon: ExperimentOutlined
   },
 };
