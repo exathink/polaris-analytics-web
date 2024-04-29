@@ -13,13 +13,16 @@ import {useIntl} from "react-intl";
 import {Colors} from "../../../../shared/config";
 import {Collapse} from "antd";
 
+
 const Panel = Collapse.Panel;
 
 export function IChart(
   {
     iChartData,
+    days,
     movingRangeAverage,
-    displayType
+    displayType,
+    xAttributeMeta
   }) {
 
   const intl = useIntl();
@@ -27,9 +30,10 @@ export function IChart(
   const iChartNaturalProcessUpperLimit = iChartAverage + (2.66 * movingRangeAverage);
   const iChartNaturalProcessLowerLimit = iChartAverage - (2.66 * movingRangeAverage);
 
+
   const [iChartOptions, setIChartOptions] = useState({
     chart: {
-      type: "scatter",
+      type: displayType,
       animation: false,
       backgroundColor: Colors.Chart.backgroundColor,
       panning: true,
@@ -37,10 +41,10 @@ export function IChart(
       zoomType: "xy"
     },
     title: {
-      text: "Cycle Time"
+      text: `${xAttributeMeta.display}`
     },
     subtitle: {
-      text: "Process Behavior Chart"
+      text: `Process Behavior, Last ${days} days`
     },
     xAxis: {
       type: "datetime",
@@ -50,7 +54,7 @@ export function IChart(
     },
     yAxis: {
       title: {
-        text: "Cycle Time (Days)"
+        text: `${xAttributeMeta.display} (${xAttributeMeta.uom})`
       },
       type: "linear",
       max: Math.max(max(iChartData, item => item.y), iChartNaturalProcessUpperLimit),
@@ -61,7 +65,7 @@ export function IChart(
           dashStyle: "longdashdot",
           width: 1,
           label: {
-            text: ` Avg. CT ${intl.formatNumber(iChartAverage)} days`,
+            text: ` Average: ${intl.formatNumber(iChartAverage)} ${xAttributeMeta.uom}`,
             align: "left",
             verticalAlign: "top"
           }
@@ -72,7 +76,7 @@ export function IChart(
           dashStyle: "solid",
           width: 1,
           label: {
-            text: ` NLPL ${intl.formatNumber(iChartNaturalProcessLowerLimit)} days`,
+            text: ` Natural Lower Process Limit: ${intl.formatNumber(iChartNaturalProcessLowerLimit)} ${xAttributeMeta.uom}`,
             align: "left",
             verticalAlign: "top"
           }
@@ -83,7 +87,7 @@ export function IChart(
           dashStyle: "solid",
           width: 1,
           label: {
-            text: ` NUPL ${intl.formatNumber(iChartNaturalProcessUpperLimit)} days`,
+            text: ` Natural Upper Process Limit: ${intl.formatNumber(iChartNaturalProcessUpperLimit)} ${xAttributeMeta.uom}`,
             align: "left",
             verticalAlign: "top"
           }
@@ -220,18 +224,20 @@ export function MrChart(
 export function XmRChart(
   {
     data,
-    xAttribute,
+    days,
+    xAttributeMeta,
+    displayType,
     timestampAttribute,
     view
   }) {
 
-  function getIChartData(data, xAttribute, timestampAttribute) {
+  function getIChartData(data, xAttributeMeta, timestampAttribute) {
     return data.filter(
-      item => item[xAttribute] != null
+      item => xAttributeMeta.value(item) != null
     ).map(
       item => ({
         x: toMoment(item[timestampAttribute]).valueOf(),
-        y: (item[xAttribute])
+        y: xAttributeMeta.value(item)
       })
     );
   }
@@ -252,31 +258,32 @@ export function XmRChart(
     );
   }
 
+  if (xAttributeMeta != null) {
+    const iChartData = getIChartData(data, xAttributeMeta, timestampAttribute);
+    const mrChartData = getMovingRanges(iChartData);
+    const mrAverage = average(mrChartData, item => item.y);
 
-  const iChartData = getIChartData(data, xAttribute, timestampAttribute);
-  const mrChartData = getMovingRanges(iChartData);
-  const mrAverage = average(mrChartData, item => item.y);
-
-  return (
-    <div>
-      <IChart
-        iChartData={iChartData}
-        movingRangeAverage={mrAverage}
-        displayType={"scatter"}
-      />
-      {view === "detail" &&
-        <Collapse>
-          <Panel key={"1"} header={"Moving Range Chart"}>
-            <MrChart
-              mrChartData={mrChartData}
-              movingRangeAverage={mrAverage}
-            />
-          </Panel>
-        </Collapse>
-      }
-    </div>
-  )
-    ;
-
+    return (
+      <div>
+        <IChart
+          displayType={displayType}
+          iChartData={iChartData}
+          days={days}
+          movingRangeAverage={mrAverage}
+          xAttributeMeta={xAttributeMeta}
+        />
+        {view === "detail" &&
+          <Collapse>
+            <Panel key={"1"} header={"Moving Range Chart"}>
+              <MrChart
+                mrChartData={mrChartData}
+                movingRangeAverage={mrAverage}
+              />
+            </Panel>
+          </Collapse>
+        }
+      </div>
+    );
+  }
 
 }

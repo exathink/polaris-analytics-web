@@ -30,10 +30,10 @@ function ChartsDashboard() {
               cycleTimeTarget={14}
               leadTimeConfidenceTarget={0.9}
               cycleTimeConfidenceTarget={0.9}
-              days={30}
+              days={90}
               defectsOnly={false}
               specsOnly={true}
-              initialMetric={'cycleTime'}
+              initialMetric={'effort'}
 
             />
           )}

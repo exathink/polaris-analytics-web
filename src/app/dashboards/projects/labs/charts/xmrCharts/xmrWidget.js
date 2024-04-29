@@ -4,7 +4,7 @@
  *
  */
 
-import React from "react";
+import React, {useState} from "react";
 import {Loading} from "../../../../../components/graphql/loading";
 
 
@@ -30,14 +30,17 @@ export const ProjectXmrWidget = ({
                                    cycleTimeConfidenceTarget,
                                    days,
                                    defectsOnly,
-                                   initialMetric,
-                                   setSelectedMetric
+                                   initialMetric
                                  }) => {
+  const [selectedMetric, setSelectedMetric] = useState(initialMetric);
+  const selectedMetricMeta = projectDeliveryCycleFlowMetricsMeta[selectedMetric];
+
+
   const {loading, error, data} = useQueryProjectClosedDeliveryCycleDetail({
     dimension,
     instanceKey,
     days,
-    before:toGraphQLDate(latestWorkItemEvent),
+    before: toGraphQLDate(latestWorkItemEvent),
     defectsOnly,
     specsOnly,
     referenceString: latestWorkItemEvent
@@ -48,13 +51,15 @@ export const ProjectXmrWidget = ({
     logGraphQlError("ProjectFlowMetricsSettingWidget.useQueryProjectClosedDeliveryCycleDetail", error);
     return null;
   }
-  const targetMetrics = {leadTimeTarget, cycleTimeTarget, leadTimeConfidenceTarget, cycleTimeConfidenceTarget};
-  const deliveryCycleData = data['project']['workItemDeliveryCycles']['edges'].map(edge => edge.node)
+  const deliveryCycleData = data["project"]["workItemDeliveryCycles"]["edges"].map(edge => edge.node);
+
   return (
     <XmRChart
       data={deliveryCycleData}
-      xAttribute={'cycleTime'}
-      timestampAttribute={'endDate'}
+      days={days}
+      displayType={"scatter"}
+      xAttributeMeta={selectedMetricMeta}
+      timestampAttribute={"endDate"}
       view={view}
     />
   );
