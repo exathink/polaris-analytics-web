@@ -10,6 +10,10 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {average, toMoment, max} from "../../../../../helpers/utility";
 import {useIntl} from "react-intl";
+import {Colors} from "../../../../shared/config";
+import {Collapse} from "antd";
+
+const Panel = Collapse.Panel;
 
 export function IChart(
   {
@@ -24,15 +28,35 @@ export function IChart(
   const iChartNaturalProcessLowerLimit = iChartAverage - (2.66 * movingRangeAverage);
 
   const [iChartOptions, setIChartOptions] = useState({
+    chart: {
+      type: "scatter",
+      animation: false,
+      backgroundColor: Colors.Chart.backgroundColor,
+      panning: true,
+      panKey: "shift",
+      zoomType: "xy"
+    },
+    title: {
+      text: "Cycle Time"
+    },
+    subtitle: {
+      text: "Process Behavior Chart"
+    },
     xAxis: {
-      type: "datetime"
+      type: "datetime",
+      title: {
+        text: "Date"
+      }
     },
     yAxis: {
+      title: {
+        text: "Cycle Time (Days)"
+      },
       type: "linear",
       max: Math.max(max(iChartData, item => item.y), iChartNaturalProcessUpperLimit),
       plotLines: [
         {
-          color: "orange",
+          color: "green",
           value: iChartAverage,
           dashStyle: "longdashdot",
           width: 1,
@@ -45,7 +69,7 @@ export function IChart(
         {
           color: "red",
           value: iChartNaturalProcessLowerLimit,
-          dashStyle: "longdashdot",
+          dashStyle: "solid",
           width: 1,
           label: {
             text: ` NLPL ${intl.formatNumber(iChartNaturalProcessLowerLimit)} days`,
@@ -56,7 +80,7 @@ export function IChart(
         {
           color: "red",
           value: iChartNaturalProcessUpperLimit,
-          dashStyle: "longdashdot",
+          dashStyle: "solid",
           width: 1,
           label: {
             text: ` NUPL ${intl.formatNumber(iChartNaturalProcessUpperLimit)} days`,
@@ -67,6 +91,7 @@ export function IChart(
       ]
     },
     series: [{
+      showInLegend: false,
       type: displayType,
       data: iChartData
     }],
@@ -97,12 +122,107 @@ export function IChart(
   );
 }
 
+export function MrChart(
+  {
+    mrChartData,
+    movingRangeAverage
+  }) {
+
+  const intl = useIntl();
+  const upperRangeLimit = movingRangeAverage + (3.27 * movingRangeAverage);
+  const lowerRangeLimit = movingRangeAverage - (3.27 * movingRangeAverage);
+
+  const [mrChartOptions, setMrChartOptions] = useState({
+    chart: {
+      type: "line",
+      animation: false,
+      backgroundColor: Colors.Chart.backgroundColor,
+      panning: true,
+      panKey: "shift",
+      zoomType: "xy"
+    },
+    title: {
+      text: ""
+    },
+    title: {
+      text: "Moving Ranges"
+    },
+    xAxis: {
+      type: "datetime",
+      title: {
+        text: "Date"
+      }
+    },
+    yAxis: {
+      title: {
+        text: "Moving Range (days)"
+      },
+      type: "linear",
+      max: Math.max(max(mrChartData, item => item.y), upperRangeLimit),
+      plotLines: [
+        {
+          color: "green",
+          value: movingRangeAverage,
+          dashStyle: "longdashdot",
+          width: 1,
+          label: {
+            text: ` Moving Average ${intl.formatNumber(movingRangeAverage)} days`,
+            align: "left",
+            verticalAlign: "top"
+          }
+        },
+        {
+          color: "red",
+          value: lowerRangeLimit,
+          dashStyle: "solid",
+          width: 1,
+          label: {
+            text: ` LRL ${intl.formatNumber(lowerRangeLimit)} days`,
+            align: "left",
+            verticalAlign: "top"
+          }
+        },
+        {
+          color: "red",
+          value: upperRangeLimit,
+          dashStyle: "solid",
+          width: 1,
+          label: {
+            text: ` URL ${intl.formatNumber(upperRangeLimit)} days`,
+            align: "left",
+            verticalAlign: "top"
+          }
+        }
+      ]
+    },
+    series: [{
+      showInLegend: false,
+      data: mrChartData
+    }],
+    credits: {
+      enabled: false
+    },
+    time: {
+      useUTC: false
+    }
+  });
+
+  return (
+    <div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={mrChartOptions}
+      />
+    </div>
+  );
+}
 
 export function XmRChart(
   {
     data,
     xAttribute,
-    timestampAttribute
+    timestampAttribute,
+    view
   }) {
 
   function getIChartData(data, xAttribute, timestampAttribute) {
@@ -124,7 +244,10 @@ export function XmRChart(
     return sorted.slice(1).map(
       (current, index) => {
         const previous = sorted[index];
-        return Math.abs(current.y - previous.y);
+        return ({
+          x: current.x,
+          y: Math.abs(current.y - previous.y)
+        });
       }
     );
   }
@@ -132,17 +255,28 @@ export function XmRChart(
 
   const iChartData = getIChartData(data, xAttribute, timestampAttribute);
   const mrChartData = getMovingRanges(iChartData);
-  const mrAverage = average(mrChartData, item => item);
+  const mrAverage = average(mrChartData, item => item.y);
 
   return (
     <div>
       <IChart
         iChartData={iChartData}
         movingRangeAverage={mrAverage}
-        displayType={"line"}
+        displayType={"scatter"}
       />
+      {view === "detail" &&
+        <Collapse>
+          <Panel key={"1"} header={"Moving Range Chart"}>
+            <MrChart
+              mrChartData={mrChartData}
+              movingRangeAverage={mrAverage}
+            />
+          </Panel>
+        </Collapse>
+      }
     </div>
-  );
+  )
+    ;
 
 
 }

@@ -16,7 +16,6 @@ function ChartsDashboard() {
     <Dashboard dashboard={`charts-dashboard`}>
       <DashboardRow h="22%" >
         <DashboardWidget
-          title={'XMR Chart'}
           w={1 / 3}
           name="xmrchart"
           render={({view}) => (

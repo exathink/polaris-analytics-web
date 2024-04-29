@@ -55,6 +55,7 @@ export const ProjectXmrWidget = ({
       data={deliveryCycleData}
       xAttribute={'cycleTime'}
       timestampAttribute={'endDate'}
+      view={view}
     />
   );
 };
