@@ -183,6 +183,10 @@ export function toMoment(serverDate, as_date=false) {
   return as_date ? moment(serverDate) : moment(`${serverDate}Z`);
 }
 
+export function toGraphQLDate(serverDate) {
+  return toMoment(serverDate).format('YYYY-MM-DD')
+}
+
 export function epoch(serverDate, as_date=false) {
   return toMoment(serverDate, as_date).valueOf()
 }
@@ -372,6 +376,14 @@ export function average( array, getValue) {
 
 }
 
+export function max(array, getValue) {
+  if (array != null && array.length > 0) {
+    return array.reduce(
+      (max, item) => getValue(item) > max ? getValue(item) : max,
+      getValue(array[0])
+    )
+  }
+}
 
 /**
  * returns unique items from the array based on uniqueness criterion

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Topics} from "../../../meta";
-import  Network from "./network/topic"
+import  Network from "./network/topic";
+import Charts from "./charts/topic";
+
 const topic = {
   ...Topics.labs,
   routes: [
@@ -8,6 +10,11 @@ const topic = {
       match: 'network',
       subnav: true,
       topic: Network,
+    },
+    {
+      match: 'charts',
+      subnav: true,
+      topic: Charts,
     },
     {
       match: '',
