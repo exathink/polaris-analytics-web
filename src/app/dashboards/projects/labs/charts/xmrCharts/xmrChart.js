@@ -10,8 +10,10 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {average, toMoment, max} from "../../../../../helpers/utility";
 import {useIntl} from "react-intl";
-import {Colors} from "../../../../shared/config";
+import {Colors, WorkItemTypeDisplayName} from "../../../../shared/config";
 import {Collapse} from "antd";
+import {formatDateTime} from "../../../../../i18n";
+import {tooltipHtml} from "../../../../../framework/viz/charts";
 
 
 const Panel = Collapse.Panel;
@@ -94,6 +96,20 @@ export function IChart(
         }
       ]
     },
+
+    tooltip: {
+      useHTML: true,
+      followPointer: false,
+      hideDelay: 0,
+      formatter: function() {
+        return tooltipHtml({
+          header: `${intl.formatDate(this.point.date)}`,
+          body: [
+            [`${xAttributeMeta.display}: `, `${intl.formatNumber(this.point.y)} ${xAttributeMeta.uom}`]
+          ]
+        });
+      }
+    },
     series: [{
       showInLegend: false,
       type: displayType,
@@ -129,7 +145,8 @@ export function IChart(
 export function MrChart(
   {
     mrChartData,
-    movingRangeAverage
+    movingRangeAverage,
+    xAttributeMeta
   }) {
 
   const intl = useIntl();
@@ -181,7 +198,7 @@ export function MrChart(
           dashStyle: "solid",
           width: 1,
           label: {
-            text: ` LRL ${intl.formatNumber(lowerRangeLimit)} days`,
+            text: ` Lower Range Limit ${intl.formatNumber(lowerRangeLimit)} days`,
             align: "left",
             verticalAlign: "top"
           }
@@ -192,12 +209,25 @@ export function MrChart(
           dashStyle: "solid",
           width: 1,
           label: {
-            text: ` URL ${intl.formatNumber(upperRangeLimit)} days`,
+            text: ` Upper Range Limit ${intl.formatNumber(upperRangeLimit)} days`,
             align: "left",
             verticalAlign: "top"
           }
         }
       ]
+    },
+    tooltip: {
+      useHTML: true,
+      followPointer: false,
+      hideDelay: 0,
+      formatter: function() {
+        return tooltipHtml({
+          header: `${intl.formatDate(this.point.date)}`,
+          body: [
+            [`Delta: `, `${intl.formatNumber(this.point.y)} ${xAttributeMeta.uom}`]
+          ]
+        });
+      }
     },
     series: [{
       showInLegend: false,
@@ -231,14 +261,18 @@ export function XmRChart(
     view
   }) {
 
-  function getIChartData(data, xAttributeMeta, timestampAttribute) {
+  function getIChartData(data, xAttribute, timestampAttribute) {
     return data.filter(
-      item => xAttributeMeta.value(item) != null
+      item => item[xAttribute] != null
     ).map(
-      item => ({
-        x: toMoment(item[timestampAttribute]).valueOf(),
-        y: xAttributeMeta.value(item)
-      })
+      item => {
+        const date = toMoment(item[timestampAttribute]);
+        return ({
+          x: date.valueOf(),
+          y: item[xAttribute],
+          date: date
+        });
+      }
     );
   }
 
@@ -252,14 +286,15 @@ export function XmRChart(
         const previous = sorted[index];
         return ({
           x: current.x,
-          y: Math.abs(current.y - previous.y)
+          y: Math.abs(current.y - previous.y),
+          date: current.date
         });
       }
     );
   }
 
   if (xAttributeMeta != null) {
-    const iChartData = getIChartData(data, xAttributeMeta, timestampAttribute);
+    const iChartData = getIChartData(data, xAttributeMeta.valueMetric, timestampAttribute);
     const mrChartData = getMovingRanges(iChartData);
     const mrAverage = average(mrChartData, item => item.y);
 
@@ -278,6 +313,7 @@ export function XmRChart(
               <MrChart
                 mrChartData={mrChartData}
                 movingRangeAverage={mrAverage}
+                xAttributeMeta={xAttributeMeta}
               />
             </Panel>
           </Collapse>
