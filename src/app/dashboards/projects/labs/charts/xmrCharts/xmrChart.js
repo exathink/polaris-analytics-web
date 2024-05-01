@@ -270,7 +270,8 @@ export function XmRChart(
         return ({
           x: date.valueOf(),
           y: item[xAttribute],
-          date: date
+          date: date,
+          item: item
         });
       }
     );
