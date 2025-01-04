@@ -81,7 +81,7 @@ Glossary.DELIVERY_CYCLES = ({display="delivery cycles", ...rest}) => {
       name={display}
       definition={
         "A delivery cycle starts when a card transitions to an active phase and completes when it transitions to the Closed phase. A card can have " +
-        "many delivery cycles. See Model:Value Stream Mapping for more details."
+        "many delivery cycles. See Model:Delivery Process Mapping for more details."
       }
       {...rest}
     />
@@ -95,7 +95,7 @@ Glossary.DELIVERY_PROCESS_MAPPING = ({display="delivery process mapping", ...res
     <TermDefinition
       name={display}
       definition={
-        "A mapping of workflow states in your work tracking system into standard phases. See Model:Value Stream Mapping."
+        "A mapping of workflow states in your work tracking system into standard phases. See Model:Delivery Process Mapping"
       }
       {...rest}
     />

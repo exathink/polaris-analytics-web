@@ -388,7 +388,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
         <WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />,
         mockWithSingleWorkItemSource
       );
-      await screen.findByText(/Value Stream Mapping/i);
+      await screen.findByText(/Delivery Process Mapping/i);
     });
 
     test("it shows the chart sub title", async () => {
@@ -432,7 +432,7 @@ describe.skip("WorkItemStateTypeMapWidget", () => {
 
     test("it shows the chart title", async () => {
       renderWithProviders(<WorkItemStateTypeMapWidget {...stateTypeWidgetPropsFixture} />, mocks);
-      await screen.findByText(/Value Stream Mapping/i);
+      await screen.findByText(/Delivery Process Mapping/i);
     });
 
     test("it shows the chart sub title", async () => {
