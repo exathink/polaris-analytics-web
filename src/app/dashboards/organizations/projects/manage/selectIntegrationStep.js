@@ -16,7 +16,7 @@ export class SelectIntegrationStep extends React.Component {
 
       <div className={"select-connector"}>
         <div className={classNames(fontStyles["font-normal"], fontStyles["text-sm"], "step-description")} data-testid="integration-step-title">
-          <p>Securely import projects in your work tracking system into a Polaris Value Stream.</p>
+          <p>Securely import projects in your work tracking system into a Polaris Project.</p>
         </div>
         <div className={"select-connector-cards"}>
 

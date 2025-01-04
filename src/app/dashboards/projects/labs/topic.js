@@ -2,6 +2,7 @@ import React from 'react';
 import {Topics} from "../../../meta";
 import  Network from "./network/topic";
 import Charts from "./charts/topic";
+import Editor from "./query-editor/topic";
 
 const topic = {
   ...Topics.labs,
@@ -15,6 +16,11 @@ const topic = {
       match: 'charts',
       subnav: true,
       topic: Charts,
+    },
+    {
+      match: 'editor',
+      subnav: true,
+      topic: Editor,
     },
     {
       match: '',

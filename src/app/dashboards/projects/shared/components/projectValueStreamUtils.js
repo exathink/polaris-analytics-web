@@ -10,7 +10,7 @@ import {useQueryReleases} from "../hooks/useQueryReleases";
 import {ProjectDashboard, useProjectContext} from "../../projectDashboard";
 const {Option} = Select;
 
-const defaultItem = {key: "all", name: "All", workItemSelectors: []};
+const defaultItem = {key: "all", name: "Value Streams", workItemSelectors: []};
 
 export function useQueryParamSync({uniqueItems, valueIndex, queryParamKey = ""}) {
   const location = useLocation();
@@ -76,7 +76,7 @@ export function ValueStreamsDropdown() {
   );
 }
 
-const defaultItemRelease = {key: "all", name: "All Releases", releaseValue: undefined};
+const defaultItemRelease = {key: "all", name: "Releases", releaseValue: undefined};
 export function ReleasesDropdown() {
   const {data} = useWidget();
 

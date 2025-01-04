@@ -62,7 +62,7 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             selectedProjects={selectedProjects}
             importedProjectName={importedProjectName}
             onProjectNameChanged={onProjectNameChanged}
-            label={"Polaris Value Stream"}
+            label={"Polaris Project"}
           />
         }
         {importMode === 'existing' &&
@@ -70,8 +70,8 @@ export const ProjectSetupForm = Form.create()(({form, handleSave, selectedProjec
             organizationKey={organizationKey}
             selectedProjectKey={selectedProjectKey}
             onProjectSelectChanged={onProjectSelectChanged}
-            placeholder="Select an existing Value Stream"
-            label={"Select existing Value Stream"}
+            placeholder="Select an existing Project"
+            label={"Select existing Project"}
           />
         }
         <div style={{marginTop: "1rem"}}>

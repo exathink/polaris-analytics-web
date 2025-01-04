@@ -90,7 +90,7 @@ export function useOrgProjectsTableColumns(samplingFrequency, specsOnly) {
 
   const columns = [
     {
-      title: "Value Stream",
+      title: "Project",
       dataIndex: "name",
       key: "name",
       width: "8%",

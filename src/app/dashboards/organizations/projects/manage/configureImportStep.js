@@ -14,9 +14,9 @@ import {getConnectorTypeProjectName} from "../../../../components/workflow/conne
 import styles from "./configureImportStep.module.css";
 
 const inputModeDescription = {
-  single: 'Import as work stream(s) in a new Polaris Value Stream',
-  existing: 'Import as new work stream(s) into an existing Polaris Value Stream',
-  separate: 'Import each remote project as a separate Polaris Value Stream'
+  single: 'Import as work stream(s) in a new Polaris Project',
+  existing: 'Import as new work stream(s) into an existing Polaris Project',
+  separate: 'Import each remote project as a separate Polaris Project'
 }
 
 export const ORGANIZATION_PROJECT_COUNT_QUERY = gql`

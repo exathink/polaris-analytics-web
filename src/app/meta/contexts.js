@@ -93,7 +93,7 @@ export const Contexts = {
         (quantity = 0) => {
           return <FormattedMessage
             id="contexts.projects.display"
-            defaultMessage="{quantity, plural, one {Value Stream} other {Value Streams}}"
+            defaultMessage="{quantity, plural, one {Project} other {Projects}}"
             values={{quantity: quantity}}
         />
         },

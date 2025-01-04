@@ -16,10 +16,10 @@ export const ProjectsDashboardSetup = ({context}) => (
             A project in your work tracking system maps to a <em>Work Stream</em> in Polaris.
           </p>
           <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-            A <em>Value Stream</em> in Polaris aggregates metrics across one or more work streams.
+            A <em>Project</em> in Polaris aggregates metrics across one or more work streams.
           </p>
           <p className={classNames(fontStyles["font-normal"], fontStyles["text-base"])}>
-            You connect remote projects to Polaris using a <em> Polaris Connector</em>.
+            You connect remote projects as workstreams in Polaris  <em> Polaris Connector</em>.
           </p>
         </Col>
       </Row>
