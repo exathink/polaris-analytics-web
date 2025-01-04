@@ -14,7 +14,7 @@ import {useQueryParamState} from "../shared/helper/hooks";
 
 const dashboard_id = "dashboards.trends.projects.dashboard.instance";
 
-function TrendsDashboard({
+function InvestmentsDashboard({
   context,
   viewerContext,
 }) {
@@ -39,7 +39,7 @@ function TrendsDashboard({
   return (
     <Dashboard dashboard={`${dashboard_id}`}>
       <DashboardRow
-        h={"50%"}
+        h={"60%"}
         title={"Investments"}
         controls={[
           () => (
@@ -118,68 +118,13 @@ function TrendsDashboard({
           showDetail={true}
         />
       </DashboardRow>
-      <DashboardRow h="38%" title={`Flow Metrics`}>
-        <DashboardWidget
-          w={1 / 2}
-          name="cycle-time"
-          render={({view}) => (
-            <DimensionResponseTimeTrendsWidget
-              dimension={"project"}
-              tags={workItemSelectors}
-              release={release}
-              title={"Flow Time, All Dev Items"}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={30}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              targetPercentile={cycleTimeConfidenceTarget}
-              context={context}
-              view={view}
-              showAnnotations={true}
-              latestWorkItemEvent={latestWorkItemEvent}
-              defaultSeries={["leadTime", "cycleTime", "effort"]}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-        <DashboardWidget
-          w={1 / 2}
-          name="throughput"
-          render={({view}) => (
-            <DimensionVolumeTrendsWidget
-              dimension={"project"}
-              tags={workItemSelectors}
-              release={release}
-              instanceKey={key}
-              measurementWindow={30}
-              days={daysRange}
-              samplingFrequency={30}
-              targetPercentile={0.7}
-              context={context}
-              view={view}
-              latestWorkItemEvent={latestWorkItemEvent}
-              leadTimeTarget={leadTimeTarget}
-              cycleTimeTarget={cycleTimeTarget}
-              leadTimeConfidenceTarget={leadTimeConfidenceTarget}
-              cycleTimeConfidenceTarget={cycleTimeConfidenceTarget}
-              includeSubTasks={includeSubTasksFlowMetrics}
-            />
-          )}
-          showDetail={true}
-        />
-      </DashboardRow>
     </Dashboard>
   );
 }
 
 const dashboard = ({viewerContext}) => (
   <ProjectDashboard pollInterval={1000 * 60}>
-    <TrendsDashboard viewerContext={viewerContext} />
+    <InvestmentsDashboard viewerContext={viewerContext} />
   </ProjectDashboard>
 );
 export default withViewerContext(dashboard);

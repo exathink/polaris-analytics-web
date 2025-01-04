@@ -10,6 +10,8 @@ import {
   PartitionOutlined,
   ExperimentOutlined,
   DoubleRightOutlined,
+  LineChartOutlined,
+  DollarOutlined,
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -60,8 +62,13 @@ export const Topics = {
   },
   trends: {
     name: 'trends',
-    display: () => (<FormattedMessage id='topics.trends' defaultMessage="360° Trends"/>),
-    icon: 'ion-eye'
+    display: () => (<FormattedMessage id='topics.trends' defaultMessage="Trends"/>),
+    Icon: LineChartOutlined
+  },
+  investments: {
+    name: 'investments',
+    display: () => (<FormattedMessage id='topics.investments' defaultMessage="Investments"/>),
+    Icon: DollarOutlined
   },
   traceability: {
     name: 'traceability',

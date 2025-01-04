@@ -10,7 +10,7 @@ import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
-import Trends from "./trends/topic";
+import Investments from "./investments/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
 import Labs from "./labs/topic";
@@ -47,17 +47,17 @@ const context : Context = {
             divider: true
           },
           {
-            match: 'flow',
-            topic: Flow
+
+            match: 'investments',
+            topic: Investments
           },
           {
             match: 'quality',
             topic: Quality
           },
           {
-
-            match: '360-view',
-            topic: Trends
+            match: 'flow',
+            topic: Flow
           },
           {
             match: 'configure',
@@ -98,7 +98,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'flow'
+            redirect: 'investments'
           }
         ]
       }

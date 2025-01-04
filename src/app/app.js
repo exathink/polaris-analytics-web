@@ -55,7 +55,7 @@ export class App extends Component {
                     height: "5vh",
                   }}
                 >
-                  {`©Exathink, LLC 2016 - ${new Date().getFullYear()}`}
+                  {`©Exathink, LLC 2021 - ${new Date().getFullYear()}`}
                 </Footer>
               </div>
             </div>
