@@ -60,10 +60,6 @@ const context : Context = {
             topic: Flow
           },
           {
-            match: 'configure',
-            topic: Configure
-          },
-          {
             group: 'Explore',
             divider: true
           },
@@ -74,6 +70,14 @@ const context : Context = {
           {
             match: "contributors",
             topic: Contributors
+          },
+          {
+            group: 'Configure',
+            divider: true
+          },
+          {
+            match: 'configure',
+            topic: Configure
           },
           /**
           {
