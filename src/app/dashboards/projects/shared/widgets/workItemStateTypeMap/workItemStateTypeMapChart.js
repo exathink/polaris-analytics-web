@@ -77,7 +77,7 @@ export const WorkItemStateTypeMapChart = Chart({
         animation: false,
       },
       title: {
-        text: `Value Stream Mapping`,
+        text: `Delivery Process Mapping`,
       },
       subtitle: {
         text: enableEdits ? `Drag a workflow state to its desired phase.` : ``,

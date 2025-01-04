@@ -29,7 +29,7 @@ function useValueStreamEditorColumns() {
       width: "20%",
     },
     {
-      title: "Tags",
+      title: "Activity Tags",
       dataIndex: "workItemSelectors",
       key: "workItemSelectors",
       width: "20%",

@@ -5,7 +5,7 @@ import {InfoCard, PhaseDefinitions} from "../../index";
 const {Section, SubSection} = InfoCard;
 
 export const DeliveryProcessMappingInfoConfig = {
-  title: "Value Stream Mapping",
+  title: "Delivery Process Mapping",
   headerContent: () => <DeliveryProcessMappingSummary />,
   showDrawer: true,
   drawerContent: () => <DeliveryProcessMappingDetails />,
@@ -16,7 +16,7 @@ export const DeliveryProcessMappingInfoConfig = {
 };
 
 export const DeliveryProcessMappingInitialInfoConfig = {
-  title: "Value Stream Mapping",
+  title: "Delivery Process Mapping",
   headerContent: () => <DeliveryProcessMappingInitialSummary />,
   showDrawer: true,
   drawerContent: () => <DeliveryProcessMappingDetails />,

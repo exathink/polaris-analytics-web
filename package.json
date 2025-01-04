@@ -25,6 +25,7 @@
     "graphql": "15.5.0",
     "highcharts": "9.3.3",
     "highcharts-custom-events": "^3.0.6",
+    "highcharts-react-official": "^3.2.1",
     "history": "^4.6.3",
     "lodash.clonedeep": "^4.5.0",
     "lodash.flowright": "^3.5.0",

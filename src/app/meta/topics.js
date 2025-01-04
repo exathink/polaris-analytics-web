@@ -8,7 +8,8 @@ import {
   SettingOutlined,
   AimOutlined, ArrowRightOutlined, DashboardOutlined, HourglassOutlined, BuildOutlined,
   PartitionOutlined,
-  ExperimentOutlined
+  ExperimentOutlined,
+  DoubleRightOutlined,
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -85,7 +86,7 @@ export const Topics = {
   throughput: {
     name: 'throughput',
     display: () => (<FormattedMessage id='topics.throughput' defaultMessage="Throughput Analysis"/>),
-    Icon: DashboardOutlined
+    Icon: DoubleRightOutlined
   },
   value: {
     name: 'value',
@@ -96,6 +97,11 @@ export const Topics = {
     name: 'valueMix',
     display: () => (<FormattedMessage id='topics.valueMix' defaultMessage="Allocations"/>),
     icon: 'ion-android-options'
+  },
+  valueStream: {
+    name: 'valueStream',
+    display: () => (<FormattedMessage id='topics.valueStream' defaultMessage="Value Streams"/>),
+    Icon: DashboardOutlined
   },
   alignment: {
     name: 'alignment',

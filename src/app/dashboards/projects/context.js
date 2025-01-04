@@ -13,8 +13,10 @@ import Contributors from "./contributors/topic";
 import Trends from "./trends/topic";
 import Configure from "./configure/topic";
 import Quality from "./quality/topic";
+import Labs from "./labs/topic";
+
 import {Contexts} from "../../meta/contexts";
-import {UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
+import {LABS, UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import {ProjectValueStreamsWidget} from "./shared/components/projectValueStreamUtils";
@@ -23,7 +25,7 @@ const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage
       id="contexts.projects.instance"
-      defaultMessage="Value Stream: {instance}"
+      defaultMessage="Project: {instance}"
       values={{instance: instanceName}}
     />
   ),
@@ -89,7 +91,11 @@ const context : Context = {
           },
           **/
 
-
+          {
+            requiredFeatures: [LABS],
+            match: "labs",
+            topic: Labs
+          },
           {
             match: '',
             redirect: 'flow'

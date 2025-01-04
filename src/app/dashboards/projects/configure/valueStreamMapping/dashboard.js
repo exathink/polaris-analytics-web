@@ -80,7 +80,7 @@ export function ValueStreamMappingDashboard() {
         <div
           className="tw-flex tw-flex-col tw-justify-center tw-border-0 tw-border-b tw-border-solid tw-border-b-gray-200 tw-pb-4">
           <div className="tw-text-xl">Customize Phase Names</div>
-          <div className="tw-text-xs">Applies to all Workstreams in this Value Stream</div>
+          <div className="tw-text-xs">Applies to all Workstreams in this Project</div>
         </div>
         <Form
           key={visible}

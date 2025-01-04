@@ -103,7 +103,7 @@ export function ValueStreamWorkStreamEditorView({ projectKey }) {
         <LabelValue label={"Value Streams"} className="tw-ml-2" />
         <Button type="primary" className="tw-mr-2" onClick={() => setVisible(true)}>
           {" "}
-          <PlusOutlined /> Nested Value Stream
+          <PlusOutlined /> Value Stream
         </Button>
         <ValueStreamForm
           formType="NEW_FORM"

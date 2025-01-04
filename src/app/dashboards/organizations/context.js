@@ -4,8 +4,6 @@ import FourZeroFour from "../../../containers/Page/404";
 import Contributors from "./contributors/topic";
 import Project from "./projects/topic";
 import Repositories from "./repositories/topic";
-import Network from "./labs/network/topic";
-import Labs from "./labs/topic";
 import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import {NETWORK_VIZ, LABS} from "../../../config/featureFlags";
@@ -47,11 +45,7 @@ const context = {
             match: "repositories",
             topic: Repositories
           },
-          {
-            requiredFeatures: [LABS],
-            match: "labs",
-            topic: Labs
-          },
+
           {
             match: "",
             redirect: "value-streams"
