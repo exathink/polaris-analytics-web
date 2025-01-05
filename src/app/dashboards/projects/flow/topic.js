@@ -6,10 +6,16 @@ import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
 import ValueMix from "./valueMix/topic";
+import Trends from "./trends/topic";
 
 const topic = {
   ...Topics.flow,
   routes: [
+    {
+      match: "trends",
+      subnav: true,
+      topic: Trends,
+    },
     {
       match: "stability",
       subnav: true,
@@ -42,7 +48,7 @@ const topic = {
     },
     {
       match: '',
-      redirect: 'stability'
+      redirect: 'trends'
     },
   ]
 };

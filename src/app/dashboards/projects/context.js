@@ -10,8 +10,8 @@ import Flow from "./flow/topic";
 import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
-import Trends from "./trends/topic";
-import Configure from "./configure/topic";
+import Investments from "./investments/topic";
+import FlowModel from "./configure/topic";
 import Quality from "./quality/topic";
 import Labs from "./labs/topic";
 
@@ -20,6 +20,7 @@ import {LABS, UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import {ProjectValueStreamsWidget} from "./shared/components/projectValueStreamUtils";
+import ValueStreams from "./valueStreams/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -47,21 +48,17 @@ const context : Context = {
             divider: true
           },
           {
-            match: 'flow',
-            topic: Flow
+
+            match: 'investments',
+            topic: Investments
           },
           {
             match: 'quality',
             topic: Quality
           },
           {
-
-            match: '360-view',
-            topic: Trends
-          },
-          {
-            match: 'configure',
-            topic: Configure
+            match: 'flow',
+            topic: Flow
           },
           {
             group: 'Explore',
@@ -74,6 +71,18 @@ const context : Context = {
           {
             match: "contributors",
             topic: Contributors
+          },
+          {
+            group: 'Configure',
+            divider: true
+          },
+          {
+            match: 'value-streams',
+            topic: ValueStreams
+          },
+          {
+            match: 'flowModel',
+            topic: FlowModel
           },
           /**
           {
@@ -98,7 +107,7 @@ const context : Context = {
           },
           {
             match: '',
-            redirect: 'flow'
+            redirect: 'investments'
           }
         ]
       }

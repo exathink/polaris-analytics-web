@@ -1,9 +1,8 @@
 import React from 'react';
 import {Topics} from "../../../../meta/topics";
 
-
-const topic =  {
-  ...Topics.valueStream,
+const topic = {
+  ...Topics.trends,
   routes: [
     {
       match: '',
@@ -11,4 +10,5 @@ const topic =  {
     }
   ]
 };
+
 export default topic;
