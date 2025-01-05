@@ -215,9 +215,9 @@ export const Topics = {
     display: () => (<FormattedMessage id='topics.user' defaultMessage="User"/>),
     icon: 'ion-person'
   },
-  configure: {
+  flowModel: {
     name: 'configure',
-    display: () => (<FormattedMessage id='topics.configure' defaultMessage="Configure"/>),
+    display: () => (<FormattedMessage id='topics.configure' defaultMessage="Flow Model"/>),
     icon: 'ion-settings' //TODO: also this ion-ios-settings-strong
   },
   home: {

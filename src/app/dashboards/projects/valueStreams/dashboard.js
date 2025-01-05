@@ -4,19 +4,19 @@
  *
  */
 
-import { ProjectDashboard, useProjectContext } from "../../projectDashboard";
+import { ProjectDashboard, useProjectContext } from "../projectDashboard";
 import React from "react";
-import { useWidget, WidgetCore } from "../../../../framework/viz/dashboard/widgetCore";
-import { useCreateValueStream } from "../../shared/hooks/useCreateValueStream";
-import { logGraphQlError } from "../../../../components/graphql/utils";
-import Button from "../../../../../components/uielements/button";
+import { useWidget, WidgetCore } from "../../../framework/viz/dashboard/widgetCore";
+import { useCreateValueStream } from "../shared/hooks/useCreateValueStream";
+import { logGraphQlError } from "../../../components/graphql/utils";
+import Button from "../../../../components/uielements/button";
 import { Alert } from "antd";
-import { LabelValue } from "../../../../helpers/components";
+import { LabelValue } from "../../../helpers/components";
 import { PlusOutlined } from "@ant-design/icons";
-import { ValueStreamForm } from "../../shared/components/projectValueStreamUtils";
-import { ValueStreamEditorTable } from "../../shared/components/valueStreamEditorTable";
-import { useQueryProjectValueStreams } from "../../shared/hooks/useQueryValueStreams";
-import { Dashboard, DashboardRow, DashboardWidget } from "../../../../framework/viz/dashboard";
+import { ValueStreamForm } from "../shared/components/projectValueStreamUtils";
+import { ValueStreamEditorTable } from "../shared/components/valueStreamEditorTable";
+import { useQueryProjectValueStreams } from "../shared/hooks/useQueryValueStreams";
+import { Dashboard, DashboardRow, DashboardWidget } from "../../../framework/viz/dashboard";
 
 export function ValueStreamWorkStreamEditorView({ projectKey }) {
   const { data } = useWidget();

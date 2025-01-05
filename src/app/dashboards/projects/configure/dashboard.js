@@ -10,7 +10,7 @@ import {
 
 import { CONFIG_TABS, ConfigSelector } from "../../shared/widgets/configure/configSelector/configSelector";
 import { ValueStreamMappingDashboard, ValueStreamMappingInitialDashboard } from "./valueStreamMapping/dashboard";
-import { ValueStreamWorkStreamEditorDashboard } from "./valueStreams/dashboard";
+import { ValueStreamWorkStreamEditorDashboard } from "../valueStreams/dashboard";
 
 const dashboard_id = "dashboards.project.configure";
 ValueStreamMappingDashboard.videoConfig = {

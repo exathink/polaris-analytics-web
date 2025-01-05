@@ -11,7 +11,7 @@ import Repositories from "./repositories/topic";
 import PullRequests from "./pull_requests/topic";
 import Contributors from "./contributors/topic";
 import Investments from "./investments/topic";
-import Configure from "./configure/topic";
+import FlowModel from "./configure/topic";
 import Quality from "./quality/topic";
 import Labs from "./labs/topic";
 
@@ -20,6 +20,7 @@ import {LABS, UI_NEW_CARD_DESIGN} from "../../../config/featureFlags";
 
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import {ProjectValueStreamsWidget} from "./shared/components/projectValueStreamUtils";
+import ValueStreams from "./valueStreams/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -76,8 +77,12 @@ const context : Context = {
             divider: true
           },
           {
-            match: 'configure',
-            topic: Configure
+            match: 'value-streams',
+            topic: ValueStreams
+          },
+          {
+            match: 'flowModel',
+            topic: FlowModel
           },
           /**
           {
