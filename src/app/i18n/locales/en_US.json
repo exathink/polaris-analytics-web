@@ -79,5 +79,6 @@
   "topics.flow_mapping": "Flow Mapping",
   "topics.settings": "General Settings",
   "topics.network": "Network",
-  "topics.labs": "Labs"
+  "topics.labs": "Labs",
+  "topics.cicd": "CI/CD"
 }

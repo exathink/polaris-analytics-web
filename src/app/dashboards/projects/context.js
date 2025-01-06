@@ -22,6 +22,7 @@ import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import {ProjectValueStreamsWidget} from "./shared/components/projectValueStreamUtils";
 import ValueStreams from "./valueStreams/topic";
 
+
 const messages = {
   instanceDisplay: (instanceName) => (
     <FormattedMessage

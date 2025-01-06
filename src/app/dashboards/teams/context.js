@@ -10,8 +10,9 @@ import {Contexts} from "../../meta/contexts";
 import {instanceMatchPattern} from "../../framework/navigation/context/helpers";
 import ResponseTime from "./responseTime/topic";
 import Throughput from "./throughput/topic";
-import Configure from "./configure/topic";
+import FlowModel from "./configure/topic";
 import Alignment from "./alignment/topic";
+import Devlake from "../teams/devlake/topic";
 
 const messages = {
   instanceDisplay: (instanceName) => (
@@ -32,6 +33,10 @@ const context : Context = {
         ...Contexts.teams,
         display: match => messages.instanceDisplay(match.params.team),
         routes: [
+          {
+            group: 'Polaris',
+            divider: true
+          },
           {
             match: 'wip',
             topic: Wip
@@ -56,8 +61,20 @@ const context : Context = {
             topic: Alignment
           },
           {
-            match: "configure",
-            topic: Configure
+            group: 'Apache Devlake',
+            divider: true
+          },
+          {
+            match: 'devlake',
+            topic: Devlake
+          },
+          {
+            group: 'Configure',
+            divider: true
+          },
+          {
+            match: "flowModel",
+            topic: FlowModel
           },
           {
             match: '',

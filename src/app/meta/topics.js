@@ -12,6 +12,7 @@ import {
   DoubleRightOutlined,
   LineChartOutlined,
   DollarOutlined,
+  CiCircleOutlined,
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -29,6 +30,11 @@ export const Topics = {
     name: 'flowTrends',
     display: () => (<FormattedMessage id='topics.flowTrends' defaultMessage="Flow Trends"/>),
     icon: 'ion-arrow-graph-up-right'
+  },
+  devlake: {
+    name: 'cicd',
+    display: () => (<FormattedMessage id='topics.cicd' defaultMessage="CI/CD"/>),
+    Icon: CiCircleOutlined
   },
   newflow: {
     name: 'newflow',
