@@ -13,6 +13,8 @@ import {
   LineChartOutlined,
   DollarOutlined,
   CiCircleOutlined,
+  PlayCircleOutlined,
+  CompassOutlined
 } from "@ant-design/icons";
 
 export const Topics = {
@@ -35,6 +37,16 @@ export const Topics = {
     name: 'cicd',
     display: () => (<FormattedMessage id='topics.cicd' defaultMessage="CI/CD"/>),
     Icon: CiCircleOutlined
+  },
+  vsoptima: {
+    name: 'simulate',
+    display: () => (<FormattedMessage id='topics.vsoptima' defaultMessage="Simulation"/>),
+    Icon: PlayCircleOutlined
+  },
+  valueStreamMap: {
+    name: 'valueStreamMap',
+    display: () => (<FormattedMessage id='topics.valueStreamMap' defaultMessage="Value Stream Map"/>),
+    Icon: CompassOutlined
   },
   newflow: {
     name: 'newflow',

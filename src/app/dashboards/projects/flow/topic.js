@@ -7,6 +7,7 @@ import Throughput from "./throughput/topic";
 import PullRequests from "./pull_requests/topic";
 import ValueMix from "./valueMix/topic";
 import Trends from "./trends/topic";
+import Simulate from "../configure/valueStreamMap/topic";
 
 const topic = {
   ...Topics.flow,
@@ -45,6 +46,12 @@ const topic = {
       match: "code-reviews",
       subnav: true,
       topic: PullRequests,
+    },
+    {
+
+      match: "simulate",
+      subnav: true,
+      topic: Simulate,
     },
     {
       match: '',

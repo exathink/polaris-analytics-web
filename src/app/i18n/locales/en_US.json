@@ -80,5 +80,7 @@
   "topics.settings": "General Settings",
   "topics.network": "Network",
   "topics.labs": "Labs",
-  "topics.cicd": "CI/CD"
+  "topics.cicd": "CI/CD",
+  "topics.vsoptima": "Simulate",
+  "topics.valueStreamMap": "Value Stream Map"
 }

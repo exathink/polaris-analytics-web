@@ -7,11 +7,18 @@ import ValueStreams from "../valueStreams/topic";
 import StabilityGoals from "./stabilityGoals/topic";
 import GeneralSettings from "./generalSettings/topic";
 import { ValueStreamMappingDashboard } from "./valueStreamMapping/dashboard";
+import ValueStreamMap from "./valueStreamMap/topic";
 
 const topic =  {
   ...Topics.flowModel,
   ContextControl: false,
   routes: [
+    {
+
+      match: "Value Stream Map",
+      subnav: true,
+      topic: ValueStreamMap,
+    },
     {
       subnav: true,
       match: 'value-stream-mapping',
@@ -31,6 +38,7 @@ const topic =  {
       match: 'response-time-sla',
       component: () => <ResponseTimeSLASettingsDashboard/>
     },
+
     {
       match: '',
       redirect: "value-stream-mapping"
