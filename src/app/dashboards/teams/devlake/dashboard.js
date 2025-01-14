@@ -7,23 +7,20 @@
 import React from "react";
 import {withNavigationContext} from "../../../framework/navigation/components/withNavigationContext";
 import {withDetailRoutes} from "../../../framework/viz/dashboard/withDetailRoutes";
+import {GrafanaDashboard} from "../../../components/grafana/grafanaDashboard";
 
-
-export function DevLakeDashboard() {
-  const source = "http://polaris-services.exathink.localdev:3006/grafana/d/be9vwx873s0e8b/pr-cycle-time-with-summary?orgId=1&from=1642189510940&to=1673725510940";
+export function PrAnalyticsDashboard() {
   return (
-    <div style={{width: '100%', height: '100vh', overflow: 'hidden'}}>
-      <iframe
-        src={`${source}&kiosk`}
-        title="DevLake"
-        style={{
-          width: '100%',
-          height: '100%',
-          border: 'none',
-        }}
-      ></iframe>
-    </div>
-  )
+    <GrafanaDashboard
+      grafanaUrl={"http://polaris-services.exathink.localdev:3006/grafana"}
+      path={"/d/be9vwx873s0e8b/pr-cycle-time-with-summary"}
+      queryParams={{
+        orgId: 1,
+        from: 1642189510940,
+        to: 1673725510940
+      }}
+    />
+  );
 }
 
-export default withNavigationContext(withDetailRoutes(DevLakeDashboard));
+export default withNavigationContext(withDetailRoutes(PrAnalyticsDashboard));
