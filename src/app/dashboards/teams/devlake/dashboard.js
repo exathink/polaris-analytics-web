@@ -10,10 +10,11 @@ import {withDetailRoutes} from "../../../framework/viz/dashboard/withDetailRoute
 
 
 export function DevLakeDashboard() {
+  const source = "http://polaris-services.exathink.localdev:3006/grafana/d/be9vwx873s0e8b/pr-cycle-time-with-summary?orgId=1&from=1642189510940&to=1673725510940";
   return (
     <div style={{width: '100%', height: '100vh', overflow: 'hidden'}}>
       <iframe
-        src={'http://polaris-services.exathink.localdev:3002/grafana/d/be96p04k45f5sf/pr-cycle-time?orgId=1&kiosk'}
+        src={`${source}&kiosk`}
         title="DevLake"
         style={{
           width: '100%',
