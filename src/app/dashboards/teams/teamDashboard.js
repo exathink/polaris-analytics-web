@@ -20,6 +20,8 @@ function TEAM_DEFAULT_SETTINGS() {
     INCLUDE_SUBTASKS_FLOW_METRICS: false,
     INCLUDE_SUBTASKS_WIP_INSPECTOR: false,
     ENABLE_RELEASES: false,
+    GRAFANA_ORD_ID: 1,
+    DEVLAKE_PROJECT: 'Polaris'
   };
   return {
     ...BASE_DEFAULTS,
@@ -69,7 +71,10 @@ function getTeamSettings({settings: {flowMetricsSettings = {}, analysisPeriods =
     includeSubTasksFlowMetrics: includeSubTasksFlowMetrics == null ? defaults.INCLUDE_SUBTASKS_FLOW_METRICS : includeSubTasksFlowMetrics,
     includeSubTasksWipInspector: includeSubTasksWipInspector == null ? defaults.INCLUDE_SUBTASKS_WIP_INSPECTOR : includeSubTasksWipInspector,
     latencyTarget: cycleTimeTarget* 0.1 || defaults.LATENCY_TARGET,
-    enableReleases: enableReleases || defaults.ENABLE_RELEASES
+    enableReleases: enableReleases || defaults.ENABLE_RELEASES,
+    grafanaOrgId: defaults.GRAFANA_ORD_ID,
+    devLakeProject: defaults.DEVLAKE_PROJECT
+
   };
 }
 
